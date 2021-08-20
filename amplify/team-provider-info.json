@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthyhabits-dev-172305-authRole",
+      "UnauthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabits-dev-172305-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabits-dev-172305-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
+      "UnauthRoleName": "amplify-healthyhabits-dev-172305-unauthRole",
+      "StackName": "amplify-healthyhabits-dev-172305",
+      "StackId": "arn:aws:cloudformation:eu-west-2:397429649444:stack/amplify-healthyhabits-dev-172305/b2de2060-f925-11eb-80c8-063f4f15ab5e",
+      "AmplifyAppId": "dim818xhlkdsx"
+    },
+    "categories": {
+      "auth": {
+        "healthyhabitsd83a32c1": {},
+        "userPoolGroups": {}
+      }
+    }
+  }
+}

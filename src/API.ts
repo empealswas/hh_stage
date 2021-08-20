@@ -1,0 +1,3551 @@
+/* tslint:disable */
+/* eslint-disable */
+//  This file was automatically generated and should not be edited.
+
+export type CreateFileInput = {
+  id?: string | null,
+  key?: string | null,
+  region?: string | null,
+  bucket?: string | null,
+  lessonID?: string | null,
+};
+
+export type ModelFileConditionInput = {
+  key?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  bucket?: ModelStringInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelFileConditionInput | null > | null,
+  or?: Array< ModelFileConditionInput | null > | null,
+  not?: ModelFileConditionInput | null,
+};
+
+export type ModelStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export enum ModelAttributeTypes {
+  binary = "binary",
+  binarySet = "binarySet",
+  bool = "bool",
+  list = "list",
+  map = "map",
+  number = "number",
+  numberSet = "numberSet",
+  string = "string",
+  stringSet = "stringSet",
+  _null = "_null",
+}
+
+
+export type ModelSizeInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type File = {
+  __typename: "File",
+  id: string,
+  key?: string | null,
+  region?: string | null,
+  bucket?: string | null,
+  lessonID?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateFileInput = {
+  id: string,
+  key?: string | null,
+  region?: string | null,
+  bucket?: string | null,
+  lessonID?: string | null,
+};
+
+export type DeleteFileInput = {
+  id: string,
+};
+
+export type CreateClassroomInput = {
+  id?: string | null,
+  name?: string | null,
+  schoolID?: string | null,
+};
+
+export type ModelClassroomConditionInput = {
+  name?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelClassroomConditionInput | null > | null,
+  or?: Array< ModelClassroomConditionInput | null > | null,
+  not?: ModelClassroomConditionInput | null,
+};
+
+export type Classroom = {
+  __typename: "Classroom",
+  id: string,
+  name?: string | null,
+  teachers?: ModelTeacherClassroomConnection | null,
+  pupils?: ModelPupilClassroomConnection | null,
+  schoolID?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelTeacherClassroomConnection = {
+  __typename: "ModelTeacherClassroomConnection",
+  items?:  Array<TeacherClassroom | null > | null,
+  nextToken?: string | null,
+};
+
+export type TeacherClassroom = {
+  __typename: "TeacherClassroom",
+  id: string,
+  teacherID: string,
+  classroomID: string,
+  teacher: Teacher,
+  classroom: Classroom,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Teacher = {
+  __typename: "Teacher",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+  classrooms?: ModelTeacherClassroomConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelPupilClassroomConnection = {
+  __typename: "ModelPupilClassroomConnection",
+  items?:  Array<PupilClassroom | null > | null,
+  nextToken?: string | null,
+};
+
+export type PupilClassroom = {
+  __typename: "PupilClassroom",
+  id: string,
+  pupilID: string,
+  classroomID: string,
+  pupil: Pupil,
+  classroom: Classroom,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Pupil = {
+  __typename: "Pupil",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  Attendances?: ModelAttendanceConnection | null,
+  classrooms?: ModelPupilClassroomConnection | null,
+  schoolID?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelAttendanceConnection = {
+  __typename: "ModelAttendanceConnection",
+  items?:  Array<Attendance | null > | null,
+  nextToken?: string | null,
+};
+
+export type Attendance = {
+  __typename: "Attendance",
+  id: string,
+  present?: boolean | null,
+  pupilID?: string | null,
+  lessonID?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateClassroomInput = {
+  id: string,
+  name?: string | null,
+  schoolID?: string | null,
+};
+
+export type DeleteClassroomInput = {
+  id: string,
+};
+
+export type CreateTeacherClassroomInput = {
+  id?: string | null,
+  teacherID: string,
+  classroomID: string,
+};
+
+export type ModelTeacherClassroomConditionInput = {
+  teacherID?: ModelIDInput | null,
+  classroomID?: ModelIDInput | null,
+  and?: Array< ModelTeacherClassroomConditionInput | null > | null,
+  or?: Array< ModelTeacherClassroomConditionInput | null > | null,
+  not?: ModelTeacherClassroomConditionInput | null,
+};
+
+export type UpdateTeacherClassroomInput = {
+  id: string,
+  teacherID?: string | null,
+  classroomID?: string | null,
+};
+
+export type DeleteTeacherClassroomInput = {
+  id: string,
+};
+
+export type CreatePupilClassroomInput = {
+  id?: string | null,
+  pupilID: string,
+  classroomID: string,
+};
+
+export type ModelPupilClassroomConditionInput = {
+  pupilID?: ModelIDInput | null,
+  classroomID?: ModelIDInput | null,
+  and?: Array< ModelPupilClassroomConditionInput | null > | null,
+  or?: Array< ModelPupilClassroomConditionInput | null > | null,
+  not?: ModelPupilClassroomConditionInput | null,
+};
+
+export type UpdatePupilClassroomInput = {
+  id: string,
+  pupilID?: string | null,
+  classroomID?: string | null,
+};
+
+export type DeletePupilClassroomInput = {
+  id: string,
+};
+
+export type CreateSchoolInput = {
+  id?: string | null,
+  name?: string | null,
+  country?: string | null,
+  region?: string | null,
+  principal?: string | null,
+};
+
+export type ModelSchoolConditionInput = {
+  name?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  principal?: ModelStringInput | null,
+  and?: Array< ModelSchoolConditionInput | null > | null,
+  or?: Array< ModelSchoolConditionInput | null > | null,
+  not?: ModelSchoolConditionInput | null,
+};
+
+export type School = {
+  __typename: "School",
+  id: string,
+  name?: string | null,
+  country?: string | null,
+  region?: string | null,
+  principal?: string | null,
+  Teachers?: ModelTeacherConnection | null,
+  Pupils?: ModelPupilConnection | null,
+  classrooms?: ModelClassroomConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelTeacherConnection = {
+  __typename: "ModelTeacherConnection",
+  items?:  Array<Teacher | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelPupilConnection = {
+  __typename: "ModelPupilConnection",
+  items?:  Array<Pupil | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelClassroomConnection = {
+  __typename: "ModelClassroomConnection",
+  items?:  Array<Classroom | null > | null,
+  nextToken?: string | null,
+};
+
+export type UpdateSchoolInput = {
+  id: string,
+  name?: string | null,
+  country?: string | null,
+  region?: string | null,
+  principal?: string | null,
+};
+
+export type DeleteSchoolInput = {
+  id: string,
+};
+
+export type CreateAttendanceInput = {
+  id?: string | null,
+  present?: boolean | null,
+  pupilID?: string | null,
+  lessonID?: string | null,
+};
+
+export type ModelAttendanceConditionInput = {
+  present?: ModelBooleanInput | null,
+  pupilID?: ModelIDInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelAttendanceConditionInput | null > | null,
+  or?: Array< ModelAttendanceConditionInput | null > | null,
+  not?: ModelAttendanceConditionInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateAttendanceInput = {
+  id: string,
+  present?: boolean | null,
+  pupilID?: string | null,
+  lessonID?: string | null,
+};
+
+export type DeleteAttendanceInput = {
+  id: string,
+};
+
+export type CreateLessonInput = {
+  id?: string | null,
+  title?: string | null,
+  description?: string | null,
+};
+
+export type ModelLessonConditionInput = {
+  title?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  and?: Array< ModelLessonConditionInput | null > | null,
+  or?: Array< ModelLessonConditionInput | null > | null,
+  not?: ModelLessonConditionInput | null,
+};
+
+export type Lesson = {
+  __typename: "Lesson",
+  id: string,
+  title?: string | null,
+  description?: string | null,
+  terms?: ModelTermLessonConnection | null,
+  Attendances?: ModelAttendanceConnection | null,
+  Files?: ModelFileConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelTermLessonConnection = {
+  __typename: "ModelTermLessonConnection",
+  items?:  Array<TermLesson | null > | null,
+  nextToken?: string | null,
+};
+
+export type TermLesson = {
+  __typename: "TermLesson",
+  id: string,
+  termID: string,
+  lessonID: string,
+  term: Term,
+  lesson: Lesson,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Term = {
+  __typename: "Term",
+  id: string,
+  nam?: string | null,
+  startDate?: string | null,
+  finishDate?: string | null,
+  subjects?: ModelSubjectTermConnection | null,
+  TermLessons?: ModelTermLessonConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelSubjectTermConnection = {
+  __typename: "ModelSubjectTermConnection",
+  items?:  Array<SubjectTerm | null > | null,
+  nextToken?: string | null,
+};
+
+export type SubjectTerm = {
+  __typename: "SubjectTerm",
+  id: string,
+  subjectID: string,
+  termID: string,
+  subject: Subject,
+  term: Term,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Subject = {
+  __typename: "Subject",
+  id: string,
+  name?: string | null,
+  SubjectTerms?: ModelSubjectTermConnection | null,
+  curriculums?: ModelCurriculumSubjectConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelCurriculumSubjectConnection = {
+  __typename: "ModelCurriculumSubjectConnection",
+  items?:  Array<CurriculumSubject | null > | null,
+  nextToken?: string | null,
+};
+
+export type CurriculumSubject = {
+  __typename: "CurriculumSubject",
+  id: string,
+  curriculumID: string,
+  subjectID: string,
+  curriculum: Curriculum,
+  subject: Subject,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Curriculum = {
+  __typename: "Curriculum",
+  id: string,
+  name?: string | null,
+  subjects?: ModelCurriculumSubjectConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelFileConnection = {
+  __typename: "ModelFileConnection",
+  items?:  Array<File | null > | null,
+  nextToken?: string | null,
+};
+
+export type UpdateLessonInput = {
+  id: string,
+  title?: string | null,
+  description?: string | null,
+};
+
+export type DeleteLessonInput = {
+  id: string,
+};
+
+export type CreateTermInput = {
+  id?: string | null,
+  nam?: string | null,
+  startDate?: string | null,
+  finishDate?: string | null,
+};
+
+export type ModelTermConditionInput = {
+  nam?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  finishDate?: ModelStringInput | null,
+  and?: Array< ModelTermConditionInput | null > | null,
+  or?: Array< ModelTermConditionInput | null > | null,
+  not?: ModelTermConditionInput | null,
+};
+
+export type UpdateTermInput = {
+  id: string,
+  nam?: string | null,
+  startDate?: string | null,
+  finishDate?: string | null,
+};
+
+export type DeleteTermInput = {
+  id: string,
+};
+
+export type CreateSubjectInput = {
+  id?: string | null,
+  name?: string | null,
+};
+
+export type ModelSubjectConditionInput = {
+  name?: ModelStringInput | null,
+  and?: Array< ModelSubjectConditionInput | null > | null,
+  or?: Array< ModelSubjectConditionInput | null > | null,
+  not?: ModelSubjectConditionInput | null,
+};
+
+export type UpdateSubjectInput = {
+  id: string,
+  name?: string | null,
+};
+
+export type DeleteSubjectInput = {
+  id: string,
+};
+
+export type CreateCurriculumInput = {
+  id?: string | null,
+  name?: string | null,
+};
+
+export type ModelCurriculumConditionInput = {
+  name?: ModelStringInput | null,
+  and?: Array< ModelCurriculumConditionInput | null > | null,
+  or?: Array< ModelCurriculumConditionInput | null > | null,
+  not?: ModelCurriculumConditionInput | null,
+};
+
+export type UpdateCurriculumInput = {
+  id: string,
+  name?: string | null,
+};
+
+export type DeleteCurriculumInput = {
+  id: string,
+};
+
+export type CreateParentInput = {
+  id?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+};
+
+export type ModelParentConditionInput = {
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  and?: Array< ModelParentConditionInput | null > | null,
+  or?: Array< ModelParentConditionInput | null > | null,
+  not?: ModelParentConditionInput | null,
+};
+
+export type Parent = {
+  __typename: "Parent",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateParentInput = {
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+};
+
+export type DeleteParentInput = {
+  id: string,
+};
+
+export type CreateTeacherInput = {
+  id?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+};
+
+export type ModelTeacherConditionInput = {
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelTeacherConditionInput | null > | null,
+  or?: Array< ModelTeacherConditionInput | null > | null,
+  not?: ModelTeacherConditionInput | null,
+};
+
+export type UpdateTeacherInput = {
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+};
+
+export type DeleteTeacherInput = {
+  id: string,
+};
+
+export type CreatePupilInput = {
+  id?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  schoolID?: string | null,
+};
+
+export type ModelPupilConditionInput = {
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelPupilConditionInput | null > | null,
+  or?: Array< ModelPupilConditionInput | null > | null,
+  not?: ModelPupilConditionInput | null,
+};
+
+export type UpdatePupilInput = {
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  schoolID?: string | null,
+};
+
+export type DeletePupilInput = {
+  id: string,
+};
+
+export type CreateSubjectTermInput = {
+  id?: string | null,
+  subjectID: string,
+  termID: string,
+};
+
+export type ModelSubjectTermConditionInput = {
+  subjectID?: ModelIDInput | null,
+  termID?: ModelIDInput | null,
+  and?: Array< ModelSubjectTermConditionInput | null > | null,
+  or?: Array< ModelSubjectTermConditionInput | null > | null,
+  not?: ModelSubjectTermConditionInput | null,
+};
+
+export type UpdateSubjectTermInput = {
+  id: string,
+  subjectID?: string | null,
+  termID?: string | null,
+};
+
+export type DeleteSubjectTermInput = {
+  id: string,
+};
+
+export type CreateTermLessonInput = {
+  id?: string | null,
+  termID: string,
+  lessonID: string,
+};
+
+export type ModelTermLessonConditionInput = {
+  termID?: ModelIDInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelTermLessonConditionInput | null > | null,
+  or?: Array< ModelTermLessonConditionInput | null > | null,
+  not?: ModelTermLessonConditionInput | null,
+};
+
+export type UpdateTermLessonInput = {
+  id: string,
+  termID?: string | null,
+  lessonID?: string | null,
+};
+
+export type DeleteTermLessonInput = {
+  id: string,
+};
+
+export type CreateCurriculumSubjectInput = {
+  id?: string | null,
+  curriculumID: string,
+  subjectID: string,
+};
+
+export type ModelCurriculumSubjectConditionInput = {
+  curriculumID?: ModelIDInput | null,
+  subjectID?: ModelIDInput | null,
+  and?: Array< ModelCurriculumSubjectConditionInput | null > | null,
+  or?: Array< ModelCurriculumSubjectConditionInput | null > | null,
+  not?: ModelCurriculumSubjectConditionInput | null,
+};
+
+export type UpdateCurriculumSubjectInput = {
+  id: string,
+  curriculumID?: string | null,
+  subjectID?: string | null,
+};
+
+export type DeleteCurriculumSubjectInput = {
+  id: string,
+};
+
+export type ModelFileFilterInput = {
+  id?: ModelIDInput | null,
+  key?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  bucket?: ModelStringInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelFileFilterInput | null > | null,
+  or?: Array< ModelFileFilterInput | null > | null,
+  not?: ModelFileFilterInput | null,
+};
+
+export type ModelClassroomFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelClassroomFilterInput | null > | null,
+  or?: Array< ModelClassroomFilterInput | null > | null,
+  not?: ModelClassroomFilterInput | null,
+};
+
+export type ModelSchoolFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  principal?: ModelStringInput | null,
+  and?: Array< ModelSchoolFilterInput | null > | null,
+  or?: Array< ModelSchoolFilterInput | null > | null,
+  not?: ModelSchoolFilterInput | null,
+};
+
+export type ModelSchoolConnection = {
+  __typename: "ModelSchoolConnection",
+  items?:  Array<School | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelAttendanceFilterInput = {
+  id?: ModelIDInput | null,
+  present?: ModelBooleanInput | null,
+  pupilID?: ModelIDInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelAttendanceFilterInput | null > | null,
+  or?: Array< ModelAttendanceFilterInput | null > | null,
+  not?: ModelAttendanceFilterInput | null,
+};
+
+export type ModelLessonFilterInput = {
+  id?: ModelIDInput | null,
+  title?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  and?: Array< ModelLessonFilterInput | null > | null,
+  or?: Array< ModelLessonFilterInput | null > | null,
+  not?: ModelLessonFilterInput | null,
+};
+
+export type ModelLessonConnection = {
+  __typename: "ModelLessonConnection",
+  items?:  Array<Lesson | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelTermFilterInput = {
+  id?: ModelIDInput | null,
+  nam?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  finishDate?: ModelStringInput | null,
+  and?: Array< ModelTermFilterInput | null > | null,
+  or?: Array< ModelTermFilterInput | null > | null,
+  not?: ModelTermFilterInput | null,
+};
+
+export type ModelTermConnection = {
+  __typename: "ModelTermConnection",
+  items?:  Array<Term | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelSubjectFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelSubjectFilterInput | null > | null,
+  or?: Array< ModelSubjectFilterInput | null > | null,
+  not?: ModelSubjectFilterInput | null,
+};
+
+export type ModelSubjectConnection = {
+  __typename: "ModelSubjectConnection",
+  items?:  Array<Subject | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelCurriculumFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelCurriculumFilterInput | null > | null,
+  or?: Array< ModelCurriculumFilterInput | null > | null,
+  not?: ModelCurriculumFilterInput | null,
+};
+
+export type ModelCurriculumConnection = {
+  __typename: "ModelCurriculumConnection",
+  items?:  Array<Curriculum | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelParentFilterInput = {
+  id?: ModelIDInput | null,
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  and?: Array< ModelParentFilterInput | null > | null,
+  or?: Array< ModelParentFilterInput | null > | null,
+  not?: ModelParentFilterInput | null,
+};
+
+export type ModelParentConnection = {
+  __typename: "ModelParentConnection",
+  items?:  Array<Parent | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelTeacherFilterInput = {
+  id?: ModelIDInput | null,
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelTeacherFilterInput | null > | null,
+  or?: Array< ModelTeacherFilterInput | null > | null,
+  not?: ModelTeacherFilterInput | null,
+};
+
+export type ModelPupilFilterInput = {
+  id?: ModelIDInput | null,
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelPupilFilterInput | null > | null,
+  or?: Array< ModelPupilFilterInput | null > | null,
+  not?: ModelPupilFilterInput | null,
+};
+
+export type CreateFileMutationVariables = {
+  input: CreateFileInput,
+  condition?: ModelFileConditionInput | null,
+};
+
+export type CreateFileMutation = {
+  createFile?:  {
+    __typename: "File",
+    id: string,
+    key?: string | null,
+    region?: string | null,
+    bucket?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateFileMutationVariables = {
+  input: UpdateFileInput,
+  condition?: ModelFileConditionInput | null,
+};
+
+export type UpdateFileMutation = {
+  updateFile?:  {
+    __typename: "File",
+    id: string,
+    key?: string | null,
+    region?: string | null,
+    bucket?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteFileMutationVariables = {
+  input: DeleteFileInput,
+  condition?: ModelFileConditionInput | null,
+};
+
+export type DeleteFileMutation = {
+  deleteFile?:  {
+    __typename: "File",
+    id: string,
+    key?: string | null,
+    region?: string | null,
+    bucket?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateClassroomMutationVariables = {
+  input: CreateClassroomInput,
+  condition?: ModelClassroomConditionInput | null,
+};
+
+export type CreateClassroomMutation = {
+  createClassroom?:  {
+    __typename: "Classroom",
+    id: string,
+    name?: string | null,
+    teachers?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    pupils?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateClassroomMutationVariables = {
+  input: UpdateClassroomInput,
+  condition?: ModelClassroomConditionInput | null,
+};
+
+export type UpdateClassroomMutation = {
+  updateClassroom?:  {
+    __typename: "Classroom",
+    id: string,
+    name?: string | null,
+    teachers?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    pupils?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteClassroomMutationVariables = {
+  input: DeleteClassroomInput,
+  condition?: ModelClassroomConditionInput | null,
+};
+
+export type DeleteClassroomMutation = {
+  deleteClassroom?:  {
+    __typename: "Classroom",
+    id: string,
+    name?: string | null,
+    teachers?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    pupils?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTeacherClassroomMutationVariables = {
+  input: CreateTeacherClassroomInput,
+  condition?: ModelTeacherClassroomConditionInput | null,
+};
+
+export type CreateTeacherClassroomMutation = {
+  createTeacherClassroom?:  {
+    __typename: "TeacherClassroom",
+    id: string,
+    teacherID: string,
+    classroomID: string,
+    teacher:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTeacherClassroomMutationVariables = {
+  input: UpdateTeacherClassroomInput,
+  condition?: ModelTeacherClassroomConditionInput | null,
+};
+
+export type UpdateTeacherClassroomMutation = {
+  updateTeacherClassroom?:  {
+    __typename: "TeacherClassroom",
+    id: string,
+    teacherID: string,
+    classroomID: string,
+    teacher:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTeacherClassroomMutationVariables = {
+  input: DeleteTeacherClassroomInput,
+  condition?: ModelTeacherClassroomConditionInput | null,
+};
+
+export type DeleteTeacherClassroomMutation = {
+  deleteTeacherClassroom?:  {
+    __typename: "TeacherClassroom",
+    id: string,
+    teacherID: string,
+    classroomID: string,
+    teacher:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreatePupilClassroomMutationVariables = {
+  input: CreatePupilClassroomInput,
+  condition?: ModelPupilClassroomConditionInput | null,
+};
+
+export type CreatePupilClassroomMutation = {
+  createPupilClassroom?:  {
+    __typename: "PupilClassroom",
+    id: string,
+    pupilID: string,
+    classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePupilClassroomMutationVariables = {
+  input: UpdatePupilClassroomInput,
+  condition?: ModelPupilClassroomConditionInput | null,
+};
+
+export type UpdatePupilClassroomMutation = {
+  updatePupilClassroom?:  {
+    __typename: "PupilClassroom",
+    id: string,
+    pupilID: string,
+    classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePupilClassroomMutationVariables = {
+  input: DeletePupilClassroomInput,
+  condition?: ModelPupilClassroomConditionInput | null,
+};
+
+export type DeletePupilClassroomMutation = {
+  deletePupilClassroom?:  {
+    __typename: "PupilClassroom",
+    id: string,
+    pupilID: string,
+    classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateSchoolMutationVariables = {
+  input: CreateSchoolInput,
+  condition?: ModelSchoolConditionInput | null,
+};
+
+export type CreateSchoolMutation = {
+  createSchool?:  {
+    __typename: "School",
+    id: string,
+    name?: string | null,
+    country?: string | null,
+    region?: string | null,
+    principal?: string | null,
+    Teachers?:  {
+      __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSchoolMutationVariables = {
+  input: UpdateSchoolInput,
+  condition?: ModelSchoolConditionInput | null,
+};
+
+export type UpdateSchoolMutation = {
+  updateSchool?:  {
+    __typename: "School",
+    id: string,
+    name?: string | null,
+    country?: string | null,
+    region?: string | null,
+    principal?: string | null,
+    Teachers?:  {
+      __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSchoolMutationVariables = {
+  input: DeleteSchoolInput,
+  condition?: ModelSchoolConditionInput | null,
+};
+
+export type DeleteSchoolMutation = {
+  deleteSchool?:  {
+    __typename: "School",
+    id: string,
+    name?: string | null,
+    country?: string | null,
+    region?: string | null,
+    principal?: string | null,
+    Teachers?:  {
+      __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateAttendanceMutationVariables = {
+  input: CreateAttendanceInput,
+  condition?: ModelAttendanceConditionInput | null,
+};
+
+export type CreateAttendanceMutation = {
+  createAttendance?:  {
+    __typename: "Attendance",
+    id: string,
+    present?: boolean | null,
+    pupilID?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateAttendanceMutationVariables = {
+  input: UpdateAttendanceInput,
+  condition?: ModelAttendanceConditionInput | null,
+};
+
+export type UpdateAttendanceMutation = {
+  updateAttendance?:  {
+    __typename: "Attendance",
+    id: string,
+    present?: boolean | null,
+    pupilID?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteAttendanceMutationVariables = {
+  input: DeleteAttendanceInput,
+  condition?: ModelAttendanceConditionInput | null,
+};
+
+export type DeleteAttendanceMutation = {
+  deleteAttendance?:  {
+    __typename: "Attendance",
+    id: string,
+    present?: boolean | null,
+    pupilID?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateLessonMutationVariables = {
+  input: CreateLessonInput,
+  condition?: ModelLessonConditionInput | null,
+};
+
+export type CreateLessonMutation = {
+  createLesson?:  {
+    __typename: "Lesson",
+    id: string,
+    title?: string | null,
+    description?: string | null,
+    terms?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    Files?:  {
+      __typename: "ModelFileConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateLessonMutationVariables = {
+  input: UpdateLessonInput,
+  condition?: ModelLessonConditionInput | null,
+};
+
+export type UpdateLessonMutation = {
+  updateLesson?:  {
+    __typename: "Lesson",
+    id: string,
+    title?: string | null,
+    description?: string | null,
+    terms?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    Files?:  {
+      __typename: "ModelFileConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteLessonMutationVariables = {
+  input: DeleteLessonInput,
+  condition?: ModelLessonConditionInput | null,
+};
+
+export type DeleteLessonMutation = {
+  deleteLesson?:  {
+    __typename: "Lesson",
+    id: string,
+    title?: string | null,
+    description?: string | null,
+    terms?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    Files?:  {
+      __typename: "ModelFileConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTermMutationVariables = {
+  input: CreateTermInput,
+  condition?: ModelTermConditionInput | null,
+};
+
+export type CreateTermMutation = {
+  createTerm?:  {
+    __typename: "Term",
+    id: string,
+    nam?: string | null,
+    startDate?: string | null,
+    finishDate?: string | null,
+    subjects?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    TermLessons?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTermMutationVariables = {
+  input: UpdateTermInput,
+  condition?: ModelTermConditionInput | null,
+};
+
+export type UpdateTermMutation = {
+  updateTerm?:  {
+    __typename: "Term",
+    id: string,
+    nam?: string | null,
+    startDate?: string | null,
+    finishDate?: string | null,
+    subjects?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    TermLessons?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTermMutationVariables = {
+  input: DeleteTermInput,
+  condition?: ModelTermConditionInput | null,
+};
+
+export type DeleteTermMutation = {
+  deleteTerm?:  {
+    __typename: "Term",
+    id: string,
+    nam?: string | null,
+    startDate?: string | null,
+    finishDate?: string | null,
+    subjects?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    TermLessons?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateSubjectMutationVariables = {
+  input: CreateSubjectInput,
+  condition?: ModelSubjectConditionInput | null,
+};
+
+export type CreateSubjectMutation = {
+  createSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name?: string | null,
+    SubjectTerms?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    curriculums?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSubjectMutationVariables = {
+  input: UpdateSubjectInput,
+  condition?: ModelSubjectConditionInput | null,
+};
+
+export type UpdateSubjectMutation = {
+  updateSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name?: string | null,
+    SubjectTerms?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    curriculums?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSubjectMutationVariables = {
+  input: DeleteSubjectInput,
+  condition?: ModelSubjectConditionInput | null,
+};
+
+export type DeleteSubjectMutation = {
+  deleteSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name?: string | null,
+    SubjectTerms?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    curriculums?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateCurriculumMutationVariables = {
+  input: CreateCurriculumInput,
+  condition?: ModelCurriculumConditionInput | null,
+};
+
+export type CreateCurriculumMutation = {
+  createCurriculum?:  {
+    __typename: "Curriculum",
+    id: string,
+    name?: string | null,
+    subjects?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateCurriculumMutationVariables = {
+  input: UpdateCurriculumInput,
+  condition?: ModelCurriculumConditionInput | null,
+};
+
+export type UpdateCurriculumMutation = {
+  updateCurriculum?:  {
+    __typename: "Curriculum",
+    id: string,
+    name?: string | null,
+    subjects?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteCurriculumMutationVariables = {
+  input: DeleteCurriculumInput,
+  condition?: ModelCurriculumConditionInput | null,
+};
+
+export type DeleteCurriculumMutation = {
+  deleteCurriculum?:  {
+    __typename: "Curriculum",
+    id: string,
+    name?: string | null,
+    subjects?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateParentMutationVariables = {
+  input: CreateParentInput,
+  condition?: ModelParentConditionInput | null,
+};
+
+export type CreateParentMutation = {
+  createParent?:  {
+    __typename: "Parent",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateParentMutationVariables = {
+  input: UpdateParentInput,
+  condition?: ModelParentConditionInput | null,
+};
+
+export type UpdateParentMutation = {
+  updateParent?:  {
+    __typename: "Parent",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteParentMutationVariables = {
+  input: DeleteParentInput,
+  condition?: ModelParentConditionInput | null,
+};
+
+export type DeleteParentMutation = {
+  deleteParent?:  {
+    __typename: "Parent",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTeacherMutationVariables = {
+  input: CreateTeacherInput,
+  condition?: ModelTeacherConditionInput | null,
+};
+
+export type CreateTeacherMutation = {
+  createTeacher?:  {
+    __typename: "Teacher",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    classrooms?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTeacherMutationVariables = {
+  input: UpdateTeacherInput,
+  condition?: ModelTeacherConditionInput | null,
+};
+
+export type UpdateTeacherMutation = {
+  updateTeacher?:  {
+    __typename: "Teacher",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    classrooms?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTeacherMutationVariables = {
+  input: DeleteTeacherInput,
+  condition?: ModelTeacherConditionInput | null,
+};
+
+export type DeleteTeacherMutation = {
+  deleteTeacher?:  {
+    __typename: "Teacher",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    classrooms?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreatePupilMutationVariables = {
+  input: CreatePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type CreatePupilMutation = {
+  createPupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePupilMutationVariables = {
+  input: UpdatePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type UpdatePupilMutation = {
+  updatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePupilMutationVariables = {
+  input: DeletePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type DeletePupilMutation = {
+  deletePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateSubjectTermMutationVariables = {
+  input: CreateSubjectTermInput,
+  condition?: ModelSubjectTermConditionInput | null,
+};
+
+export type CreateSubjectTermMutation = {
+  createSubjectTerm?:  {
+    __typename: "SubjectTerm",
+    id: string,
+    subjectID: string,
+    termID: string,
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSubjectTermMutationVariables = {
+  input: UpdateSubjectTermInput,
+  condition?: ModelSubjectTermConditionInput | null,
+};
+
+export type UpdateSubjectTermMutation = {
+  updateSubjectTerm?:  {
+    __typename: "SubjectTerm",
+    id: string,
+    subjectID: string,
+    termID: string,
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSubjectTermMutationVariables = {
+  input: DeleteSubjectTermInput,
+  condition?: ModelSubjectTermConditionInput | null,
+};
+
+export type DeleteSubjectTermMutation = {
+  deleteSubjectTerm?:  {
+    __typename: "SubjectTerm",
+    id: string,
+    subjectID: string,
+    termID: string,
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTermLessonMutationVariables = {
+  input: CreateTermLessonInput,
+  condition?: ModelTermLessonConditionInput | null,
+};
+
+export type CreateTermLessonMutation = {
+  createTermLesson?:  {
+    __typename: "TermLesson",
+    id: string,
+    termID: string,
+    lessonID: string,
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    lesson:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTermLessonMutationVariables = {
+  input: UpdateTermLessonInput,
+  condition?: ModelTermLessonConditionInput | null,
+};
+
+export type UpdateTermLessonMutation = {
+  updateTermLesson?:  {
+    __typename: "TermLesson",
+    id: string,
+    termID: string,
+    lessonID: string,
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    lesson:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTermLessonMutationVariables = {
+  input: DeleteTermLessonInput,
+  condition?: ModelTermLessonConditionInput | null,
+};
+
+export type DeleteTermLessonMutation = {
+  deleteTermLesson?:  {
+    __typename: "TermLesson",
+    id: string,
+    termID: string,
+    lessonID: string,
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    lesson:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateCurriculumSubjectMutationVariables = {
+  input: CreateCurriculumSubjectInput,
+  condition?: ModelCurriculumSubjectConditionInput | null,
+};
+
+export type CreateCurriculumSubjectMutation = {
+  createCurriculumSubject?:  {
+    __typename: "CurriculumSubject",
+    id: string,
+    curriculumID: string,
+    subjectID: string,
+    curriculum:  {
+      __typename: "Curriculum",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateCurriculumSubjectMutationVariables = {
+  input: UpdateCurriculumSubjectInput,
+  condition?: ModelCurriculumSubjectConditionInput | null,
+};
+
+export type UpdateCurriculumSubjectMutation = {
+  updateCurriculumSubject?:  {
+    __typename: "CurriculumSubject",
+    id: string,
+    curriculumID: string,
+    subjectID: string,
+    curriculum:  {
+      __typename: "Curriculum",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteCurriculumSubjectMutationVariables = {
+  input: DeleteCurriculumSubjectInput,
+  condition?: ModelCurriculumSubjectConditionInput | null,
+};
+
+export type DeleteCurriculumSubjectMutation = {
+  deleteCurriculumSubject?:  {
+    __typename: "CurriculumSubject",
+    id: string,
+    curriculumID: string,
+    subjectID: string,
+    curriculum:  {
+      __typename: "Curriculum",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type GetFileQueryVariables = {
+  id: string,
+};
+
+export type GetFileQuery = {
+  getFile?:  {
+    __typename: "File",
+    id: string,
+    key?: string | null,
+    region?: string | null,
+    bucket?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListFilesQueryVariables = {
+  filter?: ModelFileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListFilesQuery = {
+  listFiles?:  {
+    __typename: "ModelFileConnection",
+    items?:  Array< {
+      __typename: "File",
+      id: string,
+      key?: string | null,
+      region?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetClassroomQueryVariables = {
+  id: string,
+};
+
+export type GetClassroomQuery = {
+  getClassroom?:  {
+    __typename: "Classroom",
+    id: string,
+    name?: string | null,
+    teachers?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    pupils?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListClassroomsQueryVariables = {
+  filter?: ModelClassroomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListClassroomsQuery = {
+  listClassrooms?:  {
+    __typename: "ModelClassroomConnection",
+    items?:  Array< {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSchoolQueryVariables = {
+  id: string,
+};
+
+export type GetSchoolQuery = {
+  getSchool?:  {
+    __typename: "School",
+    id: string,
+    name?: string | null,
+    country?: string | null,
+    region?: string | null,
+    principal?: string | null,
+    Teachers?:  {
+      __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListSchoolsQueryVariables = {
+  filter?: ModelSchoolFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSchoolsQuery = {
+  listSchools?:  {
+    __typename: "ModelSchoolConnection",
+    items?:  Array< {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetAttendanceQueryVariables = {
+  id: string,
+};
+
+export type GetAttendanceQuery = {
+  getAttendance?:  {
+    __typename: "Attendance",
+    id: string,
+    present?: boolean | null,
+    pupilID?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListAttendancesQueryVariables = {
+  filter?: ModelAttendanceFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListAttendancesQuery = {
+  listAttendances?:  {
+    __typename: "ModelAttendanceConnection",
+    items?:  Array< {
+      __typename: "Attendance",
+      id: string,
+      present?: boolean | null,
+      pupilID?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetLessonQueryVariables = {
+  id: string,
+};
+
+export type GetLessonQuery = {
+  getLesson?:  {
+    __typename: "Lesson",
+    id: string,
+    title?: string | null,
+    description?: string | null,
+    terms?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    Files?:  {
+      __typename: "ModelFileConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListLessonsQueryVariables = {
+  filter?: ModelLessonFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListLessonsQuery = {
+  listLessons?:  {
+    __typename: "ModelLessonConnection",
+    items?:  Array< {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetTermQueryVariables = {
+  id: string,
+};
+
+export type GetTermQuery = {
+  getTerm?:  {
+    __typename: "Term",
+    id: string,
+    nam?: string | null,
+    startDate?: string | null,
+    finishDate?: string | null,
+    subjects?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    TermLessons?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTermsQueryVariables = {
+  filter?: ModelTermFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTermsQuery = {
+  listTerms?:  {
+    __typename: "ModelTermConnection",
+    items?:  Array< {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSubjectQueryVariables = {
+  id: string,
+};
+
+export type GetSubjectQuery = {
+  getSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name?: string | null,
+    SubjectTerms?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    curriculums?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListSubjectsQueryVariables = {
+  filter?: ModelSubjectFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSubjectsQuery = {
+  listSubjects?:  {
+    __typename: "ModelSubjectConnection",
+    items?:  Array< {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetCurriculumQueryVariables = {
+  id: string,
+};
+
+export type GetCurriculumQuery = {
+  getCurriculum?:  {
+    __typename: "Curriculum",
+    id: string,
+    name?: string | null,
+    subjects?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListCurriculaQueryVariables = {
+  filter?: ModelCurriculumFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListCurriculaQuery = {
+  listCurricula?:  {
+    __typename: "ModelCurriculumConnection",
+    items?:  Array< {
+      __typename: "Curriculum",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetParentQueryVariables = {
+  id: string,
+};
+
+export type GetParentQuery = {
+  getParent?:  {
+    __typename: "Parent",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListParentsQueryVariables = {
+  filter?: ModelParentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListParentsQuery = {
+  listParents?:  {
+    __typename: "ModelParentConnection",
+    items?:  Array< {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetTeacherQueryVariables = {
+  id: string,
+};
+
+export type GetTeacherQuery = {
+  getTeacher?:  {
+    __typename: "Teacher",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    classrooms?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTeachersQueryVariables = {
+  filter?: ModelTeacherFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTeachersQuery = {
+  listTeachers?:  {
+    __typename: "ModelTeacherConnection",
+    items?:  Array< {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetPupilQueryVariables = {
+  id: string,
+};
+
+export type GetPupilQuery = {
+  getPupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListPupilsQueryVariables = {
+  filter?: ModelPupilFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPupilsQuery = {
+  listPupils?:  {
+    __typename: "ModelPupilConnection",
+    items?:  Array< {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type OnCreateFileSubscription = {
+  onCreateFile?:  {
+    __typename: "File",
+    id: string,
+    key?: string | null,
+    region?: string | null,
+    bucket?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateFileSubscription = {
+  onUpdateFile?:  {
+    __typename: "File",
+    id: string,
+    key?: string | null,
+    region?: string | null,
+    bucket?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteFileSubscription = {
+  onDeleteFile?:  {
+    __typename: "File",
+    id: string,
+    key?: string | null,
+    region?: string | null,
+    bucket?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateClassroomSubscription = {
+  onCreateClassroom?:  {
+    __typename: "Classroom",
+    id: string,
+    name?: string | null,
+    teachers?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    pupils?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateClassroomSubscription = {
+  onUpdateClassroom?:  {
+    __typename: "Classroom",
+    id: string,
+    name?: string | null,
+    teachers?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    pupils?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteClassroomSubscription = {
+  onDeleteClassroom?:  {
+    __typename: "Classroom",
+    id: string,
+    name?: string | null,
+    teachers?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    pupils?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTeacherClassroomSubscription = {
+  onCreateTeacherClassroom?:  {
+    __typename: "TeacherClassroom",
+    id: string,
+    teacherID: string,
+    classroomID: string,
+    teacher:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTeacherClassroomSubscription = {
+  onUpdateTeacherClassroom?:  {
+    __typename: "TeacherClassroom",
+    id: string,
+    teacherID: string,
+    classroomID: string,
+    teacher:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTeacherClassroomSubscription = {
+  onDeleteTeacherClassroom?:  {
+    __typename: "TeacherClassroom",
+    id: string,
+    teacherID: string,
+    classroomID: string,
+    teacher:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePupilClassroomSubscription = {
+  onCreatePupilClassroom?:  {
+    __typename: "PupilClassroom",
+    id: string,
+    pupilID: string,
+    classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePupilClassroomSubscription = {
+  onUpdatePupilClassroom?:  {
+    __typename: "PupilClassroom",
+    id: string,
+    pupilID: string,
+    classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePupilClassroomSubscription = {
+  onDeletePupilClassroom?:  {
+    __typename: "PupilClassroom",
+    id: string,
+    pupilID: string,
+    classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSchoolSubscription = {
+  onCreateSchool?:  {
+    __typename: "School",
+    id: string,
+    name?: string | null,
+    country?: string | null,
+    region?: string | null,
+    principal?: string | null,
+    Teachers?:  {
+      __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSchoolSubscription = {
+  onUpdateSchool?:  {
+    __typename: "School",
+    id: string,
+    name?: string | null,
+    country?: string | null,
+    region?: string | null,
+    principal?: string | null,
+    Teachers?:  {
+      __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSchoolSubscription = {
+  onDeleteSchool?:  {
+    __typename: "School",
+    id: string,
+    name?: string | null,
+    country?: string | null,
+    region?: string | null,
+    principal?: string | null,
+    Teachers?:  {
+      __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateAttendanceSubscription = {
+  onCreateAttendance?:  {
+    __typename: "Attendance",
+    id: string,
+    present?: boolean | null,
+    pupilID?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateAttendanceSubscription = {
+  onUpdateAttendance?:  {
+    __typename: "Attendance",
+    id: string,
+    present?: boolean | null,
+    pupilID?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteAttendanceSubscription = {
+  onDeleteAttendance?:  {
+    __typename: "Attendance",
+    id: string,
+    present?: boolean | null,
+    pupilID?: string | null,
+    lessonID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateLessonSubscription = {
+  onCreateLesson?:  {
+    __typename: "Lesson",
+    id: string,
+    title?: string | null,
+    description?: string | null,
+    terms?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    Files?:  {
+      __typename: "ModelFileConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateLessonSubscription = {
+  onUpdateLesson?:  {
+    __typename: "Lesson",
+    id: string,
+    title?: string | null,
+    description?: string | null,
+    terms?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    Files?:  {
+      __typename: "ModelFileConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteLessonSubscription = {
+  onDeleteLesson?:  {
+    __typename: "Lesson",
+    id: string,
+    title?: string | null,
+    description?: string | null,
+    terms?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    Files?:  {
+      __typename: "ModelFileConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTermSubscription = {
+  onCreateTerm?:  {
+    __typename: "Term",
+    id: string,
+    nam?: string | null,
+    startDate?: string | null,
+    finishDate?: string | null,
+    subjects?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    TermLessons?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTermSubscription = {
+  onUpdateTerm?:  {
+    __typename: "Term",
+    id: string,
+    nam?: string | null,
+    startDate?: string | null,
+    finishDate?: string | null,
+    subjects?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    TermLessons?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTermSubscription = {
+  onDeleteTerm?:  {
+    __typename: "Term",
+    id: string,
+    nam?: string | null,
+    startDate?: string | null,
+    finishDate?: string | null,
+    subjects?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    TermLessons?:  {
+      __typename: "ModelTermLessonConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSubjectSubscription = {
+  onCreateSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name?: string | null,
+    SubjectTerms?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    curriculums?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSubjectSubscription = {
+  onUpdateSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name?: string | null,
+    SubjectTerms?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    curriculums?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSubjectSubscription = {
+  onDeleteSubject?:  {
+    __typename: "Subject",
+    id: string,
+    name?: string | null,
+    SubjectTerms?:  {
+      __typename: "ModelSubjectTermConnection",
+      nextToken?: string | null,
+    } | null,
+    curriculums?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateCurriculumSubscription = {
+  onCreateCurriculum?:  {
+    __typename: "Curriculum",
+    id: string,
+    name?: string | null,
+    subjects?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateCurriculumSubscription = {
+  onUpdateCurriculum?:  {
+    __typename: "Curriculum",
+    id: string,
+    name?: string | null,
+    subjects?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteCurriculumSubscription = {
+  onDeleteCurriculum?:  {
+    __typename: "Curriculum",
+    id: string,
+    name?: string | null,
+    subjects?:  {
+      __typename: "ModelCurriculumSubjectConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateParentSubscription = {
+  onCreateParent?:  {
+    __typename: "Parent",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateParentSubscription = {
+  onUpdateParent?:  {
+    __typename: "Parent",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteParentSubscription = {
+  onDeleteParent?:  {
+    __typename: "Parent",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTeacherSubscription = {
+  onCreateTeacher?:  {
+    __typename: "Teacher",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    classrooms?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTeacherSubscription = {
+  onUpdateTeacher?:  {
+    __typename: "Teacher",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    classrooms?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTeacherSubscription = {
+  onDeleteTeacher?:  {
+    __typename: "Teacher",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    classrooms?:  {
+      __typename: "ModelTeacherClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePupilSubscription = {
+  onCreatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePupilSubscription = {
+  onUpdatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePupilSubscription = {
+  onDeletePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateSubjectTermSubscription = {
+  onCreateSubjectTerm?:  {
+    __typename: "SubjectTerm",
+    id: string,
+    subjectID: string,
+    termID: string,
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSubjectTermSubscription = {
+  onUpdateSubjectTerm?:  {
+    __typename: "SubjectTerm",
+    id: string,
+    subjectID: string,
+    termID: string,
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSubjectTermSubscription = {
+  onDeleteSubjectTerm?:  {
+    __typename: "SubjectTerm",
+    id: string,
+    subjectID: string,
+    termID: string,
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTermLessonSubscription = {
+  onCreateTermLesson?:  {
+    __typename: "TermLesson",
+    id: string,
+    termID: string,
+    lessonID: string,
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    lesson:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTermLessonSubscription = {
+  onUpdateTermLesson?:  {
+    __typename: "TermLesson",
+    id: string,
+    termID: string,
+    lessonID: string,
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    lesson:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTermLessonSubscription = {
+  onDeleteTermLesson?:  {
+    __typename: "TermLesson",
+    id: string,
+    termID: string,
+    lessonID: string,
+    term:  {
+      __typename: "Term",
+      id: string,
+      nam?: string | null,
+      startDate?: string | null,
+      finishDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    lesson:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateCurriculumSubjectSubscription = {
+  onCreateCurriculumSubject?:  {
+    __typename: "CurriculumSubject",
+    id: string,
+    curriculumID: string,
+    subjectID: string,
+    curriculum:  {
+      __typename: "Curriculum",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateCurriculumSubjectSubscription = {
+  onUpdateCurriculumSubject?:  {
+    __typename: "CurriculumSubject",
+    id: string,
+    curriculumID: string,
+    subjectID: string,
+    curriculum:  {
+      __typename: "Curriculum",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteCurriculumSubjectSubscription = {
+  onDeleteCurriculumSubject?:  {
+    __typename: "CurriculumSubject",
+    id: string,
+    curriculumID: string,
+    subjectID: string,
+    curriculum:  {
+      __typename: "Curriculum",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    subject:  {
+      __typename: "Subject",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};

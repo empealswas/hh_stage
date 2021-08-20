@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "healthyapi",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authhealthyhabitsd83a32c1",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
