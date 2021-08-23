@@ -1,5 +1,5 @@
 import {Icon} from '@iconify/react';
-import {useRef, useState} from 'react';
+import {useContext, useRef, useState} from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
@@ -14,6 +14,7 @@ import account from '../../_mocks_/account';
 import {Amplify, Auth, Hub} from "aws-amplify";
 
 import {AmplifySignOut} from "@aws-amplify/ui-react";
+import {UserContext} from "../../App";
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +48,7 @@ export default function AccountPopover() {
     const handleClose = () => {
         setOpen(false);
     };
-
+    const user = useContext(UserContext);
 
     return (
         <>
@@ -85,7 +86,7 @@ export default function AccountPopover() {
                         {account.displayName}
                     </Typography>
                     <Typography variant="body2" sx={{color: 'text.secondary'}} noWrap>
-                        {account.email}
+                        {user.email}
                     </Typography>
                 </Box>
 

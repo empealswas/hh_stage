@@ -27,15 +27,30 @@ const query = `query MyQuery($id: ID = "") {
   }
 }
 `
+const subscription = `subscription MySubscription {
+  onCreateTermLesson {
+    lesson {
+      id
+      title
+    }
+    termID
+  }
+}
+
+`
 const LessonsGrid = () => {
     const {id} = useParams();
     const updateItems = (prevData: any, data: any) => {
+        const createdLesson = data.onCreateTermLesson;
+        if (createdLesson.termID !== id) {
+            return prevData;
+        }
         let newData = {...prevData};
-        //todo update
-        newData.getCurriculum.items = [
-            data.onCreateSubject,
-            ...prevData.listSubjects.items
-        ];
+        const lessons: Lesson[] = prevData.getTerm.TermLessons.items
+            .map((item: any) => item.lesson)
+            .filter((lesson: Lesson) => lesson.id !== createdLesson.lesson.id);
+        lessons.push(createdLesson.lesson);
+        newData.getTerm.TermLessons.items = lessons.map(item => ({lesson: {...item}}))
         return newData;
     }
     return (
@@ -49,7 +64,7 @@ const LessonsGrid = () => {
                       style={{flexGrow: 1, display: 'flex', flexWrap: 'wrap'}}>
                     <Connect
                         query={graphqlOperation(query, {id: id})}
-                        subscription={graphqlOperation(onCreateSubject)}
+                        subscription={graphqlOperation(subscription)}
                         onSubscriptionMsg={updateItems}
                     >
                         {({data, loading, errors}: IConnectState) => {

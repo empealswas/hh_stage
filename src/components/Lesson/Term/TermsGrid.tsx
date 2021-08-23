@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import {Connect} from 'aws-amplify-react'
 import {IConnectState} from "aws-amplify-react/lib/API/GraphQL/Connect";
-import {Term} from "../../../API";
+import {Subject, Term} from "../../../API";
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {onCreateSubject} from "../../../graphql/subscriptions";
 import CardSkeleton from "../../skeletons/CardSkeleton";
@@ -28,15 +28,31 @@ const query = `query MyQuery($id: ID = "") {
   }
 }
 `
+const subscription = `subscription MySubscription {
+  onCreateSubjectTerm {
+    subjectID
+    term {
+      nam
+      id
+      startDate
+      finishDate
+    }
+  }
+}
+`
 const SubjectsGrid = () => {
     const {id} = useParams();
     const updateItems = (prevData: any, data: any) => {
+        const createdTerm = data.onCreateSubjectTerm;
+        if (createdTerm.subjectID !== id) {
+            return prevData;
+        }
         let newData = {...prevData};
-        //todo update
-        newData.getCurriculum.items = [
-            data.onCreateSubject,
-            ...prevData.listSubjects.items
-        ];
+        const terms: Term [] = prevData.getSubject.SubjectTerms.items
+            .map((item: any) => item.term)
+            .filter((term: Term) => term.id !== createdTerm.term.id);
+        terms.push(createdTerm.term);
+        newData.getSubject.SubjectTerms.items = terms.map(item => ({term: {...item}}))
         return newData;
     }
     return (
@@ -50,7 +66,7 @@ const SubjectsGrid = () => {
                       style={{flexGrow: 1, display: 'flex', flexWrap: 'wrap'}}>
                     <Connect
                         query={graphqlOperation(query, {id: id})}
-                        subscription={graphqlOperation(onCreateSubject)}
+                        subscription={graphqlOperation(subscription)}
                         onSubscriptionMsg={updateItems}
                     >
                         {({data, loading, errors}: IConnectState) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import {Stack, Typography} from "@material-ui/core";
 import AddLessonModal from "./AddLessonModal";
 import LessonsGrid from "./LessonsGrid";
+import {Can} from "../../../utils/Ability";
 
 const LessonElements = () => {
     return (
@@ -10,7 +11,9 @@ const LessonElements = () => {
                 <Typography variant="h4" gutterBottom>
                     Lessons
                 </Typography>
-                <AddLessonModal/>
+                <Can I={'create'} a={'lesson'}>
+                    <AddLessonModal/>
+                </Can>
             </Stack>
             <LessonsGrid/>
         </>

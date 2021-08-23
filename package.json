@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.9",
-    "@casl/ability": "^5.3.1",
+    "@casl/ability": "^5.4.3",
     "@casl/react": "^2.3.0",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",

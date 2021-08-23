@@ -28,52 +28,28 @@ import Slide from "@material-ui/core/Slide";
 import FilesUploadDropzone from "../../FilesUploading/FilesUploadDropzone";
 import UploadingFilesList from "../../FilesUploading/UploadingFilesList";
 import awsConfig from "../../../aws-exports";
+import AddingDialog from "../../../utils/AddingDialog";
 //
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children?: React.ReactElement },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 export default function AddLessonModal() {
-    const [open, setOpen] = React.useState(false);
     const {id} = useParams();
-    const handleOpen = () => {
-        setTitle('');
-        setLoading(false);
-        setSuccess(false);
-        setOpen(true);
-    };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
     async function addLesson() {
-        setLoading(true);
         const input = {
             title: title,
             description: description
         }
-        try {
-            const result: any = await API.graphql(graphqlOperation(createLesson, {input}));
-            let lessonID = result.data.createLesson.id;
-            await API.graphql(graphqlOperation(createTermLesson, {
-                input: {
-                    lessonID: lessonID,
-                    termID: id
-                }
-            }))
-            await uploadFiles(lessonID)
-            setSuccess(true);
-        } catch (e) {
-            console.log(e)
-            setSuccess(false);
-        } finally {
-            setLoading(false);
-        }
+        const result: any = await API.graphql(graphqlOperation(createLesson, {input}));
+        let lessonID = result.data.createLesson.id;
+        await API.graphql(graphqlOperation(createTermLesson, {
+            input: {
+                lessonID: lessonID,
+                termID: id
+            }
+        }))
+        await uploadFiles(lessonID)
     }
 
     const uploadFiles = async (lessonID: string) => {
@@ -104,52 +80,23 @@ export default function AddLessonModal() {
             return [...prevState, ...acceptedFiles];
         })
     }, []);
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState<File []>([]);
     return (
-        <>
-            <Button variant="contained"
-                    startIcon={<Icon icon={plusFill}/>} onClick={handleOpen}>
-                Add Lesson
-            </Button>
-            <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-                        <CloseIcon/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        Adding New Subject
-                    </Typography>
-                </Toolbar>
-                <DialogContent dividers>
-                    <Card style={{
-                        padding: '20px',
-                        margin: '30px'
-                    }}>
-                        <Stack direction={'column'} spacing={3}>
-                            <TextField value={title} variant={'outlined'} onChange={(event) => {
-                                setTitle(event.target.value)
-                            }} label={'Name of Lesson'}/>
-                            <TextField aria-label="minimum height" rows={3}
-                                                multiline
-                                              label="Description of the lesson"
-                                              value={description}
-                                              onChange={event => setDescription(event.target.value)}/>
-                            <FilesUploadDropzone onDrop={onDrop}
-                                                 accept={['image/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']}/>
-                            <Typography variant={"h5"}>
-                                Files
-                            </Typography>
-                            <UploadingFilesList files={selectedFiles} setFiles={setSelectedFiles}/>
-                        </Stack>
-                    </Card>
-                </DialogContent>
-                <DialogActions>
-                    <Button color={'inherit'} variant={'contained'} onClick={handleClose}>Cancel</Button>
-                    <ProgressButton success={success} loading={loading} onClick={addLesson} disabled={false}/>
-                </DialogActions>
-            </Dialog>
-        </>
+        <AddingDialog title={'Adding new Lesson'} buttonName={'Add Lesson'} onSubmit={addLesson}>
+            <TextField value={title} variant={'outlined'} onChange={(event) => {
+                setTitle(event.target.value)
+            }} label={'Name of Lesson'}/>
+            <TextField aria-label="minimum height" rows={3}
+                       multiline
+                       label="Description of the lesson"
+                       value={description}
+                       onChange={event => setDescription(event.target.value)}/>
+            <FilesUploadDropzone onDrop={onDrop}
+                                 accept={['image/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']}/>
+            <Typography variant={"h5"}>
+                Files
+            </Typography>
+            <UploadingFilesList files={selectedFiles} setFiles={setSelectedFiles}/>
+        </AddingDialog>
     );
 }

@@ -1,9 +1,9 @@
 export class User {
     userRoles: string [];
-    email: string;
+    private _email: string;
     constructor(userData: any) {
         this.userRoles = userData.signInUserSession.accessToken.payload['cognito:groups'];
-        this.email = userData.attributes.email;
+        this._email = userData.attributes.email;
         console.log('User Roles: ', this.userRoles)
     }
 
@@ -13,5 +13,13 @@ export class User {
 
     public isTeacher(): boolean {
         return this.userRoles.includes('Teachers');
+    }
+
+    get email(): string {
+        return this._email;
+    }
+
+    public getRoles(): string [] {
+        return this.userRoles;
     }
 }

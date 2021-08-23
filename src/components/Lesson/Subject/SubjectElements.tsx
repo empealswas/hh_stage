@@ -1,9 +1,8 @@
 import React from 'react';
 import {Stack, Typography} from "@material-ui/core";
-import AddCurriculumModal from "../Curriculum/AddCurriculumModal";
-import CurriculaGrid from "../Curriculum/CurriculaGrid";
 import AddSubjectModal from "./AddSubjectModal";
 import SubjectsGrid from "./SubjectsGrid";
+import {Can} from "../../../utils/Ability";
 
 const SubjectElements = () => {
     return (
@@ -12,7 +11,9 @@ const SubjectElements = () => {
                 <Typography variant="h4" gutterBottom>
                     Subjects
                 </Typography>
-                <AddSubjectModal/>
+                <Can I={'create'} a={'subject'}>
+                    <AddSubjectModal/>
+                </Can>
             </Stack>
             <SubjectsGrid/>
         </>

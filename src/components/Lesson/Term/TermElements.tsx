@@ -2,6 +2,7 @@ import React from 'react';
 import TermsGrid from "./TermsGrid";
 import {Stack, Typography} from "@material-ui/core";
 import AddTermModal from "./AddTermModal";
+import {Can} from "../../../utils/Ability";
 
 const TermElements = () => {
     return (
@@ -10,7 +11,9 @@ const TermElements = () => {
                 <Typography variant="h4" gutterBottom>
                     Terms
                 </Typography>
-                <AddTermModal/>
+                <Can I={'create'} a={'term'}>
+                    <AddTermModal/>
+                </Can>
             </Stack>
             <TermsGrid/>
         </>

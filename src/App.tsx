@@ -10,10 +10,12 @@ import {User} from "./models/User";
 // ----------------------------------------------------------------------
 import config from './aws-exports'
 import {Amplify, Auth, Hub} from "aws-amplify";
+import {AbilityContext} from "./utils/Ability";
+import defineAbilityFor from "./abilities/defineAbilityFor";
+import "../node_modules/video-react/dist/video-react.css"
 
 Amplify.configure(config)
 export const UserContext = createContext<User | null>(null);
-
 
 
 function App() {
@@ -55,17 +57,17 @@ function App() {
             })
             .catch(() => console.log('Not signed in'));
     }
+
     return (
         <ThemeConfig>
-            <UserContext.Provider value={user}>
-                <ScrollToTop/>
-                <Router/>
-            </UserContext.Provider>
+            {user && <UserContext.Provider value={user}>
+                <AbilityContext.Provider value={defineAbilityFor(user)}>
+                    <ScrollToTop/>
+                    <Router/>
+                </AbilityContext.Provider>
+            </UserContext.Provider>}
         </ThemeConfig>
     );
-}
-const theme = {
-
 }
 
 export default withAuthenticator(App)

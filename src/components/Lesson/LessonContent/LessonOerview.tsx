@@ -6,6 +6,8 @@ import {Lesson} from "../../../API";
 import FilesViewer from "../../../utils/FilesViewer";
 import LinearProgressBottom from "../../../utils/LinearProgressBottom";
 import AttendanceSheetModal from "../../attendance/AttendanceSheetModal";
+import {Can} from "../../../utils/Ability";
+
 const LessonOverview = () => {
     const {lessonId} = useParams();
     const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -52,7 +54,9 @@ const LessonOverview = () => {
                     {lesson.Files?.items &&
                     <FilesViewer files={lesson.Files?.items}/>
                     }
-                    <AttendanceSheetModal lessonId={lessonId}/>
+                    <Can I={'read'} an={'attendance'}>
+                        <AttendanceSheetModal lessonId={lessonId}/>
+                    </Can>
                 </div>
                 :
                 <LinearProgressBottom/>

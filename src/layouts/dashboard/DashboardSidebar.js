@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {useEffect} from 'react';
+import {useContext, useEffect} from 'react';
 import {Link as RouterLink, useLocation} from 'react-router-dom';
 // material
 import {styled} from '@material-ui/core/styles';
@@ -12,6 +12,7 @@ import {MHidden} from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
 import account from '../../_mocks_/account';
+import {UserContext} from "../../App";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ const AccountStyle = styled('div')(({theme}) => ({
     alignItems: 'center',
     padding: theme.spacing(2, 2.5),
     borderRadius: theme.shape.borderRadiusSm,
-    backgroundColor: theme.palette.grey[200]
+    backgroundColor: theme.palette.grey[200],
 }));
 
 // ----------------------------------------------------------------------
@@ -48,6 +49,7 @@ export default function DashboardSidebar({isOpenSidebar, onCloseSidebar}) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
+    const user = useContext(UserContext);
 
     const renderContent = (
         <Scrollbar
@@ -87,12 +89,9 @@ export default function DashboardSidebar({isOpenSidebar, onCloseSidebar}) {
                 <Link underline="none" component={RouterLink} to="#">
                     <AccountStyle>
                         <Avatar src={account.photoURL} alt="photoURL"/>
-                        <Box sx={{ml: 2}}>
-                            <Typography variant="subtitle2" sx={{color: 'text.primary'}}>
-                                {account.displayName}
-                            </Typography>
+                        <Box sx={{ml: 2, width: '100%'}}>
                             <Typography variant="body2" sx={{color: 'text.secondary'}}>
-                                {account.role}
+                                You are in group of ({user.getRoles()})
                             </Typography>
                         </Box>
                     </AccountStyle>
@@ -103,9 +102,9 @@ export default function DashboardSidebar({isOpenSidebar, onCloseSidebar}) {
 
             <Box sx={{flexGrow: 1}}/>
 
-            <Box sx={{px: 2.5, pb: 3, mt: 10}}>
-                <img alt={'logo'} src={'/static/HHT logo RGB_full.png'} />
-            </Box>
+            {/*<Box sx={{px: 2.5, pb: 3, mt: 10}}>*/}
+            {/*    <img alt={'logo'} src={'/static/HHT logo RGB_full.png'} />*/}
+            {/*</Box>*/}
         </Scrollbar>
     );
 

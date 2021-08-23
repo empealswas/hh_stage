@@ -1,15 +1,17 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {green, red} from '@material-ui/core/colors';
-import Button from '@material-ui/core/Button';
+import Button, {ButtonProps} from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import SaveIcon from '@material-ui/icons/Save';
 import {Box} from "@material-ui/core";
 
 interface ProgressButtonProps{
+    buttonProps?: ButtonProps
     success: boolean,
     loading: boolean,
     onClick: () => void,
+    onClickWhenSuccess?: () => void,
     disabled: boolean,
     error?: boolean
 }
@@ -46,8 +48,15 @@ const ProgressButton = (props: ProgressButtonProps) => {
                     variant="contained"
                     sx={buttonSx}
                     disabled={props.loading || props.disabled}
-                    onClick={props.onClick}
+                    onClick={() => {
+                        if (props.success) {
+                            props.onClickWhenSuccess?.();
+                        }else{
+                            props.onClick();
+                        }
+                    }}
                     startIcon={props.success ? <CheckIcon/> : <SaveIcon/>}
+                    {...props.buttonProps}
                 >
                     {RenderText()}
                 {props.loading && (

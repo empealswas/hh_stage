@@ -1,8 +1,10 @@
 import React from 'react';
-import {Stack, Typography} from "@material-ui/core";
-import AddCurriculumModal from "./AddCurriculumModal";
+import {Stack, TextField, Typography} from "@material-ui/core";
 import CurriculaGrid from "./CurriculaGrid";
 import {Outlet} from "react-router-dom";
+import {Can} from "../../../utils/Ability";
+import AddingDialog from "../../../utils/AddingDialog";
+import CurriculumModal from "./CurriculumModal";
 
 const CurriculaComponents = () => {
     return (
@@ -11,7 +13,9 @@ const CurriculaComponents = () => {
                 <Typography variant="h4" gutterBottom>
                     Curricula
                 </Typography>
-                <AddCurriculumModal/>
+                <Can I={'create'} a={'curriculum'}>
+                    <CurriculumModal/>
+                </Can>
             </Stack>
             <CurriculaGrid/>
         </>
