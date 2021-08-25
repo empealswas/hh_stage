@@ -103,8 +103,12 @@ export default function AddingDialog(props: AddingDialogProps) {
                 </DialogContent>
                 <DialogActions>
                     <Button color={'inherit'} variant={'contained'} onClick={handleClose}>Cancel</Button>
-                    <ProgressButton onClick={onSubmitDialog} success={success} loading={loading} error={error}
-                                    onClickWhenSuccess={handleClose} disabled={false}/>
+                    <ProgressButton onClick={onSubmitDialog}
+                                    success={success}
+                                    loading={loading}
+                                    error={error}
+                                    onClickWhenSuccess={handleClose}
+                                    disabled={loading}/>
                 </DialogActions>
             </Dialog>
         </>

@@ -21,7 +21,7 @@ const GlobalStyles = withStyles((theme) => ({
     },
     '#root': {
       width: '100%',
-      height: '100%'
+      height: '100%',
     },
     input: {
       '&[type=number]': {
@@ -30,6 +30,8 @@ const GlobalStyles = withStyles((theme) => ({
         '&::-webkit-inner-spin-button': { margin: 0, WebkitAppearance: 'none' }
       }
     },
+
+
     textarea: {
       '&::-webkit-input-placeholder': { color: theme.palette.text.disabled },
       '&::-moz-placeholder': { opacity: 1, color: theme.palette.text.disabled },

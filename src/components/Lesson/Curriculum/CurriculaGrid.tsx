@@ -53,7 +53,7 @@ const CurriculaGrid = () => {
                                         <Card>
                                             <CardActionArea>
                                                 <CardContent style={{textAlign: 'center'}}>
-                                                    <Typography variant="h5" component="h2">
+                                                    <Typography variant="h4" color={'text.primary'}>
                                                         {value.name}
                                                     </Typography>
                                                 </CardContent>

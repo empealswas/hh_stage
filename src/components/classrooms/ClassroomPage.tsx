@@ -15,6 +15,7 @@ import PupilsSearchList from "./PupilsSearchList";
 import TeachersSearchList from "./TeachersSearchList";
 import {useTheme} from "@material-ui/core/styles";
 import {Container, Stack} from "@material-ui/core";
+import PupilsAddingList from "./PupilsAddingList";
 
 const query = `query MyQuery($id: ID = "") {
   getClassroom(id: $id) {
@@ -115,16 +116,17 @@ const ClassroomPage = () => {
                         >
                             <TabPanel value={value} index={0} dir={theme.direction}>
                                 <Container>
-                                    <Stack display={'column'}>
-
-                                    <PupilsSearchList/>
-                                    <Typography variant={'h5'}>
-                                        Pupils In That Classroom:
-                                    </Typography>
-                                    {classroom.data.getClassroom.pupils.items.map((item: any) => item.pupil).map((pupil: Pupil) => {
-                                        return <h4>{pupil.firstName} {pupil.lastName}</h4>
-                                    })}
-                                    </Stack>
+                                        {/*<PupilsSearchList/>*/}
+                                        <PupilsAddingList/>
+                                    <Container>
+                                        <Typography variant={'h5'}>
+                                            Pupils In That Classroom:
+                                        </Typography>
+                                        {classroom.data.getClassroom.pupils.items.map((item: any) => item.pupil).map((pupil: Pupil) => {
+                                            return <Typography key={pupil.id}
+                                                               variant={'h6'}>{pupil.firstName} {pupil.lastName}</Typography>
+                                        })}
+                                    </Container>
                                 </Container>
                             </TabPanel>
                             <TabPanel value={value} index={1} dir={theme.direction}>

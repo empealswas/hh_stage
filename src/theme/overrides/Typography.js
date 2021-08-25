@@ -9,7 +9,7 @@ export default function Typography(theme) {
         },
         gutterBottom: {
           marginBottom: theme.spacing(1)
-        }
+        },
       }
     }
   };

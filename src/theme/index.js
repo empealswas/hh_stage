@@ -6,6 +6,7 @@ import { ThemeProvider, createTheme, StyledEngineProvider } from '@material-ui/c
 //
 import shape from './shape';
 import palette from './palette';
+import darkPalette from './darkPalette';
 import typography from './typography';
 import GlobalStyles from './globalStyles';
 import componentsOverride from './overrides';
