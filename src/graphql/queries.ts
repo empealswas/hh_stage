@@ -119,6 +119,21 @@ export const getAttendance = /* GraphQL */ `
       present
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -143,6 +158,53 @@ export const listAttendances = /* GraphQL */ `
     }
   }
 `;
+export const getLessonTeacher = /* GraphQL */ `
+  query GetLessonTeacher($id: ID!) {
+    getLessonTeacher(id: $id) {
+      id
+      teacherID
+      lessonID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      score
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLessonTeachers = /* GraphQL */ `
+  query ListLessonTeachers(
+    $filter: ModelLessonTeacherFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLessonTeachers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        teacherID
+        lessonID
+        score
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getLesson = /* GraphQL */ `
   query GetLesson($id: ID!) {
     getLesson(id: $id) {
@@ -156,6 +218,9 @@ export const getLesson = /* GraphQL */ `
         nextToken
       }
       Files {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt
@@ -321,6 +386,9 @@ export const getTeacher = /* GraphQL */ `
       email
       schoolID
       classrooms {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt

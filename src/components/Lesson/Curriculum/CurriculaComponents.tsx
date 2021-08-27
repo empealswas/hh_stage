@@ -11,7 +11,7 @@ const CurriculaComponents = () => {
         <>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                 <Typography variant="h4" gutterBottom>
-                    Curricula
+                    Year Groups
                 </Typography>
                 <Can I={'create'} a={'curriculum'}>
                     <CurriculumModal/>

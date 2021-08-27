@@ -10,16 +10,13 @@ import schoolIcon from '@iconify/icons-mdi/school'
 import humanMaleChild from '@iconify/icons-mdi/human-male-child';
 import bookVariant from '@iconify/icons-mdi/book-variant';
 import googleClassroom from '@iconify/icons-mdi/google-classroom';
+import chartAreaspline from '@iconify/icons-mdi/chart-areaspline';
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
 
 const sidebarConfig = [
-/*  {
-    title: 'dashboard',
-    path: '/dashboard/app',
-    icon: getIcon(pieChart2Fill)
-  },
+/*  ,
   {
     title: 'user',
     path: '/dashboard/user',
@@ -35,6 +32,16 @@ const sidebarConfig = [
     path: '/dashboard/blog',
     icon: getIcon(fileTextFill)
   },*/
+  {
+    title: 'dashboard',
+    path: '/dashboard/app',
+    icon: getIcon(pieChart2Fill)
+  },
+  {
+    title: 'reports',
+    path: '/dashboard/reports',
+    icon: getIcon(chartAreaspline)
+  },
   {
     title: 'schools',
     path: '/dashboard/schools',

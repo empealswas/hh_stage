@@ -372,6 +372,21 @@ export const createAttendance = /* GraphQL */ `
       present
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -387,6 +402,21 @@ export const updateAttendance = /* GraphQL */ `
       present
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -402,6 +432,114 @@ export const deleteAttendance = /* GraphQL */ `
       present
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createLessonTeacher = /* GraphQL */ `
+  mutation CreateLessonTeacher(
+    $input: CreateLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    createLessonTeacher(input: $input, condition: $condition) {
+      id
+      teacherID
+      lessonID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      score
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLessonTeacher = /* GraphQL */ `
+  mutation UpdateLessonTeacher(
+    $input: UpdateLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    updateLessonTeacher(input: $input, condition: $condition) {
+      id
+      teacherID
+      lessonID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      score
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLessonTeacher = /* GraphQL */ `
+  mutation DeleteLessonTeacher(
+    $input: DeleteLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    deleteLessonTeacher(input: $input, condition: $condition) {
+      id
+      teacherID
+      lessonID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      score
       createdAt
       updatedAt
     }
@@ -423,6 +561,9 @@ export const createLesson = /* GraphQL */ `
         nextToken
       }
       Files {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt
@@ -448,6 +589,9 @@ export const updateLesson = /* GraphQL */ `
       Files {
         nextToken
       }
+      LessonTeacher {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -469,6 +613,9 @@ export const deleteLesson = /* GraphQL */ `
         nextToken
       }
       Files {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt
@@ -703,6 +850,9 @@ export const createTeacher = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      LessonTeacher {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -722,6 +872,9 @@ export const updateTeacher = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      LessonTeacher {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -739,6 +892,9 @@ export const deleteTeacher = /* GraphQL */ `
       email
       schoolID
       classrooms {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt

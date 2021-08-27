@@ -7,6 +7,7 @@ import FilesViewer from "../../../utils/FilesViewer";
 import LinearProgressBottom from "../../../utils/LinearProgressBottom";
 import AttendanceSheetModal from "../../attendance/AttendanceSheetModal";
 import {Can} from "../../../utils/Ability";
+import LessonRating from "./LessonRating";
 
 const LessonOverview = () => {
     const {lessonId} = useParams();
@@ -50,13 +51,13 @@ const LessonOverview = () => {
                     <Typography variant={"h4"} style={{marginTop: '30px'}}>
                         {lesson.description}
                     </Typography>
-
+                    <Can I={'read'} an={'attendance'}>
+                        <LessonRating lessonId={lessonId}/>
+                        <AttendanceSheetModal lessonId={lessonId}/>
+                    </Can>
                     {lesson.Files?.items &&
                     <FilesViewer files={lesson.Files?.items}/>
                     }
-                    <Can I={'read'} an={'attendance'}>
-                        <AttendanceSheetModal lessonId={lessonId}/>
-                    </Can>
                 </div>
                 :
                 <LinearProgressBottom/>
