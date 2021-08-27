@@ -27,6 +27,7 @@ import ClassroomOverview from "./components/classrooms/ClassroomOverview";
 import ClassroomsTable from "./components/classrooms/ClassroomsTable";
 import ClassroomPage from "./components/classrooms/ClassroomPage";
 import PupilOverview from "./components/pupil/PupilOverview";
+import ReportPage from "./pages/ReportPage";
 
 // ----------------------------------------------------------------------
 
@@ -46,6 +47,9 @@ export default function Router() {
                                         {path: ':classroomId', element: <ClassroomPage/>}
                                     ]}
                             ]}
+                    ]},
+                {path: 'reports', element: <Outlet/>, children: [
+                        {path: '/', element: <ReportPage/>},
                     ]},
                 {path: 'parent', element: <ParentSection/>},
                 {path: 'curricula', element: <Lessons/>, children: [

@@ -40,11 +40,27 @@ type School @model @auth(rules: [{allow: private}]) {
   classrooms: [Classroom] @connection(keyName: "bySchool", fields: ["id"])
 }
 
-type Attendance @model @auth(rules: [{allow: private}]) @key(name: "byPupil", fields: ["pupilID"]) @key(name: "byLesson", fields: ["lessonID"]) {
+type Attendance @model
+@auth(rules: [{allow: private}])
+@key(name: "byPupil", fields: ["pupilID"])
+@key(name: "byLesson", fields: ["lessonID"]) {
   id: ID!
   present: Boolean
   pupilID: ID
   lessonID: ID
+  Pupil: Pupil @connection(fields: ["pupilID"])
+  Lesson: Lesson @connection(fields: ["lessonID"])
+}
+
+type LessonTeacher @model
+@key(name: "byTeacher", fields: ["teacherID"])
+@key(name: "byLesson", fields: ["lessonID"]){
+  id: ID!
+  teacherID: ID
+  lessonID: ID
+  Teacher: Teacher @connection(fields: ["teacherID"])
+  Lesson: Lesson @connection(fields: ["lessonID"])
+  score: Int
 }
 
 type Lesson @model @auth(rules: [{allow: private}]) {
@@ -54,6 +70,7 @@ type Lesson @model @auth(rules: [{allow: private}]) {
   terms: [TermLesson] @connection(keyName: "byLesson", fields: ["id"])
   Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
   Files: [File] @connection(keyName: "byLesson", fields: ["id"])
+  LessonTeacher: [LessonTeacher] @connection(keyName: "byLesson", fields: ["id"])
 }
 
 type Term @model @auth(rules: [{allow: private}]) {
@@ -92,6 +109,7 @@ type Teacher @model @auth(rules: [{allow: private}]) @key(name: "bySchool", fiel
   email: AWSEmail
   schoolID: ID
   classrooms: [TeacherClassroom] @connection(keyName: "byTeacher", fields: ["id"])
+  LessonTeacher: [LessonTeacher] @connection(keyName: "byTeacher", fields: ["id"])
 }
 
 type Pupil @model @auth(rules: [{allow: private}])  @key(name: "bySchool", fields: ["schoolID"]){

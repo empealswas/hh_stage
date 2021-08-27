@@ -15,10 +15,10 @@ const CurriculumModal = () => {
     }
 
     return (
-        <AddingDialog onSubmit={addCurriculum} title={'Adding Curriculum'} buttonName={'Add curriculum'}>
+        <AddingDialog onSubmit={addCurriculum} title={'Adding Year Group'} buttonName={'Add Year Group'}>
             <TextField value={name} onChange={(event) => {
                 setName(event.target.value)
-            }} label={'Name of Curriculum'}/>
+            }} label={'Name of Year Group'}/>
         </AddingDialog>
     );
 };

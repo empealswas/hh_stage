@@ -324,6 +324,21 @@ export const onCreateAttendance = /* GraphQL */ `
       present
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -336,6 +351,21 @@ export const onUpdateAttendance = /* GraphQL */ `
       present
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -348,6 +378,105 @@ export const onDeleteAttendance = /* GraphQL */ `
       present
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLessonTeacher = /* GraphQL */ `
+  subscription OnCreateLessonTeacher {
+    onCreateLessonTeacher {
+      id
+      teacherID
+      lessonID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      score
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLessonTeacher = /* GraphQL */ `
+  subscription OnUpdateLessonTeacher {
+    onUpdateLessonTeacher {
+      id
+      teacherID
+      lessonID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      score
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLessonTeacher = /* GraphQL */ `
+  subscription OnDeleteLessonTeacher {
+    onDeleteLessonTeacher {
+      id
+      teacherID
+      lessonID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      score
       createdAt
       updatedAt
     }
@@ -366,6 +495,9 @@ export const onCreateLesson = /* GraphQL */ `
         nextToken
       }
       Files {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt
@@ -388,6 +520,9 @@ export const onUpdateLesson = /* GraphQL */ `
       Files {
         nextToken
       }
+      LessonTeacher {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -406,6 +541,9 @@ export const onDeleteLesson = /* GraphQL */ `
         nextToken
       }
       Files {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt
@@ -601,6 +739,9 @@ export const onCreateTeacher = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      LessonTeacher {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -617,6 +758,9 @@ export const onUpdateTeacher = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      LessonTeacher {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -631,6 +775,9 @@ export const onDeleteTeacher = /* GraphQL */ `
       email
       schoolID
       classrooms {
+        nextToken
+      }
+      LessonTeacher {
         nextToken
       }
       createdAt
