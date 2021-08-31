@@ -90,9 +90,7 @@ function App() {
                 </UserContext.Provider>
                 :
                 <AmplifyAuthenticator >
-                    <AmplifySignIn
-                        hideSignUp={true}
-                    />
+                    <AmplifySignIn slot="sign-in" hideSignUp></AmplifySignIn>
                 </AmplifyAuthenticator>
             }
         </ThemeConfig>
