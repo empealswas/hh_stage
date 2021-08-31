@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
-
 export const onCreateFile = /* GraphQL */ `
   subscription OnCreateFile {
     onCreateFile {
@@ -53,22 +52,6 @@ export const onCreateClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      yearGroupID
-      yearGroup {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -86,22 +69,6 @@ export const onUpdateClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      yearGroupID
-      yearGroup {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -119,22 +86,6 @@ export const onDeleteClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      yearGroupID
-      yearGroup {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -159,7 +110,6 @@ export const onCreateTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -187,7 +137,6 @@ export const onUpdateTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -215,7 +164,6 @@ export const onDeleteTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -242,7 +190,6 @@ export const onCreatePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -269,7 +216,6 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -296,7 +242,6 @@ export const onDeletePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }

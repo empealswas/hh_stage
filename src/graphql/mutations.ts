@@ -65,6 +65,22 @@ export const createClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      yearGroupID
+      yearGroup {
+        id
+        name
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -85,6 +101,22 @@ export const updateClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      yearGroupID
+      yearGroup {
+        id
+        name
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -105,6 +137,22 @@ export const deleteClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      yearGroupID
+      yearGroup {
+        id
+        name
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -132,6 +180,7 @@ export const createTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
+        yearGroupID
         createdAt
         updatedAt
       }
@@ -162,6 +211,7 @@ export const updateTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
+        yearGroupID
         createdAt
         updatedAt
       }
@@ -192,6 +242,7 @@ export const deleteTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
+        yearGroupID
         createdAt
         updatedAt
       }
@@ -221,6 +272,7 @@ export const createPupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
+        yearGroupID
         createdAt
         updatedAt
       }
@@ -250,6 +302,7 @@ export const updatePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
+        yearGroupID
         createdAt
         updatedAt
       }
@@ -279,6 +332,7 @@ export const deletePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
+        yearGroupID
         createdAt
         updatedAt
       }

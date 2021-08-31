@@ -57,11 +57,12 @@ const sidebarConfig = [
     path: '/dashboard/curricula',
     icon: getIcon(googleClassroom)
   },
-  /*{
+  {
     title: 'login',
     path: '/login',
     icon: getIcon(lockFill)
   },
+  /*
   {
     title: 'register',
     path: '/register',

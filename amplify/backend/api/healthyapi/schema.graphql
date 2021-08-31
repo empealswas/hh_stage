@@ -1,4 +1,4 @@
-type File @model @auth(rules: [{allow: private}]) @key(name: "byLesson", fields: ["lessonID"]) {
+type File @model @auth (rules: [{allow: private}]) @key(name: "byLesson", fields: ["lessonID"]) {
   id: ID!
   key: String
   region: String
@@ -6,12 +6,19 @@ type File @model @auth(rules: [{allow: private}]) @key(name: "byLesson", fields:
   lessonID: ID
 }
 
-type Classroom @model @auth(rules: [{allow: private}]) @key(name: "bySchool", fields: ["schoolID"]){
+type Classroom @model
+@auth(rules: [{allow: private}])
+@key(name: "bySchool", fields: ["schoolID"])
+@key(name: "byCurriculum", fields: ["yearGroupID"])
+{
   id: ID!
   name: String
   teachers: [TeacherClassroom] @connection(keyName: "byClassroom", fields: ["id"])
   pupils: [PupilClassroom] @connection(keyName: "byClassroom", fields: ["id"])
   schoolID: ID
+  school: School @connection(fields: ["schoolID"])
+  yearGroupID: ID
+  yearGroup: Curriculum @connection(fields: ["yearGroupID"])
 }
 
 type TeacherClassroom @model(queries: null) @key(name: "byTeacher", fields: ["teacherID", "classroomID"]) @key(name: "byClassroom", fields: ["classroomID", "teacherID"]) {

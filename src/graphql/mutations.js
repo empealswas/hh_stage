@@ -1,10 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
-
-export const onCreateFile = /* GraphQL */ `
-  subscription OnCreateFile {
-    onCreateFile {
+export const createFile = /* GraphQL */ `
+  mutation CreateFile(
+    $input: CreateFileInput!
+    $condition: ModelFileConditionInput
+  ) {
+    createFile(input: $input, condition: $condition) {
       id
       key
       region
@@ -15,9 +17,12 @@ export const onCreateFile = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateFile = /* GraphQL */ `
-  subscription OnUpdateFile {
-    onUpdateFile {
+export const updateFile = /* GraphQL */ `
+  mutation UpdateFile(
+    $input: UpdateFileInput!
+    $condition: ModelFileConditionInput
+  ) {
+    updateFile(input: $input, condition: $condition) {
       id
       key
       region
@@ -28,9 +33,12 @@ export const onUpdateFile = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteFile = /* GraphQL */ `
-  subscription OnDeleteFile {
-    onDeleteFile {
+export const deleteFile = /* GraphQL */ `
+  mutation DeleteFile(
+    $input: DeleteFileInput!
+    $condition: ModelFileConditionInput
+  ) {
+    deleteFile(input: $input, condition: $condition) {
       id
       key
       region
@@ -41,9 +49,12 @@ export const onDeleteFile = /* GraphQL */ `
     }
   }
 `;
-export const onCreateClassroom = /* GraphQL */ `
-  subscription OnCreateClassroom {
-    onCreateClassroom {
+export const createClassroom = /* GraphQL */ `
+  mutation CreateClassroom(
+    $input: CreateClassroomInput!
+    $condition: ModelClassroomConditionInput
+  ) {
+    createClassroom(input: $input, condition: $condition) {
       id
       name
       teachers {
@@ -53,30 +64,17 @@ export const onCreateClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      yearGroupID
-      yearGroup {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateClassroom = /* GraphQL */ `
-  subscription OnUpdateClassroom {
-    onUpdateClassroom {
+export const updateClassroom = /* GraphQL */ `
+  mutation UpdateClassroom(
+    $input: UpdateClassroomInput!
+    $condition: ModelClassroomConditionInput
+  ) {
+    updateClassroom(input: $input, condition: $condition) {
       id
       name
       teachers {
@@ -86,30 +84,17 @@ export const onUpdateClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      yearGroupID
-      yearGroup {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteClassroom = /* GraphQL */ `
-  subscription OnDeleteClassroom {
-    onDeleteClassroom {
+export const deleteClassroom = /* GraphQL */ `
+  mutation DeleteClassroom(
+    $input: DeleteClassroomInput!
+    $condition: ModelClassroomConditionInput
+  ) {
+    deleteClassroom(input: $input, condition: $condition) {
       id
       name
       teachers {
@@ -119,30 +104,17 @@ export const onDeleteClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      yearGroupID
-      yearGroup {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onCreateTeacherClassroom = /* GraphQL */ `
-  subscription OnCreateTeacherClassroom {
-    onCreateTeacherClassroom {
+export const createTeacherClassroom = /* GraphQL */ `
+  mutation CreateTeacherClassroom(
+    $input: CreateTeacherClassroomInput!
+    $condition: ModelTeacherClassroomConditionInput
+  ) {
+    createTeacherClassroom(input: $input, condition: $condition) {
       id
       teacherID
       classroomID
@@ -159,7 +131,6 @@ export const onCreateTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -168,9 +139,12 @@ export const onCreateTeacherClassroom = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateTeacherClassroom = /* GraphQL */ `
-  subscription OnUpdateTeacherClassroom {
-    onUpdateTeacherClassroom {
+export const updateTeacherClassroom = /* GraphQL */ `
+  mutation UpdateTeacherClassroom(
+    $input: UpdateTeacherClassroomInput!
+    $condition: ModelTeacherClassroomConditionInput
+  ) {
+    updateTeacherClassroom(input: $input, condition: $condition) {
       id
       teacherID
       classroomID
@@ -187,7 +161,6 @@ export const onUpdateTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -196,9 +169,12 @@ export const onUpdateTeacherClassroom = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteTeacherClassroom = /* GraphQL */ `
-  subscription OnDeleteTeacherClassroom {
-    onDeleteTeacherClassroom {
+export const deleteTeacherClassroom = /* GraphQL */ `
+  mutation DeleteTeacherClassroom(
+    $input: DeleteTeacherClassroomInput!
+    $condition: ModelTeacherClassroomConditionInput
+  ) {
+    deleteTeacherClassroom(input: $input, condition: $condition) {
       id
       teacherID
       classroomID
@@ -215,7 +191,6 @@ export const onDeleteTeacherClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -224,9 +199,12 @@ export const onDeleteTeacherClassroom = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePupilClassroom = /* GraphQL */ `
-  subscription OnCreatePupilClassroom {
-    onCreatePupilClassroom {
+export const createPupilClassroom = /* GraphQL */ `
+  mutation CreatePupilClassroom(
+    $input: CreatePupilClassroomInput!
+    $condition: ModelPupilClassroomConditionInput
+  ) {
+    createPupilClassroom(input: $input, condition: $condition) {
       id
       pupilID
       classroomID
@@ -242,7 +220,6 @@ export const onCreatePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -251,9 +228,12 @@ export const onCreatePupilClassroom = /* GraphQL */ `
     }
   }
 `;
-export const onUpdatePupilClassroom = /* GraphQL */ `
-  subscription OnUpdatePupilClassroom {
-    onUpdatePupilClassroom {
+export const updatePupilClassroom = /* GraphQL */ `
+  mutation UpdatePupilClassroom(
+    $input: UpdatePupilClassroomInput!
+    $condition: ModelPupilClassroomConditionInput
+  ) {
+    updatePupilClassroom(input: $input, condition: $condition) {
       id
       pupilID
       classroomID
@@ -269,7 +249,6 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -278,9 +257,12 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
     }
   }
 `;
-export const onDeletePupilClassroom = /* GraphQL */ `
-  subscription OnDeletePupilClassroom {
-    onDeletePupilClassroom {
+export const deletePupilClassroom = /* GraphQL */ `
+  mutation DeletePupilClassroom(
+    $input: DeletePupilClassroomInput!
+    $condition: ModelPupilClassroomConditionInput
+  ) {
+    deletePupilClassroom(input: $input, condition: $condition) {
       id
       pupilID
       classroomID
@@ -296,7 +278,6 @@ export const onDeletePupilClassroom = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
@@ -305,9 +286,12 @@ export const onDeletePupilClassroom = /* GraphQL */ `
     }
   }
 `;
-export const onCreateSchool = /* GraphQL */ `
-  subscription OnCreateSchool {
-    onCreateSchool {
+export const createSchool = /* GraphQL */ `
+  mutation CreateSchool(
+    $input: CreateSchoolInput!
+    $condition: ModelSchoolConditionInput
+  ) {
+    createSchool(input: $input, condition: $condition) {
       id
       name
       country
@@ -327,9 +311,12 @@ export const onCreateSchool = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateSchool = /* GraphQL */ `
-  subscription OnUpdateSchool {
-    onUpdateSchool {
+export const updateSchool = /* GraphQL */ `
+  mutation UpdateSchool(
+    $input: UpdateSchoolInput!
+    $condition: ModelSchoolConditionInput
+  ) {
+    updateSchool(input: $input, condition: $condition) {
       id
       name
       country
@@ -349,9 +336,12 @@ export const onUpdateSchool = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteSchool = /* GraphQL */ `
-  subscription OnDeleteSchool {
-    onDeleteSchool {
+export const deleteSchool = /* GraphQL */ `
+  mutation DeleteSchool(
+    $input: DeleteSchoolInput!
+    $condition: ModelSchoolConditionInput
+  ) {
+    deleteSchool(input: $input, condition: $condition) {
       id
       name
       country
@@ -371,9 +361,12 @@ export const onDeleteSchool = /* GraphQL */ `
     }
   }
 `;
-export const onCreateAttendance = /* GraphQL */ `
-  subscription OnCreateAttendance {
-    onCreateAttendance {
+export const createAttendance = /* GraphQL */ `
+  mutation CreateAttendance(
+    $input: CreateAttendanceInput!
+    $condition: ModelAttendanceConditionInput
+  ) {
+    createAttendance(input: $input, condition: $condition) {
       id
       present
       pupilID
@@ -398,9 +391,12 @@ export const onCreateAttendance = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateAttendance = /* GraphQL */ `
-  subscription OnUpdateAttendance {
-    onUpdateAttendance {
+export const updateAttendance = /* GraphQL */ `
+  mutation UpdateAttendance(
+    $input: UpdateAttendanceInput!
+    $condition: ModelAttendanceConditionInput
+  ) {
+    updateAttendance(input: $input, condition: $condition) {
       id
       present
       pupilID
@@ -425,9 +421,12 @@ export const onUpdateAttendance = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteAttendance = /* GraphQL */ `
-  subscription OnDeleteAttendance {
-    onDeleteAttendance {
+export const deleteAttendance = /* GraphQL */ `
+  mutation DeleteAttendance(
+    $input: DeleteAttendanceInput!
+    $condition: ModelAttendanceConditionInput
+  ) {
+    deleteAttendance(input: $input, condition: $condition) {
       id
       present
       pupilID
@@ -452,9 +451,12 @@ export const onDeleteAttendance = /* GraphQL */ `
     }
   }
 `;
-export const onCreateLessonTeacher = /* GraphQL */ `
-  subscription OnCreateLessonTeacher {
-    onCreateLessonTeacher {
+export const createLessonTeacher = /* GraphQL */ `
+  mutation CreateLessonTeacher(
+    $input: CreateLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    createLessonTeacher(input: $input, condition: $condition) {
       id
       teacherID
       lessonID
@@ -480,9 +482,12 @@ export const onCreateLessonTeacher = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateLessonTeacher = /* GraphQL */ `
-  subscription OnUpdateLessonTeacher {
-    onUpdateLessonTeacher {
+export const updateLessonTeacher = /* GraphQL */ `
+  mutation UpdateLessonTeacher(
+    $input: UpdateLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    updateLessonTeacher(input: $input, condition: $condition) {
       id
       teacherID
       lessonID
@@ -508,9 +513,12 @@ export const onUpdateLessonTeacher = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteLessonTeacher = /* GraphQL */ `
-  subscription OnDeleteLessonTeacher {
-    onDeleteLessonTeacher {
+export const deleteLessonTeacher = /* GraphQL */ `
+  mutation DeleteLessonTeacher(
+    $input: DeleteLessonTeacherInput!
+    $condition: ModelLessonTeacherConditionInput
+  ) {
+    deleteLessonTeacher(input: $input, condition: $condition) {
       id
       teacherID
       lessonID
@@ -536,9 +544,12 @@ export const onDeleteLessonTeacher = /* GraphQL */ `
     }
   }
 `;
-export const onCreateLesson = /* GraphQL */ `
-  subscription OnCreateLesson {
-    onCreateLesson {
+export const createLesson = /* GraphQL */ `
+  mutation CreateLesson(
+    $input: CreateLessonInput!
+    $condition: ModelLessonConditionInput
+  ) {
+    createLesson(input: $input, condition: $condition) {
       id
       title
       description
@@ -559,9 +570,12 @@ export const onCreateLesson = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateLesson = /* GraphQL */ `
-  subscription OnUpdateLesson {
-    onUpdateLesson {
+export const updateLesson = /* GraphQL */ `
+  mutation UpdateLesson(
+    $input: UpdateLessonInput!
+    $condition: ModelLessonConditionInput
+  ) {
+    updateLesson(input: $input, condition: $condition) {
       id
       title
       description
@@ -582,9 +596,12 @@ export const onUpdateLesson = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteLesson = /* GraphQL */ `
-  subscription OnDeleteLesson {
-    onDeleteLesson {
+export const deleteLesson = /* GraphQL */ `
+  mutation DeleteLesson(
+    $input: DeleteLessonInput!
+    $condition: ModelLessonConditionInput
+  ) {
+    deleteLesson(input: $input, condition: $condition) {
       id
       title
       description
@@ -605,9 +622,12 @@ export const onDeleteLesson = /* GraphQL */ `
     }
   }
 `;
-export const onCreateTerm = /* GraphQL */ `
-  subscription OnCreateTerm {
-    onCreateTerm {
+export const createTerm = /* GraphQL */ `
+  mutation CreateTerm(
+    $input: CreateTermInput!
+    $condition: ModelTermConditionInput
+  ) {
+    createTerm(input: $input, condition: $condition) {
       id
       nam
       startDate
@@ -623,9 +643,12 @@ export const onCreateTerm = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateTerm = /* GraphQL */ `
-  subscription OnUpdateTerm {
-    onUpdateTerm {
+export const updateTerm = /* GraphQL */ `
+  mutation UpdateTerm(
+    $input: UpdateTermInput!
+    $condition: ModelTermConditionInput
+  ) {
+    updateTerm(input: $input, condition: $condition) {
       id
       nam
       startDate
@@ -641,9 +664,12 @@ export const onUpdateTerm = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteTerm = /* GraphQL */ `
-  subscription OnDeleteTerm {
-    onDeleteTerm {
+export const deleteTerm = /* GraphQL */ `
+  mutation DeleteTerm(
+    $input: DeleteTermInput!
+    $condition: ModelTermConditionInput
+  ) {
+    deleteTerm(input: $input, condition: $condition) {
       id
       nam
       startDate
@@ -659,9 +685,12 @@ export const onDeleteTerm = /* GraphQL */ `
     }
   }
 `;
-export const onCreateSubject = /* GraphQL */ `
-  subscription OnCreateSubject {
-    onCreateSubject {
+export const createSubject = /* GraphQL */ `
+  mutation CreateSubject(
+    $input: CreateSubjectInput!
+    $condition: ModelSubjectConditionInput
+  ) {
+    createSubject(input: $input, condition: $condition) {
       id
       name
       SubjectTerms {
@@ -675,9 +704,12 @@ export const onCreateSubject = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateSubject = /* GraphQL */ `
-  subscription OnUpdateSubject {
-    onUpdateSubject {
+export const updateSubject = /* GraphQL */ `
+  mutation UpdateSubject(
+    $input: UpdateSubjectInput!
+    $condition: ModelSubjectConditionInput
+  ) {
+    updateSubject(input: $input, condition: $condition) {
       id
       name
       SubjectTerms {
@@ -691,9 +723,12 @@ export const onUpdateSubject = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteSubject = /* GraphQL */ `
-  subscription OnDeleteSubject {
-    onDeleteSubject {
+export const deleteSubject = /* GraphQL */ `
+  mutation DeleteSubject(
+    $input: DeleteSubjectInput!
+    $condition: ModelSubjectConditionInput
+  ) {
+    deleteSubject(input: $input, condition: $condition) {
       id
       name
       SubjectTerms {
@@ -707,9 +742,12 @@ export const onDeleteSubject = /* GraphQL */ `
     }
   }
 `;
-export const onCreateCurriculum = /* GraphQL */ `
-  subscription OnCreateCurriculum {
-    onCreateCurriculum {
+export const createCurriculum = /* GraphQL */ `
+  mutation CreateCurriculum(
+    $input: CreateCurriculumInput!
+    $condition: ModelCurriculumConditionInput
+  ) {
+    createCurriculum(input: $input, condition: $condition) {
       id
       name
       subjects {
@@ -720,9 +758,12 @@ export const onCreateCurriculum = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateCurriculum = /* GraphQL */ `
-  subscription OnUpdateCurriculum {
-    onUpdateCurriculum {
+export const updateCurriculum = /* GraphQL */ `
+  mutation UpdateCurriculum(
+    $input: UpdateCurriculumInput!
+    $condition: ModelCurriculumConditionInput
+  ) {
+    updateCurriculum(input: $input, condition: $condition) {
       id
       name
       subjects {
@@ -733,9 +774,12 @@ export const onUpdateCurriculum = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteCurriculum = /* GraphQL */ `
-  subscription OnDeleteCurriculum {
-    onDeleteCurriculum {
+export const deleteCurriculum = /* GraphQL */ `
+  mutation DeleteCurriculum(
+    $input: DeleteCurriculumInput!
+    $condition: ModelCurriculumConditionInput
+  ) {
+    deleteCurriculum(input: $input, condition: $condition) {
       id
       name
       subjects {
@@ -746,9 +790,12 @@ export const onDeleteCurriculum = /* GraphQL */ `
     }
   }
 `;
-export const onCreateParent = /* GraphQL */ `
-  subscription OnCreateParent {
-    onCreateParent {
+export const createParent = /* GraphQL */ `
+  mutation CreateParent(
+    $input: CreateParentInput!
+    $condition: ModelParentConditionInput
+  ) {
+    createParent(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -758,9 +805,12 @@ export const onCreateParent = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateParent = /* GraphQL */ `
-  subscription OnUpdateParent {
-    onUpdateParent {
+export const updateParent = /* GraphQL */ `
+  mutation UpdateParent(
+    $input: UpdateParentInput!
+    $condition: ModelParentConditionInput
+  ) {
+    updateParent(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -770,9 +820,12 @@ export const onUpdateParent = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteParent = /* GraphQL */ `
-  subscription OnDeleteParent {
-    onDeleteParent {
+export const deleteParent = /* GraphQL */ `
+  mutation DeleteParent(
+    $input: DeleteParentInput!
+    $condition: ModelParentConditionInput
+  ) {
+    deleteParent(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -782,9 +835,12 @@ export const onDeleteParent = /* GraphQL */ `
     }
   }
 `;
-export const onCreateTeacher = /* GraphQL */ `
-  subscription OnCreateTeacher {
-    onCreateTeacher {
+export const createTeacher = /* GraphQL */ `
+  mutation CreateTeacher(
+    $input: CreateTeacherInput!
+    $condition: ModelTeacherConditionInput
+  ) {
+    createTeacher(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -801,9 +857,12 @@ export const onCreateTeacher = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateTeacher = /* GraphQL */ `
-  subscription OnUpdateTeacher {
-    onUpdateTeacher {
+export const updateTeacher = /* GraphQL */ `
+  mutation UpdateTeacher(
+    $input: UpdateTeacherInput!
+    $condition: ModelTeacherConditionInput
+  ) {
+    updateTeacher(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -820,9 +879,12 @@ export const onUpdateTeacher = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteTeacher = /* GraphQL */ `
-  subscription OnDeleteTeacher {
-    onDeleteTeacher {
+export const deleteTeacher = /* GraphQL */ `
+  mutation DeleteTeacher(
+    $input: DeleteTeacherInput!
+    $condition: ModelTeacherConditionInput
+  ) {
+    deleteTeacher(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -839,9 +901,12 @@ export const onDeleteTeacher = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePupil = /* GraphQL */ `
-  subscription OnCreatePupil {
-    onCreatePupil {
+export const createPupil = /* GraphQL */ `
+  mutation CreatePupil(
+    $input: CreatePupilInput!
+    $condition: ModelPupilConditionInput
+  ) {
+    createPupil(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -857,9 +922,12 @@ export const onCreatePupil = /* GraphQL */ `
     }
   }
 `;
-export const onUpdatePupil = /* GraphQL */ `
-  subscription OnUpdatePupil {
-    onUpdatePupil {
+export const updatePupil = /* GraphQL */ `
+  mutation UpdatePupil(
+    $input: UpdatePupilInput!
+    $condition: ModelPupilConditionInput
+  ) {
+    updatePupil(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -875,9 +943,12 @@ export const onUpdatePupil = /* GraphQL */ `
     }
   }
 `;
-export const onDeletePupil = /* GraphQL */ `
-  subscription OnDeletePupil {
-    onDeletePupil {
+export const deletePupil = /* GraphQL */ `
+  mutation DeletePupil(
+    $input: DeletePupilInput!
+    $condition: ModelPupilConditionInput
+  ) {
+    deletePupil(input: $input, condition: $condition) {
       id
       firstName
       lastName
@@ -893,9 +964,12 @@ export const onDeletePupil = /* GraphQL */ `
     }
   }
 `;
-export const onCreateSubjectTerm = /* GraphQL */ `
-  subscription OnCreateSubjectTerm {
-    onCreateSubjectTerm {
+export const createSubjectTerm = /* GraphQL */ `
+  mutation CreateSubjectTerm(
+    $input: CreateSubjectTermInput!
+    $condition: ModelSubjectTermConditionInput
+  ) {
+    createSubjectTerm(input: $input, condition: $condition) {
       id
       subjectID
       termID
@@ -918,9 +992,12 @@ export const onCreateSubjectTerm = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateSubjectTerm = /* GraphQL */ `
-  subscription OnUpdateSubjectTerm {
-    onUpdateSubjectTerm {
+export const updateSubjectTerm = /* GraphQL */ `
+  mutation UpdateSubjectTerm(
+    $input: UpdateSubjectTermInput!
+    $condition: ModelSubjectTermConditionInput
+  ) {
+    updateSubjectTerm(input: $input, condition: $condition) {
       id
       subjectID
       termID
@@ -943,9 +1020,12 @@ export const onUpdateSubjectTerm = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteSubjectTerm = /* GraphQL */ `
-  subscription OnDeleteSubjectTerm {
-    onDeleteSubjectTerm {
+export const deleteSubjectTerm = /* GraphQL */ `
+  mutation DeleteSubjectTerm(
+    $input: DeleteSubjectTermInput!
+    $condition: ModelSubjectTermConditionInput
+  ) {
+    deleteSubjectTerm(input: $input, condition: $condition) {
       id
       subjectID
       termID
@@ -968,9 +1048,12 @@ export const onDeleteSubjectTerm = /* GraphQL */ `
     }
   }
 `;
-export const onCreateTermLesson = /* GraphQL */ `
-  subscription OnCreateTermLesson {
-    onCreateTermLesson {
+export const createTermLesson = /* GraphQL */ `
+  mutation CreateTermLesson(
+    $input: CreateTermLessonInput!
+    $condition: ModelTermLessonConditionInput
+  ) {
+    createTermLesson(input: $input, condition: $condition) {
       id
       termID
       lessonID
@@ -994,9 +1077,12 @@ export const onCreateTermLesson = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateTermLesson = /* GraphQL */ `
-  subscription OnUpdateTermLesson {
-    onUpdateTermLesson {
+export const updateTermLesson = /* GraphQL */ `
+  mutation UpdateTermLesson(
+    $input: UpdateTermLessonInput!
+    $condition: ModelTermLessonConditionInput
+  ) {
+    updateTermLesson(input: $input, condition: $condition) {
       id
       termID
       lessonID
@@ -1020,9 +1106,12 @@ export const onUpdateTermLesson = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteTermLesson = /* GraphQL */ `
-  subscription OnDeleteTermLesson {
-    onDeleteTermLesson {
+export const deleteTermLesson = /* GraphQL */ `
+  mutation DeleteTermLesson(
+    $input: DeleteTermLessonInput!
+    $condition: ModelTermLessonConditionInput
+  ) {
+    deleteTermLesson(input: $input, condition: $condition) {
       id
       termID
       lessonID
@@ -1046,9 +1135,12 @@ export const onDeleteTermLesson = /* GraphQL */ `
     }
   }
 `;
-export const onCreateCurriculumSubject = /* GraphQL */ `
-  subscription OnCreateCurriculumSubject {
-    onCreateCurriculumSubject {
+export const createCurriculumSubject = /* GraphQL */ `
+  mutation CreateCurriculumSubject(
+    $input: CreateCurriculumSubjectInput!
+    $condition: ModelCurriculumSubjectConditionInput
+  ) {
+    createCurriculumSubject(input: $input, condition: $condition) {
       id
       curriculumID
       subjectID
@@ -1069,9 +1161,12 @@ export const onCreateCurriculumSubject = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateCurriculumSubject = /* GraphQL */ `
-  subscription OnUpdateCurriculumSubject {
-    onUpdateCurriculumSubject {
+export const updateCurriculumSubject = /* GraphQL */ `
+  mutation UpdateCurriculumSubject(
+    $input: UpdateCurriculumSubjectInput!
+    $condition: ModelCurriculumSubjectConditionInput
+  ) {
+    updateCurriculumSubject(input: $input, condition: $condition) {
       id
       curriculumID
       subjectID
@@ -1092,9 +1187,12 @@ export const onUpdateCurriculumSubject = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteCurriculumSubject = /* GraphQL */ `
-  subscription OnDeleteCurriculumSubject {
-    onDeleteCurriculumSubject {
+export const deleteCurriculumSubject = /* GraphQL */ `
+  mutation DeleteCurriculumSubject(
+    $input: DeleteCurriculumSubjectInput!
+    $condition: ModelCurriculumSubjectConditionInput
+  ) {
+    deleteCurriculumSubject(input: $input, condition: $condition) {
       id
       curriculumID
       subjectID

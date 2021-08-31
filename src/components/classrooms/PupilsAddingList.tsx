@@ -109,7 +109,6 @@ export default function PupilsAddingList() {
                             const pupilsInClassroom: Pupil [] = classroom.data?.getClassroom?.pupils?.items?.map((item: any) => item.pupil);
                             const pupilsInSchool: Pupil [] = school.data.getSchool.Pupils.items;
                             return (
-                                <Container>
                                     <Stack direction={'row'} alignItems={'center'} spacing={10}>
                                         <Autocomplete
                                             multiple
@@ -152,7 +151,7 @@ export default function PupilsAddingList() {
                                             </Button>}
                                     </Stack>
 
-                                </Container>);
+                              );
                         }}
                     </Connect>
                 )

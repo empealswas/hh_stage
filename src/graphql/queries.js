@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
-
 export const getFile = /* GraphQL */ `
   query GetFile($id: ID!) {
     getFile(id: $id) {
@@ -47,22 +46,6 @@ export const getClassroom = /* GraphQL */ `
         nextToken
       }
       schoolID
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      yearGroupID
-      yearGroup {
-        id
-        name
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -79,7 +62,6 @@ export const listClassrooms = /* GraphQL */ `
         id
         name
         schoolID
-        yearGroupID
         createdAt
         updatedAt
       }
