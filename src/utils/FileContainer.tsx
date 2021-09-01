@@ -9,11 +9,11 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string}) => {
         return(
             <Document
                 renderMode={'canvas'}
-                loading={<Skeleton variant="rectangular" width={300} height={140}/>
+                loading={<Skeleton variant="rectangular" width={270} height={140}/>
                 }
                 file={linkToFile}
             >
-                <Page pageNumber={1} width={250}/>
+                <Page pageNumber={1} width={270}/>
             </Document>
         )
     }

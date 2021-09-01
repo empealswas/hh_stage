@@ -83,11 +83,11 @@ const DashboardOfTeacher = () => {
                           style={{flexGrow: 1, display: 'flex', flexWrap: 'wrap'}}>
                         {lessons ?
                             lessons.map((lesson: Lesson, index) => (
-                                <Grid key={index} item xs maxWidth={300} minWidth={200}>
+                                <Grid key={index} item xs={12} sm={6} md={3} maxWidth={300} minWidth={200}>
                                     <Link component={RouterLink} to={`../curricula/subjects/terms/lessons/${lesson.id}`}
                                           underline={'none'}>
-                                        <Card >
-                                            <CardActionArea>
+                                        <Card style={{height: '100%'}}>
+                                            <CardActionArea style={{height: '100%'}}>
                                                 <CardContent style={{textAlign: 'center'}}>
                                                     <Typography variant="h5" component="h2">
                                                         {lesson.title}
