@@ -86,7 +86,7 @@ const DashboardOfTeacher = () => {
                                 <Grid key={index} item xs maxWidth={300} minWidth={200}>
                                     <Link component={RouterLink} to={`../curricula/subjects/terms/lessons/${lesson.id}`}
                                           underline={'none'}>
-                                        <Card style={{minHeight: 120}}>
+                                        <Card >
                                             <CardActionArea>
                                                 <CardContent style={{textAlign: 'center'}}>
                                                     <Typography variant="h5" component="h2">
