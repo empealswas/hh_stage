@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Avatar,
+    Avatar, Box, Card, Container,
     LinearProgress,
     List,
     ListItem,
@@ -9,12 +9,16 @@ import {
     ListItemText
 } from "@material-ui/core";
 import {Storage} from "aws-amplify";
+import {Document, Page, pdfjs} from "react-pdf";
+
 // @ts-ignore
 import {Player} from 'video-react';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import DescriptionIcon from '@material-ui/icons/Description';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
 import {File} from "../API";
+
 
 type FilesListProps = {
     files: (File | null)[];
@@ -23,6 +27,10 @@ type FileItemProps = {
     file: File;
     index: number;
 }
+const options = {
+    cMapUrl: 'cmaps/',
+    cMapPacked: true,
+};
 const FilesViewer = (props: FilesListProps) => {
     const [urlToVideo, setUrlToVideo] = useState<string | null>(null);
     const showFile = (file: File) => {
@@ -61,6 +69,24 @@ const FilesViewer = (props: FilesListProps) => {
                 </ListItem>
 
             );
+        } else if (file?.key?.endsWith('.pdf')) {
+            Storage.get(file?.key, {expires: 60}).then((link: any) => setLinkToShow(link))
+            if (linkToShow) {
+                return (
+                    <Card>
+                        <Document
+                            renderMode={'canvas'}
+                            options={options}
+                            file={linkToShow}
+                        >
+                            <Page pageNumber={1} width={200}/>
+                        </Document>
+                    </Card>
+                );
+            } else {
+                return <></>
+            }
+
         } else {
             if (file?.key == null) return <></>;
             Storage.get(file?.key, {expires: 60}).then((link: any) => setLinkToShow(link))
@@ -98,6 +124,11 @@ const FilesViewer = (props: FilesListProps) => {
             }
         }
     }
+    useEffect(() => {
+        return () => {
+
+        };
+    }, []);
 
     return (
         <>

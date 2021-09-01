@@ -8,6 +8,7 @@ import LinearProgressBottom from "../../../utils/LinearProgressBottom";
 import AttendanceSheetModal from "../../attendance/AttendanceSheetModal";
 import {Can} from "../../../utils/Ability";
 import LessonRating from "./LessonRating";
+import {Container} from "@material-ui/core";
 
 const LessonOverview = () => {
     const {lessonId} = useParams();
@@ -45,19 +46,21 @@ const LessonOverview = () => {
         <div>
             {lesson ?
                 <div style={{textAlign: 'center'}}>
-                    <Typography variant={'h2'}>
-                        {lesson.title}
-                    </Typography>
-                    <Typography variant={"h4"} style={{marginTop: '30px'}}>
-                        {lesson.description}
-                    </Typography>
-                    <Can I={'read'} an={'attendance'}>
-                        <LessonRating lessonId={lessonId}/>
-                        <AttendanceSheetModal lessonId={lessonId}/>
-                    </Can>
-                    {lesson.Files?.items &&
-                    <FilesViewer files={lesson.Files?.items}/>
-                    }
+                    <Container>
+                        <Typography variant={'h2'}>
+                            {lesson.title}
+                        </Typography>
+                        <Typography variant={"h4"} style={{marginTop: '30px'}}>
+                            {lesson.description}
+                        </Typography>
+                        <Can I={'read'} an={'attendance'}>
+                            <LessonRating lessonId={lessonId}/>
+                            <AttendanceSheetModal lessonId={lessonId}/>
+                        </Can>
+                        {lesson.Files?.items &&
+                        <FilesViewer files={lesson.Files?.items}/>
+                        }
+                    </Container>
                 </div>
                 :
                 <LinearProgressBottom/>
