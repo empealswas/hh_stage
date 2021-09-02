@@ -48,7 +48,7 @@ const TABLE_HEAD = [
 const ParentSection = () => {
 
     return (
-    // @ts-ignore
+        // @ts-ignore
         <Page>
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -56,7 +56,9 @@ const ParentSection = () => {
                         Children
                     </Typography>
                 </Stack>
-                <ProgressButton error={true} success={false} loading={false} onClick={()=>{}} disabled={false}/>
+                <Typography variant={'h3'} color={'error'}>
+                    This section is under construction
+                </Typography>
             </Container>
         </Page>
     );

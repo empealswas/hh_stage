@@ -53,13 +53,8 @@ export default function AddTeacherModal(props: {school: School | null}) {
             lastName: lastName,
         }
         console.log(parameters);
-        fetch(`https://gnvaslb53l.execute-api.eu-west-2.amazonaws.com/default/addTeacherToUserPoolAndCreateRecordInDatabase`,
+        fetch(`https://qqh8kdchz6.execute-api.eu-west-2.amazonaws.com/default/addTeacherToUserPoolAndCreateRecordInDatabase/add`,
             {method: 'POST',
-                headers: {
-                    'Access-Control-Allow-Headers' : '*',
-                    'Access-Control-Allow-Methods' : '*',
-                    "Access-Control-Allow-Origin": "*"
-                },
                 body: JSON.stringify(parameters)
             })
             .then(response => {

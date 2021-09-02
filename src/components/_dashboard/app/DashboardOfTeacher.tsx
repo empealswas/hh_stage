@@ -73,6 +73,13 @@ const DashboardOfTeacher = () => {
             {/*<Typography variant={'h5'}>*/}
             {/*    Your Lessons:*/}
             {/*</Typography>*/}
+            {/*<iframe width="100%" height="480px"*/}
+            {/*        src="https://forms.office.com/Pages/ResponsePage.aspx?id=in39BuFKQUe0esKCthc7aECUiEqJcetGu0bHPjzEkcFUNjFRWVhQTERaOUQ4WFZEMFcwSldLUlZTSC4u&embed=true"*/}
+            {/*        frameBorder="0"*/}
+            {/*        style={{maxWidth: '100%', maxHeight: "100vh"}}*/}
+            {/*        allowFullScreen*/}
+            {/*>*/}
+            {/*</iframe>*/}
             <Grid container
                   direction="row"
                   justifyContent="flex-start"
@@ -83,11 +90,11 @@ const DashboardOfTeacher = () => {
                           style={{flexGrow: 1, display: 'flex', flexWrap: 'wrap'}}>
                         {lessons ?
                             lessons.map((lesson: Lesson, index) => (
-                                <Grid key={index} item xs maxWidth={300} minWidth={200}>
+                                <Grid key={index} item xs={12} sm={6} md={3} maxWidth={300} minWidth={200}>
                                     <Link component={RouterLink} to={`../curricula/subjects/terms/lessons/${lesson.id}`}
                                           underline={'none'}>
-                                        <Card style={{minHeight: 120}}>
-                                            <CardActionArea>
+                                        <Card style={{height: '100%'}}>
+                                            <CardActionArea style={{height: '100%'}}>
                                                 <CardContent style={{textAlign: 'center'}}>
                                                     <Typography variant="h5" component="h2">
                                                         {lesson.title}
