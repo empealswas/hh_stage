@@ -40,7 +40,7 @@ const SchoolAddingForm = () => {
     const schoolNameValidator = (): FieldCorrectness => {
         const schoolName = schoolProperties.schoolName;
         if (!schoolName) {
-            return {isCorrect: false, errorText: 'Fieled is required'}
+            return {isCorrect: false, errorText: 'Field is required'}
         }
         if (schoolName.length < 2) {
             return {isCorrect: false, errorText: 'School Name should be longer than 2 characters.'}

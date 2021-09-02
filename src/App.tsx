@@ -18,7 +18,7 @@ import {User} from "./models/User";
 
 // ----------------------------------------------------------------------
 import config from './aws-exports'
-import {Amplify, Auth, Hub} from "aws-amplify";
+import {Amplify, API, Auth, Hub} from "aws-amplify";
 import {AbilityContext} from "./utils/Ability";
 import defineAbilityFor from "./abilities/defineAbilityFor";
 import "../node_modules/video-react/dist/video-react.css"
@@ -26,6 +26,8 @@ import './global.css'
 import React from 'react';
 
 Amplify.configure(config)
+Amplify.register(Auth);
+Amplify.register(API);
 export const UserContext = createContext<User | null>(null);
 
 
@@ -33,40 +35,40 @@ function App() {
     const [user, setUser] = useState<User | null>(null);
     const [authState, setAuthState] = useState<AuthState>();
     useEffect(() => {
-        return onAuthUIStateChange((nextAuthState, authData) => {
-            setAuthState(nextAuthState);
-            console.log('authData', authData)
-            if (authData) {
-                setUser(new User(authData));
-            }else{
-                setUser(null)
+        // return onAuthUIStateChange((nextAuthState, authData) => {
+        //     setAuthState(nextAuthState);
+        //     console.log('authData', authData)
+        //     if (authData) {
+        //         setUser(new User(authData));
+        //     }else{
+        //         setUser(null)
+        //     }
+        // });
+        Hub.listen('auth', ({payload: {event, data}}) => {
+            switch (event) {
+                case 'signIn':
+                case 'cognitoHostedUI':
+                    getUser().then(userData => {
+                        setUser(new User(userData));
+                    });
+                    break;
+                case 'signOut':
+                    setUser(null);
+                    break;
+                case 'signIn_failure':
+                case 'cognitoHostedUI_failure':
+                    console.log('Sign in failure', data);
+                    break;
             }
         });
-        // Hub.listen('auth', ({payload: {event, data}}) => {
-        //     switch (event) {
-        //         case 'signIn':
-        //         case 'cognitoHostedUI':
-        //             getUser().then(userData => {
-        //                 setUser(new User(userData));
-        //             });
-        //             break;
-        //         case 'signOut':
-        //             setUser(null);
-        //             break;
-        //         case 'signIn_failure':
-        //         case 'cognitoHostedUI_failure':
-        //             console.log('Sign in failure', data);
-        //             break;
-        //     }
-        // });
-        //
-        // getUser().then(userData => {
-        //     if (!userData) {
-        //         setUser(null);
-        //     } else {
-        //         setUser(new User(userData));
-        //     }
-        // });
+
+        getUser().then(userData => {
+            if (!userData) {
+                setUser(null);
+            } else {
+                setUser(new User(userData));
+            }
+        });
 
     }, []);
 

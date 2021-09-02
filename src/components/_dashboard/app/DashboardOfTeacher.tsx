@@ -73,6 +73,13 @@ const DashboardOfTeacher = () => {
             {/*<Typography variant={'h5'}>*/}
             {/*    Your Lessons:*/}
             {/*</Typography>*/}
+            {/*<iframe width="100%" height="480px"*/}
+            {/*        src="https://forms.office.com/Pages/ResponsePage.aspx?id=in39BuFKQUe0esKCthc7aECUiEqJcetGu0bHPjzEkcFUNjFRWVhQTERaOUQ4WFZEMFcwSldLUlZTSC4u&embed=true"*/}
+            {/*        frameBorder="0"*/}
+            {/*        style={{maxWidth: '100%', maxHeight: "100vh"}}*/}
+            {/*        allowFullScreen*/}
+            {/*>*/}
+            {/*</iframe>*/}
             <Grid container
                   direction="row"
                   justifyContent="flex-start"

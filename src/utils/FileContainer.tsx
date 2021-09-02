@@ -19,10 +19,10 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string}) => {
     }
     const VideoPlayer = () => {
         return (
-            <Box width={300}>
+            <Box width={270}>
                 <Player
                     fluid={true}
-                    width={300}
+                    width={250}
                     src={linkToFile}
                 />
             </Box>
@@ -32,6 +32,7 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string}) => {
     switch (fileExtension){
         case 'pdf':
             return <PdfFile/>;
+            break;
         case 'mp4':
             return <VideoPlayer/>;
         default:
