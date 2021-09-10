@@ -24,6 +24,7 @@ import defineAbilityFor from "./abilities/defineAbilityFor";
 import "../node_modules/video-react/dist/video-react.css"
 import './global.css'
 import React from 'react';
+import {SnackbarProvider} from "notistack";
 
 Amplify.configure(config)
 Amplify.register(Auth);
@@ -86,12 +87,14 @@ function App() {
             {user ?
                 <UserContext.Provider value={user}>
                     <AbilityContext.Provider value={defineAbilityFor(user)}>
-                        <ScrollToTop/>
-                        <Router/>
+                        {/*<SnackbarProvider maxSnack={3}>*/}
+                            <ScrollToTop/>
+                            <Router/>
+                        {/*</SnackbarProvider>*/}
                     </AbilityContext.Provider>
                 </UserContext.Provider>
                 :
-                <AmplifyAuthenticator >
+                <AmplifyAuthenticator>
                     <AmplifySignIn slot="sign-in" hideSignUp></AmplifySignIn>
                 </AmplifyAuthenticator>
             }

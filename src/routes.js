@@ -13,8 +13,8 @@ import NotFound from './pages/Page404';
 import Schools from "./pages/Schools";
 import ParentSection from "./pages/ParentSection";
 import Lessons from "./pages/Lessons";
-import CurriculumOverview from "./components/Lesson/Curriculum/CurriculumOverview";
-import CurriculaComponents from "./components/Lesson/Curriculum/CurriculaComponents";
+import CurriculumOverview from "./components/Lesson/YearPage/CurriculumOverview";
+import CurriculaComponents from "./components/Lesson/YearPage/CurriculaComponents";
 import SubjectOutlet from "./components/Lesson/Subject/SubjectOutlent";
 import TermElements from "./components/Lesson/Term/TermElements";
 import TermOutlet from "./components/Lesson/Term/TermOutlet";
@@ -28,6 +28,7 @@ import ClassroomsTable from "./components/classrooms/ClassroomsTable";
 import ClassroomPage from "./components/classrooms/ClassroomPage";
 import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
+import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ export default function Router() {
                                 {path: 'manage', element: <SchoolManagement/>},
                                 {path: 'classrooms', element: <Outlet/>, children:[
                                         {path: '/', element: <ClassroomOverview/>},
-                                        {path: ':classroomId', element: <ClassroomPage/>}
+                                        {path: ':classroomId', element: <ClassroomPageNew/>}
                                     ]}
                             ]}
                     ]},

@@ -135,7 +135,7 @@ const ClassroomPage = () => {
     }
 
     useEffect(() => {
-        const fetchPosts = async (): Promise<any> => {
+        const fetchYearGroups = async (): Promise<any> => {
             try {
                 const curriculaData: any = await API.graphql(
                     graphqlOperation(listCurricula)
@@ -150,7 +150,7 @@ const ClassroomPage = () => {
                 console.log("error fetching posts: ", err);
             }
         };
-        fetchPosts()
+        fetchYearGroups()
     }, []);
 
 

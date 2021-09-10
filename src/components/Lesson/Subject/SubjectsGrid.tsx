@@ -79,10 +79,10 @@ const SubjectsGrid = () => {
                             }
                             console.log(data.getCurriculum.subjects.items)
                             return data.getCurriculum.subjects.items.map((item: any) => item.subject).map((subject: Subject, index: number) => (
-                                <Grid key={index} item xs maxWidth={300} minWidth={200}>
+                                <Grid key={index} item maxWidth={300} minWidth={200} xs={12} sm={6} md={3}>
                                     <Link component={RouterLink} to={`../subjects/${subject.id}`} underline={'none'}>
-                                        <Card>
-                                            <CardActionArea>
+                                        <Card style={{height: '100%'}}>
+                                            <CardActionArea style={{height: '100%'}}>
                                                 <CardContent style={{textAlign: 'center'}}>
                                                     <Typography variant="h5" component="h2">
                                                         {subject.name}

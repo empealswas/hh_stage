@@ -11,6 +11,9 @@ import humanMaleChild from '@iconify/icons-mdi/human-male-child';
 import bookVariant from '@iconify/icons-mdi/book-variant';
 import googleClassroom from '@iconify/icons-mdi/google-classroom';
 import chartAreaspline from '@iconify/icons-mdi/chart-areaspline';
+import BungalowIcon from '@mui/icons-material/Bungalow';
+import FestivalIcon from '@mui/icons-material/Festival';
+import homeGroup from '@iconify/icons-mdi/home-group';
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
@@ -57,10 +60,16 @@ const sidebarConfig = [
     path: '/dashboard/curricula',
     icon: getIcon(googleClassroom)
   },
+
   {
     title: 'login',
     path: '/login',
     icon: getIcon(lockFill)
+  },
+  {
+    title: 'houses',
+    path: '/houses',
+    icon: getIcon(homeGroup)
   },
   /*
   {

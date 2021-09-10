@@ -17,6 +17,7 @@ export default function defineAbilityFor(user: User | null) {
         can('create', 'lesson');
         can('visit', 'dashboard')
         can('visit', 'reports');
+        can('visit', 'houses');
 
 
     } else if (user.isTeacher()) {

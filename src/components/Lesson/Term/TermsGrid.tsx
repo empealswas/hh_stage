@@ -81,8 +81,8 @@ const SubjectsGrid = () => {
                             return data.getSubject.SubjectTerms.items.map((item: any)=> item.term).map((value: Term, index: number) => (
                                 <Grid key={index} item xs maxWidth={300} minWidth={200}>
                                     <Link component={RouterLink} to={`../terms/${value.id}`} underline={'none'}>
-                                        <Card>
-                                            <CardActionArea>
+                                        <Card style={{height: '100%'}}>
+                                            <CardActionArea style={{height: '100%'}}>
                                                 <CardContent style={{textAlign: 'center'}}>
                                                     <Typography variant="h5" component="h2">
                                                         {value.nam}
