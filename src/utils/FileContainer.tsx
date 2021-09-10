@@ -95,7 +95,6 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                             file={linkToFile}
                         >
                                 <Page canvasRef={instance => {
-                                    console.log(instance);
                                 }} width={300} renderMode={'canvas'} pageNumber={1}/>
                         </Document>
                     </CardMedia>

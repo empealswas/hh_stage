@@ -19,6 +19,7 @@ import DeletionModal from "../YearPage/DeletionModal";
 const LessonOverview = () => {
     const {lessonId} = useParams();
     const [lesson, setLesson] = useState<Lesson | null>(null);
+    const [droppedFiles, setDroppedFiles] = useState<File []>([]);
 
     async function fetchLesson() {
         return API.graphql(graphqlOperation(`query MyQuery($id: ID = "") {
@@ -49,6 +50,7 @@ const LessonOverview = () => {
     }, []);
     const onDrop = useCallback(acceptedFiles => {
         console.log(acceptedFiles);
+        setDroppedFiles(acceptedFiles);
     }, []);
 
     return (
@@ -58,7 +60,7 @@ const LessonOverview = () => {
                     <Box sx={{textAlign: 'center', marginBottom: 5}}>
                         <Container>
                             <Title title={lesson.title ?? ''}
-                                   editingForm={<LessonEditForm/>}
+                                   editingForm={<LessonEditForm filesToAdd={droppedFiles}/>}
                                    deletionModal={<DeletionModal title={'Delete Lesson'} onDelete={async () => {
                                    }
                                    }/>} />

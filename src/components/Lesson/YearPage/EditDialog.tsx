@@ -21,10 +21,11 @@ type EditDialogType = {
     children?: ReactNode,
     onSubmit: () => Promise<any>,
     isValid: boolean,
+    open?: boolean,
 }
 const YearPageEditionModal = (props: EditDialogType) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(props.open ?? false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
