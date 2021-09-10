@@ -56,16 +56,16 @@ const CurriculaGrid = () => {
                             }
                             if (loading) {
                                 return [0, 1, 2].map((value, index) => (
-                                    <Grid key={index} item>
+                                    <Grid key={index} item xs={12} sm={6} md={3}>
                                         <Card>
 
                                             <CardContent style={{width: '100%', height: '100%'}}>
-                                                <Typography variant={'h2'}>
+                                                <Typography variant={'h3'}>
                                                     <Skeleton animation={'pulse'} variant={'text'}/>
                                                 </Typography>
-                                                <Skeleton animation={'pulse'} variant={'rectangular'} width={"100%"}
-                                                          height={"100%"}>
-                                                </Skeleton>
+                                                <Typography variant={'h4'}>
+                                                    <Skeleton animation={'pulse'} variant={'text'}/>
+                                                </Typography>
                                             </CardContent>
                                         </Card>
                                     </Grid>
@@ -73,7 +73,7 @@ const CurriculaGrid = () => {
                             }
                             console.log(data)
                             return data.getSchool.classrooms.items.map((value: Classroom, index: number) => (
-                                <Grid key={index} item>
+                                <Grid key={index} item  xs={12} sm={6} md={3}>
                                     <Card>
                                         <CardActionArea onClick={() => {
                                             navigate(`${value.id}`);

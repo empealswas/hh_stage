@@ -35,6 +35,36 @@ export const listFiles = /* GraphQL */ `
     }
   }
 `;
+export const getSchoolHouse = /* GraphQL */ `
+  query GetSchoolHouse($id: ID!) {
+    getSchoolHouse(id: $id) {
+      id
+      name
+      Pupils {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSchoolHouses = /* GraphQL */ `
+  query ListSchoolHouses(
+    $filter: ModelSchoolHouseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSchoolHouses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getClassroom = /* GraphQL */ `
   query GetClassroom($id: ID!) {
     getClassroom(id: $id) {
@@ -134,6 +164,7 @@ export const getAttendance = /* GraphQL */ `
     getAttendance(id: $id) {
       id
       present
+      wasRewarded
       pupilID
       lessonID
       Pupil {
@@ -141,6 +172,7 @@ export const getAttendance = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -166,6 +198,7 @@ export const listAttendances = /* GraphQL */ `
       items {
         id
         present
+        wasRewarded
         pupilID
         lessonID
         createdAt
@@ -446,6 +479,22 @@ export const getPupil = /* GraphQL */ `
         nextToken
       }
       schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -463,6 +512,7 @@ export const listPupils = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }

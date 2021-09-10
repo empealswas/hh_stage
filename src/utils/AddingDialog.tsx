@@ -13,7 +13,7 @@ import {
     Paper, Stack,
     TextField
 } from "@material-ui/core";
-import {API, graphqlOperation} from "aws-amplify";
+import {API, button, graphqlOperation} from "aws-amplify";
 import {Link as RouterLink} from "react-router-dom";
 import Icon from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
@@ -25,6 +25,7 @@ import Dialog from "@material-ui/core/Dialog";
 import {TransitionProps} from "@material-ui/core/transitions";
 import Slide from "@material-ui/core/Slide";
 import ProgressButton from "../components/Buttons/ProgressButton";
+import {ButtonTypeMap, ExtendButtonBase} from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement },
@@ -72,6 +73,7 @@ export default function AddingDialog(props: AddingDialogProps) {
     }
     return (
         <>
+
             <Button variant="contained"
                     startIcon={<Icon icon={plusFill}/>} onClick={handleOpen}>
                 {props.buttonName}

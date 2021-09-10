@@ -59,7 +59,7 @@ const LessonsGrid = () => {
               justifyContent="flex-start"
               alignItems="flex-start" spacing={2}
         >
-            <Grid item xs={12}>
+            <Grid item xs={12} >
                 <Grid container justifyContent="center" spacing={2}
                       style={{flexGrow: 1, display: 'flex', flexWrap: 'wrap'}}>
                     <Connect
@@ -77,10 +77,10 @@ const LessonsGrid = () => {
                                 ))
                             }
                             return data.getTerm.TermLessons.items.map((item: any)=> item.lesson).map((value: Lesson, index: number) => (
-                                <Grid key={index} item xs maxWidth={300} minWidth={200}>
+                                <Grid key={index} item xs={12} sm={6} md={3} >
                                     <Link component={RouterLink} to={`../lessons/${value.id}`} underline={'none'}>
-                                        <Card>
-                                            <CardActionArea>
+                                        <Card style={{height: '100%'}}>
+                                            <CardActionArea style={{height: '100%'}}>
                                                 <CardContent style={{textAlign: 'center'}}>
                                                     <Typography variant="h5" component="h2">
                                                         {value.title}

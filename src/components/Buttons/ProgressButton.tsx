@@ -10,7 +10,7 @@ interface ProgressButtonProps{
     buttonProps?: ButtonProps
     success: boolean,
     loading: boolean,
-    onClick: () => void,
+    onClick?: () => void,
     onClickWhenSuccess?: () => void,
     disabled: boolean,
     error?: boolean
@@ -52,7 +52,7 @@ const ProgressButton = (props: ProgressButtonProps) => {
                         if (props.success) {
                             props.onClickWhenSuccess?.();
                         }else{
-                            props.onClick();
+                            props.onClick?.();
                         }
                     }}
                     startIcon={props.success ? <CheckIcon/> : <SaveIcon/>}

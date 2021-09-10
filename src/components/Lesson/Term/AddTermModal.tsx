@@ -51,11 +51,11 @@ export default function AddTermModal() {
     }
 
     return (
-        <AddingDialog title={'Adding new Term'} buttonName={'Add Term'} onSubmit={addTerm}>
+        <AddingDialog title={'Adding new lesson plan'} buttonName={'Add Lesson Plan'} onSubmit={addTerm}>
 
             <TextField value={name} onChange={(event) => {
                 setName(event.target.value)
-            }} label={'Name of Term'}/>
+            }} label={'Name of Lesson Plan'}/>
             <TextField
                 id="startDate"
                 label="Choose Start Date"

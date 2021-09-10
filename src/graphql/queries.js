@@ -138,6 +138,23 @@ export const getAttendance = /* GraphQL */ `
     }
   }
 `;
+export const listSchoolHouses = /* GraphQL */ `
+  query ListSchoolHouses(
+    $filter: ModelSchoolHouseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSchoolHouses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const listAttendances = /* GraphQL */ `
   query ListAttendances(
     $filter: ModelAttendanceFilterInput

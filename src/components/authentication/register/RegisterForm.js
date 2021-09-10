@@ -96,7 +96,7 @@ export default function RegisterForm() {
             size="large"
             type="submit"
             variant="contained"
-            loading={isSubmitting}
+            loading={true}
           >
             Register
           </LoadingButton>

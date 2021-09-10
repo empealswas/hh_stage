@@ -67,7 +67,7 @@ function RatingEditInputCell(props: GridCellParams) {
     );
 }
 
-export function renderRatingEditInputCell(params: GridCellParams) {
+export function renderRewardEditInputCell(params: GridCellParams) {
     return <RatingEditInputCell {...params} />;
 }
 
