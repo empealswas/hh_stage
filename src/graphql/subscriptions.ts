@@ -41,6 +41,45 @@ export const onDeleteFile = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSchoolHouse = /* GraphQL */ `
+  subscription OnCreateSchoolHouse {
+    onCreateSchoolHouse {
+      id
+      name
+      Pupils {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSchoolHouse = /* GraphQL */ `
+  subscription OnUpdateSchoolHouse {
+    onUpdateSchoolHouse {
+      id
+      name
+      Pupils {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSchoolHouse = /* GraphQL */ `
+  subscription OnDeleteSchoolHouse {
+    onDeleteSchoolHouse {
+      id
+      name
+      Pupils {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateClassroom = /* GraphQL */ `
   subscription OnCreateClassroom {
     onCreateClassroom {
@@ -235,6 +274,7 @@ export const onCreatePupilClassroom = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -262,6 +302,7 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -289,6 +330,7 @@ export const onDeletePupilClassroom = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -376,6 +418,7 @@ export const onCreateAttendance = /* GraphQL */ `
     onCreateAttendance {
       id
       present
+      wasRewarded
       pupilID
       lessonID
       Pupil {
@@ -383,6 +426,7 @@ export const onCreateAttendance = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -403,6 +447,7 @@ export const onUpdateAttendance = /* GraphQL */ `
     onUpdateAttendance {
       id
       present
+      wasRewarded
       pupilID
       lessonID
       Pupil {
@@ -410,6 +455,7 @@ export const onUpdateAttendance = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -430,6 +476,7 @@ export const onDeleteAttendance = /* GraphQL */ `
     onDeleteAttendance {
       id
       present
+      wasRewarded
       pupilID
       lessonID
       Pupil {
@@ -437,6 +484,7 @@ export const onDeleteAttendance = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -852,6 +900,22 @@ export const onCreatePupil = /* GraphQL */ `
         nextToken
       }
       schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -870,6 +934,22 @@ export const onUpdatePupil = /* GraphQL */ `
         nextToken
       }
       schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -888,6 +968,22 @@ export const onDeletePupil = /* GraphQL */ `
         nextToken
       }
       schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }

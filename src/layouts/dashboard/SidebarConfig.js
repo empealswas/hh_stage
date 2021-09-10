@@ -68,7 +68,7 @@ const sidebarConfig = [
   },
   {
     title: 'houses',
-    path: '/houses',
+    path: '/dashboard/houses',
     icon: getIcon(homeGroup)
   },
   /*

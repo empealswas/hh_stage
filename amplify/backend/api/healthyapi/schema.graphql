@@ -6,6 +6,14 @@ type File @model @auth (rules: [{allow: private}]) @key(name: "byLesson", fields
   lessonID: ID
 }
 
+
+type SchoolHouse @model
+{
+  id: ID!
+  name: String
+  Pupils: [Pupil] @connection(keyName: "bySchoolHouse", fields: ["id"])
+}
+
 type Classroom @model
 @auth(rules: [{allow: private}])
 @key(name: "bySchool", fields: ["schoolID"])
@@ -53,6 +61,7 @@ type Attendance @model
 @key(name: "byLesson", fields: ["lessonID"]) {
   id: ID!
   present: Boolean
+  wasRewarded: Boolean
   pupilID: ID
   lessonID: ID
   Pupil: Pupil @connection(fields: ["pupilID"])
@@ -119,13 +128,20 @@ type Teacher @model @auth(rules: [{allow: private}]) @key(name: "bySchool", fiel
   LessonTeacher: [LessonTeacher] @connection(keyName: "byTeacher", fields: ["id"])
 }
 
-type Pupil @model @auth(rules: [{allow: private}])  @key(name: "bySchool", fields: ["schoolID"]){
+type Pupil @model
+@auth(rules: [{allow: private}])
+@key(name: "bySchool", fields: ["schoolID"])
+@key(name: "bySchoolHouse", fields:["schoolHouseID"]){
   id: ID!
   firstName: String
   lastName: String
   Attendances: [Attendance] @connection(keyName: "byPupil", fields: ["id"])
   classrooms: [PupilClassroom] @connection(keyName: "byPupil", fields: ["id"])
   schoolID: ID
+  schoolHouseID: ID
+  schoolHouse: SchoolHouse @connection(fields: ["schoolHouseID"])
+  school: School @connection(fields: ["schoolID"])
+
 }
 
 type SubjectTerm @model(queries: null) @key(name: "bySubject", fields: ["subjectID", "termID"]) @key(name: "byTerm", fields: ["termID", "subjectID"]) @auth(rules: [{allow: private}, {allow: private}]) {

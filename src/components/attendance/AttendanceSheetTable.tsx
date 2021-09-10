@@ -10,8 +10,8 @@ import {useParams} from "react-router-dom";
 import {UserContext} from "../../App";
 import {Attendance, Classroom} from "../../API";
 import CustomLoadingOverlay from "../../utils/CustomLoadingOverlay";
-import {renderRating, renderRatingEditInputCell} from "./PerformanceStars";
 import {createAttendance, updateAttendance} from "../../graphql/mutations";
+import {renderReward, renderRatingEditInputCell} from "./Reward";
 
 
 interface GridConfigOptions {
@@ -33,6 +33,7 @@ type AttendanceOfPupil = {
     score: number,
     receivesTrophy: boolean,
     newRecord: boolean,
+    wasRewarded: boolean
 }
 
 const classroomsOfTeacherQuery = `query MyQuery($id: ID = "") {
@@ -60,6 +61,7 @@ const getPupilsOfClassroomAttendanceQuery = `query MyQuery($eq: ID = "", $id: ID
               id
               pupilID
               present
+              wasRewarded
             }
           }
         }
@@ -73,7 +75,8 @@ async function makeAttendance(pupilId: string, lessonId: string) {
     const input = {
         lessonID: lessonId,
         pupilID: pupilId,
-        present: true
+        present: true,
+        wasRewarded: false,
     }
     const result: any = await API.graphql(graphqlOperation(createAttendance, {input}));
     console.log(result)
@@ -170,6 +173,7 @@ const AttendanceSheetTable = (props: {}) => {
                 lastName: pupil.lastName,
                 newRecord: noPreviousRecordsOfAttendanceInThisLesson,
                 present: noPreviousRecordsOfAttendanceInThisLesson ? true : attendance?.present ?? true,
+                wasRewarded: attendance.wasRewarded ?? false,
                 score: 1,
                 receivesTrophy: false
             }
@@ -228,25 +232,17 @@ const AttendanceSheetTable = (props: {}) => {
         //     renderEditCell: renderRatingEditInputCell,
         //     editable: true
         // },
-        // {
-        //     field: 'reward',
-        //     headerName: 'Reward',
-        //     align: 'center',
-        //     headerAlign: 'center',
-        //     flex: 0.7,
-        //     editable: true,
-        //     renderEditCell: params => {
-        //         return (
-        //             <Checkbox value={params.getValue(params.id, 'reward') as boolean} color={'warning'}
-        //                       icon={<Icon icon={trophyOutline} height={30} width={30}/>}
-        //                       checkedIcon={<Icon icon={trophyIcon} height={30} width={30}/>}/>
-        //         )
-        //     },
-        //     renderCell: (params) => {
-        //         const hasReward = params.getValue(params.id, 'reward') as boolean;
-        //         return <Icon color={'orange'} icon={hasReward ? trophyIcon : trophyOutline} height={30} width={30}/>
-        //     }
-        // }
+        {
+            field: 'wasRewarded',
+            headerName: 'Reward',
+            align: 'center',
+            headerAlign: 'center',
+            flex: 0.7,
+            type: 'boolean',
+            editable: true,
+            renderEditCell:renderRatingEditInputCell,
+            renderCell: renderReward
+        }
     ];
 
     const handleApplyClick = (settings: GridConfigOptions) => {
@@ -289,12 +285,13 @@ const AttendanceSheetTable = (props: {}) => {
                     const attendanceOfPupil = pupils?.find(pupil => pupil.id === params.id) as AttendanceOfPupil;
                     console.log(attendanceOfPupil);
                     console.log(params)
-                    API.graphql(graphqlOperation(updateAttendance, {
+                    const res = API.graphql(graphqlOperation(updateAttendance, {
                         input: {
                             id: attendanceOfPupil.attendanceId,
                             [params.field]: params.value
                         }
                     }))
+                    console.log(res);
                     // const element = data.find(value => value.id === params.id);
                     // if (element) {
                     //     // @ts-ignore

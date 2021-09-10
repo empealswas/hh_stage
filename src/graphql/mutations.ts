@@ -50,6 +50,54 @@ export const deleteFile = /* GraphQL */ `
     }
   }
 `;
+export const createSchoolHouse = /* GraphQL */ `
+  mutation CreateSchoolHouse(
+    $input: CreateSchoolHouseInput!
+    $condition: ModelSchoolHouseConditionInput
+  ) {
+    createSchoolHouse(input: $input, condition: $condition) {
+      id
+      name
+      Pupils {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSchoolHouse = /* GraphQL */ `
+  mutation UpdateSchoolHouse(
+    $input: UpdateSchoolHouseInput!
+    $condition: ModelSchoolHouseConditionInput
+  ) {
+    updateSchoolHouse(input: $input, condition: $condition) {
+      id
+      name
+      Pupils {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSchoolHouse = /* GraphQL */ `
+  mutation DeleteSchoolHouse(
+    $input: DeleteSchoolHouseInput!
+    $condition: ModelSchoolHouseConditionInput
+  ) {
+    deleteSchoolHouse(input: $input, condition: $condition) {
+      id
+      name
+      Pupils {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createClassroom = /* GraphQL */ `
   mutation CreateClassroom(
     $input: CreateClassroomInput!
@@ -265,6 +313,7 @@ export const createPupilClassroom = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -295,6 +344,7 @@ export const updatePupilClassroom = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -325,6 +375,7 @@ export const deletePupilClassroom = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -424,6 +475,7 @@ export const createAttendance = /* GraphQL */ `
     createAttendance(input: $input, condition: $condition) {
       id
       present
+      wasRewarded
       pupilID
       lessonID
       Pupil {
@@ -431,6 +483,7 @@ export const createAttendance = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -454,6 +507,7 @@ export const updateAttendance = /* GraphQL */ `
     updateAttendance(input: $input, condition: $condition) {
       id
       present
+      wasRewarded
       pupilID
       lessonID
       Pupil {
@@ -461,6 +515,7 @@ export const updateAttendance = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -484,6 +539,7 @@ export const deleteAttendance = /* GraphQL */ `
     deleteAttendance(input: $input, condition: $condition) {
       id
       present
+      wasRewarded
       pupilID
       lessonID
       Pupil {
@@ -491,6 +547,7 @@ export const deleteAttendance = /* GraphQL */ `
         firstName
         lastName
         schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
@@ -972,6 +1029,22 @@ export const createPupil = /* GraphQL */ `
         nextToken
       }
       schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -993,6 +1066,22 @@ export const updatePupil = /* GraphQL */ `
         nextToken
       }
       schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -1014,6 +1103,22 @@ export const deletePupil = /* GraphQL */ `
         nextToken
       }
       schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }

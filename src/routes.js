@@ -29,6 +29,7 @@ import ClassroomPage from "./components/classrooms/ClassroomPage";
 import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
+import SchoolHousesPage from "./pages/SchoolHousesPage";
 
 // ----------------------------------------------------------------------
 
@@ -71,6 +72,9 @@ export default function Router() {
                 },
                 {path: 'pupils', element: <Outlet/>, children: [
                         {path: ':pupilId', element: <PupilOverview/>}
+                    ]},
+                {path: 'houses', element: <Outlet/>, children: [
+                        {path: '/', element: <SchoolHousesPage/>},
                     ]},
                 {path: 'app', element: <DashboardApp/>},
                 {path: 'user', element: <User/>},
