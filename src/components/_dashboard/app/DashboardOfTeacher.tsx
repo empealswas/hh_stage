@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {API, graphqlOperation} from "aws-amplify";
 import {UserContext} from "../../../App";
-import {Lesson} from '../../../API';
+import {Classroom, Lesson} from '../../../API';
 import Grid from "@material-ui/core/Grid";
 import {Connect} from "aws-amplify-react";
 import {IConnectState} from "aws-amplify-react/lib/API/GraphQL/Connect";
@@ -19,6 +19,8 @@ const query =/*GraphQL*/`query MyQuery($id: ID = "") {
         classrooms {
             items {
                 classroom {
+                    id
+                    name
                     yearGroup {
                         subjects {
                             items {
@@ -50,6 +52,7 @@ const query =/*GraphQL*/`query MyQuery($id: ID = "") {
 const DashboardOfTeacher = () => {
     const user = useContext(UserContext);
     const [lessons, setLessons] = useState<null | Lesson[]>(null);
+    const [classrooms, setClassrooms] = useState<null | Classroom[]>(null);
     useEffect(() => {
         console.log(user);
         const fetchLessons = async (): Promise<any> => {
@@ -59,7 +62,7 @@ const DashboardOfTeacher = () => {
                 .flatMap((item: any) => item.subject.SubjectTerms.items)
                 .flatMap((item: any) => item.term.TermLessons.items)
                 .flatMap((item: any) => item.lesson)
-
+            setClassrooms(lessonsData.data.getTeacher.classrooms.items.map((item: any) => item.classroom));
             setLessons(lessons);
         };
         fetchLessons()
@@ -70,9 +73,10 @@ const DashboardOfTeacher = () => {
 
     return (
         <Container>
-            {/*<Typography variant={'h5'}>*/}
-            {/*    Your Lessons:*/}
-            {/*</Typography>*/}
+            <Typography variant={'h5'}>
+                Your Classrooms:
+                 {classrooms?.map(classroom => `${classroom.name} | `)}
+            </Typography>
             {/*<iframe width="100%" height="480px"*/}
             {/*        src="https://forms.office.com/Pages/ResponsePage.aspx?id=in39BuFKQUe0esKCthc7aECUiEqJcetGu0bHPjzEkcFUNjFRWVhQTERaOUQ4WFZEMFcwSldLUlZTSC4u&embed=true"*/}
             {/*        frameBorder="0"*/}
