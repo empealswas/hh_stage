@@ -26,7 +26,7 @@ const ChooseSubjectSearchField = (props: {setSelectedTerm:  React.Dispatch<React
                         options={terms}
                         getOptionLabel={(option: Term) => option.nam as string}
                         sx={{width: 300}}
-                        renderInput={(params) => <TextField {...params} label="Term"/>}
+                        renderInput={(params) => <TextField {...params} label="Lesson Plan"/>}
                         onChange={(event, newValue) => {
                             setSelectedTerm(newValue);
                         }}
