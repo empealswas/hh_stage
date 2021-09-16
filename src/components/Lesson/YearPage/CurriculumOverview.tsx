@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import SubjectElements from "../Subject/SubjectElements";
@@ -10,11 +10,17 @@ import {onUpdateCurriculum} from "../../../graphql/subscriptions";
 import DeletionModal from "./DeletionModal";
 import {useSnackbar} from "notistack";
 import {Can} from "../../../utils/Ability";
+import { UserContext } from '../../../App';
 
 
 const CurriculumOverview = () => {
     const {id} = useParams();
     const [name, setName] = useState(null);
+    const [title, setTitle] = useState('');
+    const user = useContext(UserContext);
+    user?.getFirstAndLastName().then(data=>{
+        setTitle(`Lesson plan of ${data.firstName} ${data.lastName}`)
+    })
     const navigate = useNavigate();
     useEffect(() => {
         const fetchName = async () => {
@@ -44,7 +50,7 @@ const CurriculumOverview = () => {
     }
     return (
         <>
-            <HeaderOptions title={name}
+            <HeaderOptions title={title}
                            editingForm={
                                <Can I={'update'} a={'curriculum'}>
                                    <YearPageForm/>

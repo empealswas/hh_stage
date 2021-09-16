@@ -51,7 +51,7 @@ const CurriculaGrid = () => {
                             const curricula: Curriculum[] = data.listCurricula.items;
                             return(
                                 <YearPageGrids yearPages={curricula}/>
-                            )
+                            );
                         }}
                     </Connect>
                 </Grid>
