@@ -2,14 +2,5 @@
   "runtimes": [
     "nodejs14.x"
   ],
-  "Action": [
-    "lambda:GetFunction",
-    "lambda:GetFunctionConfiguration",
-    "lambda:ListLayerVersions"
-  ],
-  "Resource": [
-    "*"
-  ],
-  "Effect": "Allow",
   "description": "Updated layer version 2021-09-15T09:55:53.561Z"
 }
