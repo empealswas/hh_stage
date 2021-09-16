@@ -4,7 +4,9 @@ import {API, graphqlOperation} from "aws-amplify";
 import {Box, Grid, Rating, Stack, Typography} from "@material-ui/core";
 import AttendanceBarchart from "./charts/AttendanceBarchart";
 import AttendancePieChart from "./charts/AttendancePieChart";
-
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"
+import {Card} from "@mui/material";
 const query =/* GraphQL */ `query MyQuery($id: ID!) {
     getTerm(id: $id) {
         TermLessons {
@@ -73,12 +75,12 @@ const TermReport = (params: { term: Term }) => {
     }
 
     return (
-        termData ? <>
+        termData ? <div style={{height:'100vh', overflowY:'scroll'}}>
                 {termData.TermLessons?.items?.map((item: any) => item.lesson).map((lesson: Lesson) => {
                     const allAttendancesAmount: number = lesson.Attendances?.items?.length as number;
                     const presentAttendances: number = lesson.Attendances?.items?.filter(item => item?.present).length as number;
                     return (
-                        <Box key={lesson.id} m={3}>
+                        <Box >
                             <Typography variant={'h5'}>
                                 Name of Lesson: {lesson.title}
                             </Typography>
@@ -89,20 +91,21 @@ const TermReport = (params: { term: Term }) => {
                                 <Rating size={"large"} precision={0.1} disabled={true}
                                         value={getAverageScoreForLesson(lesson)}/>
                             </Stack>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12} sm={6} md={6} lg={5}>
-                                    <AttendanceBarchart amountOfPresent={presentAttendances}
-                                                        amountOfAbsent={allAttendancesAmount - presentAttendances}/>
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={6} lg={5}>
-                                    <AttendancePieChart amountOfPresent={presentAttendances}
-                                                        amountOfAbsent={allAttendancesAmount - presentAttendances}/>
-                                </Grid>
-                            </Grid>
+                                <Carousel autoPlay={true} showArrows={true} infiniteLoop={true}>
+                                    <Grid item xs={12} sm={12} md={6} lg={'auto'} >
+                                        <AttendancePieChart amountOfPresent={presentAttendances}
+                                                            amountOfAbsent={allAttendancesAmount - presentAttendances}/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={12} md={6} lg={'auto'}>
+                                        <AttendanceBarchart amountOfPresent={presentAttendances}
+                                                            amountOfAbsent={allAttendancesAmount - presentAttendances}/>
+                                    </Grid>
+                                </Carousel>
+
                         </Box>
                     );
                 })}
-            </>
+            </div>
             :
             <></>
     );

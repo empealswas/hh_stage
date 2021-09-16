@@ -1,5 +1,5 @@
 import {Icon} from '@iconify/react';
-import {useContext, useRef, useState} from 'react';
+import {useContext, useEffect, useRef, useState} from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
@@ -48,7 +48,17 @@ export default function AccountPopover() {
     const handleClose = () => {
         setOpen(false);
     };
+
     const user = useContext(UserContext);
+    const [accountName, setAccountName] = useState('');
+    user.getFirstAndLastName().then(value =>{
+        setAccountName(`${value.firstName} ${value.lastName}`);
+    })
+    useEffect(() => {
+        return () => {
+
+        };
+    }, [user]);
 
     return (
         <>
@@ -83,7 +93,7 @@ export default function AccountPopover() {
             >
                 <Box sx={{my: 1.5, px: 2.5}}>
                     <Typography variant="subtitle1" noWrap>
-                        {account.displayName}
+                        {accountName}
                     </Typography>
                     <Typography variant="body2" sx={{color: 'text.secondary'}} noWrap>
                         {user.email}

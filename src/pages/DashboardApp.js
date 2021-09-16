@@ -18,15 +18,22 @@ import {
 } from '../components/_dashboard/app';
 import DashboardOfTeacher from "../components/_dashboard/app/DashboardOfTeacher";
 import {Can} from "../utils/Ability";
+import {useContext, useState} from "react";
+import {UserContext} from "../App";
 
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
+    const user = useContext(UserContext);
+    const [greeting, setGreeting] = useState('');
+    user.getFirstName().then(data=>{
+        setGreeting(data);
+    })
     return (
         <Page title="Dashboard | Healthy Habits">
             <Container maxWidth="xl">
                 <Box sx={{pb: 5}}>
-                    <Typography variant="h4">Hi, Welcome back</Typography>
+                    <Typography variant="h4">Welcome back, {greeting}</Typography>
                 </Box>
                 <Grid container spacing={3}>
                     <Can I={'read'} a={'teacherDashboard'}>

@@ -15,6 +15,12 @@
       "auth": {
         "healthyhabitsd83a32c1": {},
         "userPoolGroups": {}
+      },
+      "function": {
+        "healthyhabitsgraghQL": {
+          "deploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
+          "s3Key": "amplify-builds/healthyhabitsgraghQL-LambdaLayerVersion97c5b4f5-build.zip"
+        }
       }
     }
   }

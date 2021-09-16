@@ -9,6 +9,7 @@ import {deleteCurriculum} from "../../../graphql/mutations";
 import {onUpdateCurriculum} from "../../../graphql/subscriptions";
 import DeletionModal from "./DeletionModal";
 import {useSnackbar} from "notistack";
+import {Can} from "../../../utils/Ability";
 
 
 const CurriculumOverview = () => {
@@ -44,13 +45,22 @@ const CurriculumOverview = () => {
     return (
         <>
             <HeaderOptions title={name}
-                           editingForm={<YearPageForm/>}
-                           deletionModal={<DeletionModal title={'Do you want to delete this Year Group?'}
-                                                         onDelete={async () => {
-                                                             const result: any = await deleteYearPage();
-                                                             // enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteCurriculum.name}`)
-                                                             navigate(-1);
-                                                         }}/>}/>
+                           editingForm={
+                               <Can I={'update'} a={'curriculum'}>
+                                   <YearPageForm/>
+                               </Can>
+                           }
+                           deletionModal={
+                               <Can I={'delete'} a={'curriculum'}>
+                                   <DeletionModal title={'Do you want to delete this Year Group?'}
+                                                  onDelete={async () => {
+                                                      const result: any = await deleteYearPage();
+                                                      // enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteCurriculum.name}`)
+                                                      navigate(-1);
+                                                  }}/>
+                               </Can>
+                           }
+                           />
             <SubjectElements/>
         </>
     );
