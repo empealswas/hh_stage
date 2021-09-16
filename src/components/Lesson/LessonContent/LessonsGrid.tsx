@@ -12,6 +12,7 @@ import {Lesson, Term} from "../../../API";
 import {Link as RouterLink, useParams} from "react-router-dom";
 import {onCreateSubject} from "../../../graphql/subscriptions";
 import CardSkeleton from "../../skeletons/CardSkeleton";
+import LessonItemsGrid from "./LessonItemsGrid";
 
 const query = `query MyQuery($id: ID = "") {
   getTerm(id: $id) {
@@ -76,21 +77,8 @@ const LessonsGrid = () => {
                                     <CardSkeleton key={value}/>
                                 ))
                             }
-                            return data.getTerm.TermLessons.items.map((item: any)=> item.lesson).map((value: Lesson, index: number) => (
-                                <Grid key={index} item xs={12} sm={6} md={3} >
-                                    <Link component={RouterLink} to={`../lessons/${value.id}`} underline={'none'}>
-                                        <Card style={{height: '100%'}}>
-                                            <CardActionArea style={{height: '100%'}}>
-                                                <CardContent style={{textAlign: 'center'}}>
-                                                    <Typography variant="h5" component="h2">
-                                                        {value.title}
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
-                                    </Link>
-                                </Grid>
-                            ));
+                            const lessons = data.getTerm.TermLessons.items.map((item: any)=> item.lesson);
+                            return <LessonItemsGrid lessons={lessons}/>
                         }}
                     </Connect>
                 </Grid>

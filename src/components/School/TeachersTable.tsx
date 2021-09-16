@@ -94,9 +94,9 @@ export default function TeachersTable() {
                         firstName: teacher.firstName,
                     })) ?? []}
                     columns={columns}
-                    pageSize={10}
                     checkboxSelection
                     loading={!teachers}
+                    rowsPerPageOptions={[5,20,100]}
                     autoHeight
                 />
             </div>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Container, Stack, Typography} from "@material-ui/core";
-import ChooseSubjectSearchField from "../components/reports/ChooseSubjectSearchField";
+import ChooseLessonPlanSearchField from "../components/reports/ChooseSubjectSearchField";
 import {Term} from "../API";
 import TermReport from "../components/reports/TermReport";
 
@@ -14,7 +14,7 @@ const ReportPage = () => {
                     <Typography variant="h4" gutterBottom>
                         Reports
                     </Typography>
-                    <ChooseSubjectSearchField setSelectedTerm={setSelectedTerm}/>
+                    <ChooseLessonPlanSearchField setSelectedTerm={setSelectedTerm}/>
                 </Stack>
                 {selectedTerm && <TermReport term={selectedTerm}/>}
             </Container>

@@ -98,7 +98,7 @@ export default function PupilsTable() {
 
     function loadPupils() {
         setPupils(null);
-
+        setHouses(null);
         const getHouses = async () =>{
             const result: any = await API.graphql(graphqlOperation(listSchoolHouses));
             setHouses(result.data.listSchoolHouses.items);
@@ -158,12 +158,13 @@ export default function PupilsTable() {
                     ) ?? []}
                     columns={columns}
                     disableSelectionOnClick={true}
-                    autoPageSize
                     loading={!pupils || !houses}
                     onCellClick={params => {
                         console.log(params)
                     }}
-                    autoHeight
+                    rowsPerPageOptions={[5, 20, 100]}
+
+                    autoHeight={true}
                 />
             </div>
             <IconButton onClick={loadPupils}>

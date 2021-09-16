@@ -60,10 +60,13 @@ const LessonOverview = () => {
                     <Box sx={{textAlign: 'center', marginBottom: 5}}>
                         <Container>
                             <Title title={lesson.title ?? ''}
-                                   editingForm={<LessonEditForm filesToAdd={droppedFiles}/>}
-                                   deletionModal={<DeletionModal title={'Delete Lesson'} onDelete={async () => {
-                                   }
-                                   }/>} />
+                                   editingForm={<Can I={'update'} a={'lesson'}>
+                                       <LessonEditForm filesToAdd={droppedFiles}/>
+                                   </Can>}
+                                   deletionModal={<Can I={'delete'} a={'lesson'}><DeletionModal title={'Delete Lesson'}
+                                                                                                onDelete={async () => {
+                                                                                                }
+                                                                                                }/></Can>}/>
                             <Typography variant={"h4"} style={{marginTop: '30px'}}>
                                 {lesson.description}
                             </Typography>
