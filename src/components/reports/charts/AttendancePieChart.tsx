@@ -37,7 +37,7 @@ export default function AttendancePieChart(props: {amountOfPresent: number, amou
     const all = props.amountOfPresent + props.amountOfAbsent;
     const CHART_DATA = [props.amountOfPresent / all, props.amountOfAbsent / all];
     const chartOptions: any = merge(BaseOptionChart(), {
-        colors: ['#6bf562', '#f64fa1'],
+        colors: ['#00A24F', '#f64fa1'],
         labels: ['Present', 'Absent'],
         stroke: { colors: [theme.palette.background.paper] },
         legend: { floating: true, horizontalAlign: 'center' },

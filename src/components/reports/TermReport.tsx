@@ -87,7 +87,7 @@ const TermReport = (params: { term: Term }) => {
                     const presentAttendances: number = lesson.Attendances?.items?.filter(item => item?.present).length as number;
                     return (
 
-                            <Grid item xs={12} sm={12} md={4} lg={6}>
+                            <Grid item xs={12} sm={12} md={6} lg={4}>
                                 <Typography variant={'h5'}>
                                     Name of Lesson: {lesson.title}
                                 </Typography>
@@ -98,12 +98,12 @@ const TermReport = (params: { term: Term }) => {
                                     <Rating size={"large"} precision={0.1} disabled={true}
                                             value={getAverageScoreForLesson(lesson)}/>
                                 </Stack>
-                                <Carousel autoPlay={false} showArrows={true} infiniteLoop={true}>
+                                {/*<Carousel autoPlay={false} showArrows={true} infiniteLoop={true}>*/}
                                     <AttendancePieChart amountOfPresent={presentAttendances}
                                                         amountOfAbsent={allAttendancesAmount - presentAttendances}/>
-                                    <AttendanceBarchart amountOfPresent={presentAttendances}
-                                                        amountOfAbsent={allAttendancesAmount - presentAttendances}/>
-                                </Carousel>
+                                {/*    <AttendanceBarchart amountOfPresent={presentAttendances}*/}
+                                {/*                        amountOfAbsent={allAttendancesAmount - presentAttendances}/>*/}
+                                {/*</Carousel>*/}
                             </Grid>
                     );
                 })}
