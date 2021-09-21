@@ -15,7 +15,6 @@ import {Link} from "react-router-dom";
 import {RenderHouseCell, renderHouseEdit} from "./PupilsTableRenders";
 import {listSchoolHouses} from "../../graphql/queries";
 import {updateAttendance, updatePupil} from "../../graphql/mutations";
-// /
 
 
 
@@ -81,9 +80,9 @@ export default function PupilsTable() {
 
     async function getPupils() {
         console.log('school Id', school?.id)
-        return API.graphql(graphqlOperation(`query MyQuery($id: ID = "") {
+        return API.graphql(graphqlOperation(`query MyQuery($id: ID = "", $limit: Int = 10000) {
   getSchool(id: $id) {
-    Pupils {
+    Pupils(limit: $limit) {
       items {
         firstName
         lastName
@@ -93,7 +92,8 @@ export default function PupilsTable() {
     }
   }
 }
-`, {id: school?.id}));
+
+`, {id: school?.id}, ));
     }
 
     function loadPupils() {
@@ -156,13 +156,13 @@ export default function PupilsTable() {
                         }
 
                     ) ?? []}
+
                     columns={columns}
                     disableSelectionOnClick={true}
                     loading={!pupils || !houses}
                     onCellClick={params => {
                         console.log(params)
                     }}
-                    rowsPerPageOptions={[5, 20, 100]}
 
                     autoHeight={true}
                 />

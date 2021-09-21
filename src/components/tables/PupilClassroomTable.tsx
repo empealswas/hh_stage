@@ -14,7 +14,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import {useParams} from "react-router-dom";
 import {Pupil, Teacher} from "../../API";
 import CustomLoadingOverlay from "../../utils/CustomLoadingOverlay";
-import {Stack} from "@mui/material";
+import {FormControlLabel, Stack, Switch} from "@mui/material";
 import {
     createPupilClassroom,
     createTeacherClassroom,
@@ -24,55 +24,65 @@ import {
 
 
 const getPupilsQuery = `query MyQuery($id: ID = "") {
-    getClassroom(id: $id) {
-        pupils {
-            items {
-                id
-                pupil {
-                classrooms(classroomID: {eq: $id}) {
-            items {
-              id
-            }
-          }
-                    id
-                    firstName
-                    lastName
-                }
-            }
-        }
-        teachers {
-            items {
-                id
-                teacher {
-                classrooms(classroomID: {eq: $id}) {
+  getClassroom(id: $id) {
+    pupils(limit: 10000) {
+      items {
+        id
+        pupil {
+          classrooms(classroomID: {eq: $id}) {
             items {
               id
             }
           }
-                    firstName
-                    id
-                    lastName
-                    email
-                }
-            }
+          id
+          firstName
+          lastName
         }
+      }
     }
+    teachers(limit: 10000) {
+      items {
+        id
+        teacher {
+          classrooms(classroomID: {eq: $id}) {
+            items {
+              id
+            }
+          }
+          firstName
+          id
+          lastName
+          email
+        }
+      }
+    }
+  }
 }`
 const schoolQuery =
     `query MyQuery($id: ID = "") {
   getSchool(id: $id) {
-    Pupils {
+    Pupils(limit: 10000) {
       items {
         id
         lastName
         firstName
+        classrooms {
+          items {
+            id
+          }
+        }
       }
     }
-      Teachers {
+    Teachers(limit: 10000) {
       items {
         id
         firstName
         lastName
+        classrooms {
+          items {
+            id
+          }
+        }
       }
     }
   }
@@ -83,29 +93,36 @@ const schoolQuery =
 interface GridConfigOptions {
     currentSet: 'pupils' | 'teachers';
     type: 'all' | 'inThatClassroom';
+    showAlreadyAssigned: boolean;
 }
 
 interface GridToolbarContainerProps {
+    settings: GridConfigOptions;
     onApply: (options: GridConfigOptions) => void;
 }
 
 function SettingsPanel(props: GridToolbarContainerProps) {
-    const {onApply} = props;
+    const {onApply, settings} = props;
 
-    const [currentSet, setCurrentSet] = useState<'pupils' | 'teachers'>(initialConfigOptions.currentSet);
-    const [typeOfPersons, setTypeOfPersons] = useState<'all' | 'inThatClassroom'>(initialConfigOptions.type);
+    const [currentSet, setCurrentSet] = useState<'pupils' | 'teachers'>(settings.currentSet);
+    const [typeOfPersons, setTypeOfPersons] = useState<'all' | 'inThatClassroom'>(settings.type);
+    const [showAlreadyAssigned, setShowAlreadyAssigned] = useState(settings.showAlreadyAssigned);
     const handleDatasetChange = React.useCallback((event: any) => {
         setCurrentSet(event.target.value);
     }, []);
     const handleTypeOfPeopleChange = React.useCallback((event: any) => {
         setTypeOfPersons(event.target.value);
     }, []);
+    const handleShowAlreadyAssigned = React.useCallback((event: any) => {
+        setShowAlreadyAssigned(event.target.checked);
+    }, []);
     const handleApplyChanges = React.useCallback(() => {
         onApply({
             currentSet: currentSet,
             type: typeOfPersons,
+            showAlreadyAssigned: showAlreadyAssigned
         });
-    }, [currentSet, typeOfPersons, onApply]);
+    }, [currentSet, typeOfPersons, onApply, showAlreadyAssigned]);
 
 
     return (
@@ -125,6 +142,10 @@ function SettingsPanel(props: GridToolbarContainerProps) {
                         <MenuItem value={'all'}>All</MenuItem>
                     </Select>
                 </FormControl>
+                <FormControlLabel
+                    control={<Switch inputProps={{'aria-label': 'controlled'}} checked={showAlreadyAssigned}
+                                     onChange={handleShowAlreadyAssigned}/>}
+                    label={showAlreadyAssigned ? 'All' : 'Not Assigned'}/>
                 <Button
                     size="small"
                     variant="outlined"
@@ -141,7 +162,8 @@ function SettingsPanel(props: GridToolbarContainerProps) {
 
 const initialConfigOptions: GridConfigOptions = {
     type: 'inThatClassroom',
-    currentSet: 'pupils'
+    currentSet: 'pupils',
+    showAlreadyAssigned: false,
 }
 const PupilClassroomTable = (props:
                                  {}
@@ -194,16 +216,25 @@ const PupilClassroomTable = (props:
     function applySettings(settings: GridConfigOptions) {
         if (settings.type === 'all') {
             if (settings.currentSet === 'pupils') {
-                setCurrentSet(allPupils);
+                setCurrentSet(allPupils?.filter(pupil => {
+                    if (settings.showAlreadyAssigned) {
+                        return true;
+                    }
+                    return pupil?.classrooms?.items?.length === 0
+                }) ?? []);
             } else if (settings.currentSet === 'teachers') {
-                setCurrentSet(allTeachers);
+                setCurrentSet(allTeachers?.filter(teacher => {
+                    if (settings.showAlreadyAssigned) {
+                        return true;
+                    }
+                    return teacher?.classrooms?.items?.length === 0
+                }) ?? []);
             }
         } else if (settings.type === 'inThatClassroom') {
             if (settings.currentSet === 'teachers') {
                 setCurrentSet(teachers);
             } else if (settings.currentSet === 'pupils') {
                 setCurrentSet(pupils);
-
             }
         }
     }
@@ -266,7 +297,7 @@ const PupilClassroomTable = (props:
                 };
                 try {
                     API.graphql(graphqlOperation(createTeacherClassroom, {input}));
-                }catch (e) {
+                } catch (e) {
                     console.log(e)
                 }
             });
@@ -327,7 +358,7 @@ const PupilClassroomTable = (props:
         <>
             {pupils &&
             <Box mb={1}>
-                <SettingsPanel onApply={handleApplyClick}/>
+                <SettingsPanel onApply={handleApplyClick} settings={configOptions ?? initialConfigOptions}/>
             </Box>
             }
             <DataGrid
