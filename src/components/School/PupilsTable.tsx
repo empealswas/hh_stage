@@ -26,11 +26,13 @@ export default function PupilsTable() {
             headerName: 'First name',
             width: 150,
             flex: 1,
+            editable: true
         },
         {
             field: 'lastName',
             headerName: 'Last name',
             flex: 1,
+            editable: true
         },
         {
             field: 'schoolHouseID',
@@ -158,11 +160,7 @@ export default function PupilsTable() {
                     ) ?? []}
 
                     columns={columns}
-                    disableSelectionOnClick={true}
                     loading={!pupils || !houses}
-                    onCellClick={params => {
-                        console.log(params)
-                    }}
 
                     autoHeight={true}
                 />

@@ -5,15 +5,15 @@ import {SchoolManagementContext} from "./SchoolManagement";
 import {API, graphqlOperation} from "aws-amplify";
 import {Button} from "@material-ui/core";
 import CachedIcon from '@material-ui/icons/Cached';
-import {Teacher} from "../../API";
+import {Pupil, Teacher} from "../../API";
 import {onCreateTeacher} from "../../graphql/subscriptions";
+import {updatePupil, updateTeacher} from "../../graphql/mutations";
 
 const columns: GridColDef[] = [
-    {field: 'id', headerName: 'ID'},
+    {field: 'id', headerName: 'Email', flex: 1},
     {
         field: 'firstName',
         headerName: 'First name',
-        width: 150,
         flex: 1,
         editable: true,
     },
@@ -89,12 +89,22 @@ export default function TeachersTable() {
             <div style={{width: '100%', display: 'flex'}}>
                 <DataGrid
                     rows={teachers?.map((teacher, index) => ({
-                        id: index,
+                        id: teacher.id,
                         lastName: teacher.lastName,
                         firstName: teacher.firstName,
                     })) ?? []}
+                    onCellEditCommit={(params, event, details) => {
+                        const teacher = teachers?.find(teacher => teacher.id === params.id) as Teacher;
+
+                        const res = API.graphql(graphqlOperation(updateTeacher, {
+                            input: {
+                                id: teacher.id,
+                                [params.field]: params.value
+                            }
+                        }))
+                        console.log(res)
+                    }}
                     columns={columns}
-                    checkboxSelection
                     loading={!teachers}
                     rowsPerPageOptions={[5,20,100]}
                     autoHeight

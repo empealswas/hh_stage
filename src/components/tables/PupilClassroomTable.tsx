@@ -183,14 +183,12 @@ const PupilClassroomTable = (props:
             field: 'firstName',
             headerName: 'First name',
             flex: 1,
-            editable: true,
         },
         {
             field: 'lastName',
             headerName: 'Last name',
             width: 150,
             flex: 1,
-            editable: true,
         },
         {
             field: 'fullName',
