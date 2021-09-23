@@ -10,7 +10,7 @@ import {onUpdateCurriculum} from "../../../graphql/subscriptions";
 import DeletionModal from "./DeletionModal";
 import {useSnackbar} from "notistack";
 import {Can} from "../../../utils/Ability";
-import { UserContext } from '../../../App';
+import {UserContext} from '../../../App';
 
 
 const CurriculumOverview = () => {
@@ -18,24 +18,32 @@ const CurriculumOverview = () => {
     const [name, setName] = useState(null);
     const [title, setTitle] = useState('');
     const user = useContext(UserContext);
-    user?.getFirstAndLastName().then(data=>{
-        setTitle(`Lesson plan of ${data.firstName} ${data.lastName}`)
-    })
-    const navigate = useNavigate();
-    useEffect(() => {
-        const fetchName = async () => {
-            const result: any = await API.graphql(graphqlOperation(getCurriculum, {id: id}));
-            console.log(result.data)
-            setName(result.data.getCurriculum.name);
+    const fetchName = async () => {
+        const result: any = await API.graphql(graphqlOperation(getCurriculum, {id: id}));
+        console.log(result.data)
+        setName(result.data.getCurriculum.name);
+        return result.data.getCurriculum.name;
 
-        }
+    }
+    if (user?.isAdmin()) {
+        fetchName().then(data => {
+            setTitle(data);
+        })
+    } else {
+        user?.getFirstAndLastName().then(data => {
+            setTitle(`Lesson plan of ${data.firstName} ${data.lastName}`)
+        });
+    }
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
         const createSubscription: any = API.graphql(graphqlOperation(onUpdateCurriculum));
         const updateSubscription = createSubscription.subscribe({
             next: (postData: any) => {
                 fetchName();
             }
         })
-        fetchName()
         return () => {
             updateSubscription.unsubscribe();
         };
@@ -66,7 +74,7 @@ const CurriculumOverview = () => {
                                                   }}/>
                                </Can>
                            }
-                           />
+            />
             <SubjectElements/>
         </>
     );

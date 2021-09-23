@@ -38,6 +38,20 @@
           "additionalAuthenticationProviders": []
         }
       }
+    },
+    "amplifyapiREST": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "lambdaApiRest",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "storage": {
@@ -47,10 +61,10 @@
     }
   },
   "function": {
-    "healthyhabitsgraghQL": {
+    "lambdaApiRest": {
+      "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer",
-      "build": true
+      "service": "Lambda"
     }
   }
 }

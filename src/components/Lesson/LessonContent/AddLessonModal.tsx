@@ -29,7 +29,7 @@ import FilesUploadDropzone from "../../FilesUploading/FilesUploadDropzone";
 import UploadingFilesList from "../../FilesUploading/UploadingFilesList";
 import awsConfig from "../../../aws-exports";
 import AddingDialog from "../../../utils/AddingDialog";
-//
+
 export default function AddLessonModal() {
     const {id} = useParams();
 
@@ -57,7 +57,8 @@ export default function AddLessonModal() {
         const {identityId} = await Auth.currentCredentials();
         for (const file of selectedFiles) {
             try {
-                const fileName = `/${visibility}/${identityId}/${Date.now()}-${file.name}`;
+                // const fileName = `/${visibility}/${identityId}/${Date.now()}-${file.name}`;
+                const fileName = `${Date.now()}-${file.name}`;
                 const uploadedFile: any = await Storage.put(fileName, file, {
                     contentType: file.type
                 })

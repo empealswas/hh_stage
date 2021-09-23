@@ -5,7 +5,7 @@ import Label from "../components/Label";
 import {Link as RouterLink} from "react-router-dom";
 import {Document, Page} from "react-pdf";
 import {getFileDescription} from "./filenameExtractor";
-import {Storage} from "aws-amplify";
+import {API, Storage} from "aws-amplify";
 import FileContainer from "./FileContainer";
 
 const FileWidget = (props: { file: File }) => {
@@ -16,6 +16,7 @@ const FileWidget = (props: { file: File }) => {
     });
     useEffect(() => {
         Storage.get(file?.key as string, {expires: 10000}).then((link: any) => setLinkToShow(link))
+
         return () => {
 
         };
