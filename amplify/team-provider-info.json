@@ -1,9 +1,9 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-healthyhabits-dev-172305-authRole",
-      "UnauthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabits-dev-172305-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabits-dev-172305-authRole",
+      "AuthRoleName": "amplify-healthyhabitsv2-dev-153653-authRole",
+      "UnauthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-153653-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-153653-authRole",
       "Region": "eu-west-2",
       "DeploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
       "UnauthRoleName": "amplify-healthyhabits-dev-172305-unauthRole",
