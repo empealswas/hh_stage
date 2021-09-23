@@ -58,7 +58,7 @@ export default function AddLessonModal() {
         for (const file of selectedFiles) {
             try {
                 // const fileName = `/${visibility}/${identityId}/${Date.now()}-${file.name}`;
-                const fileName = `${Date.now()}-${file.name}`;
+                const fileName = `${Date.now()}-${file.name.replace(/ /g, '_')}`;
                 const uploadedFile: any = await Storage.put(fileName, file, {
                     contentType: file.type
                 })

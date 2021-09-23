@@ -8,15 +8,15 @@
         },
     
     
-          "functionlambdaApiRestName": {
+          "functionHealthyHabitsV2LambdaFunctionName": {
             "Type": "String",
-            "Default": "functionlambdaApiRestName"
+            "Default": "functionHealthyHabitsV2LambdaFunctionName"
           },
 
           
-          "functionlambdaApiRestArn": {
+          "functionHealthyHabitsV2LambdaFunctionArn": {
             "Type": "String",
-            "Default": "functionlambdaApiRestArn"
+            "Default": "functionHealthyHabitsV2LambdaFunctionArn"
           }
 
           
@@ -37,16 +37,16 @@
         
         
         
-      "amplifyapiREST": {
+      "HealthyHabitsV2RestApi": {
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "amplifyapiREST",
+          "Name": "HealthyHabitsV2RestApi",
           "Body": {
             "swagger": "2.0",
             "info": {
               "version": "2018-05-24T17:52:00Z",
-              "title": "amplifyapiREST"
+              "title": "HealthyHabitsV2RestApi"
             },
             "host": {
                 "Fn::Join": [
@@ -168,7 +168,7 @@
                             
                             {
 
-                                "Ref": "functionlambdaApiRestArn"
+                                "Ref": "functionHealthyHabitsV2LambdaFunctionArn"
                             },
                             
                             "/invocations"
@@ -267,7 +267,7 @@
                           
                           {
 
-                            "Ref": "functionlambdaApiRestArn"
+                            "Ref": "functionHealthyHabitsV2LambdaFunctionArn"
                           },
                           
                           "/invocations"
@@ -324,12 +324,12 @@
       
         
 
-        "functionlambdaApiRestPermissionamplifyapiREST": {
+        "functionHealthyHabitsV2LambdaFunctionPermissionHealthyHabitsV2RestApi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
                     {
-                        "Ref":  "functionlambdaApiRestName"
+                        "Ref":  "functionHealthyHabitsV2LambdaFunctionName"
                     },
                     
                     "Action": "lambda:InvokeFunction",
@@ -348,7 +348,7 @@
                             },
                             ":",
                             {
-                                "Ref": "amplifyapiREST"
+                                "Ref": "HealthyHabitsV2RestApi"
                             },
                             "/*/*/*"
                         ]
@@ -359,7 +359,7 @@
         
         
 
-      "DeploymentAPIGWamplifyapiREST": {
+      "DeploymentAPIGWHealthyHabitsV2RestApi": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
@@ -373,7 +373,7 @@
             ]
           },
           "RestApiId": {
-            "Ref": "amplifyapiREST"
+            "Ref": "HealthyHabitsV2RestApi"
           }
         }
       }
@@ -381,15 +381,15 @@
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {"Fn::Join": ["", ["https://", {"Ref": "amplifyapiREST"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "HealthyHabitsV2RestApi"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
         },
         "ApiName": {
           "Description": "API Friendly name",
-          "Value": "amplifyapiREST"
+          "Value": "HealthyHabitsV2RestApi"
         },
         "ApiId": {
           "Description": "API ID (prefix of API URL)",
-          "Value": {"Ref": "amplifyapiREST"}
+          "Value": {"Ref": "HealthyHabitsV2RestApi"}
         }
     }
   }

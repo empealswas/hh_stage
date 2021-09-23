@@ -1,6 +1,6 @@
 projects:
-  healthyapi:
-    schemaPath: amplify/backend/api/healthyapi/build/schema.graphql
+  HealthyHabitsV2GraphQlApi:
+    schemaPath: amplify/backend/api/HealthyHabitsV2GraphQlApi/build/schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:

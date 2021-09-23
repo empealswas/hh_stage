@@ -1,5 +1,5 @@
 {
-  "name": "lambdaApiRest",
+  "name": "HealthyHabitsV2LambdaFunction",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
