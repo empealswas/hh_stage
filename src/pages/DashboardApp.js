@@ -20,13 +20,15 @@ import DashboardOfTeacher from "../components/_dashboard/app/DashboardOfTeacher"
 import {Can} from "../utils/Ability";
 import {useContext, useState} from "react";
 import {UserContext} from "../App";
+import {Button} from "@mui/material";
+import {API} from "aws-amplify";
 
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
     const user = useContext(UserContext);
     const [greeting, setGreeting] = useState('');
-    user.getFirstName().then(data=>{
+    user.getFirstName().then(data => {
         setGreeting(data);
     })
     return (
@@ -35,6 +37,13 @@ export default function DashboardApp() {
                 <Box sx={{pb: 5}}>
                     <Typography variant="h4">Welcome back, {greeting}</Typography>
                 </Box>
+                <Button onClick={() => {
+                    console.log('send')
+                    API.get('amplifyapiREST', '/api/addTeacher', {})
+                        .then(res => {
+                        console.log(res);
+                    })
+                }}>Click</Button>
                 <Grid container spacing={3}>
                     <Can I={'read'} a={'teacherDashboard'}>
                         <DashboardOfTeacher/>

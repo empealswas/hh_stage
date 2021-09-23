@@ -16,6 +16,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import {TransitionProps} from "@material-ui/core/transitions";
 import Slide from "@material-ui/core/Slide";
+import {addTeacherApi} from "../../apiFunctions/apiFunctions";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement },
@@ -23,7 +24,7 @@ const Transition = React.forwardRef(function Transition(
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-export default function AddTeacherModal(props: {school: School | null}) {
+export default function AddTeacherModal(props: { school: School | null }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
         setLoading(false);
@@ -47,28 +48,41 @@ export default function AddTeacherModal(props: {school: School | null}) {
         if (!school) return;
         setLoading(true);
         const parameters = {
-            teacherEmail : email,
-            schoolId : school.id,
+            teacherEmail: email,
+            schoolId: school.id,
             firstName: firstName,
             lastName: lastName,
         }
-        console.log(parameters);
-        fetch(`https://qqh8kdchz6.execute-api.eu-west-2.amazonaws.com/default/addTeacherToUserPoolAndCreateRecordInDatabase/add`,
-            {method: 'POST',
-                body: JSON.stringify(parameters)
-            })
-            .then(response => {
-                handleClose();
-                console.log(response)
-            })
+        addTeacherApi(parameters).then(response => {
+            handleClose();
+            console.log(response)
+        })
             .catch(error => {
                 console.log(error);
                 handleClose()
             }).finally(() => {
             setLoading(false);
             setSuccess(true);
-
         });
+
+        // console.log(parameters);
+        // fetch(`https://qqh8kdchz6.execute-api.eu-west-2.amazonaws.com/default/addTeacherToUserPoolAndCreateRecordInDatabase/add`,
+        //     {method: 'POST',
+        //         body: JSON.stringify(parameters)
+        //     })
+        //     .then(response => {
+        //         handleClose();
+        //         console.log(response)
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //         handleClose()
+        //     }).finally(() => {
+        //     setLoading(false);
+        //     setSuccess(true);
+        //
+        // });
+
     }
 
 

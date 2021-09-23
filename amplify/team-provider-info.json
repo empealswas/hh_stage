@@ -5,11 +5,35 @@
       "UnauthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-153653-unauthRole",
       "AuthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-153653-authRole",
       "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-healthyhabitsv2-dev-153653-deployment",
-      "UnauthRoleName": "amplify-healthyhabitsv2-dev-153653-unauthRole",
-      "StackName": "amplify-healthyhabitsv2-dev-153653",
-      "StackId": "arn:aws:cloudformation:eu-west-2:397429649444:stack/amplify-healthyhabitsv2-dev-153653/ed665320-1c6a-11ec-8348-02c50e1d0d5a",
-      "AmplifyAppId": "d3f8o0nyyrpqd6"
+      "DeploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
+      "UnauthRoleName": "amplify-healthyhabits-dev-172305-unauthRole",
+      "StackName": "amplify-healthyhabits-dev-172305",
+      "StackId": "arn:aws:cloudformation:eu-west-2:397429649444:stack/amplify-healthyhabits-dev-172305/b2de2060-f925-11eb-80c8-063f4f15ab5e",
+      "AmplifyAppId": "dim818xhlkdsx"
+    },
+    "categories": {
+      "auth": {
+        "healthyhabitsd83a32c1": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "lambdaApi": {
+          "deploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
+          "s3Key": "amplify-builds/lambdaApi-32736d61644a452b6c49-build.zip"
+        },
+        "lambdaAPI": {
+          "deploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
+          "s3Key": "amplify-builds/lambdaAPI-4c5473336c537567784d-build.zip"
+        },
+        "healthyhabitshealthyhabitsgraghQL": {
+          "deploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
+          "s3Key": "amplify-builds/healthyhabitshealthyhabitsgraghQL-LambdaLayerVersiona0173edc-build.zip"
+        },
+        "lambdaApiRest": {
+          "deploymentBucketName": "amplify-healthyhabits-dev-172305-deployment",
+          "s3Key": "amplify-builds/lambdaApiRest-55416c563272785a796d-build.zip"
+        }
+      }
     }
   }
 }
