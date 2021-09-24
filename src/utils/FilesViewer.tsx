@@ -39,7 +39,7 @@ const FilesViewer = (props: FilesListProps) => {
         <>
             <Grid container spacing={3}>
                 {props.files.map((file) => (
-                    <Grid item xs={12} sm={6} md={3} key={file?.key}>
+                    <Grid item xs={12} sm={6} md={4} lg={4} key={file?.key}>
                         <>
                             {file && <FileWidget file={file}/>}
                         </>

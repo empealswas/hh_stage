@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "HealthyHabitsV2LambdaFunction",
+            "healthyLambdaApi",
             {
               "Fn::Join": [
                 "",
                 [
-                  "HealthyHabitsV2LambdaFunction",
+                  "healthyLambdaApi",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "healthyhabitsv2LambdaRole97fae897",
+            "healthyhabitsv2LambdaRole7d8343e3",
             {
               "Fn::Join": [
                 "",
                 [
-                  "healthyhabitsv2LambdaRole97fae897",
+                  "healthyhabitsv2LambdaRole7d8343e3",
                   "-",
                   {
                     "Ref": "env"

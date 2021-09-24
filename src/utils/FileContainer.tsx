@@ -8,7 +8,7 @@ import {Worker} from '@react-pdf-viewer/core';
 // Import the styles
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import {fullScreenPlugin, RenderEnterFullScreenProps} from '@react-pdf-viewer/full-screen';
-import {Button, CardActionArea, CardHeader, Menu, Stack} from "@mui/material";
+import {Button, Card, CardActionArea, CardHeader, Menu, Stack} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
@@ -29,6 +29,8 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/thumbnail/lib/styles/index.css';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import {getFilenameFromUrl} from "pdfjs-dist";
+import {genUrlOfThumbnailOfFile} from "../apiFunctions/apiFunctions";
 
 const disableScrollPlugin = (): Plugin => {
     const renderViewer = (props: RenderViewer) => {
@@ -50,11 +52,26 @@ const disableScrollPlugin = (): Plugin => {
 };
 const FileContainer = (props: { linkToFile: string, fileExtension: string, fileName: string }) => {
     const {linkToFile, fileExtension, fileName} = {...props}
+    const linkToThumbnail = `https://serverlessrepo-thumbnail-creator-resultsbucket-1orehh2pvqrw9.s3.eu-west-2.amazonaws.com/${fileName}.jpg`;
+    const [linkToPreview, setLinkToPreview] = useState('');
+    console.log(linkToThumbnail)
+    genUrlOfThumbnailOfFile(fileName+'.jpg').then(res =>{
+        console.log('url to file: ' + res.url);
+        setLinkToPreview(res.url);
+    })
 
     const [contextMenu, setContextMenu] = React.useState<{
         mouseX: number;
         mouseY: number;
     } | null>(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleContextMenu = (event: React.MouseEvent) => {
         event.preventDefault();
@@ -67,9 +84,6 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                 :
                 null,
         );
-    };
-    const handleClose = () => {
-        setContextMenu(null);
     };
     const PdfFile = () => {
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -87,31 +101,31 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                     window.open(linkToFile, '_blank')
                 }}>
 
-                    <CardMedia >
+                    <CardMedia>
                         <Document
                             renderMode={'canvas'}
-                            loading={<Skeleton variant="rectangular" animation={"wave"}  height={212} width={300}/>
+                            loading={<Skeleton variant="rectangular" animation={"wave"} height={212} width={300}/>
                             }
                             file={linkToFile}
                         >
-                                <Page canvasRef={instance => {
-                                }} height={200} renderMode={'canvas'} pageNumber={1}/>
+                            <Page canvasRef={instance => {
+                            }} height={200} renderMode={'canvas'} pageNumber={1}/>
                         </Document>
                     </CardMedia>
                 </CardActionArea>
-                    <CardHeader
+                <CardHeader
 
-                        style={{ paddingTop: 0}}
-                        action={
-                            <>
+                    style={{paddingTop: 0}}
+                    action={
+                        <>
                             <IconButton onContextMenu={handleContextMenu} aria-label="settings" id="basic-button"
                                         aria-controls="basic-menu"
                                         aria-haspopup="true"
                                         aria-expanded={open ? 'true' : undefined}
                                         onClick={handleClick}>
-                                <MoreVertIcon />
+                                <MoreVertIcon/>
                             </IconButton>
-                                <Menu
+                            <Menu
                                 id="basic-menu"
                                 anchorEl={anchorEl}
                                 open={open}
@@ -120,28 +134,29 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                                     'aria-labelledby': 'basic-button',
                                 }}
                             >
-                                    <MenuList>
-                                        <MenuItem>
-                                            <ListItemIcon>
-                                                <DeleteOutlineOutlinedIcon />
-                                            </ListItemIcon>
-                                            <ListItemText>Remove</ListItemText>
-                                        </MenuItem>
-                                        <MenuItem onClick={()=>{
-                                            window.open(linkToFile, '_blank')}
-                                        }>
-                                            <ListItemIcon >
-                                                <OpenInNewOutlinedIcon />
-                                            </ListItemIcon>
-                                            <ListItemText>Open in new tab</ListItemText>
-                                        </MenuItem>
-                                    </MenuList>
+                                <MenuList>
+                                    <MenuItem>
+                                        <ListItemIcon>
+                                            <DeleteOutlineOutlinedIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText>Remove</ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => {
+                                        window.open(linkToFile, '_blank')
+                                    }
+                                    }>
+                                        <ListItemIcon>
+                                            <OpenInNewOutlinedIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText>Open in new tab</ListItemText>
+                                    </MenuItem>
+                                </MenuList>
                             </Menu>
 
-                            </>
-                        }
-                        title={<Typography variant={"subtitle1"}>{fileName}</Typography>}
-                    />
+                        </>
+                    }
+                    title={<Typography variant={"subtitle1"}>{fileName}</Typography>}
+                />
             </>
 
         );
@@ -173,94 +188,6 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
         );
     }
 
-    const Pdf = () => {
-        const thumbnailPluginInstance = thumbnailPlugin();
-        const {Thumbnails} = thumbnailPluginInstance;
-        const disableScrollPluginInstance = disableScrollPlugin();
-        const [contextMenu, setContextMenu] = React.useState<{
-            mouseX: number;
-            mouseY: number;
-        } | null>(null);
-
-        const handleContextMenu = (event: React.MouseEvent) => {
-            event.preventDefault();
-            setContextMenu(
-                contextMenu === null
-                    ? {
-                        mouseX: event.clientX - 2,
-                        mouseY: event.clientY - 4,
-                    }
-                    :
-                    null,
-            );
-        };
-        const handleClose = () => {
-            setContextMenu(null);
-        };
-        const fullScreenPluginInstance = fullScreenPlugin({
-            onEnterFullScreen: (zoom) => {
-                zoom(SpecialZoomLevel.PageFit);
-            },
-            onExitFullScreen: (zoom) => {
-                zoom(SpecialZoomLevel.PageFit);
-            },
-        });
-        const {EnterFullScreen} = fullScreenPluginInstance;
-        return (
-            <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-                <EnterFullScreen>
-                    {(props: RenderEnterFullScreenProps) => {
-                        return (
-                            <>
-
-                                <CardContent onContextMenu={handleContextMenu}>
-                                    <CardActionArea onClick={props.onClick}>
-                                        <div style={{width: 'fit-content', height: 'fit-content'}}>
-                                            {/*<Thumbnails />*/}
-                                            <Viewer plugins={[
-                                                fullScreenPluginInstance,
-                                                thumbnailPluginInstance,
-                                                disableScrollPluginInstance
-                                            ]} fileUrl={linkToFile}/>
-                                        </div>
-                                    </CardActionArea>
-                                    <Menu
-                                        open={contextMenu !== null}
-                                        onClose={handleClose}
-                                        anchorReference="anchorPosition"
-                                        anchorPosition={
-                                            contextMenu !== null
-                                                ? {top: contextMenu.mouseY, left: contextMenu.mouseX}
-                                                : undefined
-                                        }
-                                    >
-                                        <MenuItem onClick={handleClose}>
-                                            Copy
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>Print</MenuItem>
-                                        <MenuItem onClick={handleClose}>Highlight</MenuItem>
-                                        <MenuItem onClick={handleClose}>Email</MenuItem>
-                                    </Menu>
-
-                                </CardContent>
-                                <Stack direction={'row'}>
-                                    <CardActions>
-                                        <Typography>
-                                            {fileName}
-                                        </Typography>
-                                    </CardActions>
-                                    <IconButton>
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Stack>
-                            </>
-                        );
-                    }
-                    }
-                </EnterFullScreen>
-            </Worker>
-        )
-    }
     const VideoPlayer = () => {
         return (
             <Box width={359}>
@@ -272,24 +199,66 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
             </Box>
         );
     }
+    return (
+        < >
 
-    switch (fileExtension) {
-        case 'pdf':
-            return <PdfFile/>;
-            break;
-        case 'mp4':
-            return <VideoPlayer/>;
-        default:
-            return (
-                <Box width={250} height={200}>
-                    <Container>
-                        <Typography variant={'h5'} style={{margin: 'auto'}}>
-                            {fileExtension}
-                        </Typography>
-                    </Container>
-                </Box>
-            )
-    }
+            <CardActions>
+                <>
+                    <IconButton onContextMenu={handleContextMenu} aria-label="settings" id="basic-button"
+                                aria-controls="basic-menu"
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}>
+                        <MoreVertIcon/>
+                    </IconButton>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuList>
+                            <MenuItem>
+                                <ListItemIcon>
+                                    <DeleteOutlineOutlinedIcon/>
+                                </ListItemIcon>
+                                <ListItemText>Remove</ListItemText>
+                            </MenuItem>
+                            <MenuItem onClick={() => {
+                                window.open(linkToFile, '_blank')
+                            }
+                            }>
+                                <ListItemIcon>
+                                    <OpenInNewOutlinedIcon/>
+                                </ListItemIcon>
+                                <ListItemText>Open in new tab</ListItemText>
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+
+                </>
+            </CardActions>
+            <CardActionArea>
+                <CardMedia
+                style={{
+                    maxWidth: '100%',
+                    height: '200px'
+
+                }}
+                component="img"
+                image={linkToPreview}
+                alt="Paella dish"
+            />
+            </CardActionArea>
+            <CardHeader
+                style={{paddingTop: 0}}
+                title={<Typography  display={'flex'} variant={"subtitle1"}>{fileName}</Typography>}
+            />
+        </>
+    )
 };
 
 

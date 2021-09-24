@@ -7,6 +7,8 @@ import {Document, Page} from "react-pdf";
 import {getFileDescription} from "./filenameExtractor";
 import {API, Storage} from "aws-amplify";
 import FileContainer from "./FileContainer";
+import {getFilenameFromUrl} from "pdfjs-dist";
+import {genUrlOfThumbnailOfFile} from "../apiFunctions/apiFunctions";
 
 const FileWidget = (props: { file: File }) => {
     const [linkToShow, setLinkToShow] = useState('');
@@ -17,6 +19,11 @@ const FileWidget = (props: { file: File }) => {
     useEffect(() => {
         Storage.get(file?.key as string, {expires: 10000}).then((link: any) => setLinkToShow(link))
 
+        // genUrlOfThumbnailOfFile(file?.key ?? '').then(res => {
+        //     console.log(res)
+        //     console.log('link to file: ' + res);
+        //     setLinkToShow(res);
+        // })
         return () => {
 
         };
@@ -39,7 +46,7 @@ const FileWidget = (props: { file: File }) => {
                     {extension}
                 </Label>
             </Box>
-                {linkToShow && <FileContainer fileExtension={extension} linkToFile={linkToShow} fileName={fileName}/>}
+            {linkToShow && <FileContainer fileExtension={extension} linkToFile={linkToShow} fileName={fileName}/>}
 
         </Card>
     );

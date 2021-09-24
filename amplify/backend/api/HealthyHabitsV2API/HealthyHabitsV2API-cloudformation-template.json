@@ -8,15 +8,15 @@
         },
     
     
-          "functionHealthyHabitsV2LambdaFunctionName": {
+          "functionhealthyLambdaApiName": {
             "Type": "String",
-            "Default": "functionHealthyHabitsV2LambdaFunctionName"
+            "Default": "functionhealthyLambdaApiName"
           },
 
           
-          "functionHealthyHabitsV2LambdaFunctionArn": {
+          "functionhealthyLambdaApiArn": {
             "Type": "String",
-            "Default": "functionHealthyHabitsV2LambdaFunctionArn"
+            "Default": "functionhealthyLambdaApiArn"
           }
 
           
@@ -37,16 +37,16 @@
         
         
         
-      "HealthyHabitsV2RestApi": {
+      "HealthyHabitsV2API": {
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "HealthyHabitsV2RestApi",
+          "Name": "HealthyHabitsV2API",
           "Body": {
             "swagger": "2.0",
             "info": {
               "version": "2018-05-24T17:52:00Z",
-              "title": "HealthyHabitsV2RestApi"
+              "title": "HealthyHabitsV2API"
             },
             "host": {
                 "Fn::Join": [
@@ -168,7 +168,7 @@
                             
                             {
 
-                                "Ref": "functionHealthyHabitsV2LambdaFunctionArn"
+                                "Ref": "functionhealthyLambdaApiArn"
                             },
                             
                             "/invocations"
@@ -267,7 +267,7 @@
                           
                           {
 
-                            "Ref": "functionHealthyHabitsV2LambdaFunctionArn"
+                            "Ref": "functionhealthyLambdaApiArn"
                           },
                           
                           "/invocations"
@@ -324,12 +324,12 @@
       
         
 
-        "functionHealthyHabitsV2LambdaFunctionPermissionHealthyHabitsV2RestApi": {
+        "functionhealthyLambdaApiPermissionHealthyHabitsV2API": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
                     {
-                        "Ref":  "functionHealthyHabitsV2LambdaFunctionName"
+                        "Ref":  "functionhealthyLambdaApiName"
                     },
                     
                     "Action": "lambda:InvokeFunction",
@@ -348,7 +348,7 @@
                             },
                             ":",
                             {
-                                "Ref": "HealthyHabitsV2RestApi"
+                                "Ref": "HealthyHabitsV2API"
                             },
                             "/*/*/*"
                         ]
@@ -359,7 +359,7 @@
         
         
 
-      "DeploymentAPIGWHealthyHabitsV2RestApi": {
+      "DeploymentAPIGWHealthyHabitsV2API": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
@@ -373,7 +373,7 @@
             ]
           },
           "RestApiId": {
-            "Ref": "HealthyHabitsV2RestApi"
+            "Ref": "HealthyHabitsV2API"
           }
         }
       }
@@ -381,15 +381,15 @@
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {"Fn::Join": ["", ["https://", {"Ref": "HealthyHabitsV2RestApi"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "HealthyHabitsV2API"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
         },
         "ApiName": {
           "Description": "API Friendly name",
-          "Value": "HealthyHabitsV2RestApi"
+          "Value": "HealthyHabitsV2API"
         },
         "ApiId": {
           "Description": "API ID (prefix of API URL)",
-          "Value": {"Ref": "HealthyHabitsV2RestApi"}
+          "Value": {"Ref": "HealthyHabitsV2API"}
         }
     }
   }

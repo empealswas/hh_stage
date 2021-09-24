@@ -16,9 +16,9 @@
         "healthyhabitsv24aea1e5f": {}
       },
       "function": {
-        "HealthyHabitsV2LambdaFunction": {
+        "healthyLambdaApi": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/HealthyHabitsV2LambdaFunction-2f2f674c3357697a5772-build.zip"
+          "s3Key": "amplify-builds/healthyLambdaApi-5a4e4966515635554d47-build.zip"
         }
       }
     }

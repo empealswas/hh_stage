@@ -2,18 +2,18 @@
   "paths": [
     {
       "name": "/api",
-      "lambdaFunction": "HealthyHabitsV2LambdaFunction",
+      "lambdaFunction": "healthyLambdaApi",
       "privacy": {
         "open": true
       },
       "policyResourceName": "/api"
     }
   ],
-  "resourceName": "HealthyHabitsV2RestApi",
-  "apiName": "HealthyHabitsV2RestApi",
+  "resourceName": "HealthyHabitsV2API",
+  "apiName": "HealthyHabitsV2API",
   "functionArns": [
     {
-      "lambdaFunction": "HealthyHabitsV2LambdaFunction"
+      "lambdaFunction": "healthyLambdaApi"
     }
   ],
   "privacy": {
@@ -25,7 +25,7 @@
   "dependsOn": [
     {
       "category": "function",
-      "resourceName": "HealthyHabitsV2LambdaFunction",
+      "resourceName": "healthyLambdaApi",
       "attributes": [
         "Name",
         "Arn"

@@ -37,13 +37,8 @@ export default function DashboardApp() {
                 <Box sx={{pb: 5}}>
                     <Typography variant="h4">Welcome back, {greeting}</Typography>
                 </Box>
-                <Button onClick={() => {
-                    console.log('send')
-                    API.get('amplifyapiREST', '/api/addTeacher', {})
-                        .then(res => {
-                        console.log(res);
-                    })
-                }}>Click</Button>
+                <img
+                    src={'https://serverlessrepo-thumbnail-creator-resultsbucket-1orehh2pvqrw9.s3.amazonaws.com/1632428188589-Prayer_Hand_with_Logo.jpg'}/>
                 <Grid container spacing={3}>
                     <Can I={'read'} a={'teacherDashboard'}>
                         <DashboardOfTeacher/>
