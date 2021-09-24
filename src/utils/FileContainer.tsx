@@ -53,9 +53,9 @@ const disableScrollPlugin = (): Plugin => {
 const FileContainer = (props: { linkToFile: string, fileExtension: string, fileName: string }) => {
     const {linkToFile, fileExtension, fileName} = {...props}
     const linkToThumbnail = `https://serverlessrepo-thumbnail-creator-resultsbucket-1orehh2pvqrw9.s3.eu-west-2.amazonaws.com/${fileName}.jpg`;
-    const [linkToPreview, setLinkToPreview] = useState('');
+    const [linkToPreview, setLinkToPreview] = useState(null);
     console.log(linkToThumbnail)
-    genUrlOfThumbnailOfFile(fileName+'.jpg').then(res =>{
+    genUrlOfThumbnailOfFile(fileName + '.jpg').then(res => {
         console.log('url to file: ' + res.url);
         setLinkToPreview(res.url);
     })
@@ -85,108 +85,6 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                 null,
         );
     };
-    const PdfFile = () => {
-        const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-        const open = Boolean(anchorEl);
-        const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-            setAnchorEl(event.currentTarget);
-        };
-        const handleClose = () => {
-            setAnchorEl(null);
-        };
-        return (
-            <>
-
-                <CardActionArea onClick={() => {
-                    window.open(linkToFile, '_blank')
-                }}>
-
-                    <CardMedia>
-                        <Document
-                            renderMode={'canvas'}
-                            loading={<Skeleton variant="rectangular" animation={"wave"} height={212} width={300}/>
-                            }
-                            file={linkToFile}
-                        >
-                            <Page canvasRef={instance => {
-                            }} height={200} renderMode={'canvas'} pageNumber={1}/>
-                        </Document>
-                    </CardMedia>
-                </CardActionArea>
-                <CardHeader
-
-                    style={{paddingTop: 0}}
-                    action={
-                        <>
-                            <IconButton onContextMenu={handleContextMenu} aria-label="settings" id="basic-button"
-                                        aria-controls="basic-menu"
-                                        aria-haspopup="true"
-                                        aria-expanded={open ? 'true' : undefined}
-                                        onClick={handleClick}>
-                                <MoreVertIcon/>
-                            </IconButton>
-                            <Menu
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
-                                MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                }}
-                            >
-                                <MenuList>
-                                    <MenuItem>
-                                        <ListItemIcon>
-                                            <DeleteOutlineOutlinedIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText>Remove</ListItemText>
-                                    </MenuItem>
-                                    <MenuItem onClick={() => {
-                                        window.open(linkToFile, '_blank')
-                                    }
-                                    }>
-                                        <ListItemIcon>
-                                            <OpenInNewOutlinedIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText>Open in new tab</ListItemText>
-                                    </MenuItem>
-                                </MenuList>
-                            </Menu>
-
-                        </>
-                    }
-                    title={<Typography variant={"subtitle1"}>{fileName}</Typography>}
-                />
-            </>
-
-        );
-    }
-    const PdfTest = () => {
-        const [numPages, setNumPages] = useState(null);
-
-
-        // @ts-ignore
-        function onDocumentLoadSuccess({numPages: nextNumPages}) {
-            setNumPages(nextNumPages);
-        }
-
-        return (
-            <Container style={{
-                overflow: 'hidden'
-            }}>
-                <Document
-                    file={linkToFile}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                    // options={options}
-                >
-                    <Page className={styles.reactPdf__Page}
-                          pageNumber={1}
-                          scale={0.4}
-                    />
-                </Document>
-            </Container>
-        );
-    }
 
     const VideoPlayer = () => {
         return (
@@ -241,21 +139,26 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
 
                 </>
             </CardActions>
-            <CardActionArea>
-                <CardMedia
-                style={{
-                    maxWidth: '100%',
-                    height: '200px'
-
-                }}
-                component="img"
-                image={linkToPreview}
-                alt="Paella dish"
-            />
+            <CardActionArea onClick={() => {
+                window.open(linkToFile, '_blank')
+            }}>
+                {linkToPreview ?
+                    <CardMedia
+                        style={{
+                            maxWidth: '100%',
+                            height: '200px'
+                        }}
+                        component="img"
+                        image={linkToPreview}
+                        alt="Thumbnail not found"
+                    />
+                    :
+                    <Skeleton variant={'rectangular'} height={200} width={"100%"}/>
+                }
             </CardActionArea>
             <CardHeader
                 style={{paddingTop: 0}}
-                title={<Typography  display={'flex'} variant={"subtitle1"}>{fileName}</Typography>}
+                title={<Typography display={'flex'} variant={"subtitle1"}>{fileName}</Typography>}
             />
         </>
     )

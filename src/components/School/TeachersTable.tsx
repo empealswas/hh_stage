@@ -15,6 +15,8 @@ import SendIcon from '@mui/icons-material/Send';
 import {resendCodeToTeacher} from "../../apiFunctions/apiFunctions";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
+import {LoadingButton} from "@material-ui/lab";
+import {GridCellParams} from "@mui/x-data-grid";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -23,7 +25,38 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const SendButton = (params: { id: string }) => {
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = React.useState(false);
 
+
+    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    }
+    const [message, setMessage] = useState('');
+    return (
+        <div>
+            <Stack direction={'row'}>
+                <Tooltip title={'Resend Invite Message'}>
+                    <LoadingButton loading={loading} startIcon={<SendIcon/>} onClick={() => {
+                        setLoading(true);
+                        resendCodeToTeacher({teacherEmail: params.id})
+                            .then(value => {
+                                setOpen(true);
+                                setMessage(`Invitation is sent to: ${params.id}`);
+                                setLoading(false);
+                            });
+                    }}>
+                        Resend
+                    </LoadingButton>
+                </Tooltip>
+            </Stack>
+        </div>
+    )
+}
 export default function TeachersTable() {
     const columns: GridColDef[] = [
         {field: 'id', headerName: 'Email', flex: 1},
@@ -58,25 +91,10 @@ export default function TeachersTable() {
             flex: 0.4,
             align: 'center',
             headerAlign: 'center',
-            renderCell: (params) => {
-                return (
-                    <Stack direction={'row'}>
-                        <Tooltip title={'Resend Invite Message'}>
-                            <IconButton color={'success'} onClick={() => {
-                                resendCodeToTeacher({teacherEmail: `${params.getValue(params.id, 'id')}`})
-                                    .then(value => {
-                                        setOpen(true);
-                                        setMessage(`Invitation is sent to: ${params.getValue(params.id, 'id')}`);
-                                    })
-                            }}>
-                                <SendIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    </Stack>
-                )
+            renderCell: params => {
+                return (<SendButton id={params.getValue(params.id, 'id') as string}/>);
             }
-            ,
-        },
+        }
     ];
     const school = useContext(SchoolManagementContext);
 
@@ -123,23 +141,10 @@ export default function TeachersTable() {
         }
     }, [])
     const [teachers, setTeachers] = useState<Teacher[] | null>(null);
-    const [open, setOpen] = React.useState(false);
 
-
-    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
-    const [message, setMessage] = useState('');
     return (
         <div>
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
-                    {message}
-                </Alert>
-            </Snackbar>
+
             <div style={{width: '100%', display: 'flex'}}>
                 <DataGrid
                     rows={teachers?.map((teacher, index) => ({
@@ -158,6 +163,7 @@ export default function TeachersTable() {
                         }))
                         console.log(res)
                     }}
+                    disableSelectionOnClick={true}
                     columns={columns}
                     loading={!teachers}
                     rowsPerPageOptions={[5, 20, 100]}
