@@ -14,16 +14,9 @@ const FileWidget = (props: { file: File }) => {
     const [linkToShow, setLinkToShow] = useState('');
     const {file} = {...props};
     const {fileName, extension} = getFileDescription(file);
-    const [onItemClick, setOnItemClick] = useState<() => void>(() => {
-    });
+
     useEffect(() => {
         Storage.get(file?.key as string, {expires: 10000}).then((link: any) => setLinkToShow(link))
-
-        // genUrlOfThumbnailOfFile(file?.key ?? '').then(res => {
-        //     console.log(res)
-        //     console.log('link to file: ' + res);
-        //     setLinkToShow(res);
-        // })
         return () => {
 
         };
@@ -46,7 +39,7 @@ const FileWidget = (props: { file: File }) => {
                     {extension}
                 </Label>
             </Box>
-            {linkToShow && <FileContainer fileExtension={extension} linkToFile={linkToShow} fileName={fileName}/>}
+            {linkToShow && <FileContainer file={file} fileExtension={extension} linkToFile={linkToShow} fileName={fileName}/>}
 
         </Card>
     );

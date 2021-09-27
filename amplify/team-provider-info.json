@@ -18,7 +18,11 @@
       "function": {
         "healthyLambdaApi": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/healthyLambdaApi-5a4e4966515635554d47-build.zip"
+          "s3Key": "amplify-builds/healthyLambdaApi-506239356a672b4c3774-build.zip"
+        },
+        "RemoveFileFromS3Bucket": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/RemoveFileFromS3Bucket-59374c7171624536394a-build.zip"
         }
       }
     }

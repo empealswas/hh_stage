@@ -86,7 +86,7 @@ app.post('/api/resendTeacherInvitation', (req, res) => {
         if (error) {
             res.json({error: error, url: req.url})
         }
-        if (data.Payload) {
+        if (data?.Payload) {
             res.json({success: 'Invite is resent', url: req.url})
         }
     });
@@ -114,6 +114,28 @@ app.put('/api/*', function (req, res) {
 app.delete('/api', function (req, res) {
     // Add your code here
     res.json({success: 'delete call succeed!', url: req.url});
+});
+
+app.delete('/api/deleteFile/:id', function (req, res) {
+    const {id} = req.params;
+    const event = {
+        body: {
+            id: id
+        }
+    }
+    console.log('event' + event)
+    return lambda.invoke({
+        FunctionName: 'RemoveFileFromS3Bucket-dev',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(event) // pass params
+    }, function (error, data) {
+        if (error) {
+            res.json({error: error, url: req.url})
+        }
+        if (data?.Payload) {
+            res.json({success: 'File deleted', url: req.url})
+        }
+    });
 });
 
 app.delete('/api/*', function (req, res) {

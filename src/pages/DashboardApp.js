@@ -22,10 +22,13 @@ import {useContext, useState} from "react";
 import {UserContext} from "../App";
 import {Button} from "@mui/material";
 import {API} from "aws-amplify";
+import { useSnackbar } from 'notistack';
+
 
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const user = useContext(UserContext);
     const [greeting, setGreeting] = useState('');
     user.getFirstName().then(data => {
@@ -38,6 +41,11 @@ export default function DashboardApp() {
                     <Typography variant="h4">Welcome back, {greeting}</Typography>
                 </Box>
                 <Grid container spacing={3}>
+                    {/*<Button onClick={()=>{*/}
+                    {/*    enqueueSnackbar('Hello Snackbar', {variant: 'success'});*/}
+                    {/*}}>*/}
+                    {/*    Test Button*/}
+                    {/*</Button>*/}
                     <Can I={'read'} a={'teacherDashboard'}>
                         <DashboardOfTeacher/>
                     </Can>

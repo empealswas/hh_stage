@@ -84,20 +84,22 @@ function App() {
 
     return (
         <ThemeConfig>
-            {user ?
-                <UserContext.Provider value={user}>
-                    <AbilityContext.Provider value={defineAbilityFor(user)}>
-                        {/*<SnackbarProvider maxSnack={3}>*/}
+            <SnackbarProvider maxSnack={3}>
+                {user ?
+                    <UserContext.Provider value={user}>
+                        <AbilityContext.Provider value={defineAbilityFor(user)}>
+                            {/*<SnackbarProvider maxSnack={3}>*/}
                             <ScrollToTop/>
                             <Router/>
-                        {/*</SnackbarProvider>*/}
-                    </AbilityContext.Provider>
-                </UserContext.Provider>
-                :
-                <AmplifyAuthenticator>
-                    <AmplifySignIn slot="sign-in" hideSignUp></AmplifySignIn>
-                </AmplifyAuthenticator>
-            }
+                            {/*</SnackbarProvider>*/}
+                        </AbilityContext.Provider>
+                    </UserContext.Provider>
+                    :
+                    <AmplifyAuthenticator>
+                        <AmplifySignIn slot="sign-in" hideSignUp></AmplifySignIn>
+                    </AmplifyAuthenticator>
+                }
+            </SnackbarProvider>
         </ThemeConfig>
     );
 }

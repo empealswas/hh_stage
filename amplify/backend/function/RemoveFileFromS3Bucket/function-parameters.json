@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "auth": {
+      "healthyhabitsv24aea1e5f": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "storage": {
+      "HealthyHabitsV2": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "File:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

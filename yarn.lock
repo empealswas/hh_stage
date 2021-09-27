@@ -8815,11 +8815,6 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-goober@^2.0.33:
-  version "2.0.41"
-  resolved "https://registry.yarnpkg.com/goober/-/goober-2.0.41.tgz#0a3d786ff9917bcf2a096eef703bf717838cbec9"
-  integrity sha512-kwjegMT5018zWydhOQlQneCgCtrKJaPsru7TaBWmTYV0nsMeUrM6L6O8JmNYb9UbPMgWcmtf+9p4Y3oJabIH1A==
-
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
@@ -11821,13 +11816,12 @@ normalize.css@^5.0.0:
   resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-5.0.0.tgz#7cec875ce8178a5333c4de80b68ea9c18b9d7c37"
   integrity sha1-fOyHXOgXilMzxN6Ato6pwYudfDc=
 
-notistack@2.0.1-alpha.5:
-  version "2.0.1-alpha.5"
-  resolved "https://registry.yarnpkg.com/notistack/-/notistack-2.0.1-alpha.5.tgz#fcfff99515a72b3625b575f5a9a176a186f3b29d"
-  integrity sha512-jFMiCi1zDXCcuxC0uMARqyTaFqsEjdwQ4hNZUIai87vQiiP1C9ZkTSUVI+qfrb3JSqDp85Mf47wKphr9Pdpv2Q==
+notistack@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/notistack/-/notistack-2.0.2.tgz#18361a0ce39d2c2d8c3ef58ae43cf4b30d78b800"
+  integrity sha512-Z2kD6QK9n/9V9zXQfN3ZgH22TefBWE3OZ/q74gMVslGPA9j9WGjoi+YxsgkTAOY8NqTYdUe8aijd2kXsGNYp6g==
   dependencies:
     clsx "^1.1.0"
-    goober "^2.0.33"
     hoist-non-react-statics "^3.3.0"
 
 npm-run-path@^2.0.0:

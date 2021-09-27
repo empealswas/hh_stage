@@ -17,6 +17,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {LoadingButton} from "@material-ui/lab";
 import {GridCellParams} from "@mui/x-data-grid";
+import {useSnackbar} from "notistack";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -28,15 +29,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 const SendButton = (params: { id: string }) => {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = React.useState(false);
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-
-    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    }
-    const [message, setMessage] = useState('');
     return (
         <div>
             <Stack direction={'row'}>
@@ -46,8 +40,8 @@ const SendButton = (params: { id: string }) => {
                         resendCodeToTeacher({teacherEmail: params.id})
                             .then(value => {
                                 setOpen(true);
-                                setMessage(`Invitation is sent to: ${params.id}`);
                                 setLoading(false);
+                                enqueueSnackbar(`Invitation has been sent to ${params.id}`, {variant: 'success'})
                             });
                     }}>
                         Resend

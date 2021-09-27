@@ -1,4 +1,7 @@
-type File @model  @key(name: "byLesson", fields: ["lessonID"]) {
+type File
+@model
+@key(name: "byLesson", fields: ["lessonID"])
+{
   id: ID!
   key: String
   region: String

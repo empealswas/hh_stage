@@ -1,64 +1,33 @@
-import React, {createRef, useState} from 'react';
-import {Document, Page} from "react-pdf";
-import {Box, CardActions, CardContent, CardMedia, Container, IconButton, Skeleton, Typography} from "@material-ui/core";
+import React, {useEffect, useState} from 'react';
+import {Box, CardActions, CardMedia, IconButton, Skeleton, Typography} from "@material-ui/core";
 // @ts-ignore
 import {Player} from 'video-react';
-import {SpecialZoomLevel, Viewer} from '@react-pdf-viewer/core';
-import {Worker} from '@react-pdf-viewer/core';
 // Import the styles
 import '@react-pdf-viewer/core/lib/styles/index.css';
-import {fullScreenPlugin, RenderEnterFullScreenProps} from '@react-pdf-viewer/full-screen';
-import {Button, Card, CardActionArea, CardHeader, Menu, Stack} from "@mui/material";
+import {CardActionArea, CardHeader, Menu} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Divider from '@mui/material/Divider';
-import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ContentCut from '@mui/icons-material/ContentCut';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
-import Cloud from '@mui/icons-material/Cloud'
-import {Delete, OpenInNew} from "@material-ui/icons";
-import {thumbnailPlugin} from '@react-pdf-viewer/thumbnail';
-import {Plugin, RenderViewer} from '@react-pdf-viewer/core';
 // @ts-ignore
 import styles from './Sample.less'
-import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/thumbnail/lib/styles/index.css';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import {getFilenameFromUrl} from "pdfjs-dist";
-import {genUrlOfThumbnailOfFile} from "../apiFunctions/apiFunctions";
+import {deleteFileById, genUrlOfThumbnailOfFile} from "../apiFunctions/apiFunctions";
+import {API} from "aws-amplify";
+import {File} from "../API";
 
-const disableScrollPlugin = (): Plugin => {
-    const renderViewer = (props: RenderViewer) => {
-        const {slot} = props;
-
-        if (slot.subSlot && slot.subSlot.attrs && slot.subSlot.attrs.style) {
-            slot.subSlot.attrs.style = Object.assign({}, slot.subSlot.attrs.style, {
-                // Disable scrolling in the pages container
-                overflow: 'hidden',
-            });
-        }
-
-        return slot;
-    };
-
-    return {
-        renderViewer,
-    };
-};
-const FileContainer = (props: { linkToFile: string, fileExtension: string, fileName: string }) => {
-    const {linkToFile, fileExtension, fileName} = {...props}
-    const linkToThumbnail = `https://serverlessrepo-thumbnail-creator-resultsbucket-1orehh2pvqrw9.s3.eu-west-2.amazonaws.com/${fileName}.jpg`;
+const FileContainer = (props: { linkToFile: string, fileExtension: string, fileName: string, file: File }) => {
+    const {linkToFile, fileExtension, fileName, file} = {...props}
     const [linkToPreview, setLinkToPreview] = useState(null);
-    console.log(linkToThumbnail)
-    genUrlOfThumbnailOfFile(fileName + '.jpg').then(res => {
-        console.log('url to file: ' + res.url);
-        setLinkToPreview(res.url);
-    })
+    useEffect(() => {
+        genUrlOfThumbnailOfFile(fileName + '.jpg').then(res => {
+            setLinkToPreview(res.url);
+        })
+    }, []);
+
 
     const [contextMenu, setContextMenu] = React.useState<{
         mouseX: number;
@@ -72,6 +41,14 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const deleteFile = () => {
+        deleteFileById(file.id).then(result => {
+            console.log('File deleted')
+        }).catch(error => {
+            console.error(error);
+        })
+    }
 
     const handleContextMenu = (event: React.MouseEvent) => {
         event.preventDefault();
@@ -119,7 +96,7 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                         }}
                     >
                         <MenuList>
-                            <MenuItem>
+                            <MenuItem onClick={deleteFile}>
                                 <ListItemIcon>
                                     <DeleteOutlineOutlinedIcon/>
                                 </ListItemIcon>

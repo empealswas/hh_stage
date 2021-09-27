@@ -2,10 +2,12 @@ import {AddTeacherRequest} from "./DTO/AddTeacherRequest";
 import {API} from "aws-amplify";
 import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
 
+const apiName = 'HealthyHabitsV2API'
+
 export async function addTeacherApi(params: AddTeacherRequest) {
 
     console.log('Adding teacher');
-    const result = await API.post('HealthyHabitsV2API', '/api/addTeacher', {
+    const result = await API.post(apiName, '/api/addTeacher', {
         body: {
             ...params
         }
@@ -16,7 +18,7 @@ export async function addTeacherApi(params: AddTeacherRequest) {
 
 export async function resendCodeToTeacher(params: ResendTeacherInvitation) {
     console.log('Resending teacher invitation');
-    const result = await API.post('HealthyHabitsV2API', '/api/resendTeacherInvitation', {
+    const result = await API.post(apiName, '/api/resendTeacherInvitation', {
         body: {
             ...params
         }
@@ -27,10 +29,15 @@ export async function resendCodeToTeacher(params: ResendTeacherInvitation) {
 
 export async function genUrlOfThumbnailOfFile(fileName: string){
 
-    const result = await API.get('HealthyHabitsV2API', '/api/getUrlToObject', {
+    const result = await API.get(apiName, '/api/getUrlToObject', {
         queryStringParameters: {  // OPTIONAL
             name: fileName
         },
     })
+    return result;
+}
+export async function deleteFileById(id: string){
+
+    const result = await API.del(apiName, `/api/deleteFile/${id}`,{})
     return result;
 }

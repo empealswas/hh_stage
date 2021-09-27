@@ -64,6 +64,34 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "RemoveFileFromS3Bucket": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "healthyhabitsv24aea1e5f",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "HealthyHabitsV2",
+          "attributes": [
+            "BucketName"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2GraphQlApi",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
     }
   },
   "storage": {
