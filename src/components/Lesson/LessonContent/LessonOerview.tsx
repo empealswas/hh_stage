@@ -9,7 +9,7 @@ import AttendanceSheetModal from "../../attendance/AttendanceSheetModal";
 import {Can} from "../../../utils/Ability";
 import LessonRating from "./LessonRating";
 import {Container} from "@material-ui/core";
-import {Box} from "@mui/material";
+import {AccordionActions, Box, IconButton, List, Snackbar} from "@mui/material";
 import FilesUploadDropzone from "../../FilesUploading/FilesUploadDropzone";
 import FilesUploadDropzoneWithChildren from "../../FilesUploading/FilesUploadDropzoneWithChildren";
 import Title from "../YearPage/Title";
@@ -19,11 +19,19 @@ import {onCreateFile, onDeleteFile, onUpdateCurriculum} from "../../../graphql/s
 import {createFile, createLesson, createTermLesson} from "../../../graphql/mutations";
 import awsConfig from "../../../aws-exports";
 import {useSnackbar} from "notistack";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CloseIcon from '@mui/icons-material/Close';
+import LoadingListItem from "../../../utils/LoadingListItem";
 
 const LessonOverview = () => {
     const {lessonId} = useParams();
     const [lesson, setLesson] = useState<Lesson | null>(null);
     const [droppedFiles, setDroppedFiles] = useState<File []>([]);
+    const [snackBarOpen, setSnackBarOpen] = useState(true);
+    const [filesToUpload, setFilesToUpload] = useState<File []>([]);
     const snackbar = useSnackbar();
 
     async function fetchLesson() {
@@ -80,30 +88,32 @@ const LessonOverview = () => {
     }, []);
     const onDrop = useCallback(acceptedFiles => {
         uploadFiles(acceptedFiles)
+        setSnackBarOpen(true);
+        setFilesToUpload(prevState => [...acceptedFiles, ...prevState])
         setDroppedFiles(acceptedFiles);
     }, []);
 
     const uploadFiles = async (files: File[]) => {
-        for (const file of files) {
-            try {
-                const fileName = `${Date.now()}-${file.name.replace(/ /g, '_')}`;
-                const uploadedFile: any = await Storage.put(fileName, file, {
-                    contentType: file.type
-                })
-                const input: any = {
-                    key: uploadedFile.key,
-                    bucket: awsConfig.aws_user_files_s3_bucket,
-                    region: awsConfig.aws_user_files_s3_bucket_region,
-                    lessonID: lessonId
-                };
-                const result: any = await API.graphql(graphqlOperation(createFile, {input}));
-                snackbar.enqueueSnackbar('File added: ' + result.data.createFile.key, {variant: 'success'});
-                console.log(result);
-
-            } catch (error) {
-                console.error(`During the file uploading error occurred:`, error)
-            }
-        }
+        // for (const file of files) {
+        //     try {
+        //         const fileName = `${Date.now()}-${file.name.replace(/ /g, '_')}`;
+        //         const uploadedFile: any = await Storage.put(fileName, file, {
+        //             contentType: file.type,
+        //         })
+        //         const input: any = {
+        //             key: uploadedFile.key,
+        //             bucket: awsConfig.aws_user_files_s3_bucket,
+        //             region: awsConfig.aws_user_files_s3_bucket_region,
+        //             lessonID: lessonId
+        //         };
+        //         const result: any = await API.graphql(graphqlOperation(createFile, {input}));
+        //         snackbar.enqueueSnackbar('File added: ' + result.data.createFile.key, {variant: 'success'});
+        //         console.log(result);
+        //
+        //     } catch (error) {
+        //         console.error(`During the file uploading error occurred:`, error)
+        //     }
+        // }
     }
 
     return (
@@ -129,33 +139,51 @@ const LessonOverview = () => {
                             </Can>
                         </Container>
                     </Box>
-                    {/*<Container>*/}
-                    {/*    {lesson.Files?.items &&*/}
-                    {/*    <FilesViewer files={lesson.Files?.items}/>*/}
-                    {/*    }*/}
-                    {/*</Container>*/}
 
-                    <Can I={'create'} a={'file'} passThrough>
-                        {(allowed: boolean) =>
-                            allowed ?
-                                <FilesUploadDropzoneWithChildren dropzone={{
-                                    onDrop: onDrop,
-                                    accept: ['image/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']
-                                }}>
-                                    <Container>
-                                        {lesson.Files?.items &&
-                                        <FilesViewer files={lesson.Files?.items}/>
-                                        }
-                                    </Container>
-                                </FilesUploadDropzoneWithChildren>
-                                :
-                                <Container>
-                                    {lesson.Files?.items &&
-                                    <FilesViewer files={lesson.Files?.items}/>
-                                    }
-                                </Container>
-                        }
+                    <Can I={'create'} a={'file'}>
+                        <FilesUploadDropzoneWithChildren dropzone={{
+                            onDrop: onDrop,
+                            accept: ['image/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']
+                        }}/>
                     </Can>
+                    <Container>
+                        {lesson.Files?.items &&
+                        <FilesViewer files={lesson.Files?.items}/>
+                        }
+                    </Container>
+                    <Snackbar
+                        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+                        open={snackBarOpen}
+                    >
+                        <Accordion hidden={filesToUpload.length === 0} defaultExpanded={true}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon fontSize={'large'}/>}
+                                aria-controls="panel1a-content"
+                                style={{
+                                    backgroundColor: '#323232'
+                                }}
+                                id="panel1a-header"
+                            >
+                                <Typography sx={{color: 'primary.contrastText'}}>Files uploading</Typography>
+                            </AccordionSummary>
+
+                            <AccordionDetails style={{padding: 0}}>
+                                <List disablePadding>
+                                    {filesToUpload.map(file =>
+                                        <LoadingListItem file={file} lessonId={lessonId}/>)}
+                                </List>
+                            </AccordionDetails>
+                            <AccordionActions>
+                                <IconButton onClick={()=>{
+                                    setFilesToUpload([]);
+                                    setSnackBarOpen(false)
+                                }
+                                }>
+                                    <CloseIcon/>
+                                </IconButton>
+                            </AccordionActions>
+                        </Accordion>
+                    </Snackbar>
                 </>
                 :
                 <LinearProgressBottom/>
