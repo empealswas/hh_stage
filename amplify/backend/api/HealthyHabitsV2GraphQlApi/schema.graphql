@@ -1,6 +1,5 @@
 type File
 @model
-@auth(rules:[{allow: public, provider: iam}])
 @key(name: "byLesson", fields: ["lessonID"])
 {
   id: ID!
