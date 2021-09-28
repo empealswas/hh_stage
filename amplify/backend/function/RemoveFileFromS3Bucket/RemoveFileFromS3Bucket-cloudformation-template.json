@@ -27,6 +27,10 @@
     "apiHealthyHabitsV2GraphQlApiGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apiHealthyHabitsV2GraphQlApiGraphQLAPIIdOutput"
+    },
+    "apiHealthyHabitsV2GraphQlApiGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apiHealthyHabitsV2GraphQlApiGraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -116,6 +120,9 @@
             },
             "API_HEALTHYHABITSV2GRAPHQLAPI_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apiHealthyHabitsV2GraphQlApiGraphQLAPIIdOutput"
+            },
+            "API_HEALTHYHABITSV2GRAPHQLAPI_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apiHealthyHabitsV2GraphQlApiGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -329,6 +336,74 @@
                       {
                         "Ref": "authhealthyhabitsv24aea1e5fUserPoolId"
                       }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:GraphQL"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apiHealthyHabitsV2GraphQlApiGraphQLAPIIdOutput"
+                      },
+                      "/types/Query/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apiHealthyHabitsV2GraphQlApiGraphQLAPIIdOutput"
+                      },
+                      "/types/Mutation/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apiHealthyHabitsV2GraphQlApiGraphQLAPIIdOutput"
+                      },
+                      "/types/Subscription/*"
                     ]
                   ]
                 }

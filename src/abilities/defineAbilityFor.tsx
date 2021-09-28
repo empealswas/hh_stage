@@ -15,6 +15,7 @@ export default function defineAbilityFor(user: User | null) {
         can(['create','update', 'delete','view'], 'term');
         can(['create','update', 'delete','view'], 'subject');
         can(['create','update', 'delete','view'], 'lesson');
+        can(['create','update', 'delete','view'], 'file');
         can('visit', 'class overview')
         can('visit', 'reports');
         can('visit', 'houses');

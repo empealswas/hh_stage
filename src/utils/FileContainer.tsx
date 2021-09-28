@@ -16,8 +16,11 @@ import '@react-pdf-viewer/thumbnail/lib/styles/index.css';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {deleteFileById, genUrlOfThumbnailOfFile} from "../apiFunctions/apiFunctions";
-import {API} from "aws-amplify";
+import {API, graphqlOperation, Storage} from "aws-amplify";
 import {File} from "../API";
+import {deleteFile} from "../graphql/mutations";
+import {useSnackbar} from "notistack";
+import {Can} from "./Ability";
 
 const FileContainer = (props: { linkToFile: string, fileExtension: string, fileName: string, file: File }) => {
     const {linkToFile, fileExtension, fileName, file} = {...props}
@@ -38,16 +41,28 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-    const deleteFile = () => {
-        deleteFileById(file.id).then(result => {
-            console.log('File deleted')
-        }).catch(error => {
-            console.error(error);
-        })
+    const removeFile = () => {
+        if (file?.key) {
+            setLinkToPreview(null);
+            const snackbar = enqueueSnackbar('Removing file: ' + fileName, {variant: 'info'});
+            Storage.remove(file?.key).then(r => {
+                API.graphql(graphqlOperation(deleteFile, {input: {id: file?.id}}))
+                closeSnackbar(snackbar);
+                enqueueSnackbar('File removed: ' + fileName, {variant: 'success'})
+            });
+        }
+
+        // deleteFileById(file.id).then(result => {
+        //     console.log('File deleted')
+        // }).catch(error => {
+        //     console.error(error);
+        // })
     }
 
     const handleContextMenu = (event: React.MouseEvent) => {
@@ -96,12 +111,14 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                         }}
                     >
                         <MenuList>
-                            <MenuItem onClick={deleteFile}>
-                                <ListItemIcon>
-                                    <DeleteOutlineOutlinedIcon/>
-                                </ListItemIcon>
-                                <ListItemText>Remove</ListItemText>
-                            </MenuItem>
+                            <Can I={'delete'} this={'file'}>
+                                <MenuItem onClick={removeFile}>
+                                    <ListItemIcon>
+                                        <DeleteOutlineOutlinedIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText>Remove</ListItemText>
+                                </MenuItem>
+                            </Can>
                             <MenuItem onClick={() => {
                                 window.open(linkToFile, '_blank')
                             }

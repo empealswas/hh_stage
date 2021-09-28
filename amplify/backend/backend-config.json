@@ -31,14 +31,14 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authhealthyhabitsv24aea1e5f"
-            }
+            "authenticationType": "AWS_IAM"
           },
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "AWS_IAM"
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authhealthyhabitsv24aea1e5f"
+              }
             }
           ]
         }
@@ -78,17 +78,18 @@
           ]
         },
         {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2GraphQlApi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
           "category": "storage",
           "resourceName": "HealthyHabitsV2",
           "attributes": [
             "BucketName"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "HealthyHabitsV2GraphQlApi",
-          "attributes": [
-            "GraphQLAPIIdOutput"
           ]
         }
       ]

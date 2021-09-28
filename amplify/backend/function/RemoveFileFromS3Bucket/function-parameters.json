@@ -8,6 +8,13 @@
         "delete"
       ]
     },
+    "api": {
+      "HealthyHabitsV2GraphQlApi": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    },
     "storage": {
       "HealthyHabitsV2": [
         "create",
