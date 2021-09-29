@@ -30,6 +30,7 @@ import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 import SchoolHousesPage from "./pages/SchoolHousesPage";
+import PEForm from "./components/Lesson/pe/PEForm";
 
 // ----------------------------------------------------------------------
 
@@ -55,6 +56,7 @@ export default function Router() {
                     ]},
                 {path: 'parent', element: <ParentSection/>},
                 {path: 'curricula', element: <Lessons/>, children: [
+                        {path: 'pe', element: <PEForm/>},
                         {path: ':id', element: <CurriculumOverview/> },
                         {path: '/', element: <CurriculaComponents/>},
                         {path: 'subjects', element: <SubjectOutlet/>, children:[
