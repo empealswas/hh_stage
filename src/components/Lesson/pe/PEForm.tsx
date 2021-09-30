@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import * as Yup from "yup";
 import {Form, FormikConsumer, FormikProvider, useFormik, useFormikContext} from "formik";
 import {Button, IconButton, InputAdornment, Stack, TextField} from "@material-ui/core";
@@ -9,6 +9,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import {LoadingButton} from "@material-ui/lab";
+import {format, compareAsc} from 'date-fns'
 import {
     DialogActions,
     FormControl,
@@ -21,10 +22,12 @@ import {
 } from "@mui/material";
 import ProgressButton from "../../Buttons/ProgressButton";
 import {API, graphqlOperation} from "aws-amplify";
-import {updateCurriculum} from "../../../graphql/mutations";
 import {useParams} from "react-router-dom";
-import AttendanceSheetTableTest from "../../attendance/AttendanceSheetTableTest";
+import AttendanceSheetTableTest, {AttendanceOfPupil} from "../../attendance/AttendanceSheetTableTest";
 import {Can} from "../../../utils/Ability";
+import {UserContext} from "../../../App";
+import {createPELessonRecord} from "../../../graphql/mutations";
+import {useSnackbar} from "notistack";
 
 const activities = ['Walking', 'Running', 'Gym', 'Dance', 'Soccer', 'Rugby', 'Gaelic', 'Other']
 const PEForm = () => {
@@ -40,8 +43,25 @@ const PEForm = () => {
 
 
     });
-    const {id} = useParams();
-
+    const user = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
+    const [classroomId, setClassroomId] = useState('');
+    const snackbar = useSnackbar();
+    const sentRecd = async () => {
+        return API.graphql(graphqlOperation(createPELessonRecord, {
+            input: {
+                teacherID: user?.email,
+                date: format(value ?? new Date(), 'yyyy-MM-dd'),
+                // date: value?.toISOString(),
+                deliveredBy: getFieldProps('deliveredBy').value,
+                duration: getFieldProps('duration').value,
+                activity: getFieldProps('activity').value,
+                rating: getFieldProps('rating').value,
+                notes: getFieldProps('notes').value,
+                classroomID: classroomId
+            }
+        }));
+    }
     const formik = useFormik({
         initialValues: {
             deliveredBy: 'Teacher',
@@ -58,11 +78,32 @@ const PEForm = () => {
             //         name: getFieldProps('name').value
             //     }
             // }));
-            // formik.setSubmitting(false);
+            console.log(getFieldProps('deliveredBy').value)
+            console.log(getFieldProps('duration').value)
+            console.log(getFieldProps('activity').value)
+            console.log(getFieldProps('notes').value)
+            console.log(getFieldProps('rating').value)
+            console.log(value?.toISOString())
+            console.log(pupils);
+            console.log('teacher', user?.email)
+            console.log('clid', classroomId)
+            setLoading(true);
+            sentRecd().then(value1 => {
+                console.log(value1)
+                console.log('dne')
+                setLoading(false);
+                resetForm();
+                snackbar.enqueueSnackbar('PE Lesson Record was added', {variant: 'success'})
+                formik.setSubmitting(false);
+            }).catch(err =>{
+                console.error(err)
+            })
         }
     });
+
     const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid, resetForm} = formik;
     const [value, setValue] = React.useState<Date | null>(new Date());
+    const [pupils, setPupils] = React.useState<null | AttendanceOfPupil[]>(null);
     return (
         <FormikProvider value={formik}>
             <Typography textAlign={'center'} variant={'h2'} sx={{mb: 15}}>PE Self Reporting</Typography>
@@ -129,7 +170,7 @@ const PEForm = () => {
                         <div>
                             <Typography component="legend">Rating</Typography>
                             <Rating size={'large'}
-                                {...getFieldProps('rating')}
+                                    {...getFieldProps('rating')}
                             />
                         </div>
                     </Stack>
@@ -142,20 +183,23 @@ const PEForm = () => {
                     />
 
                     <Can I={'read'} an={'attendance'}>
-                        <AttendanceSheetTableTest/>
+                        <AttendanceSheetTableTest setPupilsAttendance={setPupils} setClassroomId={setClassroomId}/>
                     </Can>
-                    <Stack direction={{xs:'column',sm:'row'}} spacing={10} justifyContent={'space-between'}>
-                        <Button variant={'outlined'} color={'secondary'}  onClick={()=>{
+                    <Stack direction={{xs: 'column', sm: 'row'}} spacing={10} justifyContent={'space-between'}>
+                        <Button variant={'outlined'} color={'secondary'} onClick={() => {
                             resetForm();
-                        }}>Reset</Button>
-                        <LoadingButton
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            loading={false}
-                        >
-                            Make Record
-                        </LoadingButton>
+                        }}>Reset
+                        </Button>
+                        <Can I={'read'} an={'attendance'}>
+                            <LoadingButton
+                                size="large"
+                                type="submit"
+                                variant="contained"
+                                loading={loading}
+                            >
+                                Make Record
+                            </LoadingButton>
+                        </Can>
                     </Stack>
                 </Stack>
             </Form>

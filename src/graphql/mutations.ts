@@ -50,6 +50,126 @@ export const deleteFile = /* GraphQL */ `
     }
   }
 `;
+export const createPELessonRecord = /* GraphQL */ `
+  mutation CreatePELessonRecord(
+    $input: CreatePELessonRecordInput!
+    $condition: ModelPELessonRecordConditionInput
+  ) {
+    createPELessonRecord(input: $input, condition: $condition) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePELessonRecord = /* GraphQL */ `
+  mutation UpdatePELessonRecord(
+    $input: UpdatePELessonRecordInput!
+    $condition: ModelPELessonRecordConditionInput
+  ) {
+    updatePELessonRecord(input: $input, condition: $condition) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePELessonRecord = /* GraphQL */ `
+  mutation DeletePELessonRecord(
+    $input: DeletePELessonRecordInput!
+    $condition: ModelPELessonRecordConditionInput
+  ) {
+    deletePELessonRecord(input: $input, condition: $condition) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createSchoolHouse = /* GraphQL */ `
   mutation CreateSchoolHouse(
     $input: CreateSchoolHouseInput!
@@ -93,6 +213,96 @@ export const deleteSchoolHouse = /* GraphQL */ `
       Pupils {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createClassroomLesson = /* GraphQL */ `
+  mutation CreateClassroomLesson(
+    $input: CreateClassroomLessonInput!
+    $condition: ModelClassroomLessonConditionInput
+  ) {
+    createClassroomLesson(input: $input, condition: $condition) {
+      id
+      classroomID
+      lessonID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      completed
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateClassroomLesson = /* GraphQL */ `
+  mutation UpdateClassroomLesson(
+    $input: UpdateClassroomLessonInput!
+    $condition: ModelClassroomLessonConditionInput
+  ) {
+    updateClassroomLesson(input: $input, condition: $condition) {
+      id
+      classroomID
+      lessonID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      completed
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteClassroomLesson = /* GraphQL */ `
+  mutation DeleteClassroomLesson(
+    $input: DeleteClassroomLessonInput!
+    $condition: ModelClassroomLessonConditionInput
+  ) {
+    deleteClassroomLesson(input: $input, condition: $condition) {
+      id
+      classroomID
+      lessonID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      completed
       createdAt
       updatedAt
     }
@@ -200,6 +410,84 @@ export const deleteClassroom = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createLesson = /* GraphQL */ `
+  mutation CreateLesson(
+    $input: CreateLessonInput!
+    $condition: ModelLessonConditionInput
+  ) {
+    createLesson(input: $input, condition: $condition) {
+      id
+      title
+      description
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLesson = /* GraphQL */ `
+  mutation UpdateLesson(
+    $input: UpdateLessonInput!
+    $condition: ModelLessonConditionInput
+  ) {
+    updateLesson(input: $input, condition: $condition) {
+      id
+      title
+      description
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLesson = /* GraphQL */ `
+  mutation DeleteLesson(
+    $input: DeleteLessonInput!
+    $condition: ModelLessonConditionInput
+  ) {
+    deleteLesson(input: $input, condition: $condition) {
+      id
+      title
+      description
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
       }
       createdAt
       updatedAt
@@ -651,84 +939,6 @@ export const deleteLessonTeacher = /* GraphQL */ `
         updatedAt
       }
       score
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createLesson = /* GraphQL */ `
-  mutation CreateLesson(
-    $input: CreateLessonInput!
-    $condition: ModelLessonConditionInput
-  ) {
-    createLesson(input: $input, condition: $condition) {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateLesson = /* GraphQL */ `
-  mutation UpdateLesson(
-    $input: UpdateLessonInput!
-    $condition: ModelLessonConditionInput
-  ) {
-    updateLesson(input: $input, condition: $condition) {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteLesson = /* GraphQL */ `
-  mutation DeleteLesson(
-    $input: DeleteLessonInput!
-    $condition: ModelLessonConditionInput
-  ) {
-    deleteLesson(input: $input, condition: $condition) {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
       createdAt
       updatedAt
     }

@@ -41,6 +41,117 @@ export const onDeleteFile = /* GraphQL */ `
     }
   }
 `;
+export const onCreatePELessonRecord = /* GraphQL */ `
+  subscription OnCreatePELessonRecord {
+    onCreatePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePELessonRecord = /* GraphQL */ `
+  subscription OnUpdatePELessonRecord {
+    onUpdatePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePELessonRecord = /* GraphQL */ `
+  subscription OnDeletePELessonRecord {
+    onDeletePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateSchoolHouse = /* GraphQL */ `
   subscription OnCreateSchoolHouse {
     onCreateSchoolHouse {
@@ -75,6 +186,87 @@ export const onDeleteSchoolHouse = /* GraphQL */ `
       Pupils {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateClassroomLesson = /* GraphQL */ `
+  subscription OnCreateClassroomLesson {
+    onCreateClassroomLesson {
+      id
+      classroomID
+      lessonID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      completed
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateClassroomLesson = /* GraphQL */ `
+  subscription OnUpdateClassroomLesson {
+    onUpdateClassroomLesson {
+      id
+      classroomID
+      lessonID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      completed
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteClassroomLesson = /* GraphQL */ `
+  subscription OnDeleteClassroomLesson {
+    onDeleteClassroomLesson {
+      id
+      classroomID
+      lessonID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      completed
       createdAt
       updatedAt
     }
@@ -173,6 +365,75 @@ export const onDeleteClassroom = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLesson = /* GraphQL */ `
+  subscription OnCreateLesson {
+    onCreateLesson {
+      id
+      title
+      description
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLesson = /* GraphQL */ `
+  subscription OnUpdateLesson {
+    onUpdateLesson {
+      id
+      title
+      description
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLesson = /* GraphQL */ `
+  subscription OnDeleteLesson {
+    onDeleteLesson {
+      id
+      title
+      description
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
       }
       createdAt
       updatedAt
@@ -579,75 +840,6 @@ export const onDeleteLessonTeacher = /* GraphQL */ `
         updatedAt
       }
       score
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateLesson = /* GraphQL */ `
-  subscription OnCreateLesson {
-    onCreateLesson {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateLesson = /* GraphQL */ `
-  subscription OnUpdateLesson {
-    onUpdateLesson {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteLesson = /* GraphQL */ `
-  subscription OnDeleteLesson {
-    onDeleteLesson {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
       createdAt
       updatedAt
     }

@@ -8,7 +8,22 @@ type File
   bucket: String
   lessonID: ID
 }
-
+type PELessonRecord @model
+@key(name: "byTeacher", fields: ["teacherID"])
+{
+  id: ID!
+  teacherID: ID
+  Teacher: Teacher @connection(fields:["teacherID"])
+  Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
+  date: AWSDate
+  deliveredBy: String
+  duration: Int
+  activity: String
+  rating: Int
+  notes: String
+  classroomID: ID
+  Classroom: Classroom @connection(fields:["classroomID"])
+}
 
 type SchoolHouse @model
 {
@@ -16,7 +31,16 @@ type SchoolHouse @model
   name: String
   Pupils: [Pupil] @connection(keyName: "bySchoolHouse", fields: ["id"])
 }
-
+type ClassroomLesson @model
+@key(name: "byClassroom", fields: ["classroomID"])
+@key(name: "byLesson", fields: ["lessonID"]){
+  id: ID!
+  classroomID: ID
+  lessonID: ID
+  Classroom: Classroom @connection(fields: ["classroomID"])
+  Lesson: Lesson @connection(fields: ["lessonID"])
+  completed: Boolean
+}
 type Classroom @model
 @key(name: "bySchool", fields: ["schoolID"])
 @key(name: "byCurriculum", fields: ["yearGroupID"])
@@ -29,6 +53,15 @@ type Classroom @model
   school: School @connection(fields: ["schoolID"])
   yearGroupID: ID
   yearGroup: Curriculum @connection(fields: ["yearGroupID"])
+}
+type Lesson @model {
+  id: ID!
+  title: String
+  description: String
+  terms: [TermLesson] @connection(keyName: "byLesson", fields: ["id"])
+  Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
+  Files: [File] @connection(keyName: "byLesson", fields: ["id"])
+  LessonTeacher: [LessonTeacher] @connection(keyName: "byLesson", fields: ["id"])
 }
 
 type TeacherClassroom @model(queries: null) @key(name: "byTeacher", fields: ["teacherID", "classroomID"]) @key(name: "byClassroom", fields: ["classroomID", "teacherID"]) {
@@ -80,15 +113,7 @@ type LessonTeacher @model
   score: Int
 }
 
-type Lesson @model {
-  id: ID!
-  title: String
-  description: String
-  terms: [TermLesson] @connection(keyName: "byLesson", fields: ["id"])
-  Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
-  Files: [File] @connection(keyName: "byLesson", fields: ["id"])
-  LessonTeacher: [LessonTeacher] @connection(keyName: "byLesson", fields: ["id"])
-}
+
 
 type Term @model  {
   id: ID!

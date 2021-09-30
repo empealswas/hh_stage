@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
 import {DataGrid, GridColDef, GridToolbar, GridValueGetterParams,} from '@material-ui/data-grid';
 import {Box, Button, Checkbox, FormControl, FormGroup, InputLabel, MenuItem, Select} from "@material-ui/core";
 import {Icon} from '@iconify/react';
@@ -12,6 +12,7 @@ import {Attendance, Classroom} from "../../API";
 import CustomLoadingOverlay from "../../utils/CustomLoadingOverlay";
 import {createAttendance, updateAttendance} from "../../graphql/mutations";
 import {renderReward, renderRatingEditInputCell} from "./Reward";
+import {GridEditRowsModel, GridState} from "@mui/x-data-grid";
 
 
 interface GridConfigOptions {
@@ -24,7 +25,7 @@ interface GridToolbarContainerProps {
     selectedClassroom: Classroom;
 }
 
-type AttendanceOfPupil = {
+export type AttendanceOfPupil = {
     id: string,
     attendanceId: string,
     firstName: string,
@@ -121,7 +122,11 @@ function SettingsPanel(props: GridToolbarContainerProps) {
     )
 }
 
-const AttendanceSheetTableTest = (props: {}) => {
+const AttendanceSheetTableTest = (props:
+                                      {
+                                          setPupilsAttendance: Dispatch<SetStateAction<AttendanceOfPupil[] | null>>,
+                                          setClassroomId: Dispatch<SetStateAction<string>>
+                                      }) => {
     const teacher = useContext(UserContext);
     // const {lessonId} = useParams();
     //
@@ -130,6 +135,7 @@ const AttendanceSheetTableTest = (props: {}) => {
     const [pupils, setPupils] = useState<null | AttendanceOfPupil[]>(null);
     const setSelectedClassroomData = (classroom: Classroom) => {
         setSelectedClassroom(classroom);
+        props.setClassroomId(classroom.id);
         getAttendanceOfPupils(classroom.id);
     }
     const fetchClassrooms = async () => {
@@ -164,7 +170,9 @@ const AttendanceSheetTableTest = (props: {}) => {
     }
     const getAttendanceOfPupils = (classroomId: string) => {
         fetchPupils(classroomId).then((result: any) => {
-            setPupils(getAttendance(result));
+            const pupils = getAttendance(result);
+            setPupils(pupils);
+            props.setPupilsAttendance(pupils);
         })
     }
     const columns: GridColDef[] = [
@@ -237,6 +245,11 @@ const AttendanceSheetTableTest = (props: {}) => {
         };
     }, []);
 
+    const handleEditRowsModelChange = React.useCallback((model: GridEditRowsModel) => {
+        // console.log('model' , model)
+        // const newPupils = [pupils.filter(pupil => pupil?.id !== model.id)]
+        // props.setPupilsAttendance([pupils])
+    }, []);
 
     return (
         <>
@@ -250,7 +263,7 @@ const AttendanceSheetTableTest = (props: {}) => {
                 rows={pupils ?? []}
                 columns={columns}
                 autoHeight
-                rowsPerPageOptions={[5,25,100]}
+                rowsPerPageOptions={[5, 25, 100]}
                 pagination={true}
                 loading={classroomsOfTeacher === null || pupils === null}
                 components={{
@@ -258,8 +271,16 @@ const AttendanceSheetTableTest = (props: {}) => {
                     LoadingOverlay: CustomLoadingOverlay,
                 }}
 
+                onEditRowsModelChange={handleEditRowsModelChange}
                 componentsProps={{}}
                 onCellEditCommit={(params, event, details) => {
+                    console.log(params);
+                    setPupils(prevState => {
+                        const pupil = prevState?.find(pupil => pupil.id === params.id);
+                        // @ts-ignore
+                        pupil[params.field] = params.value;
+                        return prevState;
+                    })
                     // const attendanceOfPupil = pupils?.find(pupil => pupil.id === params.id) as AttendanceOfPupil;
                     // console.log(attendanceOfPupil);
                     // console.log(params)
