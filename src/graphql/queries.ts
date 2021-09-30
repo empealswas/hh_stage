@@ -35,6 +35,67 @@ export const listFiles = /* GraphQL */ `
     }
   }
 `;
+export const getPELessonRecord = /* GraphQL */ `
+  query GetPELessonRecord($id: ID!) {
+    getPELessonRecord(id: $id) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPELessonRecords = /* GraphQL */ `
+  query ListPELessonRecords(
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPELessonRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getSchoolHouse = /* GraphQL */ `
   query GetSchoolHouse($id: ID!) {
     getSchoolHouse(id: $id) {
@@ -58,6 +119,56 @@ export const listSchoolHouses = /* GraphQL */ `
       items {
         id
         name
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getClassroomLesson = /* GraphQL */ `
+  query GetClassroomLesson($id: ID!) {
+    getClassroomLesson(id: $id) {
+      id
+      classroomID
+      lessonID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      Lesson {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+      }
+      completed
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listClassroomLessons = /* GraphQL */ `
+  query ListClassroomLessons(
+    $filter: ModelClassroomLessonFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listClassroomLessons(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        classroomID
+        lessonID
+        completed
         createdAt
         updatedAt
       }
@@ -110,6 +221,47 @@ export const listClassrooms = /* GraphQL */ `
         name
         schoolID
         yearGroupID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getLesson = /* GraphQL */ `
+  query GetLesson($id: ID!) {
+    getLesson(id: $id) {
+      id
+      title
+      description
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLessons = /* GraphQL */ `
+  query ListLessons(
+    $filter: ModelLessonFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLessons(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        description
         createdAt
         updatedAt
       }
@@ -248,47 +400,6 @@ export const listLessonTeachers = /* GraphQL */ `
         teacherID
         lessonID
         score
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getLesson = /* GraphQL */ `
-  query GetLesson($id: ID!) {
-    getLesson(id: $id) {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listLessons = /* GraphQL */ `
-  query ListLessons(
-    $filter: ModelLessonFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLessons(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        description
         createdAt
         updatedAt
       }
