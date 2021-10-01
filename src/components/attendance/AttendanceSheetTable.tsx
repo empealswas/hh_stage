@@ -199,6 +199,7 @@ const AttendanceSheetTable = (props: {}) => {
             const noPreviousRecordsOfAttendanceInThisLesson = pupil.Attendances?.items?.length === 0;
             let attendance: Attendance;
             if (noPreviousRecordsOfAttendanceInThisLesson) {
+                // @ts-ignore
                 const response = await addAttendanceForPupil(pupil.id, lessonId);
                 attendance = response
                 console.log('res', response)
