@@ -40,28 +40,27 @@ export default function Router() {
             path: '/dashboard',
             element: <DashboardLayout/>,
             children: [
-                {path: '/', element: <Navigate to="/dashboard/app" replace/>},
+                {element: <Navigate to="/dashboard/app" replace/>},
                 {path: 'schools', element: <SchoolOutlet/>, children: [
-                        {path: '/', element: <Schools/>},
+                        {element: <Schools/>},
                         {path: ':id', element: <SchoolOutlet/>, children: [
                                 {path: 'manage', element: <SchoolManagement/>},
                                 {path: 'classrooms', element: <Outlet/>, children:[
-                                        {path: '/', element: <ClassroomOverview/>},
+                                        { element: <ClassroomOverview/>},
                                         {path: ':classroomId', element: <ClassroomPageNew/>}
                                     ]}
                             ]}
                     ]},
                 {path: 'reports', element: <Outlet/>, children: [
-                        {path: '/', element: <ReportPage/>},
+                        {element: <ReportPage/>},
                     ]},
                 {path: 'parent', element: <ParentSection/>},
-                {path: 'curricula', element: <Lessons/>, children: [
+                {path: 'curricula', element: <CurriculaComponents/>, children: [
                         {path: 'pe', element: <PEForm/>},
                         {path: ':id', element: <CurriculumOverview/> },
-                        {path: '/', element: <CurriculaComponents/>},
                         {path: 'subjects', element: <SubjectOutlet/>, children:[
                                 {path: ':id', element: <TermElements/>},
-                                {path: '/', element: <Navigate to={'../../curricula'}/>},
+                                { element: <Navigate to={'../../curricula'}/>},
                                 {path: 'terms', element: <TermOutlet/>, children:[
                                         {path: ':id', element: <LessonElements/>},
                                         {path: 'lessons', element: <LessonOutlet/>, children: [
@@ -76,7 +75,7 @@ export default function Router() {
                         {path: ':pupilId', element: <PupilOverview/>}
                     ]},
                 {path: 'houses', element: <Outlet/>, children: [
-                        {path: '/', element: <SchoolHousesPage/>},
+                        { element: <SchoolHousesPage/>},
                     ]},
                 {path: 'app', element: <DashboardApp/>},
                 {path: 'user', element: <User/>},

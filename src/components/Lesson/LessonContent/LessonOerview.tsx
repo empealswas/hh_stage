@@ -134,8 +134,10 @@ const LessonOverview = () => {
                                 {lesson.description}
                             </Typography>
                             <Can I={'read'} an={'attendance'}>
+                                {lessonId && <>
                                 <LessonRating lessonId={lessonId}/>
                                 <AttendanceSheetModal lessonId={lessonId}/>
+                                </>}
                             </Can>
                         </Container>
                     </Box>
@@ -170,6 +172,7 @@ const LessonOverview = () => {
                             <AccordionDetails style={{padding: 0}}>
                                 <List disablePadding>
                                     {filesToUpload.map(file =>
+                                        // @ts-ignore
                                         <LoadingListItem file={file} lessonId={lessonId}/>)}
                                 </List>
                             </AccordionDetails>

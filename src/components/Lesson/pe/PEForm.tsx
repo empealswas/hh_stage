@@ -114,6 +114,7 @@ const PEForm = () => {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 label="Date"
+                                // @ts-ignore
                                 renderInput={(params) => <TextField {...params} />}
                                 value={value}
                                 onChange={(newValue) => {
