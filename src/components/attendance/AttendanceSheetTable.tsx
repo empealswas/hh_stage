@@ -192,11 +192,14 @@ const AttendanceSheetTable = (props: {}) => {
     }
     const getAttendance = async (data: any) => {
         return await data.data.getClassroom.pupils.items?.map(async (item: any) => {
-            const pupil = item.pupil;
+            const pupil: any = item.pupil;
+            if(!pupil){
+                return;
+            }
             const noPreviousRecordsOfAttendanceInThisLesson = pupil.Attendances?.items?.length === 0;
             let attendance: Attendance;
             if (noPreviousRecordsOfAttendanceInThisLesson) {
-                const response = await addAttendanceForPupil(pupil?.id, lessonId);
+                const response = await addAttendanceForPupil(pupil.id, lessonId);
                 attendance = response
                 console.log('res', response)
             } else {
