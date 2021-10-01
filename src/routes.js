@@ -55,9 +55,10 @@ export default function Router() {
                         {element: <ReportPage/>},
                     ]},
                 {path: 'parent', element: <ParentSection/>},
-                {path: 'curricula', element: <CurriculaComponents/>, children: [
+                {path: 'curricula', element: <Lessons/>, children: [
                         {path: 'pe', element: <PEForm/>},
                         {path: ':id', element: <CurriculumOverview/> },
+                        {element: <CurriculaComponents/>},
                         {path: 'subjects', element: <SubjectOutlet/>, children:[
                                 {path: ':id', element: <TermElements/>},
                                 { element: <Navigate to={'../../curricula'}/>},
