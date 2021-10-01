@@ -196,7 +196,7 @@ const AttendanceSheetTable = (props: {}) => {
             const noPreviousRecordsOfAttendanceInThisLesson = pupil.Attendances?.items?.length === 0;
             let attendance: Attendance;
             if (noPreviousRecordsOfAttendanceInThisLesson) {
-                const response = await addAttendanceForPupil(pupil.id, lessonId);
+                const response = await addAttendanceForPupil(pupil?.id, lessonId);
                 attendance = response
                 console.log('res', response)
             } else {
@@ -310,7 +310,7 @@ const AttendanceSheetTable = (props: {}) => {
                 setClassroomData(result.data.updateClassroomLesson);
 
             }
-            } variant={'contained'}>{classroomData.completed ? 'Mark as Incompleted' : 'Complete Lesson'}</Button>
+            } variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</Button>
             }
             {classroomsOfTeacher && selectedClassroom &&
             <Box mb={1}>
@@ -341,7 +341,6 @@ const AttendanceSheetTable = (props: {}) => {
                             [params.field]: params.value
                         }
                     }))
-                    console.log(res);
                     // const element = data.find(value => value.id === params.id);
                     // if (element) {
                     //     // @ts-ignore
