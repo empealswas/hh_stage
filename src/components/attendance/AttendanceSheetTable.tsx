@@ -8,9 +8,14 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import {API, graphqlOperation} from "aws-amplify";
 import {useParams} from "react-router-dom";
 import {UserContext} from "../../App";
-import {Attendance, Classroom} from "../../API";
+import {Attendance, Classroom, ClassroomLesson} from "../../API";
 import CustomLoadingOverlay from "../../utils/CustomLoadingOverlay";
-import {createAttendance, updateAttendance} from "../../graphql/mutations";
+import {
+    createAttendance,
+    createClassroomLesson,
+    updateAttendance,
+    updateClassroomLesson
+} from "../../graphql/mutations";
 import {renderReward, renderRatingEditInputCell} from "./Reward";
 
 
@@ -66,6 +71,15 @@ const getPupilsOfClassroomAttendanceQuery = `query MyQuery($eq: ID = "", $id: ID
           }
         }
       }
+    }
+  }
+}
+`
+const classroomCompleteQuery = `query MyQuery($classroom: ID = "", $lesson: ID = "") {
+  listClassroomLessons(filter: {classroomID: {eq: $classroom}, lessonID: {eq: $lesson}}) {
+    items {
+      id
+      completed
     }
   }
 }
@@ -139,6 +153,29 @@ const AttendanceSheetTable = (props: {}) => {
     const setSelectedClassroomData = (classroom: Classroom) => {
         setSelectedClassroom(classroom);
         getAttendanceOfPupils(classroom.id);
+        getClassroomCompleteness(classroom.id);
+    }
+    const [classroomData, setClassroomData] = useState<ClassroomLesson | null>(null);
+    const getClassroomCompleteness = async (selectedClassroomId: string) => {
+        const classroomDetails: any = await API.graphql(graphqlOperation(classroomCompleteQuery, {
+            classroom: selectedClassroomId,
+            lesson: lessonId
+        }))
+        let classroomLesson: ClassroomLesson;
+        if (classroomDetails.data.listClassroomLessons?.items.length === 0) {
+            const createdClassroomLesson: any = await API.graphql(graphqlOperation(createClassroomLesson, {
+                input: {
+                    lessonID: lessonId,
+                    classroomID: selectedClassroomId,
+                    completed: false
+                }
+            }));
+            classroomLesson = createdClassroomLesson.data.createClassroomLesson
+        } else {
+            classroomLesson = classroomDetails.data.listClassroomLessons?.items[0];
+        }
+        setClassroomData(classroomLesson);
+        console.log('classroomDetails', classroomDetails);
     }
     const fetchClassrooms = async () => {
         return API.graphql(graphqlOperation(classroomsOfTeacherQuery, {id: teacher?.email}));
@@ -240,7 +277,7 @@ const AttendanceSheetTable = (props: {}) => {
             flex: 0.7,
             type: 'boolean',
             editable: true,
-            renderEditCell:renderRatingEditInputCell,
+            renderEditCell: renderRatingEditInputCell,
             renderCell: renderReward
         }
     ];
@@ -253,7 +290,9 @@ const AttendanceSheetTable = (props: {}) => {
         }
     };
     useEffect(() => {
+
         getClassroomsOfTeacher();
+
         return () => {
 
         };
@@ -262,6 +301,17 @@ const AttendanceSheetTable = (props: {}) => {
 
     return (
         <>
+            {classroomData &&
+            <Button color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}} onClick={async () => {
+                const result: any = await API.graphql(graphqlOperation(updateClassroomLesson, {input: {
+                        id: classroomData.id,
+                        completed: !classroomData.completed
+                    }}))
+                setClassroomData(result.data.updateClassroomLesson);
+
+            }
+            } variant={'contained'}>{classroomData.completed ? 'Mark as Incompleted' : 'Complete Lesson'}</Button>
+            }
             {classroomsOfTeacher && selectedClassroom &&
             <Box mb={1}>
                 <SettingsPanel onApply={handleApplyClick} classrooms={classroomsOfTeacher}
