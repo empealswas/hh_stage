@@ -46,12 +46,13 @@ export default function MyTabs() {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ width: '100%'}}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={value} onChange={handleChange}
                       variant="scrollable"
                       scrollButtons="auto"
-                      aria-label="scrollable auto tabs example">
+                      aria-label="scrollable auto tabs example"
+                        centered={true}>
                     <Tab icon={<FeedIcon/>} label="Feed" {...a11yProps(0)} />
                     <Tab icon={<BarChartIcon/>} label="Statistics" {...a11yProps(1)} />
                     <Tab icon={<InfoIcon/>} label="Info" {...a11yProps(2)} />
