@@ -1,48 +1,14 @@
-import {filter} from 'lodash';
-import {Icon} from '@iconify/react';
-import {sentenceCase} from 'change-case';
-import {useState} from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
-import {Link as RouterLink} from 'react-router-dom';
 // material
-import {
-    Card,
-    Table,
-    Stack,
-    Avatar,
-    Button,
-    Checkbox,
-    TableRow,
-    TableBody,
-    TableCell,
-    Container,
-    Typography,
-    TableContainer,
-    TablePagination
-} from '@material-ui/core';
+import {Card, Container, CardMedia, CardHeader} from '@material-ui/core';
 // components
 import Page from '../components/Page';
-import Label from '../components/Label';
-import Scrollbar from '../components/Scrollbar';
-import SearchNotFound from '../components/SearchNotFound';
-import {UserListHead, UserListToolbar, UserMoreMenu} from '../components/_dashboard/user';
+import {Avatar, Button, CardActions, CardContent, Stack, Typography} from "@mui/material";
+import ChildTabs from "../components/parent/tabs";
+import ChildOverview from "../components/parent/ChildOverview";
+import AttendancePieChart from "../components/reports/charts/AttendancePieChart";
+import React from "react";
+import {Carousel} from 'react-responsive-carousel';
 //
-import USERLIST from '../_mocks_/user';
-import ProgressButton from "../components/Buttons/ProgressButton";
-
-
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-    {id: 'name', label: 'Name', alignRight: false},
-    {id: 'company', label: 'Company', alignRight: false},
-    {id: 'role', label: 'Role', alignRight: false},
-    {id: 'isVerified', label: 'Verified', alignRight: false},
-    {id: 'status', label: 'Status', alignRight: false},
-    {id: ''}
-];
-
-// ----------------------------------------------------------------------
 
 
 const ParentSection = () => {
@@ -50,15 +16,17 @@ const ParentSection = () => {
     return (
         // @ts-ignore
         <Page>
-            <Container>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                    <Typography variant="h4" gutterBottom>
-                        Children
-                    </Typography>
-                </Stack>
-                <Typography variant={'h3'} color={'error'}>
-                    This section is under construction
-                </Typography>
+            <Container maxWidth={false}>
+                <Carousel autoPlay={false}
+                          // selectedItem={1}
+                          showArrows={true}
+                          infiniteLoop={true}
+                          showStatus={false}
+                          showThumbs={true}
+                          showIndicators={false}>
+                    <ChildOverview/>
+                    <ChildOverview/>
+                </Carousel>
             </Container>
         </Page>
     );

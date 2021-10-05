@@ -58,7 +58,10 @@ app.post('/api', function (req, res) {
 
 app.post('/api/addTeacher', (req, res) => {
     const event = {
-        body: req.body
+        body: {
+            ...req.body,
+            type: 'TEACHER'
+        }
     }
     console.log('event' + event)
     return lambda.invoke({
@@ -71,6 +74,27 @@ app.post('/api/addTeacher', (req, res) => {
         }
         if (data.Payload) {
             res.json({success: 'teacher added', url: req.url})
+        }
+    });
+})
+app.post('/api/addParent', (req, res) => {
+    const event = {
+        body: {
+            ...req.body,
+            type: 'PARENT'
+        }
+    }
+    console.log('event' + event)
+    return lambda.invoke({
+        FunctionName: 'addTeacherToUserPoolAndCreateRecordInDatabase',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(event) // pass params
+    }, function (error, data) {
+        if (error) {
+            res.json({error: error, url: req.url})
+        }
+        if (data.Payload) {
+            res.json({success: 'parent added', url: req.url})
         }
     });
 })
