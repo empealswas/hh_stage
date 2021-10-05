@@ -6,6 +6,9 @@ import Box from '@mui/material/Box';
 import FeedIcon from '@mui/icons-material/Feed';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import InfoIcon from '@mui/icons-material/Info';
+import {Container, Grid} from "@material-ui/core";
+import StepsChart from "../pupil/StepsChart";
+import PupilActivitiesChart from "../pupil/PupilActivitiesChart";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -38,7 +41,7 @@ function a11yProps(index: number) {
     };
 }
 
-export default function MyTabs() {
+export default function ChildTabs() {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -59,10 +62,19 @@ export default function MyTabs() {
                 </Tabs>
             </Box>
             <TabPanel  value={value} index={0}>
-                Item One
+                <Typography variant={'h6'}>Here will be displayed achievements and highlights of your child school life.</Typography>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <Container maxWidth="xl">
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6} lg={8}>
+                            <StepsChart/>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={4}>
+                            <PupilActivitiesChart/>
+                        </Grid>
+                    </Grid>
+                </Container>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Item Three

@@ -1,4 +1,4 @@
-import {AddTeacherRequest} from "./DTO/AddTeacherRequest";
+import {AddParentRequest, AddTeacherRequest} from "./DTO/AddTeacherRequest";
 import {API} from "aws-amplify";
 import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
 
@@ -8,6 +8,16 @@ export async function addTeacherApi(params: AddTeacherRequest) {
 
     console.log('Adding teacher');
     const result = await API.post(apiName, '/api/addTeacher', {
+        body: {
+            ...params
+        }
+    });
+    console.log(result);
+    console.log('Added');
+}
+export async function addParentApi(params: AddParentRequest){
+    console.log('Adding parent');
+    const result = await API.post(apiName, '/api/addParent', {
         body: {
             ...params
         }

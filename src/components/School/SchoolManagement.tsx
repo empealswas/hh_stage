@@ -15,6 +15,8 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import AddParentModal from "./parents/AddParentModal";
+import ParentsTable from "./parents/ParentsTable";
 
 export const SchoolManagementContext = createContext<School | null>(null);
 
@@ -86,7 +88,15 @@ const SchoolManagement = () => {
                                 </Stack>
                                     <TeachersTable/>
                             </TabPanel>
-                            <TabPanel value="3">Parents</TabPanel>
+                            <TabPanel value="3">
+                                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                                <Typography variant="h4" gutterBottom>
+                                    Parents
+                                </Typography>
+                                <AddParentModal/>
+                            </Stack>
+                                <ParentsTable/>
+                            </TabPanel>
                         </TabContext>
                     </Box>
                 </SchoolManagementContext.Provider>

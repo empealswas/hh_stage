@@ -5,3 +5,8 @@ export type AddTeacherRequest =
     firstName: string
     lastName: string
 }
+export type AddParentRequest = {
+    email: string
+    firstName: string
+    lastName: string
+}
