@@ -1122,6 +1122,9 @@ export const createParent = /* GraphQL */ `
       firstName
       lastName
       email
+      children {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1137,6 +1140,9 @@ export const updateParent = /* GraphQL */ `
       firstName
       lastName
       email
+      children {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1152,6 +1158,102 @@ export const deleteParent = /* GraphQL */ `
       firstName
       lastName
       email
+      children {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPupilParent = /* GraphQL */ `
+  mutation CreatePupilParent(
+    $input: CreatePupilParentInput!
+    $condition: ModelPupilParentConditionInput
+  ) {
+    createPupilParent(input: $input, condition: $condition) {
+      id
+      pupilID
+      parentID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePupilParent = /* GraphQL */ `
+  mutation UpdatePupilParent(
+    $input: UpdatePupilParentInput!
+    $condition: ModelPupilParentConditionInput
+  ) {
+    updatePupilParent(input: $input, condition: $condition) {
+      id
+      pupilID
+      parentID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePupilParent = /* GraphQL */ `
+  mutation DeletePupilParent(
+    $input: DeletePupilParentInput!
+    $condition: ModelPupilParentConditionInput
+  ) {
+    deletePupilParent(input: $input, condition: $condition) {
+      id
+      pupilID
+      parentID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -1255,6 +1357,9 @@ export const createPupil = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      parents {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1292,6 +1397,9 @@ export const updatePupil = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      parents {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1328,6 +1436,9 @@ export const deletePupil = /* GraphQL */ `
         principal
         createdAt
         updatedAt
+      }
+      parents {
+        nextToken
       }
       createdAt
       updatedAt

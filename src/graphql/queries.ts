@@ -514,6 +514,9 @@ export const getParent = /* GraphQL */ `
       firstName
       lastName
       email
+      children {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -605,6 +608,9 @@ export const getPupil = /* GraphQL */ `
         principal
         createdAt
         updatedAt
+      }
+      parents {
+        nextToken
       }
       createdAt
       updatedAt

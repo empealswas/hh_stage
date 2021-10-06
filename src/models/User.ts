@@ -14,6 +14,7 @@ export class User {
     }
     private async getTeacherCredentials(){
         if(this.isAdmin()) return;
+        if(this.isTeacher()) return;
         const result: any = await API.graphql(graphqlOperation(getTeacher, {id: this._email}));
         const teacher: Teacher = result.data.getTeacher;
         this.firsName = teacher.firstName;
@@ -25,6 +26,12 @@ export class User {
             return {
                 firstName: 'Admin',
                 lastName: 'Admin'
+            }
+        }
+        if (this.isParent()) {
+            return{
+                firstName: 'Parent',
+                lastName: 'Parent'
             }
         }
         if (!this.firsName || this.lastName) {
@@ -39,6 +46,9 @@ export class User {
         if (this.isAdmin()) {
             return 'Admin'
         }
+        if (this.isParent()) {
+            return 'Parent';
+        }
         if (!this.firsName) {
             await this.getTeacherCredentials();
         }
@@ -46,6 +56,9 @@ export class User {
     }
     public async getLastName(){
         if (this.isAdmin()) {
+            return '';
+        }
+        if (this.isParent()) {
             return '';
         }
         if (!this.lastName) {
@@ -59,6 +72,10 @@ export class User {
 
     public isTeacher(): boolean {
         return this.userRoles.includes('Teachers');
+    }
+
+    public isParent(): boolean{
+        return this.userRoles.includes('Parents');
     }
 
     get email(): string {

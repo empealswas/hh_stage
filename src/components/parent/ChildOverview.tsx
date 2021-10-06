@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {Card, CardMedia, Container} from "@material-ui/core";
 import {Avatar, Button, CardActions, Stack, Typography} from "@mui/material";
 import ChildTabs from "./tabs";
+import {Pupil} from "../../API";
 
-const ChildOverview = () => {
+const ChildOverview = (props: {pupil: Pupil}) => {
     const [numberOfAvatar, setNumberOfAvatar] = useState(1);
     const [numberOfCover, setNumberOfCover] = useState(1);
+    const {pupil} = {...props};
     return (
         <Card>
             <CardMedia
@@ -30,10 +32,10 @@ const ChildOverview = () => {
                         }} src={`/static/mock-images/avatars/avatar_${numberOfAvatar}.jpg`}/>
                         <div>
                             <Typography variant={'h5'}>
-                                Hlib Davydov
+                                {pupil.firstName} {pupil.lastName}
                             </Typography>
                             <Typography variant={'subtitle2'}>
-                                Class 7A
+                                class
                             </Typography>
                         </div>
                     </Stack>
