@@ -29,18 +29,16 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 const SendButton = (params: { id: string }) => {
     const [loading, setLoading] = useState(false);
-    const [open, setOpen] = React.useState(false);
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     return (
         <div>
             <Stack direction={'row'}>
                 <Tooltip title={'Resend Invite Message'}>
-                    <LoadingButton loading={loading} startIcon={<SendIcon/>} onClick={() => {
+                    <LoadingButton color={'secondary'} loading={loading} startIcon={<SendIcon />} onClick={() => {
                         setLoading(true);
                         resendCodeToTeacher({teacherEmail: params.id})
                             .then(value => {
-                                setOpen(true);
                                 setLoading(false);
                                 enqueueSnackbar(`Invitation has been sent to ${params.id}`, {variant: 'success'})
                             });
@@ -83,11 +81,18 @@ export default function ParentsTable() {
             headerName: 'Actions',
             description: 'This column has a value getter and is not sortable.',
             sortable: false,
-            flex: 0.4,
+            flex: 0.6,
             align: 'center',
             headerAlign: 'center',
             renderCell: params => {
-                return (<SendButton id={params.getValue(params.id, 'id') as string}/>);
+                return (<Stack direction={'row'} spacing={2}>
+                    <SendButton id={params.getValue(params.id, 'id') as string}/>
+                    <Tooltip title={'Assign Children'}>
+                        <IconButton color={'success'} component={Link} to={`parent/${params.id}`}>
+                            <FaceIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </Stack>);
             }
         }
     ];

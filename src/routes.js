@@ -31,6 +31,7 @@ import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 import SchoolHousesPage from "./pages/SchoolHousesPage";
 import PEForm from "./components/Lesson/pe/PEForm";
+import ParentOverview from "./components/parent/ParentOverview";
 
 // ----------------------------------------------------------------------
 
@@ -41,43 +42,72 @@ export default function Router() {
             element: <DashboardLayout/>,
             children: [
                 {element: <Navigate to="/dashboard/app" replace/>},
-                {path: 'schools', element: <SchoolOutlet/>, children: [
+                {
+                    path: 'schools', element: <SchoolOutlet/>, children: [
                         {element: <Schools/>},
-                        {path: ':id', element: <SchoolOutlet/>, children: [
-                                {path: 'manage', element: <SchoolManagement/>},
-                                {path: 'classrooms', element: <Outlet/>, children:[
-                                        { element: <ClassroomOverview/>},
-                                        {path: ':classroomId', element: <ClassroomPageNew/>}
-                                    ]}
-                            ]}
-                    ]},
-                {path: 'reports', element: <Outlet/>, children: [
-                        {element: <ReportPage/>},
-                    ]},
-                {path: 'parent', element: <ParentSection/>},
-                {path: 'curricula', element: <Lessons/>, children: [
-                        {path: 'pe', element: <PEForm/>},
-                        {path: ':id', element: <CurriculumOverview/> },
-                        {element: <CurriculaComponents/>},
-                        {path: 'subjects', element: <SubjectOutlet/>, children:[
-                                {path: ':id', element: <TermElements/>},
-                                { element: <Navigate to={'../../curricula'}/>},
-                                {path: 'terms', element: <TermOutlet/>, children:[
-                                        {path: ':id', element: <LessonElements/>},
-                                        {path: 'lessons', element: <LessonOutlet/>, children: [
-                                                {path: ':lessonId', element: <LessonOverview/>}
-                                            ]}
+                        {
+                            path: ':id', element: <SchoolOutlet/>, children: [
+                                {
+                                    path: 'manage', element: <Outlet/>, children: [
+                                        {element: <SchoolManagement/>},
+                                        {
+                                            path: 'parent', element: <Outlet/>, children: [
+                                                {path: ':parentId', element: <ParentOverview/>}
+                                            ]
+                                        }
+                                    ]
+                                },
 
-                                    ]}
-                            ]}
+                                {
+                                    path: 'classrooms', element: <Outlet/>, children: [
+                                        {element: <ClassroomOverview/>},
+                                        {path: ':classroomId', element: <ClassroomPageNew/>}
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 },
-                {path: 'pupils', element: <Outlet/>, children: [
+                {
+                    path: 'reports', element: <Outlet/>, children: [
+                        {element: <ReportPage/>},
+                    ]
+                },
+                {path: 'parent', element: <ParentSection/>},
+                {
+                    path: 'curricula', element: <Lessons/>, children: [
+                        {path: 'pe', element: <PEForm/>},
+                        {path: ':id', element: <CurriculumOverview/>},
+                        {element: <CurriculaComponents/>},
+                        {
+                            path: 'subjects', element: <SubjectOutlet/>, children: [
+                                {path: ':id', element: <TermElements/>},
+                                {element: <Navigate to={'../../curricula'}/>},
+                                {
+                                    path: 'terms', element: <TermOutlet/>, children: [
+                                        {path: ':id', element: <LessonElements/>},
+                                        {
+                                            path: 'lessons', element: <LessonOutlet/>, children: [
+                                                {path: ':lessonId', element: <LessonOverview/>}
+                                            ]
+                                        }
+
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    path: 'pupils', element: <Outlet/>, children: [
                         {path: ':pupilId', element: <PupilOverview/>}
-                    ]},
-                {path: 'houses', element: <Outlet/>, children: [
-                        { element: <SchoolHousesPage/>},
-                    ]},
+                    ]
+                },
+                {
+                    path: 'houses', element: <Outlet/>, children: [
+                        {element: <SchoolHousesPage/>},
+                    ]
+                },
                 {path: 'app', element: <DashboardApp/>},
                 {path: 'user', element: <User/>},
                 {path: 'products', element: <Products/>},

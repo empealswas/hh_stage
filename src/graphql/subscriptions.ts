@@ -993,6 +993,9 @@ export const onCreateParent = /* GraphQL */ `
       firstName
       lastName
       email
+      children {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1005,6 +1008,9 @@ export const onUpdateParent = /* GraphQL */ `
       firstName
       lastName
       email
+      children {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1017,6 +1023,93 @@ export const onDeleteParent = /* GraphQL */ `
       firstName
       lastName
       email
+      children {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePupilParent = /* GraphQL */ `
+  subscription OnCreatePupilParent {
+    onCreatePupilParent {
+      id
+      pupilID
+      parentID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePupilParent = /* GraphQL */ `
+  subscription OnUpdatePupilParent {
+    onUpdatePupilParent {
+      id
+      pupilID
+      parentID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePupilParent = /* GraphQL */ `
+  subscription OnDeletePupilParent {
+    onDeletePupilParent {
+      id
+      pupilID
+      parentID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -1108,6 +1201,9 @@ export const onCreatePupil = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      parents {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1142,6 +1238,9 @@ export const onUpdatePupil = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      parents {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1175,6 +1274,9 @@ export const onDeletePupil = /* GraphQL */ `
         principal
         createdAt
         updatedAt
+      }
+      parents {
+        nextToken
       }
       createdAt
       updatedAt
