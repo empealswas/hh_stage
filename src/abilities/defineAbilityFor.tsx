@@ -9,7 +9,6 @@ export default function defineAbilityFor(user: User | null) {
     // can('visit', 'login');
     if (user.isAdmin()) {
         can('visit', 'schools');
-        can('visit', 'parent');
         can('visit', 'lessons');
         can(['create','update', 'delete','view'], 'curriculum');
         can(['create','update', 'delete','view'], 'term');
@@ -27,6 +26,8 @@ export default function defineAbilityFor(user: User | null) {
         can('visit', 'class overview')
         can('read', 'attendance');
         can('read', 'teacherDashboard')
+    } else if (user.isParent()) {
+        can('visit', 'parent');
     }
 
     return build();

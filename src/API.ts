@@ -227,6 +227,7 @@ export type Pupil = {
   schoolHouseID?: string | null,
   schoolHouse?: SchoolHouse | null,
   school?: School | null,
+  parents?: ModelPupilParentConnection | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -408,6 +409,34 @@ export type ModelClassroomConnection = {
   __typename: "ModelClassroomConnection",
   items?:  Array<Classroom | null > | null,
   nextToken?: string | null,
+};
+
+export type ModelPupilParentConnection = {
+  __typename: "ModelPupilParentConnection",
+  items?:  Array<PupilParent | null > | null,
+  nextToken?: string | null,
+};
+
+export type PupilParent = {
+  __typename: "PupilParent",
+  id: string,
+  pupilID: string,
+  parentID: string,
+  Parent: Parent,
+  Pupil: Pupil,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Parent = {
+  __typename: "Parent",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  children?: ModelPupilParentConnection | null,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type UpdatePELessonRecordInput = {
@@ -764,16 +793,6 @@ export type ModelParentConditionInput = {
   not?: ModelParentConditionInput | null,
 };
 
-export type Parent = {
-  __typename: "Parent",
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  email?: string | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
 export type UpdateParentInput = {
   id: string,
   firstName?: string | null,
@@ -782,6 +801,30 @@ export type UpdateParentInput = {
 };
 
 export type DeleteParentInput = {
+  id: string,
+};
+
+export type CreatePupilParentInput = {
+  id?: string | null,
+  pupilID: string,
+  parentID: string,
+};
+
+export type ModelPupilParentConditionInput = {
+  pupilID?: ModelIDInput | null,
+  parentID?: ModelIDInput | null,
+  and?: Array< ModelPupilParentConditionInput | null > | null,
+  or?: Array< ModelPupilParentConditionInput | null > | null,
+  not?: ModelPupilParentConditionInput | null,
+};
+
+export type UpdatePupilParentInput = {
+  id: string,
+  pupilID?: string | null,
+  parentID?: string | null,
+};
+
+export type DeletePupilParentInput = {
   id: string,
 };
 
@@ -2420,6 +2463,10 @@ export type CreateParentMutation = {
     firstName?: string | null,
     lastName?: string | null,
     email?: string | null,
+    children?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2437,6 +2484,10 @@ export type UpdateParentMutation = {
     firstName?: string | null,
     lastName?: string | null,
     email?: string | null,
+    children?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2454,6 +2505,115 @@ export type DeleteParentMutation = {
     firstName?: string | null,
     lastName?: string | null,
     email?: string | null,
+    children?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreatePupilParentMutationVariables = {
+  input: CreatePupilParentInput,
+  condition?: ModelPupilParentConditionInput | null,
+};
+
+export type CreatePupilParentMutation = {
+  createPupilParent?:  {
+    __typename: "PupilParent",
+    id: string,
+    pupilID: string,
+    parentID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePupilParentMutationVariables = {
+  input: UpdatePupilParentInput,
+  condition?: ModelPupilParentConditionInput | null,
+};
+
+export type UpdatePupilParentMutation = {
+  updatePupilParent?:  {
+    __typename: "PupilParent",
+    id: string,
+    pupilID: string,
+    parentID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePupilParentMutationVariables = {
+  input: DeletePupilParentInput,
+  condition?: ModelPupilParentConditionInput | null,
+};
+
+export type DeletePupilParentMutation = {
+  deletePupilParent?:  {
+    __typename: "PupilParent",
+    id: string,
+    pupilID: string,
+    parentID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2575,6 +2735,10 @@ export type CreatePupilMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2618,6 +2782,10 @@ export type UpdatePupilMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2660,6 +2828,10 @@ export type DeletePupilMutation = {
       principal?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -3573,6 +3745,10 @@ export type GetParentQuery = {
     firstName?: string | null,
     lastName?: string | null,
     email?: string | null,
+    children?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3684,6 +3860,10 @@ export type GetPupilQuery = {
       principal?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -4794,6 +4974,10 @@ export type OnCreateParentSubscription = {
     firstName?: string | null,
     lastName?: string | null,
     email?: string | null,
+    children?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4806,6 +4990,10 @@ export type OnUpdateParentSubscription = {
     firstName?: string | null,
     lastName?: string | null,
     email?: string | null,
+    children?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4818,6 +5006,100 @@ export type OnDeleteParentSubscription = {
     firstName?: string | null,
     lastName?: string | null,
     email?: string | null,
+    children?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePupilParentSubscription = {
+  onCreatePupilParent?:  {
+    __typename: "PupilParent",
+    id: string,
+    pupilID: string,
+    parentID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePupilParentSubscription = {
+  onUpdatePupilParent?:  {
+    __typename: "PupilParent",
+    id: string,
+    pupilID: string,
+    parentID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePupilParentSubscription = {
+  onDeletePupilParent?:  {
+    __typename: "PupilParent",
+    id: string,
+    pupilID: string,
+    parentID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4919,6 +5201,10 @@ export type OnCreatePupilSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4957,6 +5243,10 @@ export type OnUpdatePupilSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -4994,6 +5284,10 @@ export type OnDeletePupilSubscription = {
       principal?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,

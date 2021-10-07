@@ -1,5 +1,5 @@
 import React from 'react';
-import PupilClassroomTable from "../tables/PupilClassroomTable";
+import PupilClassroomTable from "./PupilClassroomTable";
 import {Container, Typography} from "@mui/material";
 import SelectYearForClassroom from "./SelectYearForClassroom";
 
