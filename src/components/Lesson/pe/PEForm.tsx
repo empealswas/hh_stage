@@ -26,10 +26,10 @@ import {useParams} from "react-router-dom";
 import AttendanceSheetTableTest, {AttendanceOfPupil} from "../../attendance/AttendanceSheetTableTest";
 import {Can} from "../../../utils/Ability";
 import {UserContext} from "../../../App";
-import {createPELessonRecord} from "../../../graphql/mutations";
+import {createAttendance, createPELessonRecord} from "../../../graphql/mutations";
 import {useSnackbar} from "notistack";
 
-const activities = ['Walking', 'Running', 'Gym', 'Dance', 'Soccer', 'Rugby', 'Gaelic', 'Other']
+const activities = ['Walking', 'Running', 'Swimming', 'Gym', 'Dance', 'Soccer', 'Rugby', 'Gaelic', 'Other']
 const PEForm = () => {
     const RegisterSchema = Yup.object().shape({
         deliveredBy: Yup.mixed()
@@ -47,8 +47,8 @@ const PEForm = () => {
     const [loading, setLoading] = useState(false);
     const [classroomId, setClassroomId] = useState('');
     const snackbar = useSnackbar();
-    const sentRecd = async () => {
-        return API.graphql(graphqlOperation(createPELessonRecord, {
+    const sentRecord = async () => {
+        const result: any =  await API.graphql(graphqlOperation(createPELessonRecord, {
             input: {
                 teacherID: user?.email,
                 date: format(value ?? new Date(), 'yyyy-MM-dd'),
@@ -61,6 +61,17 @@ const PEForm = () => {
                 classroomID: classroomId
             }
         }));
+        //
+        const lessonId = result.data.createPELessonRecord.id;
+        return pupils?.forEach(async pupil => {
+            const input = {
+                lessonID: lessonId,
+                pupilID: pupil.id,
+                present: pupil.present,
+                wasRewarded: pupil.wasRewarded,
+            }
+            return await API.graphql(graphqlOperation(createAttendance, {input}));
+        });
     }
     const formik = useFormik({
         initialValues: {
@@ -88,7 +99,7 @@ const PEForm = () => {
             console.log('teacher', user?.email)
             console.log('clid', classroomId)
             setLoading(true);
-            sentRecd().then(value1 => {
+            sentRecord().then(value1 => {
                 console.log(value1)
                 console.log('dne')
                 setLoading(false);
