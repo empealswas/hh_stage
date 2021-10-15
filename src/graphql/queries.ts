@@ -35,6 +35,111 @@ export const listFiles = /* GraphQL */ `
     }
   }
 `;
+export const getSection = /* GraphQL */ `
+  query GetSection($id: ID!) {
+    getSection(id: $id) {
+      id
+      name
+      parentID
+      ParentSection {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      Lessons {
+        nextToken
+      }
+      imagePreviewID
+      ImagePreview {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSections = /* GraphQL */ `
+  query ListSections(
+    $filter: ModelSectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getLesson = /* GraphQL */ `
+  query GetLesson($id: ID!) {
+    getLesson(id: $id) {
+      id
+      title
+      description
+      sectionID
+      Section {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      LessonsRecords {
+        nextToken
+      }
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLessons = /* GraphQL */ `
+  query ListLessons(
+    $filter: ModelLessonFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLessons(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getPELessonRecord = /* GraphQL */ `
   query GetPELessonRecord($id: ID!) {
     getPELessonRecord(id: $id) {
@@ -67,6 +172,15 @@ export const getPELessonRecord = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -89,6 +203,7 @@ export const listPELessonRecords = /* GraphQL */ `
         rating
         notes
         classroomID
+        lessonID
         createdAt
         updatedAt
       }
@@ -144,6 +259,7 @@ export const getClassroomLesson = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -228,47 +344,6 @@ export const listClassrooms = /* GraphQL */ `
     }
   }
 `;
-export const getLesson = /* GraphQL */ `
-  query GetLesson($id: ID!) {
-    getLesson(id: $id) {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listLessons = /* GraphQL */ `
-  query ListLessons(
-    $filter: ModelLessonFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLessons(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        description
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getSchool = /* GraphQL */ `
   query GetSchool($id: ID!) {
     getSchool(id: $id) {
@@ -332,6 +407,7 @@ export const getAttendance = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -379,6 +455,7 @@ export const getLessonTeacher = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }

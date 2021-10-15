@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {API, Auth, graphqlOperation, Storage} from "aws-amplify";
 import Typography from "@material-ui/core/Typography";
 import {Lesson} from "../../../API";
@@ -16,7 +16,7 @@ import Title from "../YearPage/Title";
 import LessonEditForm from "./LessonEditForm";
 import DeletionModal from "../YearPage/DeletionModal";
 import {onCreateFile, onDeleteFile, onUpdateCurriculum} from "../../../graphql/subscriptions";
-import {createFile, createLesson, createTermLesson} from "../../../graphql/mutations";
+import {createFile, createLesson, createTermLesson, deleteLesson} from "../../../graphql/mutations";
 import awsConfig from "../../../aws-exports";
 import {useSnackbar} from "notistack";
 import Accordion from '@mui/material/Accordion';
@@ -93,6 +93,8 @@ const LessonOverview = () => {
         setDroppedFiles(acceptedFiles);
     }, []);
 
+    const navigate = useNavigate();
+
     const uploadFiles = async (files: File[]) => {
         // for (const file of files) {
         //     try {
@@ -128,6 +130,8 @@ const LessonOverview = () => {
                                    </Can>}
                                    deletionModal={<Can I={'delete'} a={'lesson'}><DeletionModal title={'Delete Lesson'}
                                                                                                 onDelete={async () => {
+                                                                                                    await API.graphql(graphqlOperation(deleteLesson, {input: {id: lessonId}}));
+                                                                                                    navigate(-1);
                                                                                                 }
                                                                                                 }/></Can>}/>
                             <Typography variant={"h4"} style={{marginTop: '30px'}}>
@@ -135,8 +139,8 @@ const LessonOverview = () => {
                             </Typography>
                             <Can I={'read'} an={'attendance'}>
                                 {lessonId && <>
-                                <LessonRating lessonId={lessonId}/>
-                                <AttendanceSheetModal lessonId={lessonId}/>
+                                    <LessonRating lessonId={lessonId}/>
+                                    <AttendanceSheetModal lessonId={lessonId}/>
                                 </>}
                             </Can>
                         </Container>
@@ -177,7 +181,7 @@ const LessonOverview = () => {
                                 </List>
                             </AccordionDetails>
                             <AccordionActions>
-                                <IconButton onClick={()=>{
+                                <IconButton onClick={() => {
                                     setFilesToUpload([]);
                                     setSnackBarOpen(false)
                                 }
@@ -193,6 +197,6 @@ const LessonOverview = () => {
             }
         </div>
     );
-}
+};
 
 export default LessonOverview;

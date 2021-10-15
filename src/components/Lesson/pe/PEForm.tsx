@@ -112,9 +112,9 @@ const PEForm = () => {
         }
     });
 
+    const [pupils, setPupils] = React.useState<null | AttendanceOfPupil[]>(null);
     const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid, resetForm} = formik;
     const [value, setValue] = React.useState<Date | null>(new Date());
-    const [pupils, setPupils] = React.useState<null | AttendanceOfPupil[]>(null);
     return (
         <FormikProvider value={formik}>
             <Typography textAlign={'center'} variant={'h2'} sx={{mb: 15}}>PE Self Reporting</Typography>

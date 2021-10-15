@@ -1,18 +1,10 @@
 import React from 'react';
 import * as Yup from "yup";
-import {Form, FormikConsumer, FormikProvider, useFormik, useFormikContext} from "formik";
-import {Button, IconButton, InputAdornment, Stack, TextField} from "@material-ui/core";
-import {Icon} from "@iconify/react";
-import eyeFill from "@iconify/icons-eva/eye-fill";
-import eyeOffFill from "@iconify/icons-eva/eye-off-fill";
-import {LoadingButton} from "@material-ui/lab";
-import {DialogActions} from "@mui/material";
-import ProgressButton from "../../Buttons/ProgressButton";
-import {API, graphqlOperation} from "aws-amplify";
-import {updateCurriculum} from "../../../graphql/mutations";
+import {FormikProvider, useFormik} from "formik";
+import {TextField} from "@material-ui/core";
 import {useParams} from "react-router-dom";
 import AddingDialog from "../../../utils/AddingDialog";
-import {addParentApi, addTeacherApi} from "../../../apiFunctions/apiFunctions";
+import {addParentApi} from "../../../apiFunctions/apiFunctions";
 import {AddParentRequest} from "../../../apiFunctions/DTO/AddTeacherRequest";
 
 const YearPageForm = () => {

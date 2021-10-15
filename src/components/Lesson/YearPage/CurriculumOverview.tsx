@@ -11,7 +11,7 @@ import DeletionModal from "./DeletionModal";
 import {useSnackbar} from "notistack";
 import {Can} from "../../../utils/Ability";
 import {UserContext} from '../../../App';
-import PECard from "../pe/PECard";
+import ActivityCard from "../pe/ActivityCard";
 
 
 const CurriculumOverview = () => {

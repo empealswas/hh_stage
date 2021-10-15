@@ -11,13 +11,20 @@ import {Lesson} from "../../../API";
 
 type LessonItemsGridProps = {
     lessons: Lesson[]
+    path?: string
 }
 const LessonItemsGrid = (props: LessonItemsGridProps) => {
-    const {lessons} = {...props}
+    const {lessons, path} = {...props}
+
+    if (lessons.length === 0) {
+        return (
+            <Typography>No Lessons</Typography>
+        )
+    }
 
     return (
         <>
-            {lessons.map((value: Lesson, index: number) => (
+            {lessons.sort((a, b) => a.title?.localeCompare(b.title ?? '')as number).map((value: Lesson, index: number) => (
 
                 <Grid key={index} item xs={12} sm={6} md={3}>
                     <Link component={RouterLink} to={`../lessons/${value.id}`} underline={'none'}>
@@ -34,7 +41,7 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                 </Grid>
             ))}
         </>
-    )
+    );
 };
 
 export default LessonItemsGrid;

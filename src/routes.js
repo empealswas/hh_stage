@@ -32,6 +32,8 @@ import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 import SchoolHousesPage from "./pages/SchoolHousesPage";
 import PEForm from "./components/Lesson/pe/PEForm";
 import ParentOverview from "./components/parent/ParentOverview";
+import SectionGrid from "./components/Sections/SectionGrid";
+import SectionOverview from "./components/Sections/SectionOverview";
 
 // ----------------------------------------------------------------------
 
@@ -75,10 +77,22 @@ export default function Router() {
                 },
                 {path: 'parent', element: <ParentSection/>},
                 {
+                    path: 'section', element: <SectionOverview/>,
+                    children: [{
+                        path: ':sectionId', element: <SectionOverview/>
+                    },
+                       ]
+                },
+                {
+                    path: 'lessons', element: <LessonOutlet/>, children: [
+                        {path: ':lessonId', element: <LessonOverview/>}
+                    ]
+                },
+                {
                     path: 'curricula', element: <Lessons/>, children: [
+                        {element: <CurriculaComponents/>},
                         {path: 'pe', element: <PEForm/>},
                         {path: ':id', element: <CurriculumOverview/>},
-                        {element: <CurriculaComponents/>},
                         {
                             path: 'subjects', element: <SubjectOutlet/>, children: [
                                 {path: ':id', element: <TermElements/>},

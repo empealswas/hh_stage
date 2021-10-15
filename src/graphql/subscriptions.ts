@@ -41,6 +41,207 @@ export const onDeleteFile = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSection = /* GraphQL */ `
+  subscription OnCreateSection {
+    onCreateSection {
+      id
+      name
+      parentID
+      ParentSection {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      Lessons {
+        nextToken
+      }
+      imagePreviewID
+      ImagePreview {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSection = /* GraphQL */ `
+  subscription OnUpdateSection {
+    onUpdateSection {
+      id
+      name
+      parentID
+      ParentSection {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      Lessons {
+        nextToken
+      }
+      imagePreviewID
+      ImagePreview {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSection = /* GraphQL */ `
+  subscription OnDeleteSection {
+    onDeleteSection {
+      id
+      name
+      parentID
+      ParentSection {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      Lessons {
+        nextToken
+      }
+      imagePreviewID
+      ImagePreview {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLesson = /* GraphQL */ `
+  subscription OnCreateLesson {
+    onCreateLesson {
+      id
+      title
+      description
+      sectionID
+      Section {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      LessonsRecords {
+        nextToken
+      }
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLesson = /* GraphQL */ `
+  subscription OnUpdateLesson {
+    onUpdateLesson {
+      id
+      title
+      description
+      sectionID
+      Section {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      LessonsRecords {
+        nextToken
+      }
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLesson = /* GraphQL */ `
+  subscription OnDeleteLesson {
+    onDeleteLesson {
+      id
+      title
+      description
+      sectionID
+      Section {
+        id
+        name
+        parentID
+        imagePreviewID
+        createdAt
+        updatedAt
+      }
+      LessonsRecords {
+        nextToken
+      }
+      terms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      Files {
+        nextToken
+      }
+      LessonTeacher {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreatePELessonRecord = /* GraphQL */ `
   subscription OnCreatePELessonRecord {
     onCreatePELessonRecord {
@@ -70,6 +271,15 @@ export const onCreatePELessonRecord = /* GraphQL */ `
         name
         schoolID
         yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
         createdAt
         updatedAt
       }
@@ -110,6 +320,15 @@ export const onUpdatePELessonRecord = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -144,6 +363,15 @@ export const onDeletePELessonRecord = /* GraphQL */ `
         name
         schoolID
         yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
         createdAt
         updatedAt
       }
@@ -209,6 +437,7 @@ export const onCreateClassroomLesson = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -236,6 +465,7 @@ export const onUpdateClassroomLesson = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -263,6 +493,7 @@ export const onDeleteClassroomLesson = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -365,75 +596,6 @@ export const onDeleteClassroom = /* GraphQL */ `
         name
         createdAt
         updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateLesson = /* GraphQL */ `
-  subscription OnCreateLesson {
-    onCreateLesson {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateLesson = /* GraphQL */ `
-  subscription OnUpdateLesson {
-    onUpdateLesson {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteLesson = /* GraphQL */ `
-  subscription OnDeleteLesson {
-    onDeleteLesson {
-      id
-      title
-      description
-      terms {
-        nextToken
-      }
-      Attendances {
-        nextToken
-      }
-      Files {
-        nextToken
-      }
-      LessonTeacher {
-        nextToken
       }
       createdAt
       updatedAt
@@ -695,6 +857,7 @@ export const onCreateAttendance = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -724,6 +887,7 @@ export const onUpdateAttendance = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -753,6 +917,7 @@ export const onDeleteAttendance = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -780,6 +945,7 @@ export const onCreateLessonTeacher = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -808,6 +974,7 @@ export const onUpdateLessonTeacher = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -836,6 +1003,7 @@ export const onDeleteLessonTeacher = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -1376,6 +1544,7 @@ export const onCreateTermLesson = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -1402,6 +1571,7 @@ export const onUpdateTermLesson = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }
@@ -1428,6 +1598,7 @@ export const onDeleteTermLesson = /* GraphQL */ `
         id
         title
         description
+        sectionID
         createdAt
         updatedAt
       }

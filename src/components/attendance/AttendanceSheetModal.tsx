@@ -26,6 +26,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import AttendanceSheetTable from "./AttendanceSheetTable";
+import LessonDetails from "./LessonDetails";
 
 
 const query = `query MyQuery($id: ID = "") {
@@ -152,99 +153,6 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
                         margin: '30px'
                     }}>
                         <AttendanceSheetTable/>
-                        {/*<Connect query={graphqlOperation(query, {id: user?.email})}>*/}
-                        {/*    {(classrooms: IConnectState) => {*/}
-                        {/*        if (classrooms.loading) {*/}
-                        {/*            return <CircularProgress/>;*/}
-                        {/*        }*/}
-                        {/*        console.log(classrooms.data)*/}
-                        {/*        return (*/}
-                        {/*            <Fade in={open}>*/}
-                        {/*                <Paper>*/}
-                        {/*                    <h2 id="transition-modal-title">Attendance Sheet</h2>*/}
-                        {/*                    <InputLabel htmlFor="age-native-helper">Classroom</InputLabel>*/}
-                        {/*                    <Select*/}
-                        {/*                        native*/}
-                        {/*                        value={selectedClassroom}*/}
-                        {/*                        onChange={handleChange}*/}
-                        {/*                        inputProps={{*/}
-                        {/*                            name: 'age',*/}
-                        {/*                            id: 'age-native-simple',*/}
-                        {/*                        }}*/}
-                        {/*                    >*/}
-                        {/*                        {classrooms.data.getTeacher.classrooms.items.map((value: any) => value.classroom).map((classroom: Classroom) => (*/}
-                        {/*                            <option value={classroom.id}>{classroom.name}</option>*/}
-                        {/*                        ))}*/}
-                        {/*                    </Select>*/}
-                        {/*                    {selectedClassroom &&*/}
-                        {/*                    <Connect query={graphqlOperation(getPupilsOfClassroomAttendanceQuery, {*/}
-                        {/*                        id: selectedClassroom,*/}
-                        {/*                        eq: props.lessonId*/}
-                        {/*                    })}>*/}
-                        {/*                        {(attendance: IConnectState) => {*/}
-                        {/*                            if (attendance.loading) {*/}
-                        {/*                                return <CircularProgress/>;*/}
-                        {/*                            }*/}
-                        {/*                            const pupils: Pupil [] = attendance.data.getClassroom.pupils.items?.map((item: any) => item.pupil);*/}
-                        {/*                            if (attendanceByPupil == null) {*/}
-                        {/*                                const att: { [name: string]: boolean } = {}*/}
-                        {/*                                pupils.map(pupil => {*/}
-                        {/*                                    if (pupil.Attendances?.items?.length == 0) {*/}
-                        {/*                                        att[pupil.id] = true;*/}
-                        {/*                                    } else {*/}
-                        {/*                                        const [attendanceInLesson] = pupil.Attendances?.items as Attendance[];*/}
-                        {/*                                        att[pupil.id] = attendanceInLesson.present ?? true;*/}
-                        {/*                                    }*/}
-                        {/*                                });*/}
-                        {/*                                setAttendanceByPupil(att);*/}
-                        {/*                            }*/}
-                        {/*                            if (!attendanceByPupil) {*/}
-                        {/*                                return <CircularProgress/>;*/}
-                        {/*                            }*/}
-                        {/*                            return (*/}
-                        {/*                                <>*/}
-                        {/*                                    <Stack display={'column'}>*/}
-                        {/*                                        {pupils.map((pupil, index) => {*/}
-                        {/*                                                return (*/}
-                        {/*                                                    <FormControlLabel*/}
-                        {/*                                                        label={`${pupil.firstName} ${pupil.lastName}`}*/}
-                        {/*                                                        control={<Checkbox*/}
-                        {/*                                                            onChange={handleAttendance}*/}
-                        {/*                                                            checked={attendanceByPupil[pupil.id]}*/}
-                        {/*                                                            name={pupil.id}/>}/>*/}
-                        {/*                                                    // <ListItem secondaryAction={*/}
-                        {/*                                                    //     <Checkbox*/}
-                        {/*                                                    //         edge="end"*/}
-                        {/*                                                    //         onChange={handleAttendance}*/}
-                        {/*                                                    //         checked={attendanceByPupil[pupil.id]}*/}
-                        {/*                                                    //     />*/}
-                        {/*                                                    // } >*/}
-                        {/*                                                    //     <ListItemText  primary={`${pupil.firstName} ${pupil.lastName}`} />*/}
-                        {/*                                                    // </ListItem>*/}
-
-                        {/*                                                );*/}
-                        {/*                                            }*/}
-                        {/*                                        )}*/}
-                        {/*                                    </Stack>*/}
-                        {/*                                    <DialogActions>*/}
-
-                        {/*                                        <ProgressButton success={success} loading={loading}*/}
-                        {/*                                                        onClick={updateAttendanceSheet(pupils)}*/}
-                        {/*                                                        disabled={false}/>*/}
-                        {/*                                    </DialogActions>*/}
-                        {/*                                </>*/}
-
-                        {/*                            );*/}
-                        {/*                        }*/}
-                        {/*                        }*/}
-                        {/*                    </Connect>*/}
-                        {/*                    }*/}
-
-                        {/*                </Paper>*/}
-                        {/*            </Fade>*/}
-                        {/*        );*/}
-                        {/*    }}*/}
-                        {/*</Connect>*/}
                     </Card>
                     <DialogContent>
 

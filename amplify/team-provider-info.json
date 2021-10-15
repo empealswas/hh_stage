@@ -18,11 +18,11 @@
       "function": {
         "healthyLambdaApi": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/healthyLambdaApi-554a465a67584d346d55-build.zip"
+          "s3Key": "amplify-builds/healthyLambdaApi-70442f792f6c55627235-build.zip"
         },
         "RemoveFileFromS3Bucket": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/RemoveFileFromS3Bucket-7142546a354969365632-build.zip"
+          "s3Key": "amplify-builds/RemoveFileFromS3Bucket-69303749774350524654-build.zip"
         }
       }
     }

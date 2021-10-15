@@ -8,8 +8,38 @@ type File
   bucket: String
   lessonID: ID
 }
+
+type Section @model
+@key(name: "bySection", fields:["parentID"])
+@key(name: "byFile", fields:["imagePreviewID"])
+{
+  id: ID!
+  name: String
+  parentID: ID
+  ParentSection: Section @connection(fields: ["parentID"])
+  Lessons: [Lesson] @connection(keyName: "bySection", fields: ["id"])
+  imagePreviewID: ID
+  ImagePreview: File @connection(fields: ["imagePreviewID"])
+}
+
+type Lesson @model
+@key(name: "bySection", fields: ["sectionID"])
+{
+  id: ID!
+  title: String
+  description: String
+  sectionID: ID
+  Section: Section @connection(fields: ["sectionID"])
+  LessonsRecords: [PELessonRecord] @connection(keyName: "byLesson", fields: ["id"])
+  terms: [TermLesson] @connection(keyName: "byLesson", fields: ["id"])
+  Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
+  Files: [File] @connection(keyName: "byLesson", fields: ["id"])
+  LessonTeacher: [LessonTeacher] @connection(keyName: "byLesson", fields: ["id"])
+}
+
 type PELessonRecord @model
 @key(name: "byTeacher", fields: ["teacherID"])
+@key(name: "byLesson", fields: ["lessonID"])
 {
   id: ID!
   teacherID: ID
@@ -23,6 +53,8 @@ type PELessonRecord @model
   notes: String
   classroomID: ID
   Classroom: Classroom @connection(fields:["classroomID"])
+  lessonID: ID
+  Lesson: Lesson @connection(fields: ["lessonID"])
 }
 
 type SchoolHouse @model
@@ -54,15 +86,7 @@ type Classroom @model
   yearGroupID: ID
   yearGroup: Curriculum @connection(fields: ["yearGroupID"])
 }
-type Lesson @model {
-  id: ID!
-  title: String
-  description: String
-  terms: [TermLesson] @connection(keyName: "byLesson", fields: ["id"])
-  Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
-  Files: [File] @connection(keyName: "byLesson", fields: ["id"])
-  LessonTeacher: [LessonTeacher] @connection(keyName: "byLesson", fields: ["id"])
-}
+
 
 type TeacherClassroom @model(queries: null) @key(name: "byTeacher", fields: ["teacherID", "classroomID"]) @key(name: "byClassroom", fields: ["classroomID", "teacherID"]) {
   id: ID!

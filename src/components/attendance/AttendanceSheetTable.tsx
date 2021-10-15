@@ -17,6 +17,7 @@ import {
     updateClassroomLesson
 } from "../../graphql/mutations";
 import {renderReward, renderRatingEditInputCell} from "./Reward";
+import LessonDetails from "./LessonDetails";
 
 
 interface GridConfigOptions {
@@ -316,6 +317,10 @@ const AttendanceSheetTable = (props: {}) => {
             }
             } variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</Button>
             }
+            {(selectedClassroom && lessonId) &&
+            <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}/>
+            }
+            <Box height={50}/>
             {classroomsOfTeacher && selectedClassroom &&
             <Box mb={1}>
                 <SettingsPanel onApply={handleApplyClick} classrooms={classroomsOfTeacher}

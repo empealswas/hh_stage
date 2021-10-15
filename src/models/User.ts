@@ -14,7 +14,7 @@ export class User {
     }
     private async getTeacherCredentials(){
         if(this.isAdmin()) return;
-        if(this.isTeacher()) return;
+        if(this.isParent()) return;
         const result: any = await API.graphql(graphqlOperation(getTeacher, {id: this._email}));
         const teacher: Teacher = result.data.getTeacher;
         this.firsName = teacher.firstName;

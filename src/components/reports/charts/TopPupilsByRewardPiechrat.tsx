@@ -10,19 +10,18 @@ import {useTheme} from "@material-ui/core/styles";
 
 // ----------------------------------------------------------------------
 
-export type HouseData = {
-    houseName: string,
+export type PupilData = {
+    pupilDisplayName: string,
     amountOfTrophies: number,
 }
-export default function SchoolHousesBarchart(props: {houses: HouseData[]}) {
-    const {houses} = {...props};
-    console.log(houses)
+export default function TopPupilsByRewardPiechrat(props: {pupils: PupilData[]}) {
+    const {pupils} = {...props};
+    console.log(pupils)
     const theme = useTheme();
-    const data: number [] = houses.map(house => house.amountOfTrophies)
+    const data: number [] = pupils.map(house => house.amountOfTrophies).sort((a, b) => a - b);
 const CHART_DATA = [{data: data }];
     const chartOptions: any = merge(BaseOptionChart(), {
         stroke: { colors: [theme.palette.background.paper] },
-        colors: ['#faa044','#1687F1', '#00A24F', '#e8092a'],
         legend: { floating: true, horizontalAlign: 'center' },
         dataLabels: { enabled: true, dropShadow: { enabled: false } },
         tooltip: {
@@ -45,7 +44,7 @@ const CHART_DATA = [{data: data }];
             }
         },
         xaxis: {
-            categories: houses.map(house => house.houseName)
+            categories: pupils.map(house => house.pupilDisplayName)
         },
         yaxis: {
             labels: {
@@ -57,7 +56,7 @@ const CHART_DATA = [{data: data }];
 
     return (
         <Card>
-            <CardHeader title="Trophies of Houses" />
+            <CardHeader title="Top Pupils by gained rewards" />
             <Box sx={{ mx: 3 }} dir="ltr">
                 <ReactApexChart type="bar" series={CHART_DATA} options={chartOptions} height={400} />
             </Box>
