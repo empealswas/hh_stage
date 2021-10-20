@@ -38,6 +38,13 @@
           },
           "additionalAuthenticationProviders": [
             {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "description": ""
+              }
+            },
+            {
               "authenticationType": "AWS_IAM"
             }
           ]
@@ -90,6 +97,22 @@
           "resourceName": "HealthyHabitsV2",
           "attributes": [
             "BucketName"
+          ]
+        }
+      ]
+    },
+    "AddInterventionForPupil": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2GraphQlApi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
           ]
         }
       ]

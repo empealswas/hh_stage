@@ -55,7 +55,7 @@ const ChildOverview = (props: {pupil: Pupil}) => {
                 </Stack>
             </Container>
             <CardActions>
-                <ChildTabs/>
+                <ChildTabs pupil={pupil}/>
             </CardActions>
 
         </Card>

@@ -385,11 +385,11 @@ export const onCreateSchoolHouse = /* GraphQL */ `
     onCreateSchoolHouse {
       id
       name
+      createdAt
+      updatedAt
       Pupils {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -398,11 +398,11 @@ export const onUpdateSchoolHouse = /* GraphQL */ `
     onUpdateSchoolHouse {
       id
       name
+      createdAt
+      updatedAt
       Pupils {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -411,11 +411,11 @@ export const onDeleteSchoolHouse = /* GraphQL */ `
     onDeleteSchoolHouse {
       id
       name
+      createdAt
+      updatedAt
       Pupils {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -692,15 +692,6 @@ export const onCreatePupilClassroom = /* GraphQL */ `
       id
       pupilID
       classroomID
-      pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
       classroom {
         id
         name
@@ -711,6 +702,15 @@ export const onCreatePupilClassroom = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -720,15 +720,6 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
       id
       pupilID
       classroomID
-      pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
       classroom {
         id
         name
@@ -739,6 +730,15 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -748,15 +748,6 @@ export const onDeletePupilClassroom = /* GraphQL */ `
       id
       pupilID
       classroomID
-      pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
       classroom {
         id
         name
@@ -767,6 +758,15 @@ export const onDeletePupilClassroom = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -781,14 +781,14 @@ export const onCreateSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
-      Pupils {
-        nextToken
-      }
       classrooms {
         nextToken
       }
       createdAt
       updatedAt
+      Pupils {
+        nextToken
+      }
     }
   }
 `;
@@ -803,14 +803,14 @@ export const onUpdateSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
-      Pupils {
-        nextToken
-      }
       classrooms {
         nextToken
       }
       createdAt
       updatedAt
+      Pupils {
+        nextToken
+      }
     }
   }
 `;
@@ -825,14 +825,14 @@ export const onDeleteSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
-      Pupils {
-        nextToken
-      }
       classrooms {
         nextToken
       }
       createdAt
       updatedAt
+      Pupils {
+        nextToken
+      }
     }
   }
 `;
@@ -844,15 +844,6 @@ export const onCreateAttendance = /* GraphQL */ `
       wasRewarded
       pupilID
       lessonID
-      Pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
       Lesson {
         id
         title
@@ -863,6 +854,15 @@ export const onCreateAttendance = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -874,15 +874,6 @@ export const onUpdateAttendance = /* GraphQL */ `
       wasRewarded
       pupilID
       lessonID
-      Pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
       Lesson {
         id
         title
@@ -893,6 +884,15 @@ export const onUpdateAttendance = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -904,15 +904,6 @@ export const onDeleteAttendance = /* GraphQL */ `
       wasRewarded
       pupilID
       lessonID
-      Pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
       Lesson {
         id
         title
@@ -923,6 +914,15 @@ export const onDeleteAttendance = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1213,6 +1213,8 @@ export const onCreatePupilParent = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      createdAt
+      updatedAt
       Pupil {
         id
         firstName
@@ -1222,8 +1224,6 @@ export const onCreatePupilParent = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -1241,6 +1241,8 @@ export const onUpdatePupilParent = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      createdAt
+      updatedAt
       Pupil {
         id
         firstName
@@ -1250,8 +1252,6 @@ export const onUpdatePupilParent = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -1269,6 +1269,8 @@ export const onDeletePupilParent = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      createdAt
+      updatedAt
       Pupil {
         id
         firstName
@@ -1278,8 +1280,6 @@ export const onDeletePupilParent = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -1333,117 +1333,6 @@ export const onDeleteTeacher = /* GraphQL */ `
         nextToken
       }
       LessonTeacher {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreatePupil = /* GraphQL */ `
-  subscription OnCreatePupil {
-    onCreatePupil {
-      id
-      firstName
-      lastName
-      Attendances {
-        nextToken
-      }
-      classrooms {
-        nextToken
-      }
-      schoolID
-      schoolHouseID
-      schoolHouse {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      parents {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdatePupil = /* GraphQL */ `
-  subscription OnUpdatePupil {
-    onUpdatePupil {
-      id
-      firstName
-      lastName
-      Attendances {
-        nextToken
-      }
-      classrooms {
-        nextToken
-      }
-      schoolID
-      schoolHouseID
-      schoolHouse {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      parents {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeletePupil = /* GraphQL */ `
-  subscription OnDeletePupil {
-    onDeletePupil {
-      id
-      firstName
-      lastName
-      Attendances {
-        nextToken
-      }
-      classrooms {
-        nextToken
-      }
-      schoolID
-      schoolHouseID
-      schoolHouse {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      school {
-        id
-        name
-        country
-        region
-        principal
-        createdAt
-        updatedAt
-      }
-      parents {
         nextToken
       }
       createdAt
@@ -1673,6 +1562,186 @@ export const onDeleteCurriculumSubject = /* GraphQL */ `
       }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const onCreatePupil = /* GraphQL */ `
+  subscription OnCreatePupil {
+    onCreatePupil {
+      id
+      firstName
+      lastName
+      Attendances {
+        nextToken
+      }
+      classrooms {
+        nextToken
+      }
+      schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      parents {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      Interventions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdatePupil = /* GraphQL */ `
+  subscription OnUpdatePupil {
+    onUpdatePupil {
+      id
+      firstName
+      lastName
+      Attendances {
+        nextToken
+      }
+      classrooms {
+        nextToken
+      }
+      schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      parents {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      Interventions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeletePupil = /* GraphQL */ `
+  subscription OnDeletePupil {
+    onDeletePupil {
+      id
+      firstName
+      lastName
+      Attendances {
+        nextToken
+      }
+      classrooms {
+        nextToken
+      }
+      schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      parents {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      Interventions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateIntervention = /* GraphQL */ `
+  subscription OnCreateIntervention {
+    onCreateIntervention {
+      id
+      pupilID
+      message
+      createdAt
+      updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateIntervention = /* GraphQL */ `
+  subscription OnUpdateIntervention {
+    onUpdateIntervention {
+      id
+      pupilID
+      message
+      createdAt
+      updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteIntervention = /* GraphQL */ `
+  subscription OnDeleteIntervention {
+    onDeleteIntervention {
+      id
+      pupilID
+      message
+      createdAt
+      updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

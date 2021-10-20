@@ -192,7 +192,10 @@ type Teacher @model  @key(name: "bySchool", fields: ["schoolID"]) {
 
 type Pupil @model
 @key(name: "bySchool", fields: ["schoolID"])
-@key(name: "bySchoolHouse", fields:["schoolHouseID"]){
+@key(name: "bySchoolHouse", fields:["schoolHouseID"])
+@auth(rules: [{ allow: public, provider: iam },
+              { allow: public, provider: apiKey },{allow: private}])
+{
   id: ID!
   firstName: String
   lastName: String
@@ -203,8 +206,18 @@ type Pupil @model
   schoolHouse: SchoolHouse @connection(fields: ["schoolHouseID"])
   school: School @connection(fields: ["schoolID"])
   parents: [PupilParent] @connection(keyName: "byPupil", fields: ["id"])
-
+  Interventions: [Intervention] @connection(keyName: "byPupil", fields: ["id"])
 }
+
+type Intervention @model
+@key(name: "byPupil", fields: ["pupilID"])
+@auth(rules: [{ allow: public, provider: iam }, { allow: public, provider: apiKey },{allow: private}]) {
+  id: ID!
+  pupilID: ID!
+  Pupil: Pupil @connection(fields: ["pupilID"])
+  message: String
+}
+
 
 type SubjectTerm @model(queries: null) @key(name: "bySubject", fields: ["subjectID", "termID"]) @key(name: "byTerm", fields: ["termID", "subjectID"]) {
   id: ID!

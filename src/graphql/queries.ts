@@ -216,11 +216,11 @@ export const getSchoolHouse = /* GraphQL */ `
     getSchoolHouse(id: $id) {
       id
       name
+      createdAt
+      updatedAt
       Pupils {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -355,14 +355,14 @@ export const getSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
-      Pupils {
-        nextToken
-      }
       classrooms {
         nextToken
       }
       createdAt
       updatedAt
+      Pupils {
+        nextToken
+      }
     }
   }
 `;
@@ -394,15 +394,6 @@ export const getAttendance = /* GraphQL */ `
       wasRewarded
       pupilID
       lessonID
-      Pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
       Lesson {
         id
         title
@@ -413,6 +404,15 @@ export const getAttendance = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -691,6 +691,9 @@ export const getPupil = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      Interventions {
+        nextToken
+      }
     }
   }
 `;
@@ -707,6 +710,44 @@ export const listPupils = /* GraphQL */ `
         lastName
         schoolID
         schoolHouseID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getIntervention = /* GraphQL */ `
+  query GetIntervention($id: ID!) {
+    getIntervention(id: $id) {
+      id
+      pupilID
+      message
+      createdAt
+      updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listInterventions = /* GraphQL */ `
+  query ListInterventions(
+    $filter: ModelInterventionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listInterventions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        pupilID
+        message
         createdAt
         updatedAt
       }

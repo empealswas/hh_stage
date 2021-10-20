@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "api": {
+      "HealthyHabitsV2GraphQlApi": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

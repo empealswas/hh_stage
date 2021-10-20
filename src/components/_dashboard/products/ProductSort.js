@@ -8,10 +8,8 @@ import { Menu, Button, MenuItem, Typography } from '@material-ui/core';
 // ----------------------------------------------------------------------
 
 const SORT_BY_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
+  { value: 'oldest', label: 'Oldest' },
   { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' }
 ];
 
 export default function ShopProductSort() {
@@ -43,15 +41,15 @@ export default function ShopProductSort() {
         anchorEl={open}
         open={Boolean(open)}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         {SORT_BY_OPTIONS.map((option) => (
           <MenuItem
             key={option.value}
             selected={option.value === 'newest'}
             onClick={handleClose}
-            sx={{ typography: 'body2' }}
+            sx={{ typography: 'body2', width: '100%'}}
           >
             {option.label}
           </MenuItem>

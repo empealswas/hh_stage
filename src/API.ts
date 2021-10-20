@@ -231,10 +231,10 @@ export type PupilClassroom = {
   id: string,
   pupilID: string,
   classroomID: string,
-  pupil: Pupil,
   classroom: Classroom,
   createdAt: string,
   updatedAt: string,
+  pupil: Pupil,
 };
 
 export type Pupil = {
@@ -251,6 +251,7 @@ export type Pupil = {
   parents?: ModelPupilParentConnection | null,
   createdAt: string,
   updatedAt: string,
+  Interventions?: ModelInterventionConnection | null,
 };
 
 export type ModelAttendanceConnection = {
@@ -266,19 +267,19 @@ export type Attendance = {
   wasRewarded?: boolean | null,
   pupilID?: string | null,
   lessonID?: string | null,
-  Pupil?: Pupil | null,
   Lesson?: Lesson | null,
   createdAt: string,
   updatedAt: string,
+  Pupil?: Pupil | null,
 };
 
 export type SchoolHouse = {
   __typename: "SchoolHouse",
   id: string,
   name?: string | null,
-  Pupils?: ModelPupilConnection | null,
   createdAt: string,
   updatedAt: string,
+  Pupils?: ModelPupilConnection | null,
 };
 
 export type ModelPupilConnection = {
@@ -295,10 +296,10 @@ export type School = {
   region?: string | null,
   principal?: string | null,
   Teachers?: ModelTeacherConnection | null,
-  Pupils?: ModelPupilConnection | null,
   classrooms?: ModelClassroomConnection | null,
   createdAt: string,
   updatedAt: string,
+  Pupils?: ModelPupilConnection | null,
 };
 
 export type ModelTeacherConnection = {
@@ -325,9 +326,9 @@ export type PupilParent = {
   pupilID: string,
   parentID: string,
   Parent: Parent,
-  Pupil: Pupil,
   createdAt: string,
   updatedAt: string,
+  Pupil: Pupil,
 };
 
 export type Parent = {
@@ -339,6 +340,22 @@ export type Parent = {
   children?: ModelPupilParentConnection | null,
   createdAt: string,
   updatedAt: string,
+};
+
+export type ModelInterventionConnection = {
+  __typename: "ModelInterventionConnection",
+  items?:  Array<Intervention | null > | null,
+  nextToken?: string | null,
+};
+
+export type Intervention = {
+  __typename: "Intervention",
+  id: string,
+  pupilID: string,
+  message?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  Pupil?: Pupil | null,
 };
 
 export type Curriculum = {
@@ -921,36 +938,6 @@ export type DeleteTeacherInput = {
   id: string,
 };
 
-export type CreatePupilInput = {
-  id?: string | null,
-  firstName?: string | null,
-  lastName?: string | null,
-  schoolID?: string | null,
-  schoolHouseID?: string | null,
-};
-
-export type ModelPupilConditionInput = {
-  firstName?: ModelStringInput | null,
-  lastName?: ModelStringInput | null,
-  schoolID?: ModelIDInput | null,
-  schoolHouseID?: ModelIDInput | null,
-  and?: Array< ModelPupilConditionInput | null > | null,
-  or?: Array< ModelPupilConditionInput | null > | null,
-  not?: ModelPupilConditionInput | null,
-};
-
-export type UpdatePupilInput = {
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  schoolID?: string | null,
-  schoolHouseID?: string | null,
-};
-
-export type DeletePupilInput = {
-  id: string,
-};
-
 export type CreateSubjectTermInput = {
   id?: string | null,
   subjectID: string,
@@ -1020,6 +1007,60 @@ export type UpdateCurriculumSubjectInput = {
 };
 
 export type DeleteCurriculumSubjectInput = {
+  id: string,
+};
+
+export type CreatePupilInput = {
+  id?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  schoolID?: string | null,
+  schoolHouseID?: string | null,
+};
+
+export type ModelPupilConditionInput = {
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  schoolHouseID?: ModelIDInput | null,
+  and?: Array< ModelPupilConditionInput | null > | null,
+  or?: Array< ModelPupilConditionInput | null > | null,
+  not?: ModelPupilConditionInput | null,
+};
+
+export type UpdatePupilInput = {
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  schoolID?: string | null,
+  schoolHouseID?: string | null,
+};
+
+export type DeletePupilInput = {
+  id: string,
+};
+
+export type CreateInterventionInput = {
+  id?: string | null,
+  pupilID: string,
+  message?: string | null,
+};
+
+export type ModelInterventionConditionInput = {
+  pupilID?: ModelIDInput | null,
+  message?: ModelStringInput | null,
+  and?: Array< ModelInterventionConditionInput | null > | null,
+  or?: Array< ModelInterventionConditionInput | null > | null,
+  not?: ModelInterventionConditionInput | null,
+};
+
+export type UpdateInterventionInput = {
+  id: string,
+  pupilID?: string | null,
+  message?: string | null,
+};
+
+export type DeleteInterventionInput = {
   id: string,
 };
 
@@ -1234,6 +1275,15 @@ export type ModelPupilFilterInput = {
   and?: Array< ModelPupilFilterInput | null > | null,
   or?: Array< ModelPupilFilterInput | null > | null,
   not?: ModelPupilFilterInput | null,
+};
+
+export type ModelInterventionFilterInput = {
+  id?: ModelIDInput | null,
+  pupilID?: ModelIDInput | null,
+  message?: ModelStringInput | null,
+  and?: Array< ModelInterventionFilterInput | null > | null,
+  or?: Array< ModelInterventionFilterInput | null > | null,
+  not?: ModelInterventionFilterInput | null,
 };
 
 export type CreateFileMutationVariables = {
@@ -1723,12 +1773,12 @@ export type CreateSchoolHouseMutation = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
+    createdAt: string,
+    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1742,12 +1792,12 @@ export type UpdateSchoolHouseMutation = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
+    createdAt: string,
+    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -1761,12 +1811,12 @@ export type DeleteSchoolHouseMutation = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
+    createdAt: string,
+    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2117,16 +2167,6 @@ export type CreatePupilClassroomMutation = {
     id: string,
     pupilID: string,
     classroomID: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -2138,6 +2178,16 @@ export type CreatePupilClassroomMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
@@ -2152,16 +2202,6 @@ export type UpdatePupilClassroomMutation = {
     id: string,
     pupilID: string,
     classroomID: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -2173,6 +2213,16 @@ export type UpdatePupilClassroomMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
@@ -2187,16 +2237,6 @@ export type DeletePupilClassroomMutation = {
     id: string,
     pupilID: string,
     classroomID: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -2208,6 +2248,16 @@ export type DeletePupilClassroomMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
@@ -2228,16 +2278,16 @@ export type CreateSchoolMutation = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2258,16 +2308,16 @@ export type UpdateSchoolMutation = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2288,16 +2338,16 @@ export type DeleteSchoolMutation = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -2314,16 +2364,6 @@ export type CreateAttendanceMutation = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -2335,6 +2375,16 @@ export type CreateAttendanceMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -2351,16 +2401,6 @@ export type UpdateAttendanceMutation = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -2372,6 +2412,16 @@ export type UpdateAttendanceMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -2388,16 +2438,6 @@ export type DeleteAttendanceMutation = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -2409,6 +2449,16 @@ export type DeleteAttendanceMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -2804,6 +2854,8 @@ export type CreatePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
@@ -2814,8 +2866,6 @@ export type CreatePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2839,6 +2889,8 @@ export type UpdatePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
@@ -2849,8 +2901,6 @@ export type UpdatePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2874,6 +2924,8 @@ export type DeletePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
@@ -2884,8 +2936,6 @@ export type DeletePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2960,147 +3010,6 @@ export type DeleteTeacherMutation = {
     } | null,
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreatePupilMutationVariables = {
-  input: CreatePupilInput,
-  condition?: ModelPupilConditionInput | null,
-};
-
-export type CreatePupilMutation = {
-  createPupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdatePupilMutationVariables = {
-  input: UpdatePupilInput,
-  condition?: ModelPupilConditionInput | null,
-};
-
-export type UpdatePupilMutation = {
-  updatePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeletePupilMutationVariables = {
-  input: DeletePupilInput,
-  condition?: ModelPupilConditionInput | null,
-};
-
-export type DeletePupilMutation = {
-  deletePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -3396,6 +3305,237 @@ export type DeleteCurriculumSubjectMutation = {
   } | null,
 };
 
+export type CreatePupilMutationVariables = {
+  input: CreatePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type CreatePupilMutation = {
+  createPupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type UpdatePupilMutationVariables = {
+  input: UpdatePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type UpdatePupilMutation = {
+  updatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type DeletePupilMutationVariables = {
+  input: DeletePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type DeletePupilMutation = {
+  deletePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type CreateInterventionMutationVariables = {
+  input: CreateInterventionInput,
+  condition?: ModelInterventionConditionInput | null,
+};
+
+export type CreateInterventionMutation = {
+  createIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    message?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  } | null,
+};
+
+export type UpdateInterventionMutationVariables = {
+  input: UpdateInterventionInput,
+  condition?: ModelInterventionConditionInput | null,
+};
+
+export type UpdateInterventionMutation = {
+  updateIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    message?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  } | null,
+};
+
+export type DeleteInterventionMutationVariables = {
+  input: DeleteInterventionInput,
+  condition?: ModelInterventionConditionInput | null,
+};
+
+export type DeleteInterventionMutation = {
+  deleteIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    message?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  } | null,
+};
+
 export type GetFileQueryVariables = {
   id: string,
 };
@@ -3655,12 +3795,12 @@ export type GetSchoolHouseQuery = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
+    createdAt: string,
+    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -3819,16 +3959,16 @@ export type GetSchoolQuery = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -3867,16 +4007,6 @@ export type GetAttendanceQuery = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -3888,6 +4018,16 @@ export type GetAttendanceQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -4230,6 +4370,10 @@ export type GetPupilQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4249,6 +4393,52 @@ export type ListPupilsQuery = {
       lastName?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetInterventionQueryVariables = {
+  id: string,
+};
+
+export type GetInterventionQuery = {
+  getIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    message?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  } | null,
+};
+
+export type ListInterventionsQueryVariables = {
+  filter?: ModelInterventionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListInterventionsQuery = {
+  listInterventions?:  {
+    __typename: "ModelInterventionConnection",
+    items?:  Array< {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -4678,12 +4868,12 @@ export type OnCreateSchoolHouseSubscription = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
+    createdAt: string,
+    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -4692,12 +4882,12 @@ export type OnUpdateSchoolHouseSubscription = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
+    createdAt: string,
+    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -4706,12 +4896,12 @@ export type OnDeleteSchoolHouseSubscription = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
+    createdAt: string,
+    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -5012,16 +5202,6 @@ export type OnCreatePupilClassroomSubscription = {
     id: string,
     pupilID: string,
     classroomID: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -5033,6 +5213,16 @@ export type OnCreatePupilClassroomSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
@@ -5042,16 +5232,6 @@ export type OnUpdatePupilClassroomSubscription = {
     id: string,
     pupilID: string,
     classroomID: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -5063,6 +5243,16 @@ export type OnUpdatePupilClassroomSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
@@ -5072,16 +5262,6 @@ export type OnDeletePupilClassroomSubscription = {
     id: string,
     pupilID: string,
     classroomID: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -5093,6 +5273,16 @@ export type OnDeletePupilClassroomSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
@@ -5108,16 +5298,16 @@ export type OnCreateSchoolSubscription = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -5133,16 +5323,16 @@ export type OnUpdateSchoolSubscription = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -5158,16 +5348,16 @@ export type OnDeleteSchoolSubscription = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -5179,16 +5369,6 @@ export type OnCreateAttendanceSubscription = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -5200,6 +5380,16 @@ export type OnCreateAttendanceSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -5211,16 +5401,6 @@ export type OnUpdateAttendanceSubscription = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -5232,6 +5412,16 @@ export type OnUpdateAttendanceSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -5243,16 +5433,6 @@ export type OnDeleteAttendanceSubscription = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -5264,6 +5444,16 @@ export type OnDeleteAttendanceSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
 
@@ -5579,6 +5769,8 @@ export type OnCreatePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
@@ -5589,8 +5781,6 @@ export type OnCreatePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -5609,6 +5799,8 @@ export type OnUpdatePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
@@ -5619,8 +5811,6 @@ export type OnUpdatePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -5639,6 +5829,8 @@ export type OnDeletePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
@@ -5649,8 +5841,6 @@ export type OnDeletePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -5710,132 +5900,6 @@ export type OnDeleteTeacherSubscription = {
     } | null,
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreatePupilSubscription = {
-  onCreatePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdatePupilSubscription = {
-  onUpdatePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeletePupilSubscription = {
-  onDeletePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
@@ -6083,5 +6147,206 @@ export type OnDeleteCurriculumSubjectSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePupilSubscription = {
+  onCreatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnUpdatePupilSubscription = {
+  onUpdatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnDeletePupilSubscription = {
+  onDeletePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnCreateInterventionSubscription = {
+  onCreateIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    message?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateInterventionSubscription = {
+  onUpdateIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    message?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+  } | null,
+};
+
+export type OnDeleteInterventionSubscription = {
+  onDeleteIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    message?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
   } | null,
 };
