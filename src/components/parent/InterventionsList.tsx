@@ -8,7 +8,7 @@ import {ProductFilterSidebar, ProductSort} from "../_dashboard/products";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {Rating} from "@mui/lab";
 import InterventionMenu from "./interventions/InterventionMenu";
-import {compareAsc, parseISO} from "date-fns";
+import {compareAsc, compareDesc, parseISO} from "date-fns";
 
 const query = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
@@ -23,6 +23,7 @@ const query = `query MyQuery($id: ID = "") {
 }`
 const InterventionsList = (props: { pupil: Pupil }) => {
     const [interventions, setInterventions] = useState<Intervention[] | null>(null);
+    const [sortFilter, setSortFilter] = useState('newest');
     useEffect(() => {
         const getInterventions = async () => {
             const result: any = await API.graphql(graphqlOperation(query, {id: props.pupil.id}));
@@ -73,7 +74,7 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                         <Card>
                             <CardContent>
                                 <Stack direction={'column'} spacing={2}>
-                                    <ProductSort/>
+                                    <ProductSort setSortFilter={setSortFilter} sortFilter={sortFilter}/>
                                     <Button endIcon={<FilterListIcon/>} color={'inherit'}>Filter</Button>
                                 </Stack>
                                 {/*<ProductFilterSidebar/>*/}
@@ -82,15 +83,22 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                     </Grid>
                     <Grid item xs={12} sm={8} md={8} lg={8}>
                         <Stack direction={'column'} spacing={3}>
-                            {interventions?.sort((a, b) => compareAsc(parseISO(a.createdAt), parseISO(b.createdAt))).map(value => {
+                            {interventions?.sort((a, b) => {
+                                if (sortFilter === 'newest') {
+                                    return compareDesc(parseISO(a.createdAt), parseISO(b.createdAt));
+                                } else {
+                                    return compareAsc(parseISO(a.createdAt), parseISO(b.createdAt));
+                                }
+                            }).map(value => {
                                 return (
                                     <Card>
-                                        <CardHeader title={'Intervention'} subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`}/>
+                                        <CardHeader title={'Intervention'}
+                                                    subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`}/>
                                         <CardContent>
                                             <Typography variant={'body1'}>{value.message}</Typography>
                                         </CardContent>
                                         <CardActions style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                            <InterventionMenu />
+                                            <InterventionMenu/>
                                         </CardActions>
                                     </Card>
                                 );

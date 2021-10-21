@@ -12,7 +12,7 @@ const SORT_BY_OPTIONS = [
   { value: 'newest', label: 'Newest' },
 ];
 
-export default function ShopProductSort() {
+export default function ShopProductSort(props) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -33,7 +33,7 @@ export default function ShopProductSort() {
       >
         Sort By:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          Newest
+            {props.sortFilter}
         </Typography>
       </Button>
       <Menu
@@ -47,8 +47,11 @@ export default function ShopProductSort() {
         {SORT_BY_OPTIONS.map((option) => (
           <MenuItem
             key={option.value}
-            selected={option.value === 'newest'}
-            onClick={handleClose}
+            selected={option.value === props.sortFilter}
+            onClick={()=>{
+                props.setSortFilter(option.value);
+                handleClose()
+            }}
             sx={{ typography: 'body2', width: '100%'}}
           >
             {option.label}
