@@ -158,44 +158,6 @@ export default function DashboardApp() {
                 <Box sx={{pb: 5}}>
                     <Typography variant="h4">Welcome back, {greeting}</Typography>
                 </Box>
-                <Button onClick={() => {
-                    var data = JSON.stringify({pupilId: '354c873b-5b8e-4e46-becd-3f74ab721937', message: 'Post Man 2'});
-
-                    var config = {
-                        method: 'post',
-                        url: 'https://msiemijnx1.execute-api.eu-west-2.amazonaws.com/dev/AddInterventionForPupil-dev',
-                        headers: {
-                            'Content-Type': 'text/plain'
-                        },
-                        data : data
-                    };
-
-                    axios(config)
-                        .then(function (response) {
-                            console.log(JSON.stringify(response.data));
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-
-                }}>Post</Button>
-                <Button onClick={() => {
-                    var config = {
-                        method: 'get',
-                        url: 'https://msiemijnx1.execute-api.eu-west-2.amazonaws.com/dev/RemoveFileFromS3Bucket-dev',
-                        headers: {
-                            'Content-Type': 'text/plain'
-                        },
-                    };
-                    axios(config)
-                        .then(function (response) {
-                            console.log(JSON.stringify(response.data));
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-
-                }}>Get</Button>
                 <Grid container spacing={5}>
                     {/*<Button onClick={()=>{*/}
                     {/*    enqueueSnackbar('Hello Snackbar', {variant: 'success'});*/}

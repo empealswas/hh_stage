@@ -11,6 +11,7 @@ import StepsChart from "../pupil/StepsChart";
 import PupilActivitiesChart from "../pupil/PupilActivitiesChart";
 import {Pupil} from "../../API";
 import InterventionsList from "./InterventionsList";
+import ChildInfoTab from "./ChildInfoTab";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -79,7 +80,7 @@ export default function ChildTabs(props: {pupil: Pupil}) {
                 </Container>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                ID: {pupil.id}
+                <ChildInfoTab pupil={pupil}/>
             </TabPanel>
         </Box>
     );

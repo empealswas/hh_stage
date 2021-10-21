@@ -8,6 +8,7 @@ import {ProductFilterSidebar, ProductSort} from "../_dashboard/products";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {Rating} from "@mui/lab";
 import InterventionMenu from "./interventions/InterventionMenu";
+import {compareAsc, parseISO} from "date-fns";
 
 const query = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
@@ -15,6 +16,7 @@ const query = `query MyQuery($id: ID = "") {
       items {
         id
         message
+        createdAt
       }
     }
   }
@@ -80,10 +82,10 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                     </Grid>
                     <Grid item xs={12} sm={8} md={8} lg={8}>
                         <Stack direction={'column'} spacing={3}>
-                            {interventions?.reverse().map(value => {
+                            {interventions?.sort((a, b) => compareAsc(parseISO(a.createdAt), parseISO(b.createdAt))).map(value => {
                                 return (
                                     <Card>
-                                        <CardHeader title={'Intervention'}/>
+                                        <CardHeader title={'Intervention'} subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`}/>
                                         <CardContent>
                                             <Typography variant={'body1'}>{value.message}</Typography>
                                         </CardContent>

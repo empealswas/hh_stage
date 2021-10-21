@@ -19,20 +19,40 @@ const query = `query MyQuery($id: ID = "") {
     children {
       items {
         Pupil {
-          id
           firstName
+          id
           lastName
+          parents {
+            items {
+              Parent {
+                firstName
+                id
+                lastName
+              }
+            }
+          }
           school {
             name
           }
           schoolHouse {
             name
           }
+          classrooms {
+            items {
+              classroom {
+                name
+                yearGroup {
+                  name
+                }
+              }
+            }
+          }
         }
       }
     }
   }
-}`
+}
+`
 const ParentSection = () => {
     const parent = useContext(UserContext);
     const [children, setChildren] = useState<Pupil[] | null>(null);

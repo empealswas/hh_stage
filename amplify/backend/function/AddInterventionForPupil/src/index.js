@@ -15,20 +15,22 @@ const graphql = require('graphql');
 const { print } = graphql;
 
 
-const mutation = gql`query MyQuery {
-    listPupils {
-        items {
-            id
-            lastName
-            firstName
-        }
+const mutation = gql`mutation MyMutation($message: String = "", $pupilID: ID = "") {
+    createIntervention(input: {message: $message, pupilID: $pupilID}) {
+        id
+        createdAt
+        message
+        pupilID
+        updatedAt
     }
 }
+
 `
 exports.handler = async (event) => {
+    const body = JSON.parse(event.body)
     try {
         const graphqlData = await axios({
-            url: process.env.API_URL,
+            url: process.env.API_HEALTHYHABITSV2GRAPHQLAPI_GRAPHQLAPIENDPOINTOUTPUT,
             method: 'post',
             headers: {
                 'x-api-key': 'da2-zpmpagzgwfaibbojmysuhcezt4',
@@ -36,6 +38,7 @@ exports.handler = async (event) => {
             },
             data: {
                 query: print(mutation),
+                variables: {pupilID: body.pupilId, message: body.message}
             }
         });
         console.log('DATA RECEIVED', graphqlData.data)

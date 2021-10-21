@@ -6,7 +6,7 @@ import {Pupil, SchoolHouse} from "../../API";
 import {Container, IconButton, Stack, Tooltip} from "@material-ui/core";
 import CachedIcon from '@material-ui/icons/Cached';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
-
+import WatchIcon from '@mui/icons-material/Watch';
 import FaceIcon from '@material-ui/icons/Face';
 // @ts-ignore
 import {DataGrid, GridColDef, GridValueGetterParams} from '@material-ui/data-grid';
@@ -15,7 +15,6 @@ import {Link} from "react-router-dom";
 import {RenderHouseCell, renderHouseEdit} from "./PupilsTableRenders";
 import {listSchoolHouses} from "../../graphql/queries";
 import {updateAttendance, updatePupil} from "../../graphql/mutations";
-
 
 
 export default function PupilsTable() {
@@ -44,7 +43,7 @@ export default function PupilsTable() {
             renderCell: params => {
                 return renderHouseEdit(params, houses ?? [])
             },
-            renderEditCell:  params => {
+            renderEditCell: params => {
                 return renderHouseEdit(params, houses ?? []);
             }
         },
@@ -67,6 +66,13 @@ export default function PupilsTable() {
                         <Tooltip title={'Manage Account'}>
                             <IconButton color={'info'} component={Link} to={'#'}>
                                 <EditRoundedIcon/>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title={'Connect To Garmin'}>
+                            <IconButton color={'primary'} onClick={() => {
+                                window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${params.id}/${params.getValue(params.id, 'firstName')}${params.getValue(params.id, 'lastName')}`, '_blank')
+                            }}>
+                                <WatchIcon/>
                             </IconButton>
                         </Tooltip>
                     </Stack>
@@ -95,13 +101,13 @@ export default function PupilsTable() {
   }
 }
 
-`, {id: school?.id}, ));
+`, {id: school?.id},));
     }
 
     function loadPupils() {
         setPupils(null);
         setHouses(null);
-        const getHouses = async () =>{
+        const getHouses = async () => {
             const result: any = await API.graphql(graphqlOperation(listSchoolHouses));
             setHouses(result.data.listSchoolHouses.items);
         }
@@ -156,7 +162,6 @@ export default function PupilsTable() {
                                 ...pupil
                             }
                         }
-
                     ) ?? []}
 
                     columns={columns}

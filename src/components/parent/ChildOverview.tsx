@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {Card, CardMedia, Container} from "@material-ui/core";
 import {Avatar, Button, CardActions, Stack, Typography} from "@mui/material";
 import ChildTabs from "./tabs";
-import {Pupil} from "../../API";
+import {Classroom, Pupil} from "../../API";
 
 const ChildOverview = (props: {pupil: Pupil}) => {
     const [numberOfAvatar, setNumberOfAvatar] = useState(1);
     const [numberOfCover, setNumberOfCover] = useState(1);
     const {pupil} = {...props};
+    console.log(pupil)
     return (
         <Card>
             <CardMedia
@@ -34,16 +35,18 @@ const ChildOverview = (props: {pupil: Pupil}) => {
                             <Typography variant={'h5'}>
                                 {pupil.firstName} {pupil.lastName}
                             </Typography>
-                            <Typography variant={'subtitle2'}>
-                                class
-                            </Typography>
+                            {pupil.classrooms?.items?.map((item: any) => item.classroom).map((classroom: Classroom) =>
+                                <Typography variant={'subtitle2'}>
+                                    {classroom.name}
+                                </Typography>)
+                            }
                         </div>
                     </Stack>
                     <Stack direction={'row'} height={40} spacing={2}>
                         <Button variant={'outlined'} color={'secondary'} onClick={() => {
                             setNumberOfAvatar(prevState => prevState + 1)
                         }}>Change Avatar</Button>
-                        <Button variant={'contained'} color={'secondary'} onClick={()=>{
+                        <Button variant={'contained'} color={'secondary'} onClick={() => {
                             setNumberOfCover(prevState => {
                                 if (prevState === 4) {
                                     return 1;
