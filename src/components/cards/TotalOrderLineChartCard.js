@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -13,11 +13,15 @@ import Chart from 'react-apexcharts';
 import ChartDataMonth from './total-order-month-line-chart';
 import ChartDataYear from './total-order-year-line-chart';
 
+
 // assets
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SkeletonEarningCard from "./SkeletonEarningCard";
 import MainCard from "./MainCard";
+import {API, graphqlOperation} from "aws-amplify";
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
@@ -60,7 +64,13 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
         }
     }
 }));
-
+const query = `query MyQuery {
+  listPELessonRecords(filter: {activity: {eq: "Daily Mile"}}) {
+    items {
+      activity
+    }
+  }
+}`
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
 const TotalOrderLineChartCard = ({ isLoading }) => {
@@ -70,10 +80,20 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
     const handleChangeTime = (event, newValue) => {
         setTimeValue(newValue);
     };
+    const [dailyMileCount, setDailyMileCount] = useState(null);
+    useEffect(()=>{
+        const getCount = async () =>{
+            const result = await API.graphql(graphqlOperation(query));
+            setDailyMileCount(result.data.listPELessonRecords.items.length);
+
+        }
+        getCount()
+
+    },[])
 
     return (
         <>
-            {isLoading ? (
+            {!dailyMileCount ? (
                 <SkeletonEarningCard />
             ) : (
                 <CardWrapper border={false} content={false}>
@@ -92,7 +112,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                                 mt: 1
                                             }}
                                         >
-                                            <LocalMallOutlinedIcon fontSize="inherit" />
+                                            <DirectionsRunIcon/>
                                         </Avatar>
                                     </Grid>
                                     <Grid item>
@@ -124,11 +144,11 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                             <Grid item>
                                                 {timeValue ? (
                                                     <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                        $108
+                                                        {dailyMileCount}
                                                     </Typography>
                                                 ) : (
                                                     <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                        $961
+                                                        {dailyMileCount}
                                                     </Typography>
                                                 )}
                                             </Grid>
@@ -152,7 +172,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                                                         color: theme.palette.primary[200]
                                                     }}
                                                 >
-                                                    Total Order
+                                                    Total Miles
                                                 </Typography>
                                             </Grid>
                                         </Grid>

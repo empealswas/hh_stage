@@ -4,7 +4,7 @@ const fileNameRegex = /[^/]*$/gi;
 const fileExtensionRegex = /(\.[^.]+)$/gi
 
 export function getFileDescription(fileName: File): { fileName: string, extension: string } {
-    const index = NUmber(fileName.key?.search(fileNameRegex));
+    const index = Number(fileName.key?.search(fileNameRegex));
     const extensionIndex = fileName.key?.search(fileExtensionRegex) as number;
     console.log(fileName.key)
     console.log('index', index);

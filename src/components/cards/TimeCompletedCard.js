@@ -15,7 +15,7 @@ import MainCard from "./MainCard";
 import SkeletonEarningCard from "./SkeletonEarningCard";
 import {API, graphqlOperation} from "aws-amplify";
 import {Menu} from "@material-ui/core";
-import MenuItem from "@mui/material/MenuItem";
+import TimelapseIcon from '@mui/icons-material/Timelapse';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
@@ -61,7 +61,7 @@ const query = `query MyQuery {
 }`
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const DailyMileCountCard = ({ isLoading }) => {
+const TimeCompletedCard = ({ isLoading }) => {
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -104,7 +104,7 @@ const DailyMileCountCard = ({ isLoading }) => {
                                                 mt: 1
                                             }}
                                         >
-                                            <DirectionsRunIcon/>
+                                            <TimelapseIcon/>
                                         </Avatar>
                                     </Grid>
                                     <Grid item>
@@ -123,35 +123,35 @@ const DailyMileCountCard = ({ isLoading }) => {
                                         >
                                             <MoreHorizIcon fontSize="inherit" />
                                         </Avatar>
-                                        <Menu
-                                            id="menu-earning-card"
-                                            anchorEl={anchorEl}
-                                            keepMounted
-                                            open={Boolean(anchorEl)}
-                                            onClose={handleClose}
-                                            variant="selectedMenu"
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'right'
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right'
-                                            }}
-                                        >
-                                            {/*<MenuItem onClick={handleClose}>*/}
-                                            {/*    <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> Import Card*/}
-                                            {/*</MenuItem>*/}
-                                            {/*<MenuItem onClick={handleClose}>*/}
-                                            {/*    <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copy Data*/}
-                                            {/*</MenuItem>*/}
-                                            {/*<MenuItem onClick={handleClose}>*/}
-                                            {/*    <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Export*/}
-                                            {/*</MenuItem>*/}
-                                            {/*<MenuItem onClick={handleClose}>*/}
-                                            {/*    <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File*/}
-                                            {/*</MenuItem>*/}
-                                        </Menu>
+                                        {/*<Menu*/}
+                                        {/*    id="menu-earning-card"*/}
+                                        {/*    anchorEl={anchorEl}*/}
+                                        {/*    keepMounted*/}
+                                        {/*    open={Boolean(anchorEl)}*/}
+                                        {/*    onClose={handleClose}*/}
+                                        {/*    variant="selectedMenu"*/}
+                                        {/*    anchorOrigin={{*/}
+                                        {/*        vertical: 'bottom',*/}
+                                        {/*        horizontal: 'right'*/}
+                                        {/*    }}*/}
+                                        {/*    transformOrigin={{*/}
+                                        {/*        vertical: 'top',*/}
+                                        {/*        horizontal: 'right'*/}
+                                        {/*    }}*/}
+                                        {/*>*/}
+                                        {/*    <MenuItem onClick={handleClose}>*/}
+                                        {/*        <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> Import Card*/}
+                                        {/*    </MenuItem>*/}
+                                        {/*    <MenuItem onClick={handleClose}>*/}
+                                        {/*        <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copy Data*/}
+                                        {/*    </MenuItem>*/}
+                                        {/*    <MenuItem onClick={handleClose}>*/}
+                                        {/*        <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Export*/}
+                                        {/*    </MenuItem>*/}
+                                        {/*    <MenuItem onClick={handleClose}>*/}
+                                        {/*        <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File*/}
+                                        {/*    </MenuItem>*/}
+                                        {/*</Menu>*/}
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -159,7 +159,7 @@ const DailyMileCountCard = ({ isLoading }) => {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            {62}
+                                            352 minutes
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -177,25 +177,16 @@ const DailyMileCountCard = ({ isLoading }) => {
                                 </Grid>
                             </Grid>
                             <Grid item sx={{ mb: 1.25 }}>
-                                <Stack direction={'row'}>
-                                    <Typography
-                                        sx={{
-                                            fontSize: '1rem',
-                                            fontWeight: 500,
-                                            color: theme.palette.secondary[200]
-                                        }}
-                                    >
-                                        Total&nbsp;
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            fontSize: '1rem',
-                                            fontWeight: 800,
-                                            color: theme.palette.secondary[200]
-                                        }}
-                                    >
-                                        Activities
-                                    </Typography>
+                                <Stack direction={'row'}><Typography
+                                    sx={{
+                                        fontSize: '1rem',
+                                        fontWeight: 800,
+                                        color: theme.palette.secondary[200]
+                                    }}
+                                >
+                                    Active time
+                                </Typography>
+
                                 </Stack>
                             </Grid>
                         </Grid>
@@ -206,8 +197,8 @@ const DailyMileCountCard = ({ isLoading }) => {
     );
 };
 
-DailyMileCountCard.propTypes = {
+TimeCompletedCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default DailyMileCountCard;
+export default TimeCompletedCard;

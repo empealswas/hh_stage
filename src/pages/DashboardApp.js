@@ -35,6 +35,7 @@ import DailyMileCountCard from "../components/cards/DailyMileCountCard";
 import TotalOrderLineChartCard from "../components/cards/TotalOrderLineChartCard";
 import ActivityLineChart from "../components/reports/charts/ActivityLineChart";
 import HeatMap from "../components/reports/charts/HeatMap";
+import TimeCompletedCard from "../components/cards/TimeCompletedCard";
 
 
 // ----------------------------------------------------------------------
@@ -164,21 +165,21 @@ export default function DashboardApp() {
                 </Box>
                 <Grid container spacing={5}>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
-                        {/*<DailyMileCountCard/>*/}
+                        <DailyMileCountCard/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
                         <TotalOrderLineChartCard/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
-                        {/*<DailyMileCountCard/>*/}
+                        <TimeCompletedCard/>
                     </Grid>
                     {pupilsByActivity &&
-                    <Grid item xs={12} md={12} lg={6}>
+                    <Grid item xs={12} md={6} lg={6}>
                         <TopActivitiesPieChart activities={activities}/>
                     </Grid>
                     }
                     {allDuration &&
-                    <Grid item xs={12} md={12} lg={6}>
+                    <Grid item xs={12} md={6} lg={6}>
                         <ActivityGoalChart gainedTimeInMinutes={allDuration} goalTime={10000}/>
                     </Grid>
                     }
@@ -191,20 +192,21 @@ export default function DashboardApp() {
                     <Grid item xs={12} md={12} lg={12}>
                         <HeatMap/>
                     </Grid>
-                    <Grid item xs={12} md={12} lg={12}>
-                        <SchoolHousesPage/>
-                    </Grid>
+
                     {pupilsByRewards &&
-                    <Grid item xs={12} md={12} lg={12}>
+                    <Grid item xs={12} md={6} lg={6}>
                         <TopPupilsByRewardBarChart pupils={pupilsByRewards}/>
                     </Grid>
                     }
 
                     {pupilsByActivity &&
-                    <Grid item xs={12} md={12} lg={12}>
+                    <Grid item xs={12} md={6} lg={6}>
                         <TopPupilsByPhysicalActivities pupils={pupilsByActivity}/>
                     </Grid>
                     }
+                    <Grid item xs={12} md={12} lg={12}>
+                        <SchoolHousesPage/>
+                    </Grid>
 
                     {/*<Grid item xs={12} sm={6} md={3}>*/}
                     {/*  <AppWeeklySales />*/}
