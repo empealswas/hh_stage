@@ -31,6 +31,10 @@ import TopPupilsByPhysicalActivities from "../components/reports/charts/TopPupil
 import ActivityGoalChart from "../components/reports/charts/ActivityGoalChart";
 import {listPELessonRecords} from "../graphql/queries";
 import axios from "axios";
+import DailyMileCountCard from "../components/cards/DailyMileCountCard";
+import TotalOrderLineChartCard from "../components/cards/TotalOrderLineChartCard";
+import ActivityLineChart from "../components/reports/charts/ActivityLineChart";
+import HeatMap from "../components/reports/charts/HeatMap";
 
 
 // ----------------------------------------------------------------------
@@ -159,14 +163,34 @@ export default function DashboardApp() {
                     <Typography variant="h4">Welcome back, {greeting}</Typography>
                 </Box>
                 <Grid container spacing={5}>
-                    {/*<Button onClick={()=>{*/}
-                    {/*    enqueueSnackbar('Hello Snackbar', {variant: 'success'});*/}
-                    {/*}}>*/}
-                    {/*    Test Button*/}
-                    {/*</Button>*/}
+                    <Grid item xs={12} sm={6} md={4} lg={4}>
+                        {/*<DailyMileCountCard/>*/}
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={4}>
+                        <TotalOrderLineChartCard/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={4}>
+                        {/*<DailyMileCountCard/>*/}
+                    </Grid>
+                    {pupilsByActivity &&
+                    <Grid item xs={12} md={12} lg={6}>
+                        <TopActivitiesPieChart activities={activities}/>
+                    </Grid>
+                    }
+                    {allDuration &&
+                    <Grid item xs={12} md={12} lg={6}>
+                        <ActivityGoalChart gainedTimeInMinutes={allDuration} goalTime={10000}/>
+                    </Grid>
+                    }
                     <Can I={'read'} a={'teacherDashboard'}>
                         <DashboardOfTeacher/>
                     </Can>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <ActivityLineChart/>
+                    </Grid>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <HeatMap/>
+                    </Grid>
                     <Grid item xs={12} md={12} lg={12}>
                         <SchoolHousesPage/>
                     </Grid>
@@ -175,21 +199,13 @@ export default function DashboardApp() {
                         <TopPupilsByRewardBarChart pupils={pupilsByRewards}/>
                     </Grid>
                     }
-                    {pupilsByActivity &&
-                    <Grid item xs={12} md={12} lg={12}>
-                        <TopActivitiesPieChart activities={activities}/>
-                    </Grid>
-                    }
+
                     {pupilsByActivity &&
                     <Grid item xs={12} md={12} lg={12}>
                         <TopPupilsByPhysicalActivities pupils={pupilsByActivity}/>
                     </Grid>
                     }
-                    {allDuration &&
-                    <Grid item xs={12} md={12} lg={12}>
-                        <ActivityGoalChart gainedTimeInMinutes={allDuration} goalTime={10000}/>
-                    </Grid>
-                    }
+
                     {/*<Grid item xs={12} sm={6} md={3}>*/}
                     {/*  <AppWeeklySales />*/}
                     {/*</Grid>*/}

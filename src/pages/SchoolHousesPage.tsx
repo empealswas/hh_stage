@@ -46,13 +46,13 @@ const SchoolHousesPage = () => {
     }, []);
 
     return (
-        <Container>
+        <>
             {houseData ?
                 <SchoolHousesBarchart houses={houseData}/>
                 :
                 <LinearProgressBottom/>
             }
-        </Container>
+        </>
     );
 };
 

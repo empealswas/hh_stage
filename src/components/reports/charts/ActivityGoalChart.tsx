@@ -4,7 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import {useTheme, styled} from '@material-ui/core/styles';
 import {Card, CardHeader} from '@material-ui/core';
 import {BaseOptionChart} from "../../charts";
-import {fNumber, fPercent} from "../../../utils/formatNumber";
+import {fNumber, fPercent, fShortenNumber} from "../../../utils/formatNumber";
 // utils
 //
 
@@ -58,7 +58,7 @@ export default function ActivityGoalChart(props: { gainedTimeInMinutes: number, 
             pie: {donut: {labels: {show: false}}}
         }
     });
-    const progress = props.gainedTimeInMinutes / props.goalTime * 100;
+    const progress = fShortenNumber(props.gainedTimeInMinutes / props.goalTime * 100);
     return (
         <Card>
             <CardHeader title={`Activities goal: ${props.gainedTimeInMinutes}/${props.goalTime}`}
