@@ -87,7 +87,7 @@ export default function TopActivitiesPieChart(props: { activities: any }) {
 
     return (
         <Card>
-            <CardHeader title="Activities"/>
+            <CardHeader title="Activities" subheader={'Physical activities in percentages'}/>
             <ChartWrapperStyle dir="ltr">
                 <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280}/>
             </ChartWrapperStyle>
