@@ -84,6 +84,7 @@ function App() {
 
     return (
         <ThemeConfig>
+
             <SnackbarProvider maxSnack={3}>
                 {user ?
                     <UserContext.Provider value={user}>

@@ -31,7 +31,6 @@ export default function StepsChart(props: { pupilId: string }) {
     useEffect(() => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-
         var raw = JSON.stringify([
             props.pupilId
         ]);
@@ -43,7 +42,7 @@ export default function StepsChart(props: { pupilId: string }) {
             redirect: 'follow'
         };
 
-        fetch("http://analyticsmicroservice-env.eba-b7rkc4en.eu-west-2.elasticbeanstalk.com/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/user",
+        fetch("https://analytics.healthyhabits.link/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/user",
             requestOptions)
             .then(response => response.text())
             .then(result => {
