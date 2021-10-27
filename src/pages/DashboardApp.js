@@ -54,16 +54,6 @@ const topByRewardsQuery = `query MyQuery {
   }
 }`
 
-const activityQuery = `query MyQuery {
-  listPELessonRecords {
-    items {
-      id
-      activity
-      duration
-    }
-  }
-}
-`;
 
 const pupilsByPhysicalActivitiesQuery = `query MyQuery {
   listPELessonRecords {
@@ -100,19 +90,7 @@ export default function DashboardApp() {
         }).sort((a, b) => b.amountOfTrophies - a.amountOfTrophies).slice(0, 5);
         return pupilsWithTrophies;
     }
-    const getActivities = async () => {
-        const result = await API.graphql(graphqlOperation(activityQuery));
-        const data = result.data.listPELessonRecords.items.reduce((acc, value) => {
-            if (!acc[value.activity]) {
-                acc[value.activity] = [];
-            }
 
-            acc[value.activity].push(value);
-
-            return acc;
-        }, {});
-        setActivities(data);
-    }
     const getPupilsByPhysicalActivities = async () => {
         const result = await API.graphql(graphqlOperation(pupilsByPhysicalActivitiesQuery));
         const pupils = {};
@@ -132,26 +110,13 @@ export default function DashboardApp() {
         setPupilsByActivity(pupils);
     }
     const [pupilsByRewards, setPupilsByRewards] = useState(null);
-    const [activities, setActivities] = useState(null);
     const [pupilsByActivity, setPupilsByActivity] = useState(null);
-    const [allDuration, setAllDuration] = useState(null);
     useEffect(() => {
         getTopPupilsByTrophies().then(result => {
             setPupilsByRewards(result);
         })
-        getActivities()
         getPupilsByPhysicalActivities()
-        const getDuration = async () => {
-            const result = await API.graphql(graphqlOperation(listPELessonRecords));
-            let duration = 0;
-            console.log('---------------------------')
-            result.data.listPELessonRecords.items.map(item => {
-                duration += item.duration ?? 0;
-            })
-            console.log('Duration', duration)
-            setAllDuration(duration);
-        }
-        getDuration();
+
         return () => {
 
         };
@@ -173,16 +138,12 @@ export default function DashboardApp() {
                     <Grid item xs={12} sm={6} md={4} lg={4}>
                         <TimeCompletedCard/>
                     </Grid>
-                    {pupilsByActivity &&
                     <Grid item xs={12} md={6} lg={6}>
-                        <TopActivitiesPieChart activities={activities}/>
+                        <TopActivitiesPieChart/>
                     </Grid>
-                    }
-                    {allDuration &&
                     <Grid item xs={12} md={6} lg={6}>
-                        <ActivityGoalChart gainedTimeInMinutes={allDuration} goalTime={10000}/>
+                        <ActivityGoalChart  goalTime={10000}/>
                     </Grid>
-                    }
                     <Can I={'read'} a={'teacherDashboard'}>
                         <DashboardOfTeacher/>
                     </Can>

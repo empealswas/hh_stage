@@ -71,7 +71,7 @@ export default function ChildTabs(props: {pupil: Pupil}) {
                 <Container maxWidth="xl">
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6} lg={8}>
-                            <StepsChart/>
+                            <StepsChart pupilId={pupil.id}/>
                         </Grid>
                         <Grid item xs={12} md={6} lg={4}>
                             <PupilActivitiesChart/>

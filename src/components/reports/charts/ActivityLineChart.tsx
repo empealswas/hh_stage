@@ -4,6 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import {Card, CardHeader, Box} from '@material-ui/core';
 import {BaseOptionChart} from "../../charts";
 import {ApexOptions} from "apexcharts";
+import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 //
 
 // ----------------------------------------------------------------------
@@ -17,11 +18,9 @@ export default function ActivityLineChart() {
             id: 'chart2',
             type: 'line',
             height: 230,
-            toolbar: {
-                autoSelected: 'pan',
-                show: false
-            }
+
         },
+
         colors: ['#546E7A'],
         stroke: {
             width: 3
@@ -95,6 +94,11 @@ export default function ActivityLineChart() {
         min: 30,
         max: 90
     })
+    if(false){
+        return(
+            <TotalGrowthBarChartSkeleton/>
+        )
+    }
     return (
         <Card>
             <CardHeader title="Activity" subheader="(+43%) than last week"/>
