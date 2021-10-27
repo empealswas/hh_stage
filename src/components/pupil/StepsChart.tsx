@@ -1,9 +1,11 @@
-import {  merge,} from 'lodash';
+import {merge,} from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import { Card, CardHeader, Box } from '@material-ui/core';
+import {Card, CardHeader, Box} from '@material-ui/core';
 import {BaseOptionChart} from "../charts";
 import {ApexOptions} from "apexcharts";
+import {useEffect, useState} from "react";
+import TotalGrowthBarChartSkeleton from "../reports/charts/TotalGrowthBarChartSkeleton";
 //
 
 // ----------------------------------------------------------------------
@@ -24,11 +26,47 @@ const CHART_DATA = [
 
 ];
 
-export default function StepsChart() {
+export default function StepsChart(props: { pupilId: string }) {
+    const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
+    useEffect(() => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify([
+            props.pupilId
+        ]);
+
+        var requestOptions: any = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("http://analyticsmicroservice-env.eba-b7rkc4en.eu-west-2.elasticbeanstalk.com/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/user",
+            requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                const response = JSON.parse(result);
+                const data: number [] = [];
+                console.log("RESULT", result)
+                response.map((item: any) => {
+                    data.push(item.totalSteps);
+                })
+                setChartData({
+                    name: 'Number of Steps',
+                    type: 'column',
+                    data: data
+                })
+
+
+            })
+            .catch(error => console.log('error', error));
+    }, [])
     const chartOptions: any = merge(BaseOptionChart(), {
-        stroke: { width: [3] },
-        plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
-        fill: { type: ['solid', 'gradient', 'solid'] },
+        stroke: {width: [3]},
+        plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
+        fill: {type: ['solid', 'gradient', 'solid']},
         labels: [
             'Mon',
             'Tue',
@@ -38,7 +76,7 @@ export default function StepsChart() {
             'Sat',
             'Sun',
         ],
-        xaxis: { type: 'string' },
+        xaxis: {type: 'string'},
         tooltip: {
             shared: true,
             intersect: false,
@@ -52,12 +90,14 @@ export default function StepsChart() {
             }
         }
     });
-
+    if (!chartData) {
+        return (<TotalGrowthBarChartSkeleton/>);
+    }
     return (
         <Card>
-            <CardHeader title="Steps" subheader="(+43%) than last week" />
-            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                <ReactApexChart type="line" series={CHART_DATA} options={chartOptions} height={364} />
+            <CardHeader title="Steps" subheader="(+43%) than last week"/>
+            <Box sx={{p: 3, pb: 1}} dir="ltr">
+                <ReactApexChart type="line" series={[chartData]} options={chartOptions} height={364}/>
             </Box>
         </Card>
     );

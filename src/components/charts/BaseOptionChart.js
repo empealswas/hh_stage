@@ -78,7 +78,35 @@ export default function BaseOptionChart() {
 
     // Chart
     chart: {
-      toolbar: { show: false },
+      toolbar: {
+        autoSelected: 'pan',
+        show: true,
+        tools: {
+          download: true,
+          selection: true,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          pan: true,
+          customIcons: []
+        }, export: {
+          csv: {
+            filename: undefined,
+            columnDelimiter: ',',
+            headerCategory: 'category',
+            headerValue: 'value',
+            dateFormatter(timestamp) {
+              return new Date(timestamp).toDateString()
+            }
+          },
+          svg: {
+            filename: undefined,
+          },
+          png: {
+            filename: undefined,
+          }
+        },
+      },
       zoom: { enabled: false },
       // animations: { enabled: false },
       foreColor: theme.palette.text.disabled,

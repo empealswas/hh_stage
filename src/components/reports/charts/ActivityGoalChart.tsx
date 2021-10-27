@@ -5,6 +5,10 @@ import {useTheme, styled} from '@material-ui/core/styles';
 import {Card, CardHeader} from '@material-ui/core';
 import {BaseOptionChart} from "../../charts";
 import {fNumber, fPercent, fShortenNumber} from "../../../utils/formatNumber";
+import {API, graphqlOperation} from "aws-amplify";
+import {listPELessonRecords} from "../../../graphql/queries";
+import {useEffect, useState} from "react";
+import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 // utils
 //
 
@@ -34,6 +38,24 @@ const ChartWrapperStyle = styled('div')(({theme}) => ({
 
 export default function ActivityGoalChart(props: { gainedTimeInMinutes: number, goalTime: number}) {
     const theme = useTheme();
+    const [allDuration, setAllDuration] = useState<number | null>(null);
+    const getDuration = async () => {
+        const result: any = await API.graphql(graphqlOperation(listPELessonRecords));
+        let duration = 0;
+        console.log('---------------------------')
+        result.data.listPELessonRecords.items.map((item:any) => {
+            duration += item.duration ?? 0;
+        })
+        console.log('Duration', duration)
+        setAllDuration(duration);
+    }
+    useEffect(() => {
+        getDuration()
+        return () => {
+
+        };
+    }, []);
+
     const chartOptions: any = merge(BaseOptionChart(), {
         labels: ['Progress'],
         stroke: {colors: [theme.palette.background.paper]},
@@ -58,10 +80,15 @@ export default function ActivityGoalChart(props: { gainedTimeInMinutes: number, 
             pie: {donut: {labels: {show: false}}}
         }
     });
-    const progress = fShortenNumber(props.gainedTimeInMinutes / props.goalTime * 100);
+    if (!allDuration) {
+        return (
+            <TotalGrowthBarChartSkeleton/>
+        );
+    }
+    const progress = fShortenNumber(allDuration / props.goalTime * 100);
     return (
         <Card>
-            <CardHeader title={`Activities goal: ${props.gainedTimeInMinutes}/${props.goalTime}`}
+            <CardHeader title={`Activities goal: ${allDuration}/${props.goalTime}`}
                         subheader={'Minutes of activities collected by all pupils'}/>
             <ChartWrapperStyle dir="ltr">
                 <ReactApexChart type="radialBar" series={[progress]} options={chartOptions} height={280}/>

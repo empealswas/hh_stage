@@ -5,6 +5,9 @@ import {useTheme, styled} from '@material-ui/core/styles';
 import {Card, CardHeader} from '@material-ui/core';
 import {BaseOptionChart} from "../../charts";
 import {fNumber, fPercent} from "../../../utils/formatNumber";
+import {API, graphqlOperation} from "aws-amplify";
+import {useEffect, useState} from "react";
+import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 // utils
 //
 
@@ -30,11 +33,43 @@ const ChartWrapperStyle = styled('div')(({theme}) => ({
 }));
 
 // ----------------------------------------------------------------------
+const activityQuery = `query MyQuery {
+  listPELessonRecords {
+    items {
+      id
+      activity
+      duration
+    }
+  }
+}
+`;
 
 
 export default function TopActivitiesPieChart(props: { activities: any }) {
     const theme = useTheme();
-    const {activities} = {...props};
+
+    const [activities, setActivities] = useState<any>(null);
+
+    const getActivities = async () => {
+        const result: any = await API.graphql(graphqlOperation(activityQuery));
+        const data = result.data.listPELessonRecords.items.reduce((acc: any, value: any) => {
+            if (!acc[value.activity]) {
+                acc[value.activity] = [];
+            }
+
+            acc[value.activity].push(value);
+
+            return acc;
+        }, {});
+        setActivities(data);
+    }
+
+
+    useEffect(() => {
+        getActivities()
+    }, [])
+
+
     let all: number = 0;
     const chartData = [];
     const names = [];
@@ -84,7 +119,11 @@ export default function TopActivitiesPieChart(props: { activities: any }) {
             pie: {donut: {labels: {show: false}}}
         }
     });
-
+    if (!activities) {
+        return (
+            <TotalGrowthBarChartSkeleton/>
+        );
+    }
     return (
         <Card>
             <CardHeader title="Activities" subheader={'Physical activities in percentages'}/>
