@@ -5,13 +5,58 @@ import {Card, CardHeader, Box} from '@material-ui/core';
 import {BaseOptionChart} from "../../charts";
 import {ApexOptions} from "apexcharts";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
+import {useEffect, useState} from "react";
+import {API, graphqlOperation} from "aws-amplify";
+import {compareAsc, compareDesc, parseISO} from "date-fns";
 //
 
 // ----------------------------------------------------------------------
 
-
+const query = `query MyQuery {
+  listPELessonRecords(limit: 1000) {
+    items {
+      id
+      date
+    }
+  }
+}
+`
 
 export default function ActivityLineChart() {
+
+
+
+
+    const [data, setData] = useState<any[][] | null>(null);
+    useEffect(() => {
+        const getData = async () => {
+            const result: any = await API.graphql(graphqlOperation(query));
+            const lessons = result.data.listPELessonRecords.items;
+
+            const lessonsByDate = lessons
+                .filter((item: any) => !!item.date)
+                .sort((a: { date: string; }, b: { date: string; }) => {
+                        return compareDesc(parseISO(b.date), parseISO(a.date));
+                })
+                .reduce((acc: any, value: any) => {
+                    if (!acc[value.date]) {
+                        acc[value.date] = 0;
+                    }
+                    acc[value.date] = acc[value.date] + 1;
+                    return acc;
+                }, {});
+            const series: any = [];
+            for (let key in lessonsByDate) {
+                series.push([key, lessonsByDate[key]]);
+            }
+            setData(series);
+        }
+        getData()
+        return () => {
+
+        };
+    }, []);
+
     var options: any = {
 
         chart: {
@@ -38,23 +83,21 @@ export default function ActivityLineChart() {
             type: 'datetime'
         }
     };
-
-
     var optionsLine: any = {
 
         chart: {
             id: 'chart1',
             height: 130,
             type: 'area',
-            brush:{
+            brush: {
                 target: 'chart2',
                 enabled: true
             },
             selection: {
                 enabled: true,
                 xaxis: {
-                    min: new Date('19 Jun 2017').getTime(),
-                    max: new Date('14 Aug 2017').getTime()
+                    min: data?.[0][0],
+                    max: data?.[data?.length - 1][0]
                 }
             },
         },
@@ -76,7 +119,7 @@ export default function ActivityLineChart() {
             tickAmount: 2
         }
     };
-    function generateDayWiseTimeSeries(baseval: any, count:any , yrange:any) {
+    function generateDayWiseTimeSeries(baseval: any, count: any, yrange: any) {
         var i = 0;
         var series = [];
         while (i < count) {
@@ -90,12 +133,12 @@ export default function ActivityLineChart() {
         return series;
     }
 
-    var data = generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 185, {
-        min: 30,
-        max: 90
-    })
-    if(false){
-        return(
+    // var data = generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 185, {
+    //     min: 30,
+    //     max: 90
+    // })
+    if (!data) {
+        return (
             <TotalGrowthBarChartSkeleton/>
         )
     }
