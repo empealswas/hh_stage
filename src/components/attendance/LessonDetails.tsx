@@ -14,6 +14,7 @@ import {LoadingButton} from "@material-ui/lab";
 import {Form, FormikProvider, useFormik} from "formik";
 import * as Yup from "yup";
 import LessonDetailsForm from "./LessonDetailsForm";
+import {format} from "date-fns";
 
 
 const query = `query MyQuery($id: ID = "", $classroomId: ID = "", $teacherId: ID = "") {
@@ -40,7 +41,6 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }
 
     const [lessonRecord, setLessonRecord] = useState<PELessonRecord | null>(null);
     useEffect(() => {
-        console.log('selectedClassroom', selectedClassroom);
         const getData = async () => {
             const result: any = await API.graphql(graphqlOperation(query, {
                 id: lessonId,
@@ -53,7 +53,8 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }
                     input: {
                         classroomID: selectedClassroom.id,
                         teacherID: user?.email,
-                        lessonID: lessonId
+                        lessonID: lessonId,
+                        date: format(new Date(), 'yyyy-MM-dd'),
                     }
                 }));
                 setLessonRecord(result);

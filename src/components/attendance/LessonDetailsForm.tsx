@@ -18,26 +18,36 @@ import {useSnackbar} from "notistack";
 const activities = ['Walking', 'Running', 'Swimming', 'Gym', 'Dance', 'Soccer', 'Rugby', 'Gaelic', 'Other']
 const RegisterSchema = Yup.object().shape({
     deliveredBy: Yup.mixed()
-        .oneOf(['Teacher', 'Sport Coach', 'Other']),
+        .oneOf(['Teacher', 'Sport Coach', 'Other']).nullable(),
     duration: Yup.mixed()
-        .oneOf([5, 10, 15, 30, 45, 60]),
+        .oneOf([5, 10, 15, 30, 45, 60]).nullable(),
     activity: Yup.mixed()
         .oneOf(activities),
-    notes: Yup.string(),
-    rating: Yup.number().min(1).max(5),
+    notes: Yup.string().nullable(),
+    rating: Yup.number().min(1).max(5).nullable(),
 });
 const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
     const {lessonRecord} = {...props};
-    console.log('Lesson record', lessonRecord)
+    const [date, setDate] = React.useState<Date | null>(null);
 
+
+    useEffect(() => {
+        if (lessonRecord.date) {
+            setDate(parseISO(lessonRecord.date));
+        }else{
+            setDate(new Date());
+        }
+    }, [])
     useEffect(() => {
         formik.setValues({
             'deliveredBy': lessonRecord.deliveredBy,
             'notes': lessonRecord.notes,
-            'rating': lessonRecord.rating
+            'rating': lessonRecord.rating,
         })
+        if (lessonRecord.date) {
+        setDate(parseISO(lessonRecord.date));
+        }
     }, [props.lessonRecord])
-
     const formik = useFormik({
         initialValues: {
             deliveredBy: lessonRecord.deliveredBy,
@@ -58,12 +68,12 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
         const result: any = await API.graphql(graphqlOperation(updatePELessonRecord, {
             input: {
                 id: lessonRecord.id,
-                date: format(value ?? new Date(), 'yyyy-MM-dd'),
-                deliveredBy: getFieldProps('deliveredBy').value,
+                date: format(date ?? new Date(), 'yyyy-MM-dd'),
+                deliveredBy: getFieldProps('deliveredBy').value ?? null,
                 duration: 15,
                 activity: 'Daily Mile',
-                rating: getFieldProps('rating').value,
-                notes: getFieldProps('notes').value,
+                rating: getFieldProps('rating').value ?? null,
+                notes: getFieldProps('notes').value ?? null,
             }
         }));
         console.log('result', result)
@@ -71,7 +81,6 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
     const snackbar = useSnackbar();
     const [loading, setLoading] = useState(false);
     const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid, resetForm} = formik;
-    const [value, setValue] = React.useState<Date | null>(parseISO(lessonRecord.date ?? ''));
     return (
         <FormikProvider value={formik}>
             <Typography textAlign={'center'} variant={'h2'} sx={{mb: 15}}>Attendance Sheet</Typography>
@@ -84,9 +93,9 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
                                 label="Date"
                                 // @ts-ignore
                                 renderInput={(params) => <TextField {...params} />}
-                                value={value}
+                                value={date}
                                 onChange={(newValue) => {
-                                    setValue(newValue);
+                                    setDate(newValue);
                                 }}
                             />
                         </LocalizationProvider>
@@ -101,6 +110,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
                                 id="demo-simple-select"
                                 label="Delivered By"
                                 {...getFieldProps('deliveredBy')}
+                                error={Boolean(errors.deliveredBy)}
                             >
                                 <MenuItem value={"Teacher"}>Teacher</MenuItem>
                                 <MenuItem value={"Sport Coach"}>Sport Coach</MenuItem>
@@ -120,6 +130,9 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
                         multiline
                         minRows={3}
                         {...getFieldProps('notes')}
+                        error={Boolean(errors.notes)}
+                        helperText={errors.notes}
+
                     />
 
                     <Stack direction={{xs: 'column', sm: 'row'}} spacing={10} justifyContent={'space-between'}>

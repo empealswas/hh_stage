@@ -66,7 +66,7 @@ const HeatMapChart = () => {
 
     return (
         <Card>
-            <CardHeader title="Activity" subheader="(+43%) than last week"/>
+            <CardHeader title="Activity" subheader="Heat Map of Physical Activities"/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
 
                 <HeatMap

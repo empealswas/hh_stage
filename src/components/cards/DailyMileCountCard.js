@@ -53,12 +53,14 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 const query = `query MyQuery {
-  listPELessonRecords(filter: {activity: {eq: "Daily Mile"}}) {
+  listPELessonRecords(limit: 1000) {
     items {
-      activity
+      id
+      date
     }
   }
-}`
+}
+`
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
 const DailyMileCountCard = ({ isLoading }) => {
@@ -73,11 +75,11 @@ const DailyMileCountCard = ({ isLoading }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const [dailyMileCount, setDailyMileCount] = useState(null);
+    const [lessonsCount, setLessonsCount] = useState(null);
     useEffect(()=>{
         const getCount = async () =>{
             const result = await API.graphql(graphqlOperation(query));
-            setDailyMileCount(result.data.listPELessonRecords.items.length);
+            setLessonsCount(result.data.listPELessonRecords.items.length);
 
         }
         getCount()
@@ -86,7 +88,7 @@ const DailyMileCountCard = ({ isLoading }) => {
 
     return (
         <>
-            {!dailyMileCount ? (
+            {!lessonsCount ? (
                 <SkeletonEarningCard />
             ) : (
                 <CardWrapper border={false} content={false}>
@@ -159,7 +161,7 @@ const DailyMileCountCard = ({ isLoading }) => {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            {62}
+                                            {lessonsCount}
                                         </Typography>
                                     </Grid>
                                     <Grid item>

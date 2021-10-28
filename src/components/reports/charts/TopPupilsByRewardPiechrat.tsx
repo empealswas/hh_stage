@@ -56,7 +56,7 @@ const CHART_DATA = [{data: data }];
 
     return (
         <Card>
-            <CardHeader title="Top Pupils by gained rewards" />
+            <CardHeader title="Top Pupils by gained rewards" subheader={'Rewards gained in ordinary lesson as well as PE lessons'}/>
             <Box sx={{ mx: 3 }} dir="ltr">
                 <ReactApexChart type="bar" series={CHART_DATA} options={chartOptions} height={400} />
             </Box>

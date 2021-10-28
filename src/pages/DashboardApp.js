@@ -142,7 +142,7 @@ export default function DashboardApp() {
                         <TopActivitiesPieChart/>
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
-                        <ActivityGoalChart  goalTime={10000}/>
+                        <ActivityGoalChart  goalTime={100000}/>
                     </Grid>
                     <Can I={'read'} a={'teacherDashboard'}>
                         <DashboardOfTeacher/>

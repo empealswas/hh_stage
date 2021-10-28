@@ -15,7 +15,7 @@ export default function defineAbilityFor(user: User | null) {
         can(['create','update', 'delete','view'], 'subject');
         can(['create','update', 'delete','view'], 'lesson');
         can(['create','update', 'delete','view'], 'file');
-        can('visit', 'class overview')
+        can('visit', 'dashboard')
         can('visit', 'reports');
         can('visit', 'houses');
 
@@ -23,10 +23,11 @@ export default function defineAbilityFor(user: User | null) {
     } else if (user.isTeacher()) {
         can('visit', 'lessons');
         can('visit', 'reports');
-        can('visit', 'class overview')
+        can('visit', 'dashboard')
         can('read', 'attendance');
         can('read', 'teacherDashboard')
     } else if (user.isParent()) {
+        can('visit', 'dashboard')
         can('visit', 'parent');
     }
 
