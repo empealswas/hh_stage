@@ -36,6 +36,8 @@ import TotalOrderLineChartCard from "../components/cards/TotalOrderLineChartCard
 import ActivityLineChart from "../components/reports/charts/ActivityLineChart";
 import HeatMap from "../components/reports/charts/HeatMap";
 import TimeCompletedCard from "../components/cards/TimeCompletedCard";
+import AverageStepsChart from "../components/reports/charts/AverageStepsChart";
+import AverageSleepChart from "../components/reports/charts/AverageSleepChart";
 
 
 // ----------------------------------------------------------------------
@@ -137,6 +139,12 @@ export default function DashboardApp() {
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
                         <TimeCompletedCard/>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <AverageStepsChart />
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <AverageSleepChart />
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
                         <TopActivitiesPieChart/>

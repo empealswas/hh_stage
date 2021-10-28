@@ -57,15 +57,23 @@ export default function ActivityLineChart() {
         };
     }, []);
 
-    var options: any = {
+    var options: any = merge(BaseOptionChart(),{
 
         chart: {
             id: 'chart2',
             type: 'line',
             height: 230,
-
+            toolbar: {
+                autoSelected: 'pan',
+                download: true,
+                selection: true,
+                zoom: true,
+                zoomin: true,
+                zoomout: true,
+                pan: true,
+                show: true
+            }
         },
-
         colors: ['#546E7A'],
         stroke: {
             width: 3
@@ -82,8 +90,8 @@ export default function ActivityLineChart() {
         xaxis: {
             type: 'datetime'
         }
-    };
-    var optionsLine: any = {
+    });
+    var optionsLine: any  = {
 
         chart: {
             id: 'chart1',
@@ -144,7 +152,7 @@ export default function ActivityLineChart() {
     }
     return (
         <Card>
-            <CardHeader title="Activity" subheader="(+43%) than last week"/>
+            <CardHeader title="Activity" subheader=""/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <div id="wrapper">
                     <div id="chart-line2"><ReactApexChart options={options} series={[
