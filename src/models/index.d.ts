@@ -1,9 +1,5 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
-
-
-
-
 type FileMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }

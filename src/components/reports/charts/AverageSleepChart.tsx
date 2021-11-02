@@ -1,16 +1,17 @@
-import {merge,} from 'lodash';
+import { merge, } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import {Card, CardHeader, Box} from '@material-ui/core';
-import {ApexOptions} from "apexcharts";
-import {useEffect, useState} from "react";
-import {BaseOptionChart} from "../../charts";
+import { Card, CardHeader, Box } from '@material-ui/core';
+import { ApexOptions } from "apexcharts";
+import { useEffect, useState } from "react";
+import { BaseOptionChart } from "../../charts";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import axios from "axios";
-import {API, graphqlOperation} from "aws-amplify";
-import {listPupils} from "../../../graphql/queries";
-import {secondsToHours} from "date-fns";
-import {fShortenNumber} from "../../../utils/formatNumber";
+import { API, graphqlOperation } from "aws-amplify";
+import { listPupils } from "../../../graphql/queries";
+import { secondsToHours } from "date-fns";
+import { fShortenNumber } from "../../../utils/formatNumber";
+import { GarminSleepSummaryModel } from '../../../models/garminDataModels/garminSleepModel';
 //
 
 // ----------------------------------------------------------------------
@@ -21,24 +22,16 @@ const CHART_DATA = [
         type: 'column',
         data: [6000, 5400, 11000, 8000, 5000, 10000, 1500]
     },
-
-    // {
-    //     name: 'Team B',
-    //     type: 'area',
-    //     data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
-    // },
-
-
 ];
 
 export default function AverageSleepChart() {
     const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
-    const [labels, setLabels] = useState<String []>([]);
+    const [labels, setLabels] = useState<String[]>([]);
     useEffect(() => {
         const getAllUsers = async () => {
-            const users: String [] = [];
+            const users: String[] = [];
             const result: any = await API.graphql(graphqlOperation(listPupils));
-            result.data.listPupils?.items.forEach((item: any) =>{
+            result.data.listPupils?.items.forEach((item: any) => {
                 users.push(item.id);
             })
             return users;
@@ -61,9 +54,10 @@ export default function AverageSleepChart() {
                 .then(response => response.text())
                 .then(result => {
                     const response = JSON.parse(result);
-                    const data: number [] = [];
-                    const periods: String [] = [];
-                    console.log("RESULT", result)
+                    const sleepData: GarminSleepSummaryModel[] = JSON.parse(result);
+                    const data: number[] = [];
+                    const periods: String[] = [];
+                    console.log("RESULT- sleep data...", sleepData)
                     response.map((item: any) => {
                         data.push(secondsToHours(item.duration));
 
@@ -84,11 +78,11 @@ export default function AverageSleepChart() {
 
     }, [])
     const chartOptions: any = merge(BaseOptionChart(), {
-        stroke: {width: [3]},
-        plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
-        fill: {type: ['solid', 'gradient', 'solid']},
+        stroke: { width: [3] },
+        plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
+        fill: { type: ['solid', 'gradient', 'solid'] },
         labels: labels,
-        xaxis: {type: 'string'},
+        xaxis: { type: 'string' },
         colors: ['#0e3ae0'],
         tooltip: {
             shared: true,
@@ -104,13 +98,13 @@ export default function AverageSleepChart() {
         }
     });
     if (!chartData) {
-        return (<TotalGrowthBarChartSkeleton/>);
+        return (<TotalGrowthBarChartSkeleton />);
     }
     return (
         <Card>
-            <CardHeader title="Hours of Sleep" subheader="Average hours of sleep of all pupils"/>
-            <Box sx={{p: 3, pb: 1}} dir="ltr">
-                <ReactApexChart type="line" series={[chartData]} options={chartOptions} height={364}/>
+            <CardHeader title="Hours of Sleep" subheader="Average hours of sleep of all pupils" />
+            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+                <ReactApexChart type="line" series={[chartData]} options={chartOptions} height={364} />
             </Box>
         </Card>
     );
