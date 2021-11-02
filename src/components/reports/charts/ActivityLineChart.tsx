@@ -1,13 +1,13 @@
-import {merge,} from 'lodash';
+import { merge, } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import {Card, CardHeader, Box} from '@material-ui/core';
-import {BaseOptionChart} from "../../charts";
-import {ApexOptions} from "apexcharts";
+import { Card, CardHeader, Box } from '@material-ui/core';
+import { BaseOptionChart } from "../../charts";
+import { ApexOptions } from "apexcharts";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
-import {useEffect, useState} from "react";
-import {API, graphqlOperation} from "aws-amplify";
-import {compareAsc, compareDesc, parseISO} from "date-fns";
+import { useEffect, useState } from "react";
+import { API, graphqlOperation } from "aws-amplify";
+import { compareAsc, compareDesc, parseISO } from "date-fns";
 //
 
 // ----------------------------------------------------------------------
@@ -24,9 +24,6 @@ const query = `query MyQuery {
 
 export default function ActivityLineChart() {
 
-
-
-
     const [data, setData] = useState<any[][] | null>(null);
     useEffect(() => {
         const getData = async () => {
@@ -36,7 +33,7 @@ export default function ActivityLineChart() {
             const lessonsByDate = lessons
                 .filter((item: any) => !!item.date)
                 .sort((a: { date: string; }, b: { date: string; }) => {
-                        return compareDesc(parseISO(b.date), parseISO(a.date));
+                    return compareDesc(parseISO(b.date), parseISO(a.date));
                 })
                 .reduce((acc: any, value: any) => {
                     if (!acc[value.date]) {
@@ -57,7 +54,7 @@ export default function ActivityLineChart() {
         };
     }, []);
 
-    var options: any = merge(BaseOptionChart(),{
+    var options: any = merge(BaseOptionChart(), {
 
         chart: {
             id: 'chart2',
@@ -91,7 +88,7 @@ export default function ActivityLineChart() {
             type: 'datetime'
         }
     });
-    var optionsLine: any  = {
+    var optionsLine: any = {
 
         chart: {
             id: 'chart1',
@@ -147,13 +144,13 @@ export default function ActivityLineChart() {
     // })
     if (!data) {
         return (
-            <TotalGrowthBarChartSkeleton/>
+            <TotalGrowthBarChartSkeleton />
         )
     }
     return (
         <Card>
-            <CardHeader title="Activity" subheader=""/>
-            <Box sx={{p: 3, pb: 1}} dir="ltr">
+            <CardHeader title="Activity" subheader="" />
+            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                 <div id="wrapper">
                     <div id="chart-line2"><ReactApexChart options={options} series={[
                         {
@@ -161,25 +158,16 @@ export default function ActivityLineChart() {
                             data: data,
                         },
                     ]}
-                                                          type="line" height={230}/></div>
+                        type="line" height={230} /></div>
                     <div id="chart-line"><ReactApexChart options={optionsLine} series={[
                         {
                             name: "series1",
                             data: data,
                         },
                     ]}
-                                                         type="area" height={130}/></div>
+                        type="area" height={130} /></div>
                 </div>
-                {/*<ReactApexChart type="line" series={[*/}
-                {/*    {*/}
-                {/*        name: "High - 2013",*/}
-                {/*        data: [28, 29, 33, 36, 32, 32, 33]*/}
-                {/*    },*/}
-                {/*    {*/}
-                {/*        name: "Low - 2013",*/}
-                {/*        data: [12, 11, 14, 18, 17, 13, 13]*/}
-                {/*    }*/}
-                {/*]} options={chartOptions} height={364} />*/}
+
             </Box>
         </Card>
     );

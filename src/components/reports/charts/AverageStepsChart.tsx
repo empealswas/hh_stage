@@ -9,6 +9,7 @@ import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import axios from "axios";
 import {API, graphqlOperation} from "aws-amplify";
 import {listPupils} from "../../../graphql/queries";
+import { GarminDailiesSummaryModel } from '../../../models/garminDataModels/garminDailiesModel';
 //
 
 // ----------------------------------------------------------------------
@@ -59,9 +60,10 @@ export default function AverageStepsChart() {
                 .then(response => response.text())
                 .then(result => {
                     const response = JSON.parse(result);
+                    const stepsData: GarminDailiesSummaryModel[]= JSON.parse(result);
                     const data: number [] = [];
                     const periods: String [] = [];
-                    console.log("RESULT", result)
+                    console.log("RESULT", stepsData)
                     response.map((item: any) => {
                         data.push(item.totalSteps);
                         periods.push(item.period);
