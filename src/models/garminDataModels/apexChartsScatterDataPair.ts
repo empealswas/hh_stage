@@ -19,3 +19,10 @@ export class ApexChartsScatterDataPairModel {
         public yValue: number
     ) { }
 }
+
+export class BarPlotYAxisModel {
+    constructor(
+        public name: number|string|Date,
+        public data: number[]
+    ) { }
+}
