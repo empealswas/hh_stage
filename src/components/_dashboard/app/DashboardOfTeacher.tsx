@@ -20,6 +20,7 @@ import ActivityLineChart from '../../reports/charts/ActivityLineChart';
 import HeatMapChart from '../../reports/charts/HeatMap';
 import DailiesMixedData from '../../reports/charts/GarminWearablesCharts/DailiesMixedData';
 import { GarminQueryData } from '../../../models/garminDataModels/garminQueryData';
+import DailiesStepsTarget from '../../reports/charts/GarminWearablesCharts/GarminDailiesStepsTarget';
 
 const query =/*GraphQL*/`query MyQuery($id: ID = "") {
     getTeacher(id: $id) {
@@ -86,7 +87,7 @@ const DashboardOfTeacher = () => {
 
         };
     }, []);
-    var queryData = new GarminQueryData('2021-07-01', '2021-11-01', 'daily', 'user');
+    var queryData = new GarminQueryData('2021-07-01', '2021-11-01', 'daily', 'group');
     return (
         <Container>
 
@@ -94,7 +95,9 @@ const DashboardOfTeacher = () => {
           
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}> 
             <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <DailiesMixedData {...queryData}/>
+                    {/* <DailiesMixedData {...queryData}/> */}
+                    <DailiesStepsTarget {...queryData}/>
+                    
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
                     <HeatMapChart />

@@ -21,7 +21,7 @@ export default function TopPupilsByPhysicalActivities(props: { pupils: any }) {
         values.push({name: key, minutes: pupils[key]})
     }
     const data = values.sort((a, b) => b.minutes - a.minutes).slice(0, 5);
-    console.log(pupils)
+    // console.log(pupils)
     const theme = useTheme();
     const CHART_DATA = [{data: data.map(item => item.minutes)}];
     const chartOptions: any = merge(BaseOptionChart(), {

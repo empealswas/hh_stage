@@ -13,6 +13,7 @@ import { secondsToHours } from "date-fns";
 import { fShortenNumber } from "../../../../utils/formatNumber";
 import { GarminDailiesSummaryModel } from '../../../../models/garminDataModels/garminDailiesModel';
 import { GarminQueryData } from '../../../../models/garminDataModels/garminQueryData';
+import { ApexChartsScatterDataPairModel, ApexChartsScatterSeriesModel, ApexChartsScatterTraceModel } from '../../../../models/garminDataModels/apexChartsScatterDataPair';
 //
 
 // ----------------------------------------------------------------------
@@ -28,7 +29,7 @@ const CHART_DATA = [
 export default function DailiesMixedData(props: GarminQueryData) {
     const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
     const [labels, setLabels] = useState<String[]>([]);
-    // eslint-disable-next-line no-useless-concat
+   
     const queryURL: string = `https://analytics.healthyhabits.link/api/garminDailies/dates/start/${props.startDate}/end/${props.endDate}/period/${props.period}//groupedby/${props.groupedBy}`;
     useEffect(() => {
         const getAllUsers = async () => {
@@ -51,25 +52,35 @@ export default function DailiesMixedData(props: GarminQueryData) {
                 body: raw,
                 redirect: 'follow'
             };
-
-            fetch(queryURL, //"https://analytics.healthyhabits.link/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/user",
+            //"https://analytics.healthyhabits.link/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/user",
+            fetch(queryURL, 
                 requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     const response = JSON.parse(result);
+                    // var garminData:  GarminDailiesSummaryModel[] = JSON.parse(result);
                     var garminData:  GarminDailiesSummaryModel[] = JSON.parse(result);
                     const data: number[] = [];
                     const periods: String[] = [];
-                    console.log("RESULT-Dailies Mixed", garminData)
+                    console.log("RESULT-Dailies Mixed", garminData);
                     response.map(
                         (item: any) => {
                             data.push(item.totalSteps);
                             periods.push(item.period);
                     })
+                    var stepData: number[]=[];
+                    for(var gData of garminData){
+                        // data: stepData
+                        // var step: number[] = [ gData.totalSteps];
+                        stepData.push(gData.moderateIntensity/60);
+                        // data.push(gData.totalSteps);
+                        // periods.push(gData.period.toISOString());
+                    }
                     setChartData({
                         name: 'Hours',
                         type: 'column',
-                        data: data
+                        data: stepData
+                        // data: data
                     })
                     setLabels(periods);
 
@@ -80,6 +91,7 @@ export default function DailiesMixedData(props: GarminQueryData) {
 
 
     }, [])
+
     const chartOptions: any = merge(BaseOptionChart(), {
         stroke: { width: [3] },
         plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },

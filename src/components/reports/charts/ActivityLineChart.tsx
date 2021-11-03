@@ -57,68 +57,40 @@ export default function ActivityLineChart() {
     var options: any = merge(BaseOptionChart(), {
 
         chart: {
-            id: 'chart2',
+            id: 'chart2', 
             type: 'line',
             height: 230,
-            toolbar: {
-                autoSelected: 'pan',
-                download: true,
-                selection: true,
-                zoom: true,
-                zoomin: true,
-                zoomout: true,
-                pan: true,
-                show: true
+            toolbar: { autoSelected: 'pan', download: true, selection: true,
+                zoom: true, zoomin: true, zoomout: true, pan: true, show: true
             }
         },
         colors: ['#546E7A'],
-        stroke: {
-            width: 3
-        },
-        dataLabels: {
-            enabled: false
-        },
-        fill: {
-            opacity: 1,
-        },
-        markers: {
-            size: 0
-        },
-        xaxis: {
-            type: 'datetime'
-        }
+        stroke: { width: 3 },
+        dataLabels: { enabled: false },
+        fill: { opacity: 1, },
+        markers: { size: 0 },
+        xaxis: { type: 'datetime' }
     });
+    
     var optionsLine: any = {
-
         chart: {
             id: 'chart1',
             height: 130,
             type: 'area',
-            brush: {
-                target: 'chart2',
-                enabled: true
-            },
+            brush: { target: 'chart2', enabled: true },
             selection: {
                 enabled: true,
-                xaxis: {
-                    min: data?.[0][0],
-                    max: data?.[data?.length - 1][0]
-                }
+                xaxis: { min: data?.[0][0], max: data?.[data?.length - 1][0] }
             },
         },
         colors: ['#008FFB'],
         fill: {
             type: 'gradient',
-            gradient: {
-                opacityFrom: 0.91,
-                opacityTo: 0.1,
-            }
+            gradient: { opacityFrom: 0.91, opacityTo: 0.1,}
         },
         xaxis: {
             type: 'datetime',
-            tooltip: {
-                enabled: false
-            }
+            tooltip: { enabled: false}
         },
         yaxis: {
             tickAmount: 2

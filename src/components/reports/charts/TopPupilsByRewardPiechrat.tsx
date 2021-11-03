@@ -16,7 +16,7 @@ export type PupilData = {
 }
 export default function TopPupilsByRewardPiechrat(props: {pupils: PupilData[]}) {
     const {pupils} = {...props};
-    console.log(pupils)
+    // console.log(pupils)
     const theme = useTheme();
     const data: number [] = pupils.map(house => house.amountOfTrophies).sort((a, b) => a - b);
 const CHART_DATA = [{data: data }];

@@ -16,7 +16,7 @@ export type HouseData = {
 }
 export default function SchoolHousesBarchart(props: {houses: HouseData[]}) {
     const {houses} = {...props};
-    console.log(houses)
+    // console.log(houses)
     const theme = useTheme();
     const data: number [] = houses.map(house => house.amountOfTrophies)
 const CHART_DATA = [{data: data }];
