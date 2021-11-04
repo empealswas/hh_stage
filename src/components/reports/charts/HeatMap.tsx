@@ -106,13 +106,13 @@ const HeatMapChart = () => {
         <Card>
             <CardHeader title="Activity" subheader="Heat Map of Physical Activities"/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
-
                 <HeatMap
                     value={data}
-                    startDate={parse(data[0].date, 'yyyy/MM/dd', new Date())}
+                    startDate={parse(data[0]?.date ?? new Date().toDateString(), 'yyyy/MM/dd', new Date())}
                     width={'100%'}
                     rectSize={14}
                 />
+
             </Box>
 
         </Card>

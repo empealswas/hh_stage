@@ -141,8 +141,8 @@ export default function ActivityLineChart() {
             selection: {
                 enabled: true,
                 xaxis: {
-                    min: data?.[0][0],
-                    max: data?.[data?.length - 1][0]
+                    min: data?.length ?? 0 > 0 ? data?.[0][0] : new Date().toDateString(),
+                    max:  data?.length ?? 0 > 0 ? data?.[data?.length - 1][0]   : new Date().toDateString()
                 }
             },
         },
