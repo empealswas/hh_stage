@@ -852,6 +852,21 @@ export const onCreateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      lessonRecordID
       createdAt
       updatedAt
       Pupil {
@@ -882,6 +897,21 @@ export const onUpdateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      lessonRecordID
       createdAt
       updatedAt
       Pupil {
@@ -912,6 +942,21 @@ export const onDeleteAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      lessonRecordID
       createdAt
       updatedAt
       Pupil {

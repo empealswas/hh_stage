@@ -88,13 +88,13 @@ const DashboardOfTeacher = () => {
 
             {/*<Grid item xs={12} md={12} lg={6}>*/}
             {/*    <>*/}
-            {/*        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>*/}
-            {/*            <Typography variant="h4" gutterBottom>*/}
-            {/*                Reports*/}
-            {/*            </Typography>*/}
-            {/*            <LessonPlansSearchField terms={terms} setSelectedTerm={setSelectedTerm}/>*/}
-            {/*        </Stack>*/}
-            {/*        {selectedTerm && <TermReport term={selectedTerm}/>}*/}
+            {/*        <Card>*/}
+            {/*            <CardContent>*/}
+            {/*                <Typography>*/}
+            {/*                    Hello Teacher*/}
+            {/*                </Typography>*/}
+            {/*            </CardContent>*/}
+            {/*        </Card>*/}
             {/*    </>*/}
             {/*</Grid>*/}
         </>);

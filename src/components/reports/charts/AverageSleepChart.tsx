@@ -3,7 +3,7 @@ import ReactApexChart from 'react-apexcharts';
 // material
 import {Card, CardHeader, Box} from '@material-ui/core';
 import {ApexOptions} from "apexcharts";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {BaseOptionChart} from "../../charts";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import axios from "axios";
@@ -11,6 +11,8 @@ import {API, graphqlOperation} from "aws-amplify";
 import {listPupils} from "../../../graphql/queries";
 import {secondsToHours} from "date-fns";
 import {fShortenNumber} from "../../../utils/formatNumber";
+import {Classroom} from "../../../API";
+import {UserContext} from "../../../App";
 //
 
 // ----------------------------------------------------------------------
@@ -30,17 +32,45 @@ const CHART_DATA = [
 
 
 ];
+const teacherQuery = `query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+    classrooms {
+      items {
+        classroom {
+          pupils {
+            items {
+              pupilID
+            }
+          }
+        }
+      }
+    }
+  }
+}`
 
 export default function AverageSleepChart() {
     const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
     const [labels, setLabels] = useState<String []>([]);
+    const user = useContext(UserContext);
+
     useEffect(() => {
         const getAllUsers = async () => {
             const users: String [] = [];
-            const result: any = await API.graphql(graphqlOperation(listPupils));
-            result.data.listPupils?.items.forEach((item: any) =>{
-                users.push(item.id);
-            })
+
+            if (user?.isAdmin()) {
+                const result: any = await API.graphql(graphqlOperation(listPupils));
+                result.data.listPupils?.items.forEach((item: any) => {
+                    users.push(item.id);
+                });
+            } else if (user?.isTeacher()) {
+                const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
+                result.data.getTeacher?.classrooms.items
+                    .map((item: any) => item.classroom)
+                    .flatMap((item: Classroom) => item.pupils?.items).forEach((pupil: any) => {
+                    users.push(pupil.pupilID);
+                });
+            }
+            console.log(users)
             return users;
         }
         const getData = async () => {
@@ -96,7 +126,7 @@ export default function AverageSleepChart() {
             y: {
                 formatter: (y: any) => {
                     if (typeof y !== 'undefined') {
-                        return `${y.toFixed(0)} steps`;
+                        return `${y.toFixed(0)} hours`;
                     }
                     return y;
                 }

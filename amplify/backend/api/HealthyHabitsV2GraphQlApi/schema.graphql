@@ -44,7 +44,7 @@ type PELessonRecord @model
   id: ID!
   teacherID: ID
   Teacher: Teacher @connection(fields:["teacherID"])
-  Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
+  Attendances: [Attendance] @connection(keyName: "byPELessonRecord", fields: ["id"])
   date: AWSDate
   deliveredBy: String
   duration: Int
@@ -116,7 +116,8 @@ type School @model {
 
 type Attendance @model
 @key(name: "byPupil", fields: ["pupilID"])
-@key(name: "byLesson", fields: ["lessonID"]) {
+@key(name: "byLesson", fields: ["lessonID"])
+@key(name: "byPELessonRecord", fields: ["lessonRecordID"]){
   id: ID!
   present: Boolean
   wasRewarded: Boolean
@@ -124,6 +125,8 @@ type Attendance @model
   lessonID: ID
   Pupil: Pupil @connection(fields: ["pupilID"])
   Lesson: Lesson @connection(fields: ["lessonID"])
+  lessonRecord: PELessonRecord @connection(fields: ["lessonRecordID"])
+  lessonRecordID: ID
 }
 
 type LessonTeacher @model

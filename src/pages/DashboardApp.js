@@ -41,39 +41,9 @@ import AverageSleepChart from "../components/reports/charts/AverageSleepChart";
 
 
 // ----------------------------------------------------------------------
-const topByRewardsQuery = `query MyQuery {
-  listPupils(limit: 10000) {
-    items {
-      Attendances(filter: {wasRewarded: {eq: true}}) {
-        items {
-          wasRewarded
-        }
-      }
-      id
-      firstName
-      lastName
-    }
-  }
-}`
 
 
-const pupilsByPhysicalActivitiesQuery = `query MyQuery {
-  listPELessonRecords {
-    items {
-      id
-      duration
-      Attendances(filter: {present: {eq: true}}) {
-        items {
-          Pupil {
-            id
-            firstName
-            lastName
-          }
-        }
-      }
-    }
-  }
-}`
+
 export default function DashboardApp() {
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const user = useContext(UserContext);
@@ -81,48 +51,6 @@ export default function DashboardApp() {
     user.getFirstName().then(data => {
         setGreeting(data);
     })
-
-    const getTopPupilsByTrophies = async () => {
-        const result = await API.graphql(graphqlOperation(topByRewardsQuery));
-        const pupilsWithTrophies = result.data.listPupils.items.map(item => {
-            return {
-                pupilDisplayName: `${item.firstName} ${item.lastName}`,
-                amountOfTrophies: item.Attendances.items.length
-            }
-        }).sort((a, b) => b.amountOfTrophies - a.amountOfTrophies).slice(0, 5);
-        return pupilsWithTrophies;
-    }
-
-    const getPupilsByPhysicalActivities = async () => {
-        const result = await API.graphql(graphqlOperation(pupilsByPhysicalActivitiesQuery));
-        const pupils = {};
-        const data = result.data.listPELessonRecords.items.map(item => {
-            return {duration: item.duration, attendances: item.Attendances}
-        }).map(value => {
-            value.attendances?.items?.map(item => {
-                const pupil = item.Pupil
-                if (!pupils[`${pupil.firstName} ${pupil.lastName}`]) {
-                    pupils[`${pupil.firstName} ${pupil.lastName}`] = 0;
-                }
-                if (value.duration) {
-                    pupils[`${pupil.firstName} ${pupil.lastName}`] += value.duration;
-                }
-            })
-        })
-        setPupilsByActivity(pupils);
-    }
-    const [pupilsByRewards, setPupilsByRewards] = useState(null);
-    const [pupilsByActivity, setPupilsByActivity] = useState(null);
-    useEffect(() => {
-        getTopPupilsByTrophies().then(result => {
-            setPupilsByRewards(result);
-        })
-        getPupilsByPhysicalActivities()
-
-        return () => {
-
-        };
-    }, []);
 
     return (
         <Page title="Dashboard | Healthy Habits">
@@ -161,18 +89,12 @@ export default function DashboardApp() {
                     <Grid item xs={12} md={12} lg={12}>
                         <HeatMap/>
                     </Grid>
-
-                    {pupilsByRewards &&
                     <Grid item xs={12} md={6} lg={6}>
-                        <TopPupilsByRewardBarChart pupils={pupilsByRewards}/>
+                        <TopPupilsByRewardBarChart/>
                     </Grid>
-                    }
-
-                    {pupilsByActivity &&
                     <Grid item xs={12} md={6} lg={6}>
-                        <TopPupilsByPhysicalActivities pupils={pupilsByActivity}/>
+                        <TopPupilsByPhysicalActivities/>
                     </Grid>
-                    }
                     <Grid item xs={12} md={12} lg={12}>
                         <SchoolHousesPage/>
                     </Grid>

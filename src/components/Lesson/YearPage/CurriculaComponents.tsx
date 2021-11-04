@@ -28,7 +28,11 @@ const CurriculaComponents = () => {
                     <CurriculumModal/>
                 </Can>
             </Stack>
-            {<CurriculaGrid/>}
+            {user?.isTeacher() ?
+                <TeacherCurriculaGrid/>
+                :
+                <CurriculaGrid/>
+            }
             <Box height={20}/>
             <Grid container justifyContent="center">
                 <Grid item xs={12} sm={6} m={4} lg={4}>

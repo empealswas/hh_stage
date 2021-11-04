@@ -6,8 +6,9 @@ import {Card, CardHeader} from '@material-ui/core';
 import {BaseOptionChart} from "../../charts";
 import {fNumber, fPercent} from "../../../utils/formatNumber";
 import {API, graphqlOperation} from "aws-amplify";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
+import {UserContext} from "../../../App";
 // utils
 //
 
@@ -43,16 +44,52 @@ const activityQuery = `query MyQuery {
   }
 }
 `;
+const teacherQuery = `query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+    classrooms {
+      items {
+        classroom {
+          pupils {
+            items {
+              pupil {
+                Attendances(filter: {lessonRecordID: {attributeExists: true}}) {
+                  items {
+                    lessonRecord {
+                      activity
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
 
 
 export default function TopActivitiesPieChart(props: { activities: any }) {
     const theme = useTheme();
 
     const [activities, setActivities] = useState<any>(null);
-
+    const user = useContext(UserContext);
     const getActivities = async () => {
-        const result: any = await API.graphql(graphqlOperation(activityQuery));
-        const data = result.data.listPELessonRecords.items.reduce((acc: any, value: any) => {
+        let data: [] = [];
+        if (user?.isAdmin()) {
+            const result: any = await API.graphql(graphqlOperation(activityQuery));
+            data = result.data.listPELessonRecords.items;
+        } else if (user?.isTeacher()) {
+            const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
+            data = result.data.getTeacher.classrooms.items
+                .map((item: any) => item.classroom)
+                .flatMap((item: any) => item.pupils.items)
+                .map((item: any) => item.pupil)
+                .flatMap((item: any) => item.Attendances.items)
+                .map((item: any) => item.lessonRecord);
+        }
+        data = data.reduce((acc: any, value: any) => {
             if (!acc[value.activity]) {
                 acc[value.activity] = [];
             }
@@ -62,7 +99,7 @@ export default function TopActivitiesPieChart(props: { activities: any }) {
             return acc;
         }, {});
         setActivities(data);
-    }
+    };
 
 
     useEffect(() => {

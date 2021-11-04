@@ -402,6 +402,21 @@ export const getAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      lessonRecordID
       createdAt
       updatedAt
       Pupil {
@@ -429,6 +444,7 @@ export const listAttendances = /* GraphQL */ `
         wasRewarded
         pupilID
         lessonID
+        lessonRecordID
         createdAt
         updatedAt
       }

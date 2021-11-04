@@ -10,24 +10,19 @@ import TotalGrowthBarChartSkeleton from "../reports/charts/TotalGrowthBarChartSk
 
 // ----------------------------------------------------------------------
 
+
+//example of chart data
 const CHART_DATA = [
     {
         name: 'Number of Steps',
         type: 'column',
         data: [6000, 5400, 11000, 8000, 5000, 10000, 1500]
     },
-
-    // {
-    //     name: 'Team B',
-    //     type: 'area',
-    //     data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
-    // },
-
-
 ];
 
 export default function StepsChart(props: { pupilId: string }) {
     const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
+    const [labels, setLabels] = useState<any[]>([]);
     useEffect(() => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -49,14 +44,17 @@ export default function StepsChart(props: { pupilId: string }) {
                 const response = JSON.parse(result);
                 const data: number [] = [];
                 console.log("RESULT", result)
+                const dataLabels: string []= [];
                 response.map((item: any) => {
                     data.push(item.totalSteps);
+                    dataLabels.push(item.period);
                 })
                 setChartData({
                     name: 'Number of Steps',
                     type: 'column',
                     data: data
                 })
+                setLabels(dataLabels);
 
 
             })
@@ -66,15 +64,7 @@ export default function StepsChart(props: { pupilId: string }) {
         stroke: {width: [3]},
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
         fill: {type: ['solid', 'gradient', 'solid']},
-        labels: [
-            'Mon',
-            'Tue',
-            'Wed',
-            'Thu',
-            'Fri',
-            'Sat',
-            'Sun',
-        ],
+        labels: labels,
         xaxis: {type: 'string'},
         tooltip: {
             shared: true,

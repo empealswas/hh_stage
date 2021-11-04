@@ -5,9 +5,10 @@ import {Card, CardHeader, Box} from '@material-ui/core';
 import {BaseOptionChart} from "../../charts";
 import {ApexOptions} from "apexcharts";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {API, graphqlOperation} from "aws-amplify";
 import {compareAsc, compareDesc, parseISO} from "date-fns";
+import {UserContext} from "../../../App";
 //
 
 // ----------------------------------------------------------------------
@@ -21,22 +22,57 @@ const query = `query MyQuery {
   }
 }
 `
+const teacherQuery =`query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+    classrooms {
+      items {
+        classroom {
+          pupils {
+            items {
+              pupil {
+                Attendances(filter: {lessonRecordID: {attributeExists: true}}) {
+                  items {
+                    lessonRecord {
+                      activity
+                      date
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`
 
 export default function ActivityLineChart() {
 
-
-
-
     const [data, setData] = useState<any[][] | null>(null);
+    const user = useContext(UserContext);
     useEffect(() => {
         const getData = async () => {
-            const result: any = await API.graphql(graphqlOperation(query));
-            const lessons = result.data.listPELessonRecords.items;
 
+            let lessons: [] = [];
+
+            if (user?.isAdmin()) {
+            const result: any = await API.graphql(graphqlOperation(query));
+            lessons = result.data.listPELessonRecords.items;
+            } else if (user?.isTeacher()) {
+                const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
+                lessons = result.data.getTeacher.classrooms.items
+                    .map((item: any) => item.classroom)
+                    .flatMap((item: any) => item.pupils.items)
+                    .map((item: any) => item.pupil)
+                    .flatMap((item: any) => item.Attendances.items)
+                    .map((item: any) => item.lessonRecord);
+            }
             const lessonsByDate = lessons
                 .filter((item: any) => !!item.date)
                 .sort((a: { date: string; }, b: { date: string; }) => {
-                        return compareDesc(parseISO(b.date), parseISO(a.date));
+                    return compareDesc(parseISO(b.date), parseISO(a.date));
                 })
                 .reduce((acc: any, value: any) => {
                     if (!acc[value.date]) {
@@ -49,6 +85,7 @@ export default function ActivityLineChart() {
             for (let key in lessonsByDate) {
                 series.push([key, lessonsByDate[key]]);
             }
+            console.log('SERIES', series)
             setData(series);
         }
         getData()
