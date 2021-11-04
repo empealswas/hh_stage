@@ -26,6 +26,7 @@ export default function DailiesStepsTarget(props: GarminQueryData) {
         }
 
         // fetch data from db- set headers
+
         const getData = async () => {
             const users = await getAllUsers();
             var myHeaders = new Headers();
@@ -66,7 +67,7 @@ export default function DailiesStepsTarget(props: GarminQueryData) {
             options: {
                 chart: {
                     type: 'column',
-                    height: 350
+                    height: 300
                 },
                 plotOptions: {
                     bar: {
@@ -103,7 +104,7 @@ export default function DailiesStepsTarget(props: GarminQueryData) {
             <Card>
                 <CardHeader title="Steps" subheader="Total steps" />
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                    <ReactApexChart type="bar" series={plot.series} options={plot.options} height={364} />
+                    <ReactApexChart type="bar" series={plot.series} options={plot.options} height={350} />
 
                 </Box>
             </Card>
@@ -121,9 +122,9 @@ export default function DailiesStepsTarget(props: GarminQueryData) {
 
         while (i < dataIn.length) {
             xCategories.push(dataIn[i].period);
-            trace1.data.push(dataIn[i].stepDuration);
-            trace2.data.push(dataIn[i].vigorousIntensity);
-            trace3.data.push(dataIn[i].moderateIntensity);
+            trace1.data.push(parseFloat((dataIn[i].stepDuration/60).toPrecision(2)));
+            trace2.data.push(parseFloat((dataIn[i].vigorousIntensity/60).toPrecision(2)));
+            trace3.data.push(parseFloat((dataIn[i].moderateIntensity/60).toPrecision(2)));
             i++;
         }
         series.push(trace1);

@@ -1,4 +1,4 @@
-export class EpochsSummaryDataModel {
+export class GarminEpochsSummaryDataModel {
     constructor(
         public period: Date,
         public garminId: string,
