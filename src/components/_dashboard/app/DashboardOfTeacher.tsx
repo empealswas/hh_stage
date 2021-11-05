@@ -142,8 +142,7 @@ const DashboardOfTeacher = () => {
     //////////////////////////////////
     useEffect(() => {
         const dailiesDailyUser: string = dailiesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + userOpt;
-        console.log("... well:");
-        console.log(dailiesDailyUser);
+
         const getAllUsers = async () => {
             const users: String[] = [];
             const result: any = await API.graphql(graphqlOperation(listPupils));
@@ -172,6 +171,8 @@ const DashboardOfTeacher = () => {
                 .then(result => {
                     //    "period":"2021-07-12","garminId":"decb3739-9468-4fbd-a578-5379fe39536c","totalSteps":13.0,"stepDuration":60.0,"vigorousIntensity":0.0,"moderateIntensity":0.0
                     var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
+                    console.log("... well:");
+                    console.log(garminData);
                     setDailiesUser(garminData);
                 })
                 .catch(error => console.log('error', error));
@@ -369,11 +370,12 @@ const DashboardOfTeacher = () => {
         }
         getData();
     }, []);
-
+    var userDailies: GarminDailiesSummaryModel[]= [];
     if (dailiesDataUser) {
-        // console.log(dailiesDataUser)
-
-    };
+        console.log(dailiesDataUser);
+        userDailies = dailiesDataUser;
+        
+    } ;
     if (dailiesDataGroup) {
         // console.log(dailiesDataGroup)
         radialGraphData.steps = dailiesDataGroup[dailiesDataGroup.length - 2].totalSteps;
@@ -381,14 +383,15 @@ const DashboardOfTeacher = () => {
     };
 
     if (sleepDataUser) {
-        console.log(sleepDataUser);
+        // console.log(sleepDataUser);
     };
     if (sleepDataGroup) {
         // console.log(sleepDataGroup)
         radialGraphData.sleep = sleepDataGroup[sleepDataGroup.length - 1].duration / 60;
     };
-    if (epochsDataUser) {
+    if (!epochsDataUser) {
         // console.log(epochsDataUser)
+       
     };
     if (epochsDataGroup) {
         // console.log(epochsDataGroup);
@@ -417,7 +420,7 @@ const DashboardOfTeacher = () => {
                     <StepIntensityDonut {...stepsIntensityData} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <DailiesStepsDistribution {...stepsIntensityData} />
+                    <DailiesStepsDistribution data={userDailies} />
                 </Grid>
             </Stack>
             {/* <Grid item xs={12} md={12} lg={6}> */}
