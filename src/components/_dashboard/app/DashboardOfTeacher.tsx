@@ -32,6 +32,7 @@ import { ApexRadialGraphModel } from '../../../models/garminDataModels/ApexRadia
 import GarminMetricsRadialChart from '../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart';
 import StepIntensityDonut from '../../reports/charts/GarminWearablesCharts/StepIntensityDonut';
 import DailiesStepsDistribution from '../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution';
+import DailiesStanineContourPlot from '../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot';
 
 const query =/*GraphQL*/`query MyQuery($id: ID = "") {
     getTeacher(id: $id) {
@@ -171,8 +172,8 @@ const DashboardOfTeacher = () => {
                 .then(result => {
                     //    "period":"2021-07-12","garminId":"decb3739-9468-4fbd-a578-5379fe39536c","totalSteps":13.0,"stepDuration":60.0,"vigorousIntensity":0.0,"moderateIntensity":0.0
                     var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
-                    console.log("... well:");
-                    console.log(garminData);
+                    // console.log("... well:");
+                    // console.log(garminData);
                     setDailiesUser(garminData);
                 })
                 .catch(error => console.log('error', error));
@@ -372,7 +373,7 @@ const DashboardOfTeacher = () => {
     }, []);
     var userDailies: GarminDailiesSummaryModel[]= [];
     if (dailiesDataUser) {
-        console.log(dailiesDataUser);
+        // console.log(dailiesDataUser);
         userDailies = dailiesDataUser;
         
     } ;
@@ -422,6 +423,13 @@ const DashboardOfTeacher = () => {
                 <Grid item xs={12} sm={6} md={6} lg={6}>
                     <DailiesStepsDistribution data={userDailies} />
                 </Grid>
+            </Stack>
+            
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
+                    <DailiesStanineContourPlot />
+                </Grid>
+
             </Stack>
             {/* <Grid item xs={12} md={12} lg={6}> */}
             {/* <> */}

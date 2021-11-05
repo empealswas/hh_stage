@@ -68,7 +68,7 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
         
         return (
             <Card>
-                <CardHeader title="User Target" subheader="Percentage target reached" />
+                <CardHeader title="User Mertics" subheader="Percentage target reached from Wearable Data" />
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                 <ReactApexChart options={plot.options} series={plot.series} type="radialBar" height={350} />
                 </Box>

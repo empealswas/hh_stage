@@ -1,22 +1,17 @@
 import { Card, CardHeader, Box } from '@material-ui/core';
-import { stringify } from 'querystring';
 
 import ReactApexChart from 'react-apexcharts';
-import { GarminDailiesSummaryModel } from '../../../../models/garminDataModels/garminDailiesModel';
+// import { GarminDailiesSummaryModel } from '../../../../models/garminDataModels/garminDailiesModel';
 
 export default function DailiesStepsDistribution(props: any) {
 
-
-
     if (props['data'].length==0) {
-
         return (
             <Card>
                 <CardHeader title="Garmin Metrics Data" subheader="No data available" />
             </Card>
         );
     } else {
-
       // get a list of the unique ids from the data passed into the component
         const uniqueIds = [...Array.from(new Set(props['data'].map(item => item.garminId)))];
 
@@ -81,7 +76,6 @@ export default function DailiesStepsDistribution(props: any) {
     }
 
     function generateGarminDayWiseTimeSeries(inData: any) {
-      
       var i = 0;
       var series = [];
     
