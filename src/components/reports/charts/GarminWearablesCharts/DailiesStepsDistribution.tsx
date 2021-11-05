@@ -1,4 +1,5 @@
 import { Card, CardHeader, Box } from '@material-ui/core';
+import { stringify } from 'querystring';
 
 import ReactApexChart from 'react-apexcharts';
 import { GarminDailiesSummaryModel } from '../../../../models/garminDataModels/garminDailiesModel';
@@ -15,56 +16,29 @@ export default function DailiesStepsDistribution(props: any) {
             </Card>
         );
     } else {
-  
 
-    
-        // const idList = [... new Set(props.map(item => item.garminId))];
-        console.log("idList");
+      // get a list of the unique ids from the data passed into the component
+        const uniqueIds = [...Array.from(new Set(props['data'].map(item => item.garminId)))];
 
-        console.log(props['data']);
-        let n: typeof props;
+        // create an array to store the data series for the scatterplot, loop through the unique ids
+        // filter the main data by id
+        // create a scatter trace for each id with 'period' and 'total steps' using function "generateGarminDayWiseTimeSeries()"
+        // which converts the date to a timestamp for plotting purposes
         
-        const unique = [...Array.from(new Set(props['data'].map(item => item.garminId)))];
-        console.log(unique);
-        // var processedData = generateDataSegments(props);
-
+        var dataSeries: any[]=[];
+        for(var ids of uniqueIds){
+          const processedData  = props['data']
+          .filter((item) => item.garminId==ids);
+          
+          let result = processedData.map(({period, totalSteps}) => ({period, totalSteps}));
+          var name = ids;
+          var data = generateGarminDayWiseTimeSeries(result);
+          dataSeries.push({name, data});
+        };
+        console.log(dataSeries);
         const plot = {
-            series: [{
-                name: 'TEAM 1',
-                data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                  min: 10,
-                  max: 60
-                })
-              },
-              {
-                name: 'TEAM 2',
-                data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                  min: 10,
-                  max: 60
-                })
-              },
-              {
-                name: 'TEAM 3',
-                data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
-                  min: 10,
-                  max: 60
-                })
-              },
-              {
-                name: 'TEAM 4',
-                data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 10, {
-                  min: 10,
-                  max: 60
-                })
-              },
-              {
-                name: 'TEAM 5',
-                data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 30, {
-                  min: 10,
-                  max: 60
-                })
-              },
-            ],
+            series: dataSeries,
+            
             options: {
               chart: {
                 height: 350,
@@ -91,12 +65,8 @@ export default function DailiesStepsDistribution(props: any) {
               xaxis: {
                 type: 'datetime',
               },
-              yaxis: {
-                max: 70
-              }
+              yaxis: { }
             },
-
-
         };
 
         return (
@@ -110,18 +80,17 @@ export default function DailiesStepsDistribution(props: any) {
         )
     }
 
-
-    function generateDayWiseTimeSeries(baseval: any, count: any, yrange: any) {
-        var i = 0;
-        var series = [];
-        while (i < count) {
-            var x = baseval;
-            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-
-            series.push([x, y]);
-            baseval += 86400000;
-            i++;
-        }
-        return series;
-    }
+    function generateGarminDayWiseTimeSeries(inData: any) {
+      
+      var i = 0;
+      var series = [];
+    
+      while (i < inData.length) {
+          var x = new Date(inData[i].period).getTime();
+          var y = inData[i].totalSteps
+          series.push([x, y]);
+          i++;
+      }
+      return series;
+  }
 }
