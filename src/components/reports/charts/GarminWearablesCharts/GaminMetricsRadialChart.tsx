@@ -68,7 +68,7 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
         
         return (
             <Card>
-                <CardHeader title="User Mertics" subheader="Percentage target reached from Wearable Data" />
+                <CardHeader title="User Metrics" subheader="Percentage target reached from Wearable Data" />
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                 <ReactApexChart options={plot.options} series={plot.series} type="radialBar" height={350} />
                 </Box>
@@ -90,8 +90,8 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
 
       if(value >= 50 && value < 69){
         return '#f29407';
-      } else if (value >= 70 && value< 99 ){
-        return '#f29407';
+      } else if (value >= 70 && value < 100 ){
+        return '#129900';
       } else if (value >= 100){
         return '#0713f2';
       } else {
@@ -104,7 +104,7 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
       if ( value < 39 ) {
         return '#0713f2';
       } else if(value >= 40 && value < 69 ){
-        return '#f29407';
+        return '#129900';
       } else if (value >= 70 && value < 99 ){
         return '#f29407';
       } else if (value >= 100){

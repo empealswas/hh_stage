@@ -41,7 +41,7 @@ export default function StepIntensityDonut(props: GarminDailiesSummaryModel) {
 
         return (
             <Card>
-                <CardHeader title="Steps" subheader="Total steps" />
+                <CardHeader title="Steps Intensity" subheader="Intensity Propotion" />
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                     <ReactApexChart options={plot.options} series={plot.series} type="donut" height={350} />
 

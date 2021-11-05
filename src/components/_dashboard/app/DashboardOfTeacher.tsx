@@ -94,7 +94,7 @@ const DashboardOfTeacher = () => {
     const dailiesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminDailies/dates/start/";
     const epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates/start/";
     const activitiesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminActivities/dates/start/";
-    const startDateOpt: string = "2021-07-01";
+    const startDateOpt: string = "2021-10-01";
 
     const endUrl: string = "/end/";
     const endDateOpt: string = "2021-11-25";
@@ -170,10 +170,7 @@ const DashboardOfTeacher = () => {
             fetch(dailiesDailyUser, requestOptions)
                 .then(response => response.text())
                 .then(result => {
-                    //    "period":"2021-07-12","garminId":"decb3739-9468-4fbd-a578-5379fe39536c","totalSteps":13.0,"stepDuration":60.0,"vigorousIntensity":0.0,"moderateIntensity":0.0
                     var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
-                    // console.log("... well:");
-                    // console.log(garminData);
                     setDailiesUser(garminData);
                 })
                 .catch(error => console.log('error', error));
@@ -378,8 +375,7 @@ const DashboardOfTeacher = () => {
         
     } ;
     if (dailiesDataGroup) {
-        // console.log(dailiesDataGroup)
-        radialGraphData.steps = dailiesDataGroup[dailiesDataGroup.length - 2].totalSteps;
+        radialGraphData.steps = dailiesDataGroup[dailiesDataGroup.length - 1].totalSteps;
         stepsIntensityData = dailiesDataGroup[dailiesDataGroup.length - 2];
     };
 
@@ -399,11 +395,11 @@ const DashboardOfTeacher = () => {
         radialGraphData.active = (epochsDataGroup[epochsDataGroup.length - 1].active + epochsDataGroup[epochsDataGroup.length - 1].highlyActive) / 60;
         radialGraphData.sedentary = epochsDataGroup[epochsDataGroup.length - 1].sedentary / 60;
     };
-    var queryData = new GarminQueryData('2021-07-01', '2021-11-01', 'daily', 'group');
+    var queryData = new GarminQueryData('2021-10-01', '2021-11-05', 'daily', 'group');
     return (
         <Container>
 
-            <h1>Whatis in here then!!!!!!!!!!!!!!!!!</h1>
+            <h1>Plots for the teacher view</h1>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                 <Grid item xs={12} sm={6} md={6} lg={6}>

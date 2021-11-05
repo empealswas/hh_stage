@@ -57,7 +57,7 @@ export default function AverageSleepChart() {
                     const sleepData: GarminSleepSummaryModel[] = JSON.parse(result);
                     const data: number[] = [];
                     const periods: String[] = [];
-                    console.log("RESULT- sleep data...", sleepData)
+                    
                     response.map((item: any) => {
                         data.push(secondsToHours(item.duration));
 

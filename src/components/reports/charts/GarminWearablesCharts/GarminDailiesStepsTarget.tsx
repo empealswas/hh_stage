@@ -89,7 +89,7 @@ export default function DailiesStepsTarget(props: GarminQueryData) {
                 },
                 yaxis: {
                     title: {
-                        text: '$ (thousands)'
+                        text: 'time (minutes)'
                     }
                 },
                 fill: {
@@ -102,7 +102,7 @@ export default function DailiesStepsTarget(props: GarminQueryData) {
 
         return (
             <Card>
-                <CardHeader title="Steps" subheader="Total steps" />
+                <CardHeader title="Steps" subheader="Total duration and intensity" />
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                     <ReactApexChart type="bar" series={plot.series} options={plot.options} height={350} />
 

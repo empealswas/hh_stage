@@ -63,7 +63,7 @@ export default function AverageStepsChart() {
                     const stepsData: GarminDailiesSummaryModel[]= JSON.parse(result);
                     const data: number [] = [];
                     const periods: String [] = [];
-                    console.log("RESULT", stepsData)
+    
                     response.map((item: any) => {
                         data.push(item.totalSteps);
                         periods.push(item.period);

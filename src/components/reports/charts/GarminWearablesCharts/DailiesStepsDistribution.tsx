@@ -30,10 +30,8 @@ export default function DailiesStepsDistribution(props: any) {
           var data = generateGarminDayWiseTimeSeries(result);
           dataSeries.push({name, data});
         };
-        console.log(dataSeries);
         const plot = {
             series: dataSeries,
-            
             options: {
               chart: {
                 height: 350,

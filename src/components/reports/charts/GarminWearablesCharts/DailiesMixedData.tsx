@@ -52,17 +52,15 @@ export default function DailiesMixedData(props: GarminQueryData) {
                 body: raw,
                 redirect: 'follow'
             };
-            //"https://analytics.healthyhabits.link/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/user",
             fetch(queryURL, 
                 requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     const response = JSON.parse(result);
-                    // var garminData:  GarminDailiesSummaryModel[] = JSON.parse(result);
+
                     var garminData:  GarminDailiesSummaryModel[] = JSON.parse(result);
                     const data: number[] = [];
                     const periods: String[] = [];
-                    console.log("RESULT-Dailies Mixed", garminData);
                     response.map(
                         (item: any) => {
                             data.push(item.totalSteps);
@@ -70,17 +68,12 @@ export default function DailiesMixedData(props: GarminQueryData) {
                     })
                     var stepData: number[]=[];
                     for(var gData of garminData){
-                        // data: stepData
-                        // var step: number[] = [ gData.totalSteps];
                         stepData.push(gData.moderateIntensity/60);
-                        // data.push(gData.totalSteps);
-                        // periods.push(gData.period.toISOString());
                     }
                     setChartData({
                         name: 'Hours',
                         type: 'column',
                         data: stepData
-                        // data: data
                     })
                     setLabels(periods);
 
@@ -117,9 +110,9 @@ export default function DailiesMixedData(props: GarminQueryData) {
     }
     return (
         <Card>
-            <CardHeader title="Steps" subheader="Total steps" />
+            <CardHeader title="Steps" subheader="Total duration and intensity" />
             <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                <ReactApexChart type="line" series={[chartData]} options={chartOptions} height={364} />
+                <ReactApexChart type="line" series={[chartData]} options={chartOptions} height={350} />
             </Box>
         </Card>
     );
