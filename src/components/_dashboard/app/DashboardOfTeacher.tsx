@@ -95,7 +95,9 @@ const DashboardOfTeacher = () => {
     const [periodState, setPeriodState]=useState("daily");
     const [metricState, setMetricState]=useState("dailies");
     const [groupByState, setGroupByState]=useState("group");
-
+    const [startDateState, setStartDateState]=useState(prevDate);
+    const [endDateState, setEndDateState]=useState(todayDate);
+    
     // set of constants to get all the garmin data
     const [sleepDataGroup, setSleepGroup] = useState<GarminSleepSummaryModel[] | null>(null);
     const [sleepDataUser, setSleepUser] = useState<GarminSleepSummaryModel[] | null>(null);
@@ -144,6 +146,54 @@ const DashboardOfTeacher = () => {
 
     var radialGraphData = new ApexRadialGraphModel(0, 0, 0, 0);
     var stepsIntensityData!: GarminDailiesSummaryModel;
+
+    
+    const backClick = () =>{
+        console.log("Backwards");
+        var setEndDate = new Date(endDateState);
+        setEndDate.setDate(setEndDate.getDate() - 6);
+        todayDate = setEndDate.getFullYear() +"-"+String(setEndDate.getMonth() + 1).padStart(2, '0')+"-"+ String(setEndDate.getDate()).padStart(2, '0');
+        var setStartDate= new Date(todayDate);
+
+        // make thios a case statement & think about default condition
+        if(queryData.period==='daily') {
+            setStartDate.setDate(setStartDate.getDate()-6);
+        }else if(queryData.period==='weekly') {
+            setStartDate.setDate(setStartDate.getDate()-27);
+        }else if(queryData.period==='monthly') {
+            setStartDate.setDate(setStartDate.getDate()-85);
+        } else {
+            setStartDate.setDate(setStartDate.getDate()-6);   
+        }
+        prevDate =  setStartDate.getFullYear() +"-"+String(setStartDate.getMonth() + 1).padStart(2, '0')+"-"+ String(setStartDate.getDate()).padStart(2, '0');
+
+        setStartDateState(todayDate);
+        setEndDateState(prevDate);
+    };
+
+    const forwardClick = () =>{
+        console.log("Forwards");
+     
+        var setEndDate = new Date(endDateState);
+        setEndDate.setDate(setEndDate.getDate() + 6);
+        todayDate = setEndDate.getFullYear() +"-"+String(setEndDate.getMonth() + 1).padStart(2, '0')+"-"+ String(setEndDate.getDate()).padStart(2, '0');
+        var setStartDate= new Date(todayDate);
+
+        // make thios a case statement & think about default condition
+        if(queryData.period==='daily') {
+            setStartDate.setDate(setStartDate.getDate()-6);
+        }else if(queryData.period==='weekly') {
+            setStartDate.setDate(setStartDate.getDate()-27);
+        }else if(queryData.period==='monthly') {
+            setStartDate.setDate(setStartDate.getDate()-85);
+        } else {
+            setStartDate.setDate(setStartDate.getDate()-6);   
+        }
+        prevDate =  setStartDate.getFullYear() +"-"+String(setStartDate.getMonth() + 1).padStart(2, '0')+"-"+ String(setStartDate.getDate()).padStart(2, '0');
+
+        setStartDateState(todayDate);
+        setEndDateState(prevDate);
+    };
     // const queryURL: string = `https://analytics.healthyhabits.link/api/garminDailies/dates/start/${props.startDate}/end/${props.endDate}/period/${props.period}//groupedby/${props.groupedBy}`;
     // fetch data from db- set headers
     // the a fetch for each set of garmin data
@@ -643,17 +693,17 @@ const DashboardOfTeacher = () => {
     // }, []);
 
     useEffect(()=>{
-
-        queryData.endDate=prevDate;
-        queryData.startDate=todayDate;
+        queryData.endDate=endDateState;
+        queryData.startDate=startDateState;
         queryData.period=periodState;
         
         queryData.groupedBy=groupByState;
         console.log("Has changed" + queryData.period +" : "+ queryData.groupedBy +" : "+queryData.startDate +" : "+queryData.endDate);
 
-    }, [periodState, groupByState,todayDate, prevDate]);
+    }, [periodState, groupByState, startDateState, endDateState]);
 
-
+    
+  
     var userDailies: GarminDailiesSummaryModel[] = [];
     if (dailiesDataUser) {
         // console.log(dailiesDataUser);
@@ -682,22 +732,7 @@ const DashboardOfTeacher = () => {
         radialGraphData.sedentary = epochsDataGroup[epochsDataGroup.length - 1].sedentary / 60;
     };
    
-    const backClick = () =>{
-        console.log("Backards");
-        console.log(todayDate);
-        console.log(prevDate); 
-        todayDate = "2020-01-01";
-        prevDate = "2020-12-12";
-    };
 
-    const forwardClick = () =>{
-        console.log("forwards");
-        console.log(todayDate);
-        console.log(prevDate); 
-        todayDate = "2022-01-01";
-        prevDate = "2022-12-12";
-    };
-  
     if(metricState==="sedentary"){
     return (
         <Container>
