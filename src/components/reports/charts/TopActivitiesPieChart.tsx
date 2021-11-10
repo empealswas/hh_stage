@@ -110,9 +110,9 @@ export default function TopActivitiesPieChart(props: { activities: any }) {
     let all: number = 0;
     const chartData = [];
     const names = [];
-    console.log(activities)
+    // console.log(activities)
     for (let key in activities) {
-        console.log(key);
+        // console.log(key);
         if (key !== null) {
             let value = activities[key];
             if (key === 'null') {

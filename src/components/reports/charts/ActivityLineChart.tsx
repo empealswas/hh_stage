@@ -1,14 +1,16 @@
-import {merge,} from 'lodash';
+import { merge, } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import {Card, CardHeader, Box} from '@material-ui/core';
-import {BaseOptionChart} from "../../charts";
-import {ApexOptions} from "apexcharts";
+import { Card, CardHeader, Box } from '@material-ui/core';
+import { BaseOptionChart } from "../../charts";
+import { ApexOptions } from "apexcharts";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
+
 import {useContext, useEffect, useState} from "react";
 import {API, graphqlOperation} from "aws-amplify";
 import {compareAsc, compareDesc, parseISO} from "date-fns";
 import {UserContext} from "../../../App";
+
 //
 
 // ----------------------------------------------------------------------
@@ -94,50 +96,30 @@ export default function ActivityLineChart() {
         };
     }, []);
 
-    var options: any = merge(BaseOptionChart(),{
+    var options: any = merge(BaseOptionChart(), {
 
         chart: {
-            id: 'chart2',
+            id: 'chart2', 
             type: 'line',
             height: 230,
-            toolbar: {
-                autoSelected: 'pan',
-                download: true,
-                selection: true,
-                zoom: true,
-                zoomin: true,
-                zoomout: true,
-                pan: true,
-                show: true
+            toolbar: { autoSelected: 'pan', download: true, selection: true,
+                zoom: true, zoomin: true, zoomout: true, pan: true, show: true
             }
         },
         colors: ['#546E7A'],
-        stroke: {
-            width: 3
-        },
-        dataLabels: {
-            enabled: false
-        },
-        fill: {
-            opacity: 1,
-        },
-        markers: {
-            size: 0
-        },
-        xaxis: {
-            type: 'datetime'
-        }
+        stroke: { width: 3 },
+        dataLabels: { enabled: false },
+        fill: { opacity: 1, },
+        markers: { size: 0 },
+        xaxis: { type: 'datetime' }
     });
-    var optionsLine: any  = {
-
+    
+    var optionsLine: any = {
         chart: {
             id: 'chart1',
             height: 130,
             type: 'area',
-            brush: {
-                target: 'chart2',
-                enabled: true
-            },
+            brush: { target: 'chart2', enabled: true },
             selection: {
                 enabled: true,
                 xaxis: {
@@ -149,16 +131,11 @@ export default function ActivityLineChart() {
         colors: ['#008FFB'],
         fill: {
             type: 'gradient',
-            gradient: {
-                opacityFrom: 0.91,
-                opacityTo: 0.1,
-            }
+            gradient: { opacityFrom: 0.91, opacityTo: 0.1,}
         },
         xaxis: {
             type: 'datetime',
-            tooltip: {
-                enabled: false
-            }
+            tooltip: { enabled: false}
         },
         yaxis: {
             tickAmount: 2
@@ -184,13 +161,13 @@ export default function ActivityLineChart() {
     // })
     if (!data) {
         return (
-            <TotalGrowthBarChartSkeleton/>
+            <TotalGrowthBarChartSkeleton />
         )
     }
     return (
         <Card>
-            <CardHeader title="Activity" subheader=""/>
-            <Box sx={{p: 3, pb: 1}} dir="ltr">
+            <CardHeader title="Activity" subheader="" />
+            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                 <div id="wrapper">
                     <div id="chart-line2"><ReactApexChart options={options} series={[
                         {
@@ -198,25 +175,16 @@ export default function ActivityLineChart() {
                             data: data,
                         },
                     ]}
-                                                          type="line" height={230}/></div>
+                        type="line" height={230} /></div>
                     <div id="chart-line"><ReactApexChart options={optionsLine} series={[
                         {
                             name: "series1",
                             data: data,
                         },
                     ]}
-                                                         type="area" height={130}/></div>
+                        type="area" height={130} /></div>
                 </div>
-                {/*<ReactApexChart type="line" series={[*/}
-                {/*    {*/}
-                {/*        name: "High - 2013",*/}
-                {/*        data: [28, 29, 33, 36, 32, 32, 33]*/}
-                {/*    },*/}
-                {/*    {*/}
-                {/*        name: "Low - 2013",*/}
-                {/*        data: [12, 11, 14, 18, 17, 13, 13]*/}
-                {/*    }*/}
-                {/*]} options={chartOptions} height={364} />*/}
+
             </Box>
         </Card>
     );

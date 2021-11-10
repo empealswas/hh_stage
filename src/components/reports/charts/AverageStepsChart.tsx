@@ -9,9 +9,11 @@ import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import axios from "axios";
 import {API, graphqlOperation} from "aws-amplify";
 import {listPupils} from "../../../graphql/queries";
+
+import { GarminDailiesSummaryModel } from '../../../models/garminDataModels/garminDailiesModel';
 import {UserContext} from "../../../App";
 import {Classroom} from "../../../API";
-//
+
 
 // ----------------------------------------------------------------------
 
@@ -82,6 +84,7 @@ export default function AverageStepsChart() {
                     body: raw,
                     redirect: 'follow'
                 };
+
 
                 fetch("https://analytics.healthyhabits.link/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/group",
                     requestOptions)

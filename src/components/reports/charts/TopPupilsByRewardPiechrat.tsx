@@ -18,6 +18,7 @@ export type PupilData = {
     pupilDisplayName: string,
     amountOfTrophies: number,
 }
+
 const topByRewardsQuery = `query MyQuery {
   listPupils(limit: 10000) {
     items {

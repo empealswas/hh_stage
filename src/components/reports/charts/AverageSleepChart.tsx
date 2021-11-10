@@ -1,6 +1,7 @@
-import {merge,} from 'lodash';
+import { merge, } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
+
 import {Card, CardHeader, Box} from '@material-ui/core';
 import {ApexOptions} from "apexcharts";
 import {useContext, useEffect, useState} from "react";
@@ -13,7 +14,7 @@ import {secondsToHours} from "date-fns";
 import {fShortenNumber} from "../../../utils/formatNumber";
 import {Classroom} from "../../../API";
 import {UserContext} from "../../../App";
-//
+
 
 // ----------------------------------------------------------------------
 
@@ -23,14 +24,6 @@ const CHART_DATA = [
         type: 'column',
         data: [6000, 5400, 11000, 8000, 5000, 10000, 1500]
     },
-
-    // {
-    //     name: 'Team B',
-    //     type: 'area',
-    //     data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]
-    // },
-
-
 ];
 const teacherQuery = `query MyQuery($id: ID = "") {
   getTeacher(id: $id) {
@@ -50,6 +43,7 @@ const teacherQuery = `query MyQuery($id: ID = "") {
 
 export default function AverageSleepChart() {
     const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
+
     const [labels, setLabels] = useState<String []>([]);
     const user = useContext(UserContext);
 
@@ -91,9 +85,10 @@ export default function AverageSleepChart() {
                 .then(response => response.text())
                 .then(result => {
                     const response = JSON.parse(result);
-                    const data: number [] = [];
-                    const periods: String [] = [];
-                    console.log("RESULT", result)
+                    const sleepData: GarminSleepSummaryModel[] = JSON.parse(result);
+                    const data: number[] = [];
+                    const periods: String[] = [];
+                    
                     response.map((item: any) => {
                         data.push(secondsToHours(item.duration));
 
@@ -114,11 +109,11 @@ export default function AverageSleepChart() {
 
     }, [])
     const chartOptions: any = merge(BaseOptionChart(), {
-        stroke: {width: [3]},
-        plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
-        fill: {type: ['solid', 'gradient', 'solid']},
+        stroke: { width: [3] },
+        plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
+        fill: { type: ['solid', 'gradient', 'solid'] },
         labels: labels,
-        xaxis: {type: 'string'},
+        xaxis: { type: 'string' },
         colors: ['#0e3ae0'],
         tooltip: {
             shared: true,
@@ -134,13 +129,13 @@ export default function AverageSleepChart() {
         }
     });
     if (!chartData) {
-        return (<TotalGrowthBarChartSkeleton/>);
+        return (<TotalGrowthBarChartSkeleton />);
     }
     return (
         <Card>
-            <CardHeader title="Hours of Sleep" subheader="Average hours of sleep of all pupils"/>
-            <Box sx={{p: 3, pb: 1}} dir="ltr">
-                <ReactApexChart type="line" series={[chartData]} options={chartOptions} height={364}/>
+            <CardHeader title="Hours of Sleep" subheader="Average hours of sleep of all pupils" />
+            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+                <ReactApexChart type="line" series={[chartData]} options={chartOptions} height={364} />
             </Box>
         </Card>
     );

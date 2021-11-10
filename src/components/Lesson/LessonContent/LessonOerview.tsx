@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {API, Auth, graphqlOperation, Storage} from "aws-amplify";
+import {API, graphqlOperation} from "aws-amplify"; //Auth, Storage
 import Typography from "@material-ui/core/Typography";
 import {Lesson} from "../../../API";
 import FilesViewer from "../../../utils/FilesViewer";
@@ -10,15 +10,15 @@ import {Can} from "../../../utils/Ability";
 import LessonRating from "./LessonRating";
 import {Container} from "@material-ui/core";
 import {AccordionActions, Box, IconButton, List, Snackbar} from "@mui/material";
-import FilesUploadDropzone from "../../FilesUploading/FilesUploadDropzone";
+// import FilesUploadDropzone from "../../FilesUploading/FilesUploadDropzone";
 import FilesUploadDropzoneWithChildren from "../../FilesUploading/FilesUploadDropzoneWithChildren";
 import Title from "../YearPage/Title";
 import LessonEditForm from "./LessonEditForm";
 import DeletionModal from "../YearPage/DeletionModal";
-import {onCreateFile, onDeleteFile, onUpdateCurriculum} from "../../../graphql/subscriptions";
-import {createFile, createLesson, createTermLesson, deleteLesson} from "../../../graphql/mutations";
-import awsConfig from "../../../aws-exports";
-import {useSnackbar} from "notistack";
+import {onCreateFile, onDeleteFile} from "../../../graphql/subscriptions"; //, onUpdateCurriculum
+import {deleteLesson} from "../../../graphql/mutations"; //createFile, createLesson, createTermLesson, 
+// import awsConfig from "../../../aws-exports";
+// import {useSnackbar} from "notistack";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -32,7 +32,7 @@ const LessonOverview = () => {
     const [droppedFiles, setDroppedFiles] = useState<File []>([]);
     const [snackBarOpen, setSnackBarOpen] = useState(true);
     const [filesToUpload, setFilesToUpload] = useState<File []>([]);
-    const snackbar = useSnackbar();
+    // const snackbar = useSnackbar();
 
     async function fetchLesson() {
         return API.graphql(graphqlOperation(`query MyQuery($id: ID = "") {
@@ -85,7 +85,8 @@ const LessonOverview = () => {
             deleteSubscription.unsubscribe();
             createSubscription.unsubscribe();
         }
-    }, []);
+//    }, []);
+    });
     const onDrop = useCallback(acceptedFiles => {
         uploadFiles(acceptedFiles)
         setSnackBarOpen(true);

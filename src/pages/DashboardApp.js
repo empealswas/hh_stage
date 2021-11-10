@@ -71,19 +71,21 @@ export default function DashboardApp() {
                         <TimeCompletedCard/>
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
-                        <AverageStepsChart />
+                        <AverageStepsChart/>
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
-                        <AverageSleepChart />
+                        <AverageSleepChart/>
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
                         <TopActivitiesPieChart/>
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
-                        <ActivityGoalChart  goalTime={100000}/>
+                        <ActivityGoalChart goalTime={100000}/>
                     </Grid>
                     <Can I={'read'} a={'teacherDashboard'}>
-                        <DashboardOfTeacher/>
+                        <Grid itme xs={12}>
+                            <DashboardOfTeacher/>
+                        </Grid>
                     </Can>
                     <Grid item xs={12} md={12} lg={12}>
                         <ActivityLineChart/>
