@@ -7,6 +7,11 @@ import {fNumber} from '../../../utils/formatNumber';
 //
 import {BaseOptionChart} from '../../charts';
 import {useTheme} from "@material-ui/core/styles";
+import {useContext, useEffect, useState} from "react";
+import {API, graphqlOperation} from "aws-amplify";
+import {UserContext} from "../../../App";
+import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
+import {Pupil} from "../../../API";
 
 // ----------------------------------------------------------------------
 
@@ -14,14 +19,110 @@ export type PupilData = {
     pupilDisplayName: string,
     minutesOfPhysicalActivities: number,
 }
-export default function TopPupilsByPhysicalActivities(props: { pupils: any }) {
-    const {pupils} = {...props};
+const pupilsByPhysicalActivitiesQuery = `query MyQuery {
+  listPELessonRecords {
+    items {
+      id
+      duration
+      Attendances(filter: {present: {eq: true}}) {
+        items {
+          Pupil {
+            id
+            firstName
+            lastName
+          }
+        }
+      }
+    }
+  }
+}`
+const teacherQuery = `query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+    classrooms {
+      items {
+        classroom {
+          pupils {
+            items {
+              pupil {
+                firstName
+                lastName
+                Attendances(filter: {lessonRecordID: {attributeExists: true}, present: {eq: true}}) {
+                  items {
+                    lessonRecord {
+                      activity
+                      date
+                      id
+                      duration
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`
+export default function TopPupilsByPhysicalActivities() {
+    const [pupilsByActivity, setPupilsByActivity] = useState<any>(null);
+    const user = useContext(UserContext);
+
+    const getPupilsByPhysicalActivities = async () => {
+        let data: any;
+        const pupils = {};
+
+        if (user?.isAdmin()) {
+        const result:any = await API.graphql(graphqlOperation(pupilsByPhysicalActivitiesQuery));
+            data = result.data.listPELessonRecords.items
+            data.map((item:any) => {
+                return {duration: item.duration, attendances: item.Attendances}
+            }).map((value:any) => {
+                value.attendances?.items?.map((item:any) => {
+                    const pupil = item.Pupil
+                    // @ts-ignore
+                    if (!pupils[`${pupil.firstName} ${pupil.lastName}`]) {
+                        // @ts-ignore
+                        pupils[`${pupil.firstName} ${pupil.lastName}`] = 0;
+                    }
+                    if (value.duration) {
+                        // @ts-ignore
+                        pupils[`${pupil.firstName} ${pupil.lastName}`] += value.duration;
+                    }
+                })
+            })
+        }else if (user?.isTeacher()) {
+            const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
+            data = result.data.getTeacher.classrooms.items
+                .map((item: any) => item.classroom)
+                .flatMap((item: any) => item.pupils.items)
+                .map((item: any) => item.pupil)
+                .map((pupil: Pupil)=>{
+                    // @ts-ignore
+                    pupils[`${pupil.firstName} ${pupil.lastName}`] = 0;
+                    pupil.Attendances?.items?.map((item: any)=>item.lessonRecord).map(
+                        (item: any) =>{
+                            // @ts-ignore
+                            pupils[`${pupil.firstName} ${pupil.lastName}`] += item.duration;
+                        }
+                    )
+                })
+        }
+
+        setPupilsByActivity(pupils);
+    }
+    useEffect(() => {
+        getPupilsByPhysicalActivities();
+        return () => {
+
+        };
+    }, []);
+
     const values = [];
-    for (let key in pupils) {
-        values.push({name: key, minutes: pupils[key]})
+    for (let key in pupilsByActivity) {
+        values.push({name: key, minutes: pupilsByActivity[key]})
     }
     const data = values.sort((a, b) => b.minutes - a.minutes).slice(0, 5);
-    // console.log(pupils)
     const theme = useTheme();
     const CHART_DATA = [{data: data.map(item => item.minutes)}];
     const chartOptions: any = merge(BaseOptionChart(), {
@@ -57,7 +158,9 @@ export default function TopPupilsByPhysicalActivities(props: { pupils: any }) {
             }
         },
     });
-
+    if (!pupilsByActivity) {
+        return (<TotalGrowthBarChartSkeleton/>);
+    }
     return (
         <Card>
             <CardHeader title="Most active pupils" subheader={'Time spent in minutes on physical activities'}/>

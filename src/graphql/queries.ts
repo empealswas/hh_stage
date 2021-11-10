@@ -101,9 +101,6 @@ export const getLesson = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      LessonsRecords {
-        nextToken
-      }
       terms {
         nextToken
       }
@@ -118,6 +115,9 @@ export const getLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      LessonsRecords {
+        nextToken
+      }
     }
   }
 `;
@@ -133,77 +133,6 @@ export const listLessons = /* GraphQL */ `
         title
         description
         sectionID
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getPELessonRecord = /* GraphQL */ `
-  query GetPELessonRecord($id: ID!) {
-    getPELessonRecord(id: $id) {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
-        nextToken
-      }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listPELessonRecords = /* GraphQL */ `
-  query ListPELessonRecords(
-    $filter: ModelPELessonRecordFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPELessonRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        teacherID
-        date
-        deliveredBy
-        duration
-        activity
-        rating
-        notes
-        classroomID
-        lessonID
         createdAt
         updatedAt
       }
@@ -402,8 +331,23 @@ export const getAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecordID
       createdAt
       updatedAt
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
       Pupil {
         id
         firstName
@@ -429,6 +373,7 @@ export const listAttendances = /* GraphQL */ `
         wasRewarded
         pupilID
         lessonID
+        lessonRecordID
         createdAt
         updatedAt
       }
@@ -650,6 +595,77 @@ export const listTeachers = /* GraphQL */ `
         lastName
         email
         schoolID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPELessonRecord = /* GraphQL */ `
+  query GetPELessonRecord($id: ID!) {
+    getPELessonRecord(id: $id) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPELessonRecords = /* GraphQL */ `
+  query ListPELessonRecords(
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPELessonRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
         createdAt
         updatedAt
       }

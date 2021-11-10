@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import HeatMap from '@uiw/react-heat-map';
 import {Box, Card, CardHeader} from "@material-ui/core";
 import ReactApexChart from "react-apexcharts";
 import {API, graphqlOperation} from "aws-amplify";
 import {compareDesc, format, parse, parseISO, toDate} from "date-fns";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
+import {UserContext} from "../../../App";
 
 const value: any = [
     {date: '2016/01/11', count: 2},
@@ -24,12 +25,49 @@ const query = `query MyQuery {
   }
 }
 `
+const teacherQuery = `query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+    classrooms {
+      items {
+        classroom {
+          pupils {
+            items {
+              pupil {
+                Attendances(filter: {lessonRecordID: {attributeExists: true}}) {
+                  items {
+                    lessonRecord {
+                      activity
+                      date
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`
 const HeatMapChart = () => {
     const [data, setData] = useState<any[] | null>(null);
+    const user = useContext(UserContext);
     useEffect(() => {
         const getData = async () => {
-            const result: any = await API.graphql(graphqlOperation(query));
-            const lessons = result.data.listPELessonRecords.items;
+            let lessons: [] = [];
+            if (user?.isAdmin()) {
+                const result: any = await API.graphql(graphqlOperation(query));
+                lessons = result.data.listPELessonRecords.items;
+            } else if (user?.isTeacher()) {
+                const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
+                lessons = result.data.getTeacher.classrooms.items
+                    .map((item: any) => item.classroom)
+                    .flatMap((item: any) => item.pupils.items)
+                    .map((item: any) => item.pupil)
+                    .flatMap((item: any) => item.Attendances.items)
+                    .map((item: any) => item.lessonRecord);
+            }
 
             const lessonsByDate = lessons
                 .filter((item: any) => !!item.date)
@@ -68,13 +106,13 @@ const HeatMapChart = () => {
         <Card>
             <CardHeader title="Activity" subheader="Heat Map of Physical Activities"/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
-
                 <HeatMap
                     value={data}
-                    startDate={parse(data[0].date, 'yyyy/MM/dd', new Date())}
+                    startDate={parse(data[0]?.date ?? new Date().toDateString(), 'yyyy/MM/dd', new Date())}
                     width={'100%'}
                     rectSize={14}
                 />
+
             </Box>
 
         </Card>

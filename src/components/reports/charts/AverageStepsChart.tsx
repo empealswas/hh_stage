@@ -3,14 +3,17 @@ import ReactApexChart from 'react-apexcharts';
 // material
 import {Card, CardHeader, Box} from '@material-ui/core';
 import {ApexOptions} from "apexcharts";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {BaseOptionChart} from "../../charts";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import axios from "axios";
 import {API, graphqlOperation} from "aws-amplify";
 import {listPupils} from "../../../graphql/queries";
+
 import { GarminDailiesSummaryModel } from '../../../models/garminDataModels/garminDailiesModel';
-//
+import {UserContext} from "../../../App";
+import {Classroom} from "../../../API";
+
 
 // ----------------------------------------------------------------------
 
@@ -29,59 +32,87 @@ const CHART_DATA = [
 
 
 ];
+const teacherQuery = `query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+    classrooms {
+      items {
+        classroom {
+          pupils {
+            items {
+              pupilID
+            }
+          }
+        }
+      }
+    }
+  }
+}`
 
 export default function AverageStepsChart() {
     const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
     const [labels, setLabels] = useState<String []>([]);
+    const user = useContext(UserContext);
     useEffect(() => {
-        const getAllUsers = async () => {
-            const users: String [] = [];
-            const result: any = await API.graphql(graphqlOperation(listPupils));
-            result.data.listPupils?.items.forEach((item: any) =>{
-                users.push(item.id);
-            })
-            return users;
-        }
-        const getData = async () => {
-            const users = await getAllUsers();
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify(users);
+            const getAllUsers = async () => {
+                const users: String [] = [];
 
-            var requestOptions: any = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
+                if (user?.isAdmin()) {
+                    const result: any = await API.graphql(graphqlOperation(listPupils));
+                    result.data.listPupils?.items.forEach((item: any) => {
+                        users.push(item.id);
+                    });
+                } else if (user?.isTeacher()) {
+                    const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
+                    result.data.getTeacher?.classrooms.items
+                        .map((item: any) => item.classroom)
+                        .flatMap((item: Classroom) => item.pupils?.items).forEach((pupil: any) => {
+                        users.push(pupil.pupilID);
+                    });
+                }
+                console.log(users)
+                return users;
+            }
+            const getData = async () => {
+                const users = await getAllUsers();
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                var raw = JSON.stringify(users);
 
-            fetch("https://analytics.healthyhabits.link/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/group",
-                requestOptions)
-                .then(response => response.text())
-                .then(result => {
-                    const response = JSON.parse(result);
-                    const stepsData: GarminDailiesSummaryModel[]= JSON.parse(result);
-                    const data: number [] = [];
-                    const periods: String [] = [];
-    
-                    response.map((item: any) => {
-                        data.push(item.totalSteps);
-                        periods.push(item.period);
+                var requestOptions: any = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+
+                fetch("https://analytics.healthyhabits.link/api/garminDailies/dates/start/2021-07-01/end/2021-11-01/period/daily/groupedby/group",
+                    requestOptions)
+                    .then(response => response.text())
+                    .then(result => {
+                        const response = JSON.parse(result);
+                        const data: number [] = [];
+                        const periods: String [] = [];
+                        console.log("RESULT", result)
+                        response.map((item: any) => {
+                            data.push(item.totalSteps);
+                            periods.push(item.period);
+                        })
+                        setChartData({
+                            name: 'Number of Steps',
+                            type: 'column',
+                            data: data
+                        })
+                        setLabels(periods);
+
                     })
-                    setChartData({
-                        name: 'Number of Steps',
-                        type: 'column',
-                        data: data
-                    })
-                    setLabels(periods);
-
-                })
-                .catch(error => console.log('error', error));
-        }
-        getData();
+                    .catch(error => console.log('error', error));
+            }
+            getData();
 
 
-    }, [])
+        }, []
+    )
     const chartOptions: any = merge(BaseOptionChart(), {
         stroke: {width: [3]},
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},

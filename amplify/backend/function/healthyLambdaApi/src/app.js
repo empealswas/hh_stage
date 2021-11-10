@@ -12,6 +12,7 @@ const lambda = new aws.Lambda({
     region: 'eu-west-2'
 })
 const s3 = new aws.S3();
+const dynamoDB = new aws.DynamoDB();
 var express = require('express')
 var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
@@ -51,6 +52,13 @@ app.get('/api/getUrlToObject', function (req, res) {
     });
     res.json({success: 'got url', url: gotURl});
 });
+
+app.get('/api/getAverage', async function (req, res) {
+    const statement = `select * from "Attendance-z3pgonvfxjgxjbgblzjkb3kvv4-dev"`
+    const results = await dynamoDB.executeStatement({Statement: statement}).promise();
+    res.json({success: 'got url', result: results});
+});
+
 app.post('/api', function (req, res) {
     // Add your code here
     res.json({success: 'post call succeed!', url: req.url, body: req.body})

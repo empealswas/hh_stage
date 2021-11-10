@@ -40,8 +40,6 @@ const PEForm = () => {
             .oneOf(activities),
         notes: Yup.string(),
         rating: Yup.number().min(1).max(5),
-
-
     });
     const user = useContext(UserContext);
     const [loading, setLoading] = useState(false);
@@ -65,12 +63,14 @@ const PEForm = () => {
         const lessonId = result.data.createPELessonRecord.id;
         return pupils?.forEach(async pupil => {
             const input = {
-                lessonID: lessonId,
                 pupilID: pupil.id,
                 present: pupil.present,
                 wasRewarded: pupil.wasRewarded,
+                lessonRecordID: lessonId,
             }
-            return await API.graphql(graphqlOperation(createAttendance, {input}));
+
+            const response = await API.graphql(graphqlOperation(createAttendance, {input}));
+            console.log('response', response)
         });
     }
     const formik = useFormik({

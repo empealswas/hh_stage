@@ -173,9 +173,6 @@ export const createLesson = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      LessonsRecords {
-        nextToken
-      }
       terms {
         nextToken
       }
@@ -190,6 +187,9 @@ export const createLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      LessonsRecords {
+        nextToken
+      }
     }
   }
 `;
@@ -211,9 +211,6 @@ export const updateLesson = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      LessonsRecords {
-        nextToken
-      }
       terms {
         nextToken
       }
@@ -228,6 +225,9 @@ export const updateLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      LessonsRecords {
+        nextToken
+      }
     }
   }
 `;
@@ -249,9 +249,6 @@ export const deleteLesson = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      LessonsRecords {
-        nextToken
-      }
       terms {
         nextToken
       }
@@ -266,153 +263,9 @@ export const deleteLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
-    }
-  }
-`;
-export const createPELessonRecord = /* GraphQL */ `
-  mutation CreatePELessonRecord(
-    $input: CreatePELessonRecordInput!
-    $condition: ModelPELessonRecordConditionInput
-  ) {
-    createPELessonRecord(input: $input, condition: $condition) {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
+      LessonsRecords {
         nextToken
       }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updatePELessonRecord = /* GraphQL */ `
-  mutation UpdatePELessonRecord(
-    $input: UpdatePELessonRecordInput!
-    $condition: ModelPELessonRecordConditionInput
-  ) {
-    updatePELessonRecord(input: $input, condition: $condition) {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
-        nextToken
-      }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deletePELessonRecord = /* GraphQL */ `
-  mutation DeletePELessonRecord(
-    $input: DeletePELessonRecordInput!
-    $condition: ModelPELessonRecordConditionInput
-  ) {
-    deletePELessonRecord(input: $input, condition: $condition) {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
-        nextToken
-      }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -945,8 +798,23 @@ export const createAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecordID
       createdAt
       updatedAt
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
       Pupil {
         id
         firstName
@@ -978,8 +846,23 @@ export const updateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecordID
       createdAt
       updatedAt
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
       Pupil {
         id
         firstName
@@ -1011,8 +894,23 @@ export const deleteAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecordID
       createdAt
       updatedAt
+      lessonRecord {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
       Pupil {
         id
         firstName
@@ -1746,6 +1644,153 @@ export const deleteCurriculumSubject = /* GraphQL */ `
       subject {
         id
         name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPELessonRecord = /* GraphQL */ `
+  mutation CreatePELessonRecord(
+    $input: CreatePELessonRecordInput!
+    $condition: ModelPELessonRecordConditionInput
+  ) {
+    createPELessonRecord(input: $input, condition: $condition) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePELessonRecord = /* GraphQL */ `
+  mutation UpdatePELessonRecord(
+    $input: UpdatePELessonRecordInput!
+    $condition: ModelPELessonRecordConditionInput
+  ) {
+    updatePELessonRecord(input: $input, condition: $condition) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePELessonRecord = /* GraphQL */ `
+  mutation DeletePELessonRecord(
+    $input: DeletePELessonRecordInput!
+    $condition: ModelPELessonRecordConditionInput
+  ) {
+    deletePELessonRecord(input: $input, condition: $condition) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
         createdAt
         updatedAt
       }

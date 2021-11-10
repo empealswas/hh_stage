@@ -631,7 +631,6 @@ const DashboardOfTeacher = () => {
     if (dailiesDataUser) {
         // console.log(dailiesDataUser);
         userDailies = dailiesDataUser;
-
     }
     ;
     if (dailiesDataGroup) {

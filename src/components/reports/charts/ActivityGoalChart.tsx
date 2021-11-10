@@ -36,10 +36,11 @@ const ChartWrapperStyle = styled('div')(({theme}) => ({
 // ----------------------------------------------------------------------
 
 const query=`query MyQuery {
-  listPELessonRecords {
+  listPELessonRecords (limit: 10000) {
     items {
       id
       duration
+      date
       Attendances {
         items {
           Pupil {
@@ -55,6 +56,7 @@ export default function ActivityGoalChart(props: { gainedTimeInMinutes: number, 
     const [allDuration, setAllDuration] = useState<number | null>(null);
     const getDuration = async () => {
         const result: any = await API.graphql(graphqlOperation(query));
+        console.log(result)
         let duration = 0;
         result.data.listPELessonRecords.items.map((item:any) => {
             duration += (item.duration ?? 0) * item.Attendances.items.length;
