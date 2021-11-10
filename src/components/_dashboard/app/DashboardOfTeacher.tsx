@@ -13,17 +13,18 @@ import {GarminSleepSummaryModel} from '../../../models/garminDataModels/garminSl
 import {GarminDailiesSummaryModel} from '../../../models/garminDataModels/garminDailiesModel';
 import {GarminEpochsSummaryDataModel} from '../../../models/garminDataModels/garminEpochsModel';
 import {listPupils} from '../../../graphql/queries';
-// import { number } from 'yup';
+
 import {ApexRadialGraphModel} from '../../../models/garminDataModels/ApexRadialGraphData';
 // import GaminMetricsRadialChart from '../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart';
 import DailiesStanineContourPlot from '../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot';
 import RadioButtonSelector from '../../_garmin-selectors/radio-button-selector';
 import GarminMetricSelector from '../../_garmin-selectors/garin-metric-selector';
-import DailiesOverview from '../../reports/charts/GarminWearablesCharts/dailies-data/DailiesOverview';
+import DailiesOverview from './garmin-metrics/dailies-data/DailiesOverview';
 import GroupBySelector from '../../_garmin-selectors/group-by-selector';
 import {Box, Button} from "@mui/material";
 import StepIntensityDonut from "../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 import DailiesStepsDistribution from "../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
+import { healthyHabitsIdModel } from '../../../models/healthyHabitIdsModel';
 
 const DashboardOfTeacher = () => {
     const today = new Date();
@@ -32,7 +33,11 @@ const DashboardOfTeacher = () => {
     pastDate.setDate(pastDate.getDate() - dailySubstract);
     var todayDate: string = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
     var prevDate: string = pastDate.getFullYear() + "-" + String(pastDate.getMonth() + 1).padStart(2, '0') + "-" + String(pastDate.getDate()).padStart(2, '0');
-    var queryData = new GarminQueryData('2021-10-01', '2021-11-05', 'daily', 'group');
+
+    var queryData = new GarminQueryData(prevDate, todayDate, 'daily', 'group');
+
+   
+
     const user = useContext(UserContext);
     const [lessons, setLessons] = useState<null | Lesson[]>(null);
     const [classrooms, setClassrooms] = useState<null | Classroom[]>(null);
@@ -46,6 +51,7 @@ const DashboardOfTeacher = () => {
     const [groupByState, setGroupByState] = useState("group");
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
+    const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
 
     // set of constants to get all the garmin data
     const [sleepDataGroup, setSleepGroup] = useState<GarminSleepSummaryModel[] | null>(null);
@@ -148,6 +154,23 @@ const DashboardOfTeacher = () => {
     ///////////////////////////////////
     /////  get dailies User data //////
     //////////////////////////////////
+    useEffect(() => {
+        const getAllUsers = async () => {
+            const users: string[] = [];
+            var hhUsers = new healthyHabitsIdModel([]);
+            const result: any = await API.graphql(graphqlOperation(listPupils));
+            result.data.listPupils?.items.forEach((item: any) => {
+                users.push(item.id);
+                hhUsers.id.push(item.id)
+            })
+    
+            setHealthyHabitsIds(hhUsers);
+            // listOfHealthyHabitsIdsState;
+        }
+        getAllUsers();
+    }, []);
+
+
     useEffect(() => {
         console.log("periodState inside useEffect!!!");
         console.log(periodState);
@@ -620,11 +643,12 @@ const DashboardOfTeacher = () => {
         queryData.endDate = endDateState;
         queryData.startDate = startDateState;
         queryData.period = periodState;
-
         queryData.groupedBy = groupByState;
-        console.log("Has changed" + queryData.period + " : " + queryData.groupedBy + " : " + queryData.startDate + " : " + queryData.endDate);
 
-    }, [periodState, groupByState, startDateState, endDateState]);
+        // healthyHabitIdList.data = listOfHealthyHabitsIdsState;
+        // console.log(listOfHealthyHabitsIdsState);
+
+    }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
 
 
     var userDailies: GarminDailiesSummaryModel[] = [];
@@ -674,9 +698,12 @@ const DashboardOfTeacher = () => {
                 </>
             )
         }
-        if (metricState === 'daily') {
+        if (metricState === 'dailies') {
             return (
-                <DailiesOverview/>
+                <Grid item xs={12}>
+                    <DailiesOverview {...queryData} blah={listOfHealthyHabitsIdsState}/>
+                </Grid>
+                
             );
         }
         if (metricState === 'sleep') {
