@@ -167,8 +167,8 @@ const DashboardOfTeacher = () => {
         }
         prevDate =  setStartDate.getFullYear() +"-"+String(setStartDate.getMonth() + 1).padStart(2, '0')+"-"+ String(setStartDate.getDate()).padStart(2, '0');
 
-        setStartDateState(todayDate);
-        setEndDateState(prevDate);
+        setStartDateState(prevDate);
+        setEndDateState(todayDate);
     };
 
     const forwardClick = () =>{
@@ -191,8 +191,8 @@ const DashboardOfTeacher = () => {
         }
         prevDate =  setStartDate.getFullYear() +"-"+String(setStartDate.getMonth() + 1).padStart(2, '0')+"-"+ String(setStartDate.getDate()).padStart(2, '0');
 
-        setStartDateState(todayDate);
-        setEndDateState(prevDate);
+        setStartDateState(prevDate);
+        setEndDateState(todayDate);
     };
     // const queryURL: string = `https://analytics.healthyhabits.link/api/garminDailies/dates/start/${props.startDate}/end/${props.endDate}/period/${props.period}//groupedby/${props.groupedBy}`;
     // fetch data from db- set headers
@@ -818,13 +818,13 @@ const DashboardOfTeacher = () => {
                         <RadioButtonSelector periodChanger={setPeriodState}/>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                         <Grid item xs={3} sm={3} md={3} lg={3}>
-                            <button>back</button>
+                            <button onClick={backClick}>back</button>
                         </Grid>
                         <Grid item xs={6} sm={6} md={6} lg={6}>
                             <h6>2021-07-01 : 2021-07-01</h6>
                         </Grid>
                         <Grid item xs={3} sm={3} md={3} lg={3}>
-                            <button>forward</button>
+                            <button onClick={forwardClick}>forward</button>
                         </Grid>
                         </Stack>
                     </Card>
@@ -857,13 +857,13 @@ const DashboardOfTeacher = () => {
                         <RadioButtonSelector periodChanger={setPeriodState}/>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                         <Grid item xs={3} sm={3} md={3} lg={3}>
-                            <button>back</button>
+                            <button onClick={backClick}>back</button>
                         </Grid>
                         <Grid item xs={6} sm={6} md={6} lg={6}>
                             <h6>2021-07-01 : 2021-07-01</h6>
                         </Grid>
                         <Grid item xs={3} sm={3} md={3} lg={3}>
-                            <button>forward</button>
+                            <button onClick={forwardClick}>forward</button>
                         </Grid>
                         </Stack>
                     </Card>
