@@ -33,6 +33,10 @@ import GarminMetricsRadialChart from '../../reports/charts/GarminWearablesCharts
 import StepIntensityDonut from '../../reports/charts/GarminWearablesCharts/StepIntensityDonut';
 import DailiesStepsDistribution from '../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution';
 import DailiesStanineContourPlot from '../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot';
+import RadioButtonSelector from '../../_garmin-selectors/radio-button-selector';
+import GarminMetricSelector from '../../_garmin-selectors/garin-metric-selector';
+import DailiesOverview from '../../reports/charts/GarminWearablesCharts/dailies-data/DailiesOverview';
+import GroupBySelector from '../../_garmin-selectors/group-by-selector';
 
 const query =/*GraphQL*/`query MyQuery($id: ID = "") {
     getTeacher(id: $id) {
@@ -71,7 +75,15 @@ const query =/*GraphQL*/`query MyQuery($id: ID = "") {
         }
     }
 }`
+
 const DashboardOfTeacher = () => {
+    const today = new Date();
+    const dailySubstract= 7;
+    var pastDate = new Date();
+    pastDate.setDate(pastDate.getDate()-dailySubstract);
+    var todayDate: string = today.getFullYear() +"-"+String(today.getMonth() + 1).padStart(2, '0')+"-"+ String(today.getDate()).padStart(2, '0');
+    var prevDate: string = pastDate.getFullYear() +"-"+String(pastDate.getMonth() + 1).padStart(2, '0')+"-"+ String(pastDate.getDate()).padStart(2, '0');
+    var queryData = new GarminQueryData('2021-10-01', '2021-11-05', 'daily', 'group');
     const user = useContext(UserContext);
     const [lessons, setLessons] = useState<null | Lesson[]>(null);
     const [classrooms, setClassrooms] = useState<null | Classroom[]>(null);
@@ -80,20 +92,41 @@ const DashboardOfTeacher = () => {
 
     ///////////////////////////////////////////////////////////////////////////////////////
     // Can this be moved out into some kind of service? ///////////////////////////////////
+    const [periodState, setPeriodState]=useState("daily");
+    const [metricState, setMetricState]=useState("dailies");
+    const [groupByState, setGroupByState]=useState("group");
+
     // set of constants to get all the garmin data
     const [sleepDataGroup, setSleepGroup] = useState<GarminSleepSummaryModel[] | null>(null);
     const [sleepDataUser, setSleepUser] = useState<GarminSleepSummaryModel[] | null>(null);
+    const [sleepZvalueGroup, setSleepZvalueGroup] = useState<GarminSleepSummaryModel[] | null>(null);
+    const [sleepZvalueUser, setSleepZvalueUser] = useState<GarminSleepSummaryModel[] | null>(null);
 
     const [dailiesDataGroup, setDailiesGroup] = useState<GarminDailiesSummaryModel[] | null>(null);
     const [dailiesDataUser, setDailiesUser] = useState<GarminDailiesSummaryModel[] | null>(null);
+    const [dailiesZvalueGroup, setDailiesZvalueGroup] = useState<GarminDailiesSummaryModel[] | null>(null);
+    const [dailiesZvalueUser, setDailiesZvalueUser] = useState<GarminDailiesSummaryModel[] | null>(null);
 
     const [epochsDataGroup, setEpochsGroup] = useState<GarminEpochsSummaryDataModel[] | null>(null);
     const [epochsDataUser, setEpochsUser] = useState<GarminEpochsSummaryDataModel[] | null>(null);
+    const [epochsZvalueGroup, setEpochsZvalueGroup] = useState<GarminEpochsSummaryDataModel[] | null>(null);
+    const [epochsZvalueUser, setEpochsZvalueUser] = useState<GarminEpochsSummaryDataModel[] | null>(null);
 
     const sleepBaseUrl: string = "https://analytics.healthyhabits.link/api/garminSleep/dates/start/";
+    const sleepZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminSleep/z-values/dates/start/";
+
     const dailiesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminDailies/dates/start/";
+    const dailiesZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminDailies/z-values/dates/start/";
+
     const epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates/start/";
+    const epochsZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/z-values/dates/start/";
+
     const activitiesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminActivities/dates/start/";
+    const activitiesZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminActivities/z-values/dates/start/";
+
+
+
+
     const startDateOpt: string = "2021-10-01";
 
     const endUrl: string = "/end/";
@@ -139,9 +172,11 @@ const DashboardOfTeacher = () => {
     }, []);
 
     ///////////////////////////////////
-    /////  get dailies User data /////
+    /////  get dailies User data //////
     //////////////////////////////////
     useEffect(() => {
+        console.log("periodState inside useEffect!!!");
+        console.log(periodState);
         const dailiesDailyUser: string = dailiesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + userOpt;
 
         const getAllUsers = async () => {
@@ -180,7 +215,7 @@ const DashboardOfTeacher = () => {
 
     ///////////////////////////////////
     /////  get dailies group data /////
-    //////////////////////////////////
+    ///////////////////////////////////
     useEffect(() => {
         const dailiesDailyGroup: string = dailiesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + groupOpt;
         const getAllUsers = async () => {
@@ -216,8 +251,87 @@ const DashboardOfTeacher = () => {
         }
         getData();
     }, []);
+
+    /////////////////////////////////////
+    /////  get dailies User z-values ////
+    /////////////////////////////////////
+    useEffect(() => {
+        const dailiesZvaluesUserUrl: string = dailiesZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + userOpt;
+        const getAllUsers = async () => {
+            const users: String[] = [];
+            const result: any = await API.graphql(graphqlOperation(listPupils));
+            result.data.listPupils?.items.forEach((item: any) => {
+                users.push(item.id);
+            })
+            return users;
+        }
+
+        const getData = async () => {
+            const users = await getAllUsers();
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify(users);
+
+            var requestOptions: any = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+        //     // send request
+        //     fetch(dailiesZvaluesUserUrl, requestOptions)
+        //         .then(response => response.text())
+        //         .then(result => {
+        //             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
+        //             setDailiesZvalueUser(garminData);
+        //         })
+        //         .catch(error => console.log('error', error));
+        }
+        // getData();
+    }, []);
+
+    //////////////////////////////////////
+    /////  get dailies Group z-values ////
+    //////////////////////////////////////
+    useEffect(() => {
+        const dailiesZvaluesGroupUrl: string = dailiesZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + groupOpt;
+        const getAllUsers = async () => {
+            const users: String[] = [];
+            const result: any = await API.graphql(graphqlOperation(listPupils));
+            result.data.listPupils?.items.forEach((item: any) => {
+                users.push(item.id);
+            })
+            return users;
+        }
+
+        const getData = async () => {
+            const users = await getAllUsers();
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify(users);
+
+            var requestOptions: any = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+        //     // send request
+        //     fetch(dailiesZvaluesGroupUrl, requestOptions)
+        //         .then(response => response.text())
+        //         .then(result => {
+        //             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
+        //             setDailiesZvalueGroup(garminData);
+        //         })
+        //         .catch(error => console.log('error', error));
+        }
+        // getData();
+    }, []);
+
     ///////////////////////////////////
-    /////  get sleep User data /////
+    /////  get sleep User data ////////
     //////////////////////////////////
     useEffect(() => {
         const sleepDailyUser: string = sleepBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + userOpt;
@@ -254,8 +368,9 @@ const DashboardOfTeacher = () => {
         }
         getData();
     }, []);
-    ///////////////////////////////////
-    /////  get sleep Group data /////
+
+    //////////////////////////////////
+    /////  get sleep Group data //////
     //////////////////////////////////
     useEffect(() => {
         const sleepDailyGroup: string = sleepBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + groupOpt;
@@ -292,6 +407,86 @@ const DashboardOfTeacher = () => {
         }
         getData();
     }, []);
+
+
+    ////////////////////////////////////
+    /////  get sleep User z-values /////
+    ////////////////////////////////////
+    useEffect(() => {
+        const sleepZvaluesUserUrl: string = sleepZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + userOpt;
+        const getAllUsers = async () => {
+            const users: String[] = [];
+            const result: any = await API.graphql(graphqlOperation(listPupils));
+            result.data.listPupils?.items.forEach((item: any) => {
+                users.push(item.id);
+            })
+            return users;
+        }
+
+        const getData = async () => {
+            const users = await getAllUsers();
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify(users);
+
+            var requestOptions: any = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            // // send request
+            // fetch(sleepZvaluesUserUrl, requestOptions)
+            //     .then(response => response.text())
+            //     .then(result => {
+            //         var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
+            //         setSleepZvalueUser(garminData);
+            //     })
+            //     .catch(error => console.log('error', error));
+        }
+        // getData();
+    }, []);
+
+    /////////////////////////////////////
+    /////  get sleep group z-values /////
+    /////////////////////////////////////
+    useEffect(() => {
+        const sleepZvaluesGroupUrl: string = sleepZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + groupOpt;
+        const getAllUsers = async () => {
+            const users: String[] = [];
+            const result: any = await API.graphql(graphqlOperation(listPupils));
+            result.data.listPupils?.items.forEach((item: any) => {
+                users.push(item.id);
+            })
+            return users;
+        }
+
+        const getData = async () => {
+            const users = await getAllUsers();
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify(users);
+
+            var requestOptions: any = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+        //     // send request
+        //     fetch(sleepZvaluesGroupUrl, requestOptions)
+        //         .then(response => response.text())
+        //         .then(result => {
+        //             var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
+        //             setSleepZvalueGroup(garminData);
+        //         })
+        //         .catch(error => console.log('error', error));
+         }
+        // getData();
+    }, []);
+
     ///////////////////////////////////
     /////  get Epoch User data /////
     //////////////////////////////////
@@ -368,12 +563,103 @@ const DashboardOfTeacher = () => {
         }
         getData();
     }, []);
-    var userDailies: GarminDailiesSummaryModel[]= [];
+
+    // ////////////////////////////////////
+    // /////  get epoch User z-values /////
+    // ////////////////////////////////////
+    // useEffect(() => {
+    //     const epochsZvaluesUserUrl: string = epochsZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + userOpt;
+    //     const getAllUsers = async () => {
+    //         const users: String[] = [];
+    //         const result: any = await API.graphql(graphqlOperation(listPupils));
+    //         result.data.listPupils?.items.forEach((item: any) => {
+    //             users.push(item.id);
+    //         })
+    //         return users;
+    //     }
+
+    //     const getData = async () => {
+    //         const users = await getAllUsers();
+    //         var myHeaders = new Headers();
+    //         myHeaders.append("Content-Type", "application/json");
+    //         var raw = JSON.stringify(users);
+
+    //         var requestOptions: any = {
+    //             method: 'POST',
+    //             headers: myHeaders,
+    //             body: raw,
+    //             redirect: 'follow'
+    //         };
+
+    //         // send request
+    //         fetch(epochsZvaluesUserUrl, requestOptions)
+    //             .then(response => response.text())
+    //             .then(result => {
+    //                 var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
+    //                 setEpochsZvalueUser(garminData);
+    //             })
+    //             .catch(error => console.log('error', error));
+    //     }
+    //     getData();
+    // }, []);
+
+    // /////////////////////////////////////
+    // /////  get epoch Group z-values /////
+    // /////////////////////////////////////
+    // useEffect(() => {
+    //     const epochZvaluesGroupUrl: string = epochsZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + groupOpt;
+    //     const getAllUsers = async () => {
+    //         const users: String[] = [];
+    //         const result: any = await API.graphql(graphqlOperation(listPupils));
+    //         result.data.listPupils?.items.forEach((item: any) => {
+    //             users.push(item.id);
+    //         })
+    //         return users;
+    //     }
+
+    //     const getData = async () => {
+    //         const users = await getAllUsers();
+    //         var myHeaders = new Headers();
+    //         myHeaders.append("Content-Type", "application/json");
+    //         var raw = JSON.stringify(users);
+
+    //         var requestOptions: any = {
+    //             method: 'POST',
+    //             headers: myHeaders,
+    //             body: raw,
+    //             redirect: 'follow'
+    //         };
+
+    //         // send request
+    //         fetch(epochZvaluesGroupUrl, requestOptions)
+    //             .then(response => response.text())
+    //             .then(result => {
+    //                 var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
+    //                 setEpochsZvalueGroup(garminData);
+    //             })
+    //             .catch(error => console.log('error', error));
+    //     }
+    //     getData();
+    // }, []);
+
+    useEffect(()=>{
+
+        queryData.endDate=prevDate;
+        queryData.startDate=todayDate;
+        queryData.period=periodState;
+        
+        queryData.groupedBy=groupByState;
+        console.log("Has changed" + queryData.period +" : "+ queryData.groupedBy +" : "+queryData.startDate +" : "+queryData.endDate);
+
+    }, [periodState, groupByState,todayDate, prevDate]);
+
+
+    var userDailies: GarminDailiesSummaryModel[] = [];
     if (dailiesDataUser) {
         // console.log(dailiesDataUser);
         userDailies = dailiesDataUser;
-        
-    } ;
+
+    };
     if (dailiesDataGroup) {
         radialGraphData.steps = dailiesDataGroup[dailiesDataGroup.length - 1].totalSteps;
         stepsIntensityData = dailiesDataGroup[dailiesDataGroup.length - 2];
@@ -388,18 +674,65 @@ const DashboardOfTeacher = () => {
     };
     if (!epochsDataUser) {
         // console.log(epochsDataUser)
-       
+
     };
     if (epochsDataGroup) {
         // console.log(epochsDataGroup);
         radialGraphData.active = (epochsDataGroup[epochsDataGroup.length - 1].active + epochsDataGroup[epochsDataGroup.length - 1].highlyActive) / 60;
         radialGraphData.sedentary = epochsDataGroup[epochsDataGroup.length - 1].sedentary / 60;
     };
-    var queryData = new GarminQueryData('2021-10-01', '2021-11-05', 'daily', 'group');
+   
+    const backClick = () =>{
+        console.log("Backards");
+        console.log(todayDate);
+        console.log(prevDate); 
+        todayDate = "2020-01-01";
+        prevDate = "2020-12-12";
+    };
+
+    const forwardClick = () =>{
+        console.log("forwards");
+        console.log(todayDate);
+        console.log(prevDate); 
+        todayDate = "2022-01-01";
+        prevDate = "2022-12-12";
+    };
+  
+    if(metricState==="sedentary"){
     return (
         <Container>
 
             <h1>Plots for the teacher view</h1>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <RadioButtonSelector periodChanger={setPeriodState}/>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                        <Grid item xs={3} sm={3} md={3} lg={3}>
+                            <button onClick={backClick}>back</button>
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6}>
+                            <h6>2021-07-01 : 2021-07-01</h6>
+                        </Grid>
+                        <Grid item xs={3} sm={3} md={3} lg={3}>
+                            <button onClick={forwardClick}>forward</button>
+                        </Grid>
+                        </Stack>
+                    </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <GarminMetricSelector metricChanger={setMetricState}/>
+                        <h2>{metricState}</h2>
+                    </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <GroupBySelector groupByChanger={setGroupByState}/>
+                        <h2>{groupByState}</h2>
+                    </Card>
+                </Grid>
+            </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
@@ -420,7 +753,7 @@ const DashboardOfTeacher = () => {
                     <DailiesStepsDistribution data={userDailies} />
                 </Grid>
             </Stack>
-            
+
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                 <Grid item xs={12} sm={12} md={12} lg={12}>
                     <DailiesStanineContourPlot />
@@ -439,6 +772,84 @@ const DashboardOfTeacher = () => {
             {/* </> */}
             {/* </Grid> */}
         </Container>);
+    } else if(metricState==="dailies"){
+        return (
+            <Container>
+    
+                <h1>Dailies</h1>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <RadioButtonSelector periodChanger={setPeriodState}/>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                        <Grid item xs={3} sm={3} md={3} lg={3}>
+                            <button>back</button>
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6}>
+                            <h6>2021-07-01 : 2021-07-01</h6>
+                        </Grid>
+                        <Grid item xs={3} sm={3} md={3} lg={3}>
+                            <button>forward</button>
+                        </Grid>
+                        </Stack>
+                    </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <GarminMetricSelector metricChanger={setMetricState}/>
+                        <h2>{metricState}</h2>
+                    </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <GroupBySelector groupByChanger={setGroupByState}/>
+                        <h2>{groupByState}</h2>
+                    </Card>
+                </Grid>
+            </Stack>
+                <Stack>
+                    <DailiesOverview />
+                </Stack>
+            </Container>);
+    } else if(metricState==="sleep"){
+        return (
+            <Container>
+    
+                <h1>Sleep</h1>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <RadioButtonSelector periodChanger={setPeriodState}/>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                        <Grid item xs={3} sm={3} md={3} lg={3}>
+                            <button>back</button>
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6} lg={6}>
+                            <h6>2021-07-01 : 2021-07-01</h6>
+                        </Grid>
+                        <Grid item xs={3} sm={3} md={3} lg={3}>
+                            <button>forward</button>
+                        </Grid>
+                        </Stack>
+                    </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <GarminMetricSelector metricChanger={setMetricState}/>
+                        <h2>{metricState}</h2>
+                    </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={4} lg={4}>
+                    <Card variant="outlined">
+                        <GroupBySelector groupByChanger={setGroupByState}/>
+                        <h2>{groupByState}</h2>
+                    </Card>
+                </Grid>
+            </Stack>
+            </Container>);
+    } else {
+        <h1>Nothing selected</h1>
+    }
     // <Typography variant={'h5'}>
     //     Your Classrooms:
     //     {classrooms?.map(classroom => `${classroom.name} | `)}
