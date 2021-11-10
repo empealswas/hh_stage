@@ -1,30 +1,28 @@
 import React, { useState } from 'react'
+import {FormControl, InputLabel, Select} from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 
-function GarminMetricSelector( {metricChanger, ...rest}) {
+function GarminMetricSelector( {metricChanger, metric}) {
     let metricOptions = ["dailies", "sleep", "sedentary"];
-    const [selectedMetric, setMetric]= useState("dailies");
-   
-    // changing selector values passed to:
-    // metricChanger via metricChanger() passing the value back to the arent copmponent
-    //  selectedPeriod via setPeriod() moving the selector dot in the radio button options
+
+    const handleChange = (event) => {
+        metricChanger(event.target.value);
+    };
     return (
-        <div>
-            {metricOptions.map(result => (
-                <>
-                    <input 
-                        type="radio" value={result} 
-                        checked={selectedMetric===result}
-                        name="radiovalues" onChange={
-                            (p) =>  {
-                                metricChanger(p.target.value);
-                                setMetric(p.target.value);
-                            }
-                        }
-                    />
-                    <b>{result}</b>
-                </>
-            ))}
-        </div>
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label3">Metric</InputLabel>
+            <Select
+                labelId="demo-simple-select-label3"
+                id="demo-simple-select1"
+                label="Period"
+                value={metric}
+                onChange={handleChange}
+            >
+                {metricOptions.map(result => (
+                    <MenuItem value={result}>{result}</MenuItem>
+                ))}
+            </Select>
+        </FormControl>
     )
 }
 export default GarminMetricSelector;

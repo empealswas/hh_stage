@@ -1,32 +1,28 @@
 import React, { useState } from 'react'
+import {FormControl, InputLabel, Select} from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 
-function RadioButtonSelector( {periodChanger, ...rest}) {
+function RadioButtonSelector( {periodChanger, period}) {
     let periodOptions = ["daily", "weekly", "monthly"];
-    const [selectedPeriod, setPeriod]= useState("daily");
-   
-    // changing selector values passed to:
-    // periodChanger via periodChanger() passing the value back to the arent copmponent
-    //  selectedPeriod via eßtPeriod() moving the selector dot in the radio button options
+
+    const handleChange = (event) => {
+        periodChanger(event.target.value);
+    };
     return (
-        <div>
-            {periodOptions.map(result => (
-                <>
-                    <input 
-                        type="radio" value={result} 
-                        checked={selectedPeriod===result}
-                        name="radiovalues" onChange={
-                            (p) =>  {
-                                periodChanger(p.target.value);
-                                setPeriod(p.target.value);
-                            }
-                        }
-                    />
-                    <b>{result}</b>
-                </>
-            ))}
-            
-            
-        </div>
+            <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Period</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select2"
+                    label="Period"
+                    value={period}
+                    onChange={handleChange}
+                >
+                    {periodOptions.map(result => (
+                            <MenuItem value={result}>{result}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
     )
 }
 export default RadioButtonSelector;
