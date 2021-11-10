@@ -17,6 +17,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import AddParentModal from "./parents/AddParentModal";
 import ParentsTable from "./parents/ParentsTable";
+import AddPrincipalModal from "./principals/AddPrincipalModal";
+import PrincipalsTable from "./principals/PrincipalsTable";
 
 export const SchoolManagementContext = createContext<School | null>(null);
 
@@ -67,7 +69,8 @@ const SchoolManagement = () => {
                                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                                     <Tab label="Pupils" value="1"/>
                                     <Tab label="Teachers" value="2"/>
-                                    <Tab label="Parents" value="3"/>
+                                    <Tab label="Principals" value="3"/>
+                                    <Tab label="Parents" value="4"/>
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
@@ -86,15 +89,24 @@ const SchoolManagement = () => {
                                     </Typography>
                                     <AddTeacherModal school={school}/>
                                 </Stack>
-                                    <TeachersTable/>
+                                <TeachersTable/>
                             </TabPanel>
                             <TabPanel value="3">
                                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                                <Typography variant="h4" gutterBottom>
-                                    Parents
-                                </Typography>
-                                <AddParentModal/>
-                            </Stack>
+                                    <Typography variant="h4" gutterBottom>
+                                        Principals
+                                    </Typography>
+                                    <AddPrincipalModal school={school}/>
+                                </Stack>
+                                <PrincipalsTable/>
+                            </TabPanel>
+                            <TabPanel value="4">
+                                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                                    <Typography variant="h4" gutterBottom>
+                                        Parents
+                                    </Typography>
+                                    <AddParentModal/>
+                                </Stack>
                                 <ParentsTable/>
                             </TabPanel>
                         </TabContext>

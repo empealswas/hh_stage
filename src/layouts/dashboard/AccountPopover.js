@@ -50,15 +50,6 @@ export default function AccountPopover() {
     };
 
     const user = useContext(UserContext);
-    const [accountName, setAccountName] = useState('');
-    user.getFirstAndLastName().then(value =>{
-        setAccountName(`${value.firstName} ${value.lastName}`);
-    })
-    useEffect(() => {
-        return () => {
-
-        };
-    }, [user]);
 
     return (
         <>
@@ -93,7 +84,7 @@ export default function AccountPopover() {
             >
                 <Box sx={{my: 1.5, px: 2.5}}>
                     <Typography variant="subtitle1" noWrap>
-                        {accountName}
+                        {`${user.firstName} ${user.lastName}`}
                     </Typography>
                     <Typography variant="body2" sx={{color: 'text.secondary'}} noWrap>
                         {user.email}

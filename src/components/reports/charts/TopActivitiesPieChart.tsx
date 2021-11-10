@@ -9,6 +9,9 @@ import {API, graphqlOperation} from "aws-amplify";
 import {useContext, useEffect, useState} from "react";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import {UserContext} from "../../../App";
+import {Admin} from "../../../models/Admin";
+import {Principal} from "../../../models/Principal";
+import {Teacher} from "../../../models/Teacher";
 // utils
 //
 
@@ -77,10 +80,10 @@ export default function TopActivitiesPieChart(props: { activities: any }) {
     const user = useContext(UserContext);
     const getActivities = async () => {
         let data: [] = [];
-        if (user?.isAdmin()) {
+        if (user instanceof Admin || user instanceof Principal) {
             const result: any = await API.graphql(graphqlOperation(activityQuery));
             data = result.data.listPELessonRecords.items;
-        } else if (user?.isTeacher()) {
+        } else if (user instanceof Teacher) {
             const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
             data = result.data.getTeacher.classrooms.items
                 .map((item: any) => item.classroom)

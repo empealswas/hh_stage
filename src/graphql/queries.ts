@@ -284,6 +284,9 @@ export const getSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
+      Principals {
+        nextToken
+      }
       classrooms {
         nextToken
       }
@@ -563,6 +566,48 @@ export const listParents = /* GraphQL */ `
     }
   }
 `;
+export const getPrincipal = /* GraphQL */ `
+  query GetPrincipal($id: ID!) {
+    getPrincipal(id: $id) {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPrincipals = /* GraphQL */ `
+  query ListPrincipals(
+    $filter: ModelPrincipalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPrincipals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getTeacher = /* GraphQL */ `
   query GetTeacher($id: ID!) {
     getTeacher(id: $id) {
@@ -576,6 +621,15 @@ export const getTeacher = /* GraphQL */ `
       }
       LessonTeacher {
         nextToken
+      }
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt

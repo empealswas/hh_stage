@@ -90,8 +90,8 @@ export default function DashboardSidebar({isOpenSidebar, onCloseSidebar}) {
                     <AccountStyle>
                         <Avatar src={account.photoURL} alt="photoURL"/>
                         <Box sx={{ml: 2, width: '100%'}}>
-                            <Typography variant="body2" sx={{color: 'text.secondary'}}>
-                                You are in group of ({user.getRoles()})
+                            <Typography variant="body1" sx={{color: 'text.primary'}}>
+                                {user.getRole()}
                             </Typography>
                         </Box>
                     </AccountStyle>

@@ -106,6 +106,27 @@ app.post('/api/addParent', (req, res) => {
         }
     });
 })
+app.post('/api/addPrincipal', (req, res) => {
+    const event = {
+        body: {
+            ...req.body,
+            type: 'PRINCIPAL'
+        }
+    }
+    console.log('event' + event)
+    return lambda.invoke({
+        FunctionName: 'addTeacherToUserPoolAndCreateRecordInDatabase',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(event) // pass params
+    }, function (error, data) {
+        if (error) {
+            res.json({error: error, url: req.url})
+        }
+        if (data.Payload) {
+            res.json({success: 'parent added', url: req.url})
+        }
+    });
+})
 app.post('/api/resendTeacherInvitation', (req, res) => {
     const event = {
         body: req.body

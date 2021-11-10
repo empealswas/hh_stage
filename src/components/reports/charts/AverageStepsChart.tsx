@@ -13,6 +13,9 @@ import {listPupils} from "../../../graphql/queries";
 import { GarminDailiesSummaryModel } from '../../../models/garminDataModels/garminDailiesModel';
 import {UserContext} from "../../../App";
 import {Classroom} from "../../../API";
+import {Teacher} from "../../../models/Teacher";
+import {Principal} from "../../../models/Principal";
+import {Admin} from "../../../models/Admin";
 
 
 // ----------------------------------------------------------------------
@@ -56,12 +59,12 @@ export default function AverageStepsChart() {
             const getAllUsers = async () => {
                 const users: String [] = [];
 
-                if (user?.isAdmin()) {
+                if (user instanceof Admin || user instanceof Principal) {
                     const result: any = await API.graphql(graphqlOperation(listPupils));
                     result.data.listPupils?.items.forEach((item: any) => {
                         users.push(item.id);
                     });
-                } else if (user?.isTeacher()) {
+                } else if (user instanceof Teacher) {
                     const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
                     result.data.getTeacher?.classrooms.items
                         .map((item: any) => item.classroom)

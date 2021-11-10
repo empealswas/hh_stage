@@ -20,7 +20,17 @@ export async function addParentApi(params: AddParentRequest){
             ...params
         }
     });
+    return result;
 }
+export async function addPrincipalApi(params: AddParentRequest){
+    const result = await API.post(apiName, '/api/addPrincipal', {
+        body: {
+            ...params
+        }
+    });
+    return result;
+}
+
 
 export async function getAverage(){
     return await API.get(apiName, '/api/getAverage', {});

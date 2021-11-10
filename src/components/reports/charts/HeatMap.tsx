@@ -6,6 +6,9 @@ import {API, graphqlOperation} from "aws-amplify";
 import {compareDesc, format, parse, parseISO, toDate} from "date-fns";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import {UserContext} from "../../../App";
+import {Admin} from "../../../models/Admin";
+import {Principal} from "../../../models/Principal";
+import {Teacher} from "../../../models/Teacher";
 
 const value: any = [
     {date: '2016/01/11', count: 2},
@@ -56,10 +59,10 @@ const HeatMapChart = () => {
     useEffect(() => {
         const getData = async () => {
             let lessons: [] = [];
-            if (user?.isAdmin()) {
+            if (user instanceof Admin || user instanceof Principal) {
                 const result: any = await API.graphql(graphqlOperation(query));
                 lessons = result.data.listPELessonRecords.items;
-            } else if (user?.isTeacher()) {
+            } else if (user instanceof Teacher) {
                 const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
                 lessons = result.data.getTeacher.classrooms.items
                     .map((item: any) => item.classroom)
