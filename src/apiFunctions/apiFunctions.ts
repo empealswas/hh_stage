@@ -6,7 +6,6 @@ const apiName = 'HealthyHabitsV2API'
 
 export async function addTeacherApi(params: AddTeacherRequest) {
 
-    console.log('Adding teacher');
     const result = await API.post(apiName, '/api/addTeacher', {
         body: {
             ...params
@@ -16,25 +15,23 @@ export async function addTeacherApi(params: AddTeacherRequest) {
     console.log('Added');
 }
 export async function addParentApi(params: AddParentRequest){
-    console.log('Adding parent');
     const result = await API.post(apiName, '/api/addParent', {
         body: {
             ...params
         }
     });
-    console.log(result);
-    console.log('Added');
+}
+
+export async function getAverage(){
+    return await API.get(apiName, '/api/getAverage', {});
 }
 
 export async function resendCodeToTeacher(params: ResendTeacherInvitation) {
-    console.log('Resending teacher invitation');
     const result = await API.post(apiName, '/api/resendTeacherInvitation', {
         body: {
             ...params
         }
     });
-    console.log(result);
-    console.log('Invite is resent');
 }
 
 export async function genUrlOfThumbnailOfFile(fileName: string){

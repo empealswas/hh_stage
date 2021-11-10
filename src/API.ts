@@ -141,19 +141,116 @@ export type Lesson = {
   description?: string | null,
   sectionID?: string | null,
   Section?: Section | null,
-  LessonsRecords?: ModelPELessonRecordConnection | null,
   terms?: ModelTermLessonConnection | null,
   Attendances?: ModelAttendanceConnection | null,
   Files?: ModelFileConnection | null,
   LessonTeacher?: ModelLessonTeacherConnection | null,
   createdAt: string,
   updatedAt: string,
+  LessonsRecords?: ModelPELessonRecordConnection | null,
 };
 
-export type ModelPELessonRecordConnection = {
-  __typename: "ModelPELessonRecordConnection",
-  items?:  Array<PELessonRecord | null > | null,
+export type ModelTermLessonConnection = {
+  __typename: "ModelTermLessonConnection",
+  items?:  Array<TermLesson | null > | null,
   nextToken?: string | null,
+};
+
+export type TermLesson = {
+  __typename: "TermLesson",
+  id: string,
+  termID: string,
+  lessonID: string,
+  term: Term,
+  lesson: Lesson,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Term = {
+  __typename: "Term",
+  id: string,
+  nam?: string | null,
+  startDate?: string | null,
+  finishDate?: string | null,
+  subjects?: ModelSubjectTermConnection | null,
+  TermLessons?: ModelTermLessonConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelSubjectTermConnection = {
+  __typename: "ModelSubjectTermConnection",
+  items?:  Array<SubjectTerm | null > | null,
+  nextToken?: string | null,
+};
+
+export type SubjectTerm = {
+  __typename: "SubjectTerm",
+  id: string,
+  subjectID: string,
+  termID: string,
+  subject: Subject,
+  term: Term,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Subject = {
+  __typename: "Subject",
+  id: string,
+  name?: string | null,
+  SubjectTerms?: ModelSubjectTermConnection | null,
+  curriculums?: ModelCurriculumSubjectConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelCurriculumSubjectConnection = {
+  __typename: "ModelCurriculumSubjectConnection",
+  items?:  Array<CurriculumSubject | null > | null,
+  nextToken?: string | null,
+};
+
+export type CurriculumSubject = {
+  __typename: "CurriculumSubject",
+  id: string,
+  curriculumID: string,
+  subjectID: string,
+  curriculum: Curriculum,
+  subject: Subject,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Curriculum = {
+  __typename: "Curriculum",
+  id: string,
+  name?: string | null,
+  subjects?: ModelCurriculumSubjectConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelAttendanceConnection = {
+  __typename: "ModelAttendanceConnection",
+  items?:  Array<Attendance | null > | null,
+  nextToken?: string | null,
+};
+
+export type Attendance = {
+  __typename: "Attendance",
+  id: string,
+  present?: boolean | null,
+  wasRewarded?: boolean | null,
+  pupilID?: string | null,
+  lessonID?: string | null,
+  Lesson?: Lesson | null,
+  lessonRecordID?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  lessonRecord?: PELessonRecord | null,
+  Pupil?: Pupil | null,
 };
 
 export type PELessonRecord = {
@@ -254,27 +351,6 @@ export type Pupil = {
   Interventions?: ModelInterventionConnection | null,
 };
 
-export type ModelAttendanceConnection = {
-  __typename: "ModelAttendanceConnection",
-  items?:  Array<Attendance | null > | null,
-  nextToken?: string | null,
-};
-
-export type Attendance = {
-  __typename: "Attendance",
-  id: string,
-  present?: boolean | null,
-  wasRewarded?: boolean | null,
-  pupilID?: string | null,
-  lessonID?: string | null,
-  Lesson?: Lesson | null,
-  lessonRecord?: PELessonRecord | null,
-  lessonRecordID?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  Pupil?: Pupil | null,
-};
-
 export type SchoolHouse = {
   __typename: "SchoolHouse",
   id: string,
@@ -360,88 +436,6 @@ export type Intervention = {
   Pupil?: Pupil | null,
 };
 
-export type Curriculum = {
-  __typename: "Curriculum",
-  id: string,
-  name?: string | null,
-  subjects?: ModelCurriculumSubjectConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelCurriculumSubjectConnection = {
-  __typename: "ModelCurriculumSubjectConnection",
-  items?:  Array<CurriculumSubject | null > | null,
-  nextToken?: string | null,
-};
-
-export type CurriculumSubject = {
-  __typename: "CurriculumSubject",
-  id: string,
-  curriculumID: string,
-  subjectID: string,
-  curriculum: Curriculum,
-  subject: Subject,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type Subject = {
-  __typename: "Subject",
-  id: string,
-  name?: string | null,
-  SubjectTerms?: ModelSubjectTermConnection | null,
-  curriculums?: ModelCurriculumSubjectConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelSubjectTermConnection = {
-  __typename: "ModelSubjectTermConnection",
-  items?:  Array<SubjectTerm | null > | null,
-  nextToken?: string | null,
-};
-
-export type SubjectTerm = {
-  __typename: "SubjectTerm",
-  id: string,
-  subjectID: string,
-  termID: string,
-  subject: Subject,
-  term: Term,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type Term = {
-  __typename: "Term",
-  id: string,
-  nam?: string | null,
-  startDate?: string | null,
-  finishDate?: string | null,
-  subjects?: ModelSubjectTermConnection | null,
-  TermLessons?: ModelTermLessonConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelTermLessonConnection = {
-  __typename: "ModelTermLessonConnection",
-  items?:  Array<TermLesson | null > | null,
-  nextToken?: string | null,
-};
-
-export type TermLesson = {
-  __typename: "TermLesson",
-  id: string,
-  termID: string,
-  lessonID: string,
-  term: Term,
-  lesson: Lesson,
-  createdAt: string,
-  updatedAt: string,
-};
-
 export type ModelLessonTeacherConnection = {
   __typename: "ModelLessonTeacherConnection",
   items?:  Array<LessonTeacher | null > | null,
@@ -463,6 +457,12 @@ export type LessonTeacher = {
 export type ModelFileConnection = {
   __typename: "ModelFileConnection",
   items?:  Array<File | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelPELessonRecordConnection = {
+  __typename: "ModelPELessonRecordConnection",
+  items?:  Array<PELessonRecord | null > | null,
   nextToken?: string | null,
 };
 
@@ -501,63 +501,6 @@ export type UpdateLessonInput = {
 };
 
 export type DeleteLessonInput = {
-  id: string,
-};
-
-export type CreatePELessonRecordInput = {
-  id?: string | null,
-  teacherID?: string | null,
-  date?: string | null,
-  deliveredBy?: string | null,
-  duration?: number | null,
-  activity?: string | null,
-  rating?: number | null,
-  notes?: string | null,
-  classroomID?: string | null,
-  lessonID?: string | null,
-};
-
-export type ModelPELessonRecordConditionInput = {
-  teacherID?: ModelIDInput | null,
-  date?: ModelStringInput | null,
-  deliveredBy?: ModelStringInput | null,
-  duration?: ModelIntInput | null,
-  activity?: ModelStringInput | null,
-  rating?: ModelIntInput | null,
-  notes?: ModelStringInput | null,
-  classroomID?: ModelIDInput | null,
-  lessonID?: ModelIDInput | null,
-  and?: Array< ModelPELessonRecordConditionInput | null > | null,
-  or?: Array< ModelPELessonRecordConditionInput | null > | null,
-  not?: ModelPELessonRecordConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type UpdatePELessonRecordInput = {
-  id: string,
-  teacherID?: string | null,
-  date?: string | null,
-  deliveredBy?: string | null,
-  duration?: number | null,
-  activity?: string | null,
-  rating?: number | null,
-  notes?: string | null,
-  classroomID?: string | null,
-  lessonID?: string | null,
-};
-
-export type DeletePELessonRecordInput = {
   id: string,
 };
 
@@ -780,6 +723,18 @@ export type ModelLessonTeacherConditionInput = {
   and?: Array< ModelLessonTeacherConditionInput | null > | null,
   or?: Array< ModelLessonTeacherConditionInput | null > | null,
   not?: ModelLessonTeacherConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateLessonTeacherInput = {
@@ -1015,6 +970,51 @@ export type DeleteCurriculumSubjectInput = {
   id: string,
 };
 
+export type CreatePELessonRecordInput = {
+  id?: string | null,
+  teacherID?: string | null,
+  date?: string | null,
+  deliveredBy?: string | null,
+  duration?: number | null,
+  activity?: string | null,
+  rating?: number | null,
+  notes?: string | null,
+  classroomID?: string | null,
+  lessonID?: string | null,
+};
+
+export type ModelPELessonRecordConditionInput = {
+  teacherID?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  deliveredBy?: ModelStringInput | null,
+  duration?: ModelIntInput | null,
+  activity?: ModelStringInput | null,
+  rating?: ModelIntInput | null,
+  notes?: ModelStringInput | null,
+  classroomID?: ModelIDInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelPELessonRecordConditionInput | null > | null,
+  or?: Array< ModelPELessonRecordConditionInput | null > | null,
+  not?: ModelPELessonRecordConditionInput | null,
+};
+
+export type UpdatePELessonRecordInput = {
+  id: string,
+  teacherID?: string | null,
+  date?: string | null,
+  deliveredBy?: string | null,
+  duration?: number | null,
+  activity?: string | null,
+  rating?: number | null,
+  notes?: string | null,
+  classroomID?: string | null,
+  lessonID?: string | null,
+};
+
+export type DeletePELessonRecordInput = {
+  id: string,
+};
+
 export type CreatePupilInput = {
   id?: string | null,
   firstName?: string | null,
@@ -1104,22 +1104,6 @@ export type ModelLessonFilterInput = {
   and?: Array< ModelLessonFilterInput | null > | null,
   or?: Array< ModelLessonFilterInput | null > | null,
   not?: ModelLessonFilterInput | null,
-};
-
-export type ModelPELessonRecordFilterInput = {
-  id?: ModelIDInput | null,
-  teacherID?: ModelIDInput | null,
-  date?: ModelStringInput | null,
-  deliveredBy?: ModelStringInput | null,
-  duration?: ModelIntInput | null,
-  activity?: ModelStringInput | null,
-  rating?: ModelIntInput | null,
-  notes?: ModelStringInput | null,
-  classroomID?: ModelIDInput | null,
-  lessonID?: ModelIDInput | null,
-  and?: Array< ModelPELessonRecordFilterInput | null > | null,
-  or?: Array< ModelPELessonRecordFilterInput | null > | null,
-  not?: ModelPELessonRecordFilterInput | null,
 };
 
 export type ModelSchoolHouseFilterInput = {
@@ -1270,6 +1254,22 @@ export type ModelTeacherFilterInput = {
   and?: Array< ModelTeacherFilterInput | null > | null,
   or?: Array< ModelTeacherFilterInput | null > | null,
   not?: ModelTeacherFilterInput | null,
+};
+
+export type ModelPELessonRecordFilterInput = {
+  id?: ModelIDInput | null,
+  teacherID?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  deliveredBy?: ModelStringInput | null,
+  duration?: ModelIntInput | null,
+  activity?: ModelStringInput | null,
+  rating?: ModelIntInput | null,
+  notes?: ModelStringInput | null,
+  classroomID?: ModelIDInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelPELessonRecordFilterInput | null > | null,
+  or?: Array< ModelPELessonRecordFilterInput | null > | null,
+  not?: ModelPELessonRecordFilterInput | null,
 };
 
 export type ModelPupilFilterInput = {
@@ -1487,10 +1487,6 @@ export type CreateLessonMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
       nextToken?: string | null,
@@ -1509,6 +1505,10 @@ export type CreateLessonMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -1533,10 +1533,6 @@ export type UpdateLessonMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
       nextToken?: string | null,
@@ -1555,6 +1551,10 @@ export type UpdateLessonMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -1579,10 +1579,6 @@ export type DeleteLessonMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
       nextToken?: string | null,
@@ -1601,171 +1597,10 @@ export type DeleteLessonMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type CreatePELessonRecordMutationVariables = {
-  input: CreatePELessonRecordInput,
-  condition?: ModelPELessonRecordConditionInput | null,
-};
-
-export type CreatePELessonRecordMutation = {
-  createPELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
       nextToken?: string | null,
     } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdatePELessonRecordMutationVariables = {
-  input: UpdatePELessonRecordInput,
-  condition?: ModelPELessonRecordConditionInput | null,
-};
-
-export type UpdatePELessonRecordMutation = {
-  updatePELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeletePELessonRecordMutationVariables = {
-  input: DeletePELessonRecordInput,
-  condition?: ModelPELessonRecordConditionInput | null,
-};
-
-export type DeletePELessonRecordMutation = {
-  deletePELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -2379,6 +2214,9 @@ export type CreateAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
@@ -2394,9 +2232,6 @@ export type CreateAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
@@ -2432,6 +2267,9 @@ export type UpdateAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
@@ -2447,9 +2285,6 @@ export type UpdateAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
@@ -2485,6 +2320,9 @@ export type DeleteAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
@@ -2500,9 +2338,6 @@ export type DeleteAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
@@ -3359,6 +3194,171 @@ export type DeleteCurriculumSubjectMutation = {
   } | null,
 };
 
+export type CreatePELessonRecordMutationVariables = {
+  input: CreatePELessonRecordInput,
+  condition?: ModelPELessonRecordConditionInput | null,
+};
+
+export type CreatePELessonRecordMutation = {
+  createPELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date?: string | null,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePELessonRecordMutationVariables = {
+  input: UpdatePELessonRecordInput,
+  condition?: ModelPELessonRecordConditionInput | null,
+};
+
+export type UpdatePELessonRecordMutation = {
+  updatePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date?: string | null,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePELessonRecordMutationVariables = {
+  input: DeletePELessonRecordInput,
+  condition?: ModelPELessonRecordConditionInput | null,
+};
+
+export type DeletePELessonRecordMutation = {
+  deletePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date?: string | null,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreatePupilMutationVariables = {
   input: CreatePupilInput,
   condition?: ModelPupilConditionInput | null,
@@ -3711,10 +3711,6 @@ export type GetLessonQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
       nextToken?: string | null,
@@ -3733,6 +3729,10 @@ export type GetLessonQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -3751,88 +3751,6 @@ export type ListLessonsQuery = {
       title?: string | null,
       description?: string | null,
       sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetPELessonRecordQueryVariables = {
-  id: string,
-};
-
-export type GetPELessonRecordQuery = {
-  getPELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListPELessonRecordsQueryVariables = {
-  filter?: ModelPELessonRecordFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListPELessonRecordsQuery = {
-  listPELessonRecords?:  {
-    __typename: "ModelPELessonRecordConnection",
-    items?:  Array< {
-      __typename: "PELessonRecord",
-      id: string,
-      teacherID?: string | null,
-      date?: string | null,
-      deliveredBy?: string | null,
-      duration?: number | null,
-      activity?: string | null,
-      rating?: number | null,
-      notes?: string | null,
-      classroomID?: string | null,
-      lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -4070,6 +3988,9 @@ export type GetAttendanceQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
@@ -4085,9 +4006,6 @@ export type GetAttendanceQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
@@ -4398,6 +4316,88 @@ export type ListTeachersQuery = {
   } | null,
 };
 
+export type GetPELessonRecordQueryVariables = {
+  id: string,
+};
+
+export type GetPELessonRecordQuery = {
+  getPELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date?: string | null,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListPELessonRecordsQueryVariables = {
+  filter?: ModelPELessonRecordFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPELessonRecordsQuery = {
+  listPELessonRecords?:  {
+    __typename: "ModelPELessonRecordConnection",
+    items?:  Array< {
+      __typename: "PELessonRecord",
+      id: string,
+      teacherID?: string | null,
+      date?: string | null,
+      deliveredBy?: string | null,
+      duration?: number | null,
+      activity?: string | null,
+      rating?: number | null,
+      notes?: string | null,
+      classroomID?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetPupilQueryVariables = {
   id: string,
 };
@@ -4677,10 +4677,6 @@ export type OnCreateLessonSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
       nextToken?: string | null,
@@ -4699,6 +4695,10 @@ export type OnCreateLessonSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4718,10 +4718,6 @@ export type OnUpdateLessonSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
       nextToken?: string | null,
@@ -4740,6 +4736,10 @@ export type OnUpdateLessonSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4759,10 +4759,6 @@ export type OnDeleteLessonSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
       nextToken?: string | null,
@@ -4781,156 +4777,10 @@ export type OnDeleteLessonSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnCreatePELessonRecordSubscription = {
-  onCreatePELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
       nextToken?: string | null,
     } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdatePELessonRecordSubscription = {
-  onUpdatePELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeletePELessonRecordSubscription = {
-  onDeletePELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -5449,6 +5299,9 @@ export type OnCreateAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
@@ -5464,9 +5317,6 @@ export type OnCreateAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
@@ -5497,6 +5347,9 @@ export type OnUpdateAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
@@ -5512,9 +5365,6 @@ export type OnUpdateAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
@@ -5545,6 +5395,9 @@ export type OnDeleteAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
@@ -5560,9 +5413,6 @@ export type OnDeleteAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
@@ -6264,6 +6114,156 @@ export type OnDeleteCurriculumSubjectSubscription = {
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePELessonRecordSubscription = {
+  onCreatePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date?: string | null,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePELessonRecordSubscription = {
+  onUpdatePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date?: string | null,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePELessonRecordSubscription = {
+  onDeletePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date?: string | null,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,

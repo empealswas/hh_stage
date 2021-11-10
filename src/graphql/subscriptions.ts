@@ -152,9 +152,6 @@ export const onCreateLesson = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      LessonsRecords {
-        nextToken
-      }
       terms {
         nextToken
       }
@@ -169,6 +166,9 @@ export const onCreateLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      LessonsRecords {
+        nextToken
+      }
     }
   }
 `;
@@ -187,9 +187,6 @@ export const onUpdateLesson = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      LessonsRecords {
-        nextToken
-      }
       terms {
         nextToken
       }
@@ -204,6 +201,9 @@ export const onUpdateLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      LessonsRecords {
+        nextToken
+      }
     }
   }
 `;
@@ -222,9 +222,6 @@ export const onDeleteLesson = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      LessonsRecords {
-        nextToken
-      }
       terms {
         nextToken
       }
@@ -239,144 +236,9 @@ export const onDeleteLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onCreatePELessonRecord = /* GraphQL */ `
-  subscription OnCreatePELessonRecord {
-    onCreatePELessonRecord {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
+      LessonsRecords {
         nextToken
       }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdatePELessonRecord = /* GraphQL */ `
-  subscription OnUpdatePELessonRecord {
-    onUpdatePELessonRecord {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
-        nextToken
-      }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeletePELessonRecord = /* GraphQL */ `
-  subscription OnDeletePELessonRecord {
-    onDeletePELessonRecord {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
-        nextToken
-      }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -852,6 +714,9 @@ export const onCreateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecordID
+      createdAt
+      updatedAt
       lessonRecord {
         id
         teacherID
@@ -866,9 +731,6 @@ export const onCreateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      lessonRecordID
-      createdAt
-      updatedAt
       Pupil {
         id
         firstName
@@ -897,6 +759,9 @@ export const onUpdateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecordID
+      createdAt
+      updatedAt
       lessonRecord {
         id
         teacherID
@@ -911,9 +776,6 @@ export const onUpdateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      lessonRecordID
-      createdAt
-      updatedAt
       Pupil {
         id
         firstName
@@ -942,6 +804,9 @@ export const onDeleteAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      lessonRecordID
+      createdAt
+      updatedAt
       lessonRecord {
         id
         teacherID
@@ -956,9 +821,6 @@ export const onDeleteAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      lessonRecordID
-      createdAt
-      updatedAt
       Pupil {
         id
         firstName
@@ -1602,6 +1464,144 @@ export const onDeleteCurriculumSubject = /* GraphQL */ `
       subject {
         id
         name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePELessonRecord = /* GraphQL */ `
+  subscription OnCreatePELessonRecord {
+    onCreatePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePELessonRecord = /* GraphQL */ `
+  subscription OnUpdatePELessonRecord {
+    onUpdatePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePELessonRecord = /* GraphQL */ `
+  subscription OnDeletePELessonRecord {
+    onDeletePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
         createdAt
         updatedAt
       }

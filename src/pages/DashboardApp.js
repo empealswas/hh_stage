@@ -38,6 +38,7 @@ import HeatMap from "../components/reports/charts/HeatMap";
 import TimeCompletedCard from "../components/cards/TimeCompletedCard";
 import AverageStepsChart from "../components/reports/charts/AverageStepsChart";
 import AverageSleepChart from "../components/reports/charts/AverageSleepChart";
+import {getAverage} from "../apiFunctions/apiFunctions";
 
 
 // ----------------------------------------------------------------------
@@ -50,6 +51,7 @@ export default function DashboardApp() {
     const [greeting, setGreeting] = useState('');
     user.getFirstName().then(data => {
         setGreeting(data);
+
     })
 
     return (

@@ -40,6 +40,8 @@ type Lesson @model
 type PELessonRecord @model
 @key(name: "byTeacher", fields: ["teacherID"])
 @key(name: "byLesson", fields: ["lessonID"])
+@auth(rules: [{ allow: public, provider: iam },
+  { allow: public, provider: apiKey },{allow: private}])
 {
   id: ID!
   teacherID: ID
