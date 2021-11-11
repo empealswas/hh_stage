@@ -64,7 +64,7 @@ export default function AverageSleepChart() {
                     users.push(pupil.pupilID);
                 });
             }
-            console.log(users)
+            // console.log(users)
             return users;
         }
         const getData = async () => {

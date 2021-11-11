@@ -69,7 +69,7 @@ export default function AverageStepsChart() {
                         users.push(pupil.pupilID);
                     });
                 }
-                console.log(users)
+                // console.log(users)
                 return users;
             }
             const getData = async () => {
@@ -93,7 +93,7 @@ export default function AverageStepsChart() {
                         const response = JSON.parse(result);
                         const data: number [] = [];
                         const periods: String [] = [];
-                        console.log("RESULT", result)
+                        // console.log("RESULT", result)
                         response.map((item: any) => {
                             data.push(item.totalSteps);
                             periods.push(item.period);

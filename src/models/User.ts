@@ -10,7 +10,7 @@ export class User {
     constructor(userData: any) {
         this.userRoles = userData.signInUserSession.accessToken.payload['cognito:groups'];
         this._email = userData.attributes.email;
-        console.log('User Roles: ', this.userRoles);
+        // console.log('User Roles: ', this.userRoles);
     }
     private async getTeacherCredentials(){
         if(this.isAdmin()) return;
@@ -19,7 +19,7 @@ export class User {
         const teacher: Teacher = result.data.getTeacher;
         this.firsName = teacher.firstName;
         this.lastName = teacher.lastName;
-        console.log('teacher' , teacher)
+        // console.log('teacher' , teacher)
     }
     public async getFirstAndLastName(){
         if (this.isAdmin()) {

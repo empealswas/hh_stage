@@ -48,7 +48,7 @@ const DashboardOfTeacher = () => {
     // Can this be moved out into some kind of service? ///////////////////////////////////
     const [periodState, setPeriodState] = useState("daily");
     const [metricState, setMetricState] = useState("dailies");
-    const [groupByState, setGroupByState] = useState("group");
+    const [groupByState, setGroupByState] = useState("user");
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
     const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
@@ -61,8 +61,7 @@ const DashboardOfTeacher = () => {
 
     const [dailiesDataGroup, setDailiesGroup] = useState<GarminDailiesSummaryModel[] | null>(null);
     const [dailiesDataUser, setDailiesUser] = useState<GarminDailiesSummaryModel[] | null>(null);
-    const [dailiesZvalueGroup, setDailiesZvalueGroup] = useState<GarminDailiesSummaryModel[] | null>(null);
-    const [dailiesZvalueUser, setDailiesZvalueUser] = useState<GarminDailiesSummaryModel[] | null>(null);
+
 
     const [epochsDataGroup, setEpochsGroup] = useState<GarminEpochsSummaryDataModel[] | null>(null);
     const [epochsDataUser, setEpochsUser] = useState<GarminEpochsSummaryDataModel[] | null>(null);
@@ -102,7 +101,7 @@ const DashboardOfTeacher = () => {
 
 
     const backClick = () => {
-        console.log("Backwards");
+
         var setEndDate = new Date(endDateState);
         setEndDate.setDate(setEndDate.getDate() - 6);
         todayDate = setEndDate.getFullYear() + "-" + String(setEndDate.getMonth() + 1).padStart(2, '0') + "-" + String(setEndDate.getDate()).padStart(2, '0');
@@ -249,84 +248,7 @@ const DashboardOfTeacher = () => {
         getData();
     }, []);
 
-    /////////////////////////////////////
-    /////  get dailies User z-values ////
-    /////////////////////////////////////
-    useEffect(() => {
-        const dailiesZvaluesUserUrl: string = dailiesZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + userOpt;
-        const getAllUsers = async () => {
-            const users: String[] = [];
-            const result: any = await API.graphql(graphqlOperation(listPupils));
-            result.data.listPupils?.items.forEach((item: any) => {
-                users.push(item.id);
-            })
-            return users;
-        }
-
-        const getData = async () => {
-            const users = await getAllUsers();
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify(users);
-
-            var requestOptions: any = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-
-            //     // send request
-            //     fetch(dailiesZvaluesUserUrl, requestOptions)
-            //         .then(response => response.text())
-            //         .then(result => {
-            //             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
-            //             setDailiesZvalueUser(garminData);
-            //         })
-            //         .catch(error => console.log('error', error));
-        }
-        // getData();
-    }, []);
-
-    //////////////////////////////////////
-    /////  get dailies Group z-values ////
-    //////////////////////////////////////
-    useEffect(() => {
-        const dailiesZvaluesGroupUrl: string = dailiesZvaluesBaseUrl + startDateOpt + endUrl + endDateOpt + periodUrl + dailyOpt + groupedByUrl + groupOpt;
-        const getAllUsers = async () => {
-            const users: String[] = [];
-            const result: any = await API.graphql(graphqlOperation(listPupils));
-            result.data.listPupils?.items.forEach((item: any) => {
-                users.push(item.id);
-            })
-            return users;
-        }
-
-        const getData = async () => {
-            const users = await getAllUsers();
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify(users);
-
-            var requestOptions: any = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-
-            //     // send request
-            //     fetch(dailiesZvaluesGroupUrl, requestOptions)
-            //         .then(response => response.text())
-            //         .then(result => {
-            //             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
-            //             setDailiesZvalueGroup(garminData);
-            //         })
-            //         .catch(error => console.log('error', error));
-        }
-        // getData();
-    }, []);
-
+   
     ///////////////////////////////////
     /////  get sleep User data ////////
     //////////////////////////////////
@@ -645,6 +567,9 @@ const DashboardOfTeacher = () => {
         queryData.period = periodState;
         queryData.groupedBy = groupByState;
 
+        console.log(groupByState);
+        console.log(queryData.groupedBy);
+
         // healthyHabitIdList.data = listOfHealthyHabitsIdsState;
         // console.log(listOfHealthyHabitsIdsState);
 
@@ -685,7 +610,8 @@ const DashboardOfTeacher = () => {
     ;
     const Metrics = () => {
         if (metricState === "sedentary") {
-            return (<>
+            return (
+                <>
                     <Grid item xs={12}>
                         <DailiesStanineContourPlot/>
                     </Grid>
@@ -701,7 +627,11 @@ const DashboardOfTeacher = () => {
         if (metricState === 'dailies') {
             return (
                 <Grid item xs={12}>
-                    <DailiesOverview {...queryData} blah={listOfHealthyHabitsIdsState}/>
+                    <DailiesOverview 
+                        idList={listOfHealthyHabitsIdsState} 
+                        startDate={startDateState} endDate={endDateState} 
+                        timePeriod={periodState} grouping={groupByState} 
+                    />
                 </Grid>
                 
             );

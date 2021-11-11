@@ -2,7 +2,7 @@
 
 
 export default function Card(theme) {
-  console.log('theme', theme);
+  // console.log('theme', theme);
   return {
     MuiCard: {
       styleOverrides: {
