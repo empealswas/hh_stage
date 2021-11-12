@@ -6,6 +6,7 @@ import { GarminSleepSummaryModel } from "../../../../../models/garminDataModels/
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
+import {CardContent} from "@mui/material";
 
 export default function SleepOverview(props: any) {
 
@@ -219,9 +220,9 @@ export default function SleepOverview(props: any) {
     return (
         <Card >
             <CardHeader title="Sleep" subheader="Total duration and intensity" />
-            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+                <CardContent>
+                    <Grid container spacing={2}>
 
-                <>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} labels={["Other", "Light", "Deep"]}/>
                     </Grid>
@@ -231,8 +232,8 @@ export default function SleepOverview(props: any) {
                     <Grid item xs={12}>
                         <DailiesStanineContourPlot data={stanineValue}/>
                     </Grid>
-                </>
-            </Box>
+                    </Grid>
+                </CardContent>
         </Card>
     );
 }

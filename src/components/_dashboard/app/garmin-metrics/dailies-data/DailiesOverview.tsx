@@ -6,6 +6,7 @@ import { GarminDailiesSummaryModel } from "../../../../../models/garminDataModel
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
+import {CardContent} from "@mui/material";
 
 
 export default function DailiesOverview(props: any) {
@@ -245,7 +246,9 @@ export default function DailiesOverview(props: any) {
     return (
         <Card >
             <CardHeader title="Steps" />
-                <>
+                <CardContent>
+                    <Grid container spacing={2}>
+
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <StepIntensityDonut data2={dailiesIntensityDonutData} title2={"Steps Intensity"} subTitle2={"levels"} labels={["Regular", "Moderate", "Vigorous"]}/>
                     </Grid>
@@ -255,7 +258,8 @@ export default function DailiesOverview(props: any) {
                     <Grid item xs={12}>
                         <DailiesStanineContourPlot data={stanineValue}/>
                     </Grid>
-                </>
+                    </Grid>
+                </CardContent>
         </Card>
     );
 

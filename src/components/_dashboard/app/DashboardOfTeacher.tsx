@@ -146,26 +146,20 @@ const DashboardOfTeacher = () => {
     const Metrics = () => {
         if (metricState === 'sedentary') {
             return (
-                <Grid item xs={12}>
                    <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
-                </Grid>
-                
+
             );
         }
         if (metricState === 'steps') {
             return (
-                <Grid item xs={12}>
                     <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
-                </Grid>
-                
+
             );
         }
         if (metricState === 'sleep') {
             return (
-                <Grid item xs={12}>
                   <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
-                </Grid>
-                
+
             );
         }
         return <Typography>Nothing selected</Typography>
@@ -210,10 +204,7 @@ const DashboardOfTeacher = () => {
                 </Grid>
             </Grid>
             <Box height={20}/>
-            <Grid xs={12} container spacing={2}>
                 <Metrics/>
-            </Grid>
-
         </Stack>
 
     );
