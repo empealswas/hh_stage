@@ -54,18 +54,29 @@ const DashboardOfTeacher = () => {
     const backClick = () => {
         console.log("Backwards");
         var setEndDate = new Date(endDateState);
-        setEndDate.setDate(setEndDate.getDate() - 6);
         todayDate = setEndDate.getFullYear() + "-" + String(setEndDate.getMonth() + 1).padStart(2, '0') + "-" + String(setEndDate.getDate()).padStart(2, '0');
         var setStartDate = new Date(todayDate);
 
         // make thios a case statement & think about default condition
         if (queryData.period === 'daily') {
+            setEndDate.setDate(setEndDate.getDate() - 1);
+            todayDate = setEndDate.getFullYear() + "-" + String(setEndDate.getMonth() + 1).padStart(2, '0') + "-" + String(setEndDate.getDate()).padStart(2, '0');
+            setStartDate = new Date(todayDate);
             setStartDate.setDate(setStartDate.getDate() - 6);
         } else if (queryData.period === 'weekly') {
+            setEndDate.setDate(setEndDate.getDate() - 6);
+            todayDate = setEndDate.getFullYear() + "-" + String(setEndDate.getMonth() + 1).padStart(2, '0') + "-" + String(setEndDate.getDate()).padStart(2, '0');
+            setStartDate = new Date(todayDate);
             setStartDate.setDate(setStartDate.getDate() - 27);
         } else if (queryData.period === 'monthly') {
+            setEndDate.setDate(setEndDate.getDate() - 28);
+            todayDate = setEndDate.getFullYear() + "-" + String(setEndDate.getMonth() + 1).padStart(2, '0') + "-" + String(setEndDate.getDate()).padStart(2, '0');
+            setStartDate = new Date(todayDate);
             setStartDate.setDate(setStartDate.getDate() - 85);
         } else {
+            setEndDate.setDate(setEndDate.getDate() - 1);
+            todayDate = setEndDate.getFullYear() + "-" + String(setEndDate.getMonth() + 1).padStart(2, '0') + "-" + String(setEndDate.getDate()).padStart(2, '0');
+            setStartDate = new Date(todayDate);
             setStartDate.setDate(setStartDate.getDate() - 6);
         }
         prevDate = setStartDate.getFullYear() + "-" + String(setStartDate.getMonth() + 1).padStart(2, '0') + "-" + String(setStartDate.getDate()).padStart(2, '0');
