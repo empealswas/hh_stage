@@ -12,6 +12,7 @@ import {useSnackbar} from "notistack";
 import {Can} from "../../../utils/Ability";
 import {UserContext} from '../../../App';
 import ActivityCard from "../pe/ActivityCard";
+import {Admin} from "../../../models/Admin";
 
 
 const CurriculumOverview = () => {
@@ -26,15 +27,7 @@ const CurriculumOverview = () => {
         return result.data.getCurriculum.name;
 
     }
-    if (user?.isAdmin()) {
-        fetchName().then(data => {
-            setTitle(data);
-        })
-    } else {
-        user?.getFirstAndLastName().then(data => {
-            setTitle(`Lesson plan of ${data.firstName} ${data.lastName}`)
-        });
-    }
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,6 +38,13 @@ const CurriculumOverview = () => {
                 fetchName();
             }
         })
+        if (user instanceof Admin) {
+            fetchName().then(data => {
+                setTitle(data);
+            })
+        } else {
+            setTitle(`Lesson plan of ${user?.firstName} ${user?.lastName}`)
+        }
         return () => {
             updateSubscription.unsubscribe();
         };

@@ -14,6 +14,7 @@ import SectionGrid from "../../Sections/SectionGrid";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Link from "@material-ui/core/Link";
+import {Teacher} from "../../../models/Teacher";
 
 
 const CurriculaComponents = () => {
@@ -28,7 +29,7 @@ const CurriculaComponents = () => {
                     <CurriculumModal/>
                 </Can>
             </Stack>
-            {user?.isTeacher() ?
+            {(user instanceof Teacher) ?
                 <TeacherCurriculaGrid/>
                 :
                 <CurriculaGrid/>
