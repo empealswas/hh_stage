@@ -159,7 +159,7 @@ export default function SleepOverview(props: any) {
         var series = [];
         while (i < inData.length) {
             var x = new Date(inData[i].period).getTime();
-            var y = inData[i].duration
+            var y = parseFloat((inData[i].duration/3600).toPrecision(2));
             series.push([x, y]);
             i++;
         }

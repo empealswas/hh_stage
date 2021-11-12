@@ -160,7 +160,7 @@ export default function SedentaryOverview(props: any) {
         var series = [];
         while (i < inData.length) {
             var x = new Date(inData[i].period).getTime();
-            var y = inData[i].sedentary
+            var y = parseFloat((inData[i].sedentary/3600).toPrecision(2));
             series.push([x, y]);
             i++;
         }
