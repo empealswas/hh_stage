@@ -282,6 +282,7 @@ export type Teacher = {
   schoolID?: string | null,
   classrooms?: ModelTeacherClassroomConnection | null,
   LessonTeacher?: ModelLessonTeacherConnection | null,
+  School?: School | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -374,6 +375,7 @@ export type School = {
   region?: string | null,
   principal?: string | null,
   Teachers?: ModelTeacherConnection | null,
+  Principals?: ModelPrincipalConnection | null,
   classrooms?: ModelClassroomConnection | null,
   createdAt: string,
   updatedAt: string,
@@ -384,6 +386,24 @@ export type ModelTeacherConnection = {
   __typename: "ModelTeacherConnection",
   items?:  Array<Teacher | null > | null,
   nextToken?: string | null,
+};
+
+export type ModelPrincipalConnection = {
+  __typename: "ModelPrincipalConnection",
+  items?:  Array<Principal | null > | null,
+  nextToken?: string | null,
+};
+
+export type Principal = {
+  __typename: "Principal",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+  School?: School | null,
+  createdAt: string,
+  updatedAt: string,
 };
 
 export type ModelClassroomConnection = {
@@ -868,6 +888,36 @@ export type DeletePupilParentInput = {
   id: string,
 };
 
+export type CreatePrincipalInput = {
+  id?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+};
+
+export type ModelPrincipalConditionInput = {
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelPrincipalConditionInput | null > | null,
+  or?: Array< ModelPrincipalConditionInput | null > | null,
+  not?: ModelPrincipalConditionInput | null,
+};
+
+export type UpdatePrincipalInput = {
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+};
+
+export type DeletePrincipalInput = {
+  id: string,
+};
+
 export type CreateTeacherInput = {
   id?: string | null,
   firstName?: string | null,
@@ -1243,6 +1293,17 @@ export type ModelParentConnection = {
   __typename: "ModelParentConnection",
   items?:  Array<Parent | null > | null,
   nextToken?: string | null,
+};
+
+export type ModelPrincipalFilterInput = {
+  id?: ModelIDInput | null,
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  and?: Array< ModelPrincipalFilterInput | null > | null,
+  or?: Array< ModelPrincipalFilterInput | null > | null,
+  not?: ModelPrincipalFilterInput | null,
 };
 
 export type ModelTeacherFilterInput = {
@@ -2119,6 +2180,10 @@ export type CreateSchoolMutation = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
@@ -2149,6 +2214,10 @@ export type UpdateSchoolMutation = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
@@ -2177,6 +2246,10 @@ export type DeleteSchoolMutation = {
     principal?: string | null,
     Teachers?:  {
       __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
     classrooms?:  {
@@ -2828,6 +2901,90 @@ export type DeletePupilParentMutation = {
   } | null,
 };
 
+export type CreatePrincipalMutationVariables = {
+  input: CreatePrincipalInput,
+  condition?: ModelPrincipalConditionInput | null,
+};
+
+export type CreatePrincipalMutation = {
+  createPrincipal?:  {
+    __typename: "Principal",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePrincipalMutationVariables = {
+  input: UpdatePrincipalInput,
+  condition?: ModelPrincipalConditionInput | null,
+};
+
+export type UpdatePrincipalMutation = {
+  updatePrincipal?:  {
+    __typename: "Principal",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePrincipalMutationVariables = {
+  input: DeletePrincipalInput,
+  condition?: ModelPrincipalConditionInput | null,
+};
+
+export type DeletePrincipalMutation = {
+  deletePrincipal?:  {
+    __typename: "Principal",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateTeacherMutationVariables = {
   input: CreateTeacherInput,
   condition?: ModelTeacherConditionInput | null,
@@ -2848,6 +3005,16 @@ export type CreateTeacherMutation = {
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
+    } | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -2875,6 +3042,16 @@ export type UpdateTeacherMutation = {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
     } | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2900,6 +3077,16 @@ export type DeleteTeacherMutation = {
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
+    } | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -3931,6 +4118,10 @@ export type GetSchoolQuery = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
@@ -4268,6 +4459,56 @@ export type ListParentsQuery = {
   } | null,
 };
 
+export type GetPrincipalQueryVariables = {
+  id: string,
+};
+
+export type GetPrincipalQuery = {
+  getPrincipal?:  {
+    __typename: "Principal",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListPrincipalsQueryVariables = {
+  filter?: ModelPrincipalFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPrincipalsQuery = {
+  listPrincipals?:  {
+    __typename: "ModelPrincipalConnection",
+    items?:  Array< {
+      __typename: "Principal",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetTeacherQueryVariables = {
   id: string,
 };
@@ -4287,6 +4528,16 @@ export type GetTeacherQuery = {
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
+    } | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -5219,6 +5470,10 @@ export type OnCreateSchoolSubscription = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
@@ -5244,6 +5499,10 @@ export type OnUpdateSchoolSubscription = {
       __typename: "ModelTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
@@ -5267,6 +5526,10 @@ export type OnDeleteSchoolSubscription = {
     principal?: string | null,
     Teachers?:  {
       __typename: "ModelTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
     classrooms?:  {
@@ -5813,6 +6076,75 @@ export type OnDeletePupilParentSubscription = {
   } | null,
 };
 
+export type OnCreatePrincipalSubscription = {
+  onCreatePrincipal?:  {
+    __typename: "Principal",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePrincipalSubscription = {
+  onUpdatePrincipal?:  {
+    __typename: "Principal",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePrincipalSubscription = {
+  onDeletePrincipal?:  {
+    __typename: "Principal",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    schoolID?: string | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateTeacherSubscription = {
   onCreateTeacher?:  {
     __typename: "Teacher",
@@ -5828,6 +6160,16 @@ export type OnCreateTeacherSubscription = {
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
+    } | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -5850,6 +6192,16 @@ export type OnUpdateTeacherSubscription = {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
     } | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -5870,6 +6222,16 @@ export type OnDeleteTeacherSubscription = {
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
+    } | null,
+    School?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
     } | null,
     createdAt: string,
     updatedAt: string,

@@ -10,6 +10,9 @@ import {useContext, useEffect, useState} from "react";
 import {API, graphqlOperation} from "aws-amplify";
 import {compareAsc, compareDesc, parseISO} from "date-fns";
 import {UserContext} from "../../../App";
+import {Admin} from "../../../models/Admin";
+import {Principal} from "../../../models/Principal";
+import {Teacher} from "../../../models/Teacher";
 
 //
 
@@ -59,10 +62,10 @@ export default function ActivityLineChart() {
 
             let lessons: [] = [];
 
-            if (user?.isAdmin()) {
+            if (user instanceof Admin || user instanceof Principal) {
             const result: any = await API.graphql(graphqlOperation(query));
             lessons = result.data.listPELessonRecords.items;
-            } else if (user?.isTeacher()) {
+            } else if (user instanceof Teacher) {
                 const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
                 lessons = result.data.getTeacher.classrooms.items
                     .map((item: any) => item.classroom)

@@ -111,7 +111,9 @@ type School @model {
   country: String
   region: String
   principal: String
+
   Teachers: [Teacher] @connection(keyName: "bySchool", fields: ["id"])
+  Principals: [Principal] @connection(keyName: "bySchool", fields: ["id"])
   Pupils: [Pupil] @connection(keyName: "bySchool", fields: ["id"])
   classrooms: [Classroom] @connection(keyName: "bySchool", fields: ["id"])
 }
@@ -184,6 +186,14 @@ type PupilParent @model(queries: null)
   Parent: Parent! @connection(fields: ["parentID"])
   Pupil: Pupil! @connection(fields: ["pupilID"])
 }
+type Principal @model  @key(name: "bySchool", fields: ["schoolID"]) {
+  id: ID!
+  firstName: String
+  lastName: String
+  email: AWSEmail
+  schoolID: ID
+  School: School @connection(fields: ["schoolID"])
+}
 
 type Teacher @model  @key(name: "bySchool", fields: ["schoolID"]) {
   id: ID!
@@ -193,6 +203,7 @@ type Teacher @model  @key(name: "bySchool", fields: ["schoolID"]) {
   schoolID: ID
   classrooms: [TeacherClassroom] @connection(keyName: "byTeacher", fields: ["id"])
   LessonTeacher: [LessonTeacher] @connection(keyName: "byTeacher", fields: ["id"])
+  School: School @connection(fields: ["schoolID"])
 }
 
 type Pupil @model

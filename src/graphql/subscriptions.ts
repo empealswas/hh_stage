@@ -643,6 +643,9 @@ export const onCreateSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
+      Principals {
+        nextToken
+      }
       classrooms {
         nextToken
       }
@@ -665,6 +668,9 @@ export const onUpdateSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
+      Principals {
+        nextToken
+      }
       classrooms {
         nextToken
       }
@@ -685,6 +691,9 @@ export const onDeleteSchool = /* GraphQL */ `
       region
       principal
       Teachers {
+        nextToken
+      }
+      Principals {
         nextToken
       }
       classrooms {
@@ -1190,6 +1199,72 @@ export const onDeletePupilParent = /* GraphQL */ `
     }
   }
 `;
+export const onCreatePrincipal = /* GraphQL */ `
+  subscription OnCreatePrincipal {
+    onCreatePrincipal {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePrincipal = /* GraphQL */ `
+  subscription OnUpdatePrincipal {
+    onUpdatePrincipal {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePrincipal = /* GraphQL */ `
+  subscription OnDeletePrincipal {
+    onDeletePrincipal {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateTeacher = /* GraphQL */ `
   subscription OnCreateTeacher {
     onCreateTeacher {
@@ -1203,6 +1278,15 @@ export const onCreateTeacher = /* GraphQL */ `
       }
       LessonTeacher {
         nextToken
+      }
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -1223,6 +1307,15 @@ export const onUpdateTeacher = /* GraphQL */ `
       LessonTeacher {
         nextToken
       }
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -1241,6 +1334,15 @@ export const onDeleteTeacher = /* GraphQL */ `
       }
       LessonTeacher {
         nextToken
+      }
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt

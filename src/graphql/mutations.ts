@@ -718,6 +718,9 @@ export const createSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
+      Principals {
+        nextToken
+      }
       classrooms {
         nextToken
       }
@@ -743,6 +746,9 @@ export const updateSchool = /* GraphQL */ `
       Teachers {
         nextToken
       }
+      Principals {
+        nextToken
+      }
       classrooms {
         nextToken
       }
@@ -766,6 +772,9 @@ export const deleteSchool = /* GraphQL */ `
       region
       principal
       Teachers {
+        nextToken
+      }
+      Principals {
         nextToken
       }
       classrooms {
@@ -1334,6 +1343,81 @@ export const deletePupilParent = /* GraphQL */ `
     }
   }
 `;
+export const createPrincipal = /* GraphQL */ `
+  mutation CreatePrincipal(
+    $input: CreatePrincipalInput!
+    $condition: ModelPrincipalConditionInput
+  ) {
+    createPrincipal(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePrincipal = /* GraphQL */ `
+  mutation UpdatePrincipal(
+    $input: UpdatePrincipalInput!
+    $condition: ModelPrincipalConditionInput
+  ) {
+    updatePrincipal(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePrincipal = /* GraphQL */ `
+  mutation DeletePrincipal(
+    $input: DeletePrincipalInput!
+    $condition: ModelPrincipalConditionInput
+  ) {
+    deletePrincipal(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createTeacher = /* GraphQL */ `
   mutation CreateTeacher(
     $input: CreateTeacherInput!
@@ -1350,6 +1434,15 @@ export const createTeacher = /* GraphQL */ `
       }
       LessonTeacher {
         nextToken
+      }
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -1373,6 +1466,15 @@ export const updateTeacher = /* GraphQL */ `
       LessonTeacher {
         nextToken
       }
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -1394,6 +1496,15 @@ export const deleteTeacher = /* GraphQL */ `
       }
       LessonTeacher {
         nextToken
+      }
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt

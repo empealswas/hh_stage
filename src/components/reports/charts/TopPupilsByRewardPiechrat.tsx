@@ -11,6 +11,8 @@ import {API, graphqlOperation} from "aws-amplify";
 import {useContext, useEffect, useState} from "react";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import {UserContext} from "../../../App";
+import {Principal} from "../../../models/Principal";
+import {Admin} from "../../../models/Admin";
 
 // ----------------------------------------------------------------------
 
@@ -64,7 +66,7 @@ export default function TopPupilsByRewardPiechrat() {
     const user = useContext(UserContext);
     const getTopPupilsByTrophies = async () => {
         let pupils;
-        if (user?.isAdmin()) {
+        if (user instanceof Admin || user instanceof Principal) {
         const result: any = await API.graphql(graphqlOperation(topByRewardsQuery));
             pupils = result.data.listPupils.items;
         }else{

@@ -12,6 +12,9 @@ import {API, graphqlOperation} from "aws-amplify";
 import {UserContext} from "../../../App";
 import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import {Pupil} from "../../../API";
+import {Admin} from "../../../models/Admin";
+import {Principal} from "../../../models/Principal";
+import {Teacher} from "../../../models/Teacher";
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +75,7 @@ export default function TopPupilsByPhysicalActivities() {
         let data: any;
         const pupils = {};
 
-        if (user?.isAdmin()) {
+        if (user instanceof Admin || user instanceof Principal) {
         const result:any = await API.graphql(graphqlOperation(pupilsByPhysicalActivitiesQuery));
             data = result.data.listPELessonRecords.items
             data.map((item:any) => {
@@ -91,7 +94,7 @@ export default function TopPupilsByPhysicalActivities() {
                     }
                 })
             })
-        }else if (user?.isTeacher()) {
+        }else if (user instanceof Teacher) {
             const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
             data = result.data.getTeacher.classrooms.items
                 .map((item: any) => item.classroom)

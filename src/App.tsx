@@ -25,6 +25,7 @@ import "../node_modules/video-react/dist/video-react.css"
 import './global.css'
 import React from 'react';
 import {SnackbarProvider} from "notistack";
+import {createUser} from "./models/createUser";
 
 Amplify.configure(config)
 Amplify.register(Auth);
@@ -50,7 +51,10 @@ function App() {
                 case 'signIn':
                 case 'cognitoHostedUI':
                     getUser().then(userData => {
-                        setUser(new User(userData));
+                        const initiatedUser = createUser(userData);
+                        initiatedUser.getCredentials().then(res => {
+                            setUser(initiatedUser);
+                        })
                     });
                     break;
                 case 'signOut':
@@ -62,12 +66,14 @@ function App() {
                     break;
             }
         });
-
         getUser().then(userData => {
             if (!userData) {
                 setUser(null);
             } else {
-                setUser(new User(userData));
+                const initiatedUser = createUser(userData);
+                initiatedUser.getCredentials().then(res => {
+                    setUser(initiatedUser);
+                })
             }
         });
 
