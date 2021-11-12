@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
 import {FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 
 function GarminMetricSelector( {metricChanger, metric}) {
-    let metricOptions = ["dailies", "sleep", "sedentary"];
+    let metricOptions = ["steps", "sleep", "sedentary"];
 
     const handleChange = (event) => {
         metricChanger(event.target.value);

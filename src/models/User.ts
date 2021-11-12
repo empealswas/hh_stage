@@ -1,5 +1,6 @@
 
 export class User {
+
     firstName?: string;
     lastName?: string;
     protected _email: string;

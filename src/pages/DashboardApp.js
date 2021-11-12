@@ -78,7 +78,7 @@ export default function DashboardApp() {
                         <ActivityGoalChart goalTime={100000}/>
                     </Grid>
                     <Can I={'read'} a={'teacherDashboard'}>
-                        <Grid itme xs={12}>
+                        <Grid item xs={12}>
                             <DashboardOfTeacher/>
                         </Grid>
                     </Can>

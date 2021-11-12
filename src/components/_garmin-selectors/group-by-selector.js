@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
 import {Select} from "@material-ui/core";
 import {FormControl, InputLabel, MenuItem} from "@mui/material";
 
 function GroupBySelector( {groupByChanger, group}) {
-    let groupByOptions = ["group", "user"];
+    let groupByOptions = ["user","group"];
 
     const handleChange = (event) => {
         groupByChanger(event.target.value);

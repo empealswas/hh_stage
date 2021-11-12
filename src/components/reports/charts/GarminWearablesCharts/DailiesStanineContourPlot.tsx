@@ -2,16 +2,17 @@ import { Card, CardHeader, Box } from '@material-ui/core';
 import ReactApexChart from 'react-apexcharts';
 import { ApexRadialGraphModel } from '../../../../models/garminDataModels/ApexRadialGraphData';
 
-export default function DailiesStanineContourPlot() {
+export default function DailiesStanineContourPlot(props: any) {
 
-    // if (!props) {
-    //     return (
-    //         <Card>
-    //             <CardHeader title="Garmin Metrics Data" subheader="No data available" />
-    //         </Card>
-    //     );
-    // } else {
-        var cellColors = getStanineColours(2);
+    if (!props) {
+        return (
+            <Card>
+                <CardHeader title="Garmin Metrics Data" subheader="No data available" />
+            </Card>
+        );
+    } else {
+      console.log(props["data"]);
+        var cellColors = getStanineColours(props["data"]);
         const plot = {
             series: [
                 {
@@ -91,49 +92,49 @@ export default function DailiesStanineContourPlot() {
             <Card>
                 <CardHeader title="Steps Stanines" subheader="" />
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                <ReactApexChart options={plot.options} series={plot.series} type="heatmap" height={200} />
+                <ReactApexChart options={plot.options} series={plot.series} type="heatmap" height={175} />
                 </Box>
             </Card>
         )
+    }
+
+    // function generateRadialBars(props: ApexRadialGraphModel ) {
+      
+    //   var adjustedData = new ApexRadialGraphModel (0,0,0,0);
+    //   adjustedData.active = parseFloat((props.active/ 60 * 100).toPrecision(2));
+    //   adjustedData.sleep = parseFloat((props.sleep/ 540 * 100).toPrecision(2));
+    //   adjustedData.steps = parseFloat((props.steps/ 5000 * 100).toPrecision(2));
+    //   adjustedData.sedentary = parseFloat((props.sedentary/ 240 * 100).toPrecision(2));
+    //   return adjustedData
+    // };
+
+    // function getDataColour(value: number): string {
+
+    //   if(value >= 50 && value < 69){
+    //     return '#f29407';
+    //   } else if (value >= 70 && value< 99 ){
+    //     return '#f29407';
+    //   } else if (value >= 100){
+    //     return '#0713f2';
+    //   } else {
+    //     return '#f25207';
+    //   }
     // }
 
-    function generateRadialBars(props: ApexRadialGraphModel ) {
-      
-      var adjustedData = new ApexRadialGraphModel (0,0,0,0);
-      adjustedData.active = parseFloat((props.active/ 60 * 100).toPrecision(2));
-      adjustedData.sleep = parseFloat((props.sleep/ 540 * 100).toPrecision(2));
-      adjustedData.steps = parseFloat((props.steps/ 5000 * 100).toPrecision(2));
-      adjustedData.sedentary = parseFloat((props.sedentary/ 240 * 100).toPrecision(2));
-      return adjustedData
-    };
+    // function getSedentaryDataColour(value: number): string {
 
-    function getDataColour(value: number): string {
-
-      if(value >= 50 && value < 69){
-        return '#f29407';
-      } else if (value >= 70 && value< 99 ){
-        return '#f29407';
-      } else if (value >= 100){
-        return '#0713f2';
-      } else {
-        return '#f25207';
-      }
-    }
-
-    function getSedentaryDataColour(value: number): string {
-
-      if ( value < 39 ) {
-        return '#0713f2';
-      } else if(value >= 40 && value < 69 ){
-        return '#f29407';
-      } else if (value >= 70 && value < 99 ){
-        return '#f29407';
-      } else if (value >= 100){
-        return '#f25207';
-      } else {
-        return 'grey';
-      }
-    }
+    //   if ( value < 39 ) {
+    //     return '#0713f2';
+    //   } else if(value >= 40 && value < 69 ){
+    //     return '#f29407';
+    //   } else if (value >= 70 && value < 99 ){
+    //     return '#f29407';
+    //   } else if (value >= 100){
+    //     return '#f25207';
+    //   } else {
+    //     return 'grey';
+    //   }
+    // }
 
     function getStanineColours(score: number):string []{
 
