@@ -5,6 +5,7 @@ import { ScatterPlotTraceModel } from "../../../../../models/garminDataModels/ap
 import { GarminSleepSummaryModel } from "../../../../../models/garminDataModels/garminSleepModel";
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
+import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 
 export default function SleepOverview(props: any) {
 
@@ -167,18 +168,18 @@ export default function SleepOverview(props: any) {
     }
     return (
         <Card >
-            <CardHeader title="Steps" subheader="Total duration and intensity" />
+            <CardHeader title="Sleep" subheader="Total duration and intensity" />
             <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                <h1>A sleep design </h1>
+
                 <>
-                    <Grid item xs={12}>
-                        <DailiesStanineContourPlot />
-                    </Grid>
-                    {/* <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <Grid item xs={12} sm={6} md={6} lg={6}>
                         <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} />
-                    </Grid> */}
+                    </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <DailiesStanineContourPlot />
                     </Grid>
                 </>
             </Box>

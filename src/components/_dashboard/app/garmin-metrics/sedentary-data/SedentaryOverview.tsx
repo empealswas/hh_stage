@@ -5,6 +5,7 @@ import { ScatterPlotTraceModel } from "../../../../../models/garminDataModels/ap
 import { GarminEpochsSummaryDataModel } from "../../../../../models/garminDataModels/garminEpochsModel";
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
+import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 
 export default function SedentaryOverview(props: any) {
     var epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates";
@@ -168,18 +169,18 @@ export default function SedentaryOverview(props: any) {
     }
     return (
         <Card >
-            <CardHeader title="Steps" subheader="Total duration and intensity" />
+            <CardHeader title="Activity levels" subheader="Total duration and intensity" />
             <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                <h1>A sitdown design </h1>
                 <>
-                    <Grid item xs={12}>
-                        <DailiesStanineContourPlot />
-                    </Grid>
-                    {/* <Grid item xs={12} sm={6} md={6} lg={6}>
+
+                    <Grid item xs={12} sm={6} md={6} lg={6}>
                         <StepIntensityDonut data2={sedentaryIntensityDonutData} title2={"Sleep vs Activity"} subTitle2={"Comparison"} />
-                    </Grid> */}
+                    </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStepsDistribution data={sedentaryScatterData} title={"Sedentary"} subTitle={"Total Inactivity"}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <DailiesStanineContourPlot />
                     </Grid>
                 </>
             </Box>

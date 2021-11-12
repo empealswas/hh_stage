@@ -5,6 +5,7 @@ import { ScatterPlotTraceModel } from "../../../../../models/garminDataModels/ap
 import { GarminDailiesSummaryModel } from "../../../../../models/garminDataModels/garminDailiesModel";
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
+import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 
 
 export default function DailiesOverview(props: any) {
@@ -154,12 +155,13 @@ export default function DailiesOverview(props: any) {
         const prepDonutIntensityData = async () => {
             // initialis the output data to == 100
             // set like this so i know it is doing something :\
-            var percReg = 40;
-            var percMod = 30;
-            var percVig = 30;
+            var data = [];
 
         // if data exists and the step suration for the last days
         if(dailiesDataGroup.length >0){
+            var percReg = 40;
+            var percMod = 30;
+            var percVig = 30;
             var stepsRecord = dailiesDataGroup[dailiesDataGroup.length-1];
      
             if (stepsRecord.stepDuration > 0){
@@ -169,8 +171,9 @@ export default function DailiesOverview(props: any) {
                 percMod = parseFloat((stepsRecord.moderateIntensity / stepsRecord.stepDuration * 100).toPrecision(2));
                 percVig = parseFloat((stepsRecord.vigorousIntensity / stepsRecord.stepDuration * 100).toPrecision(2));
             }
+            data = [percReg, percMod, percVig];
         }
-        var data: number [] = [percReg, percMod, percVig];
+        
         setDailiesIntensityDonutData(data);
         }
         prepDonutIntensityData();
@@ -193,20 +196,17 @@ export default function DailiesOverview(props: any) {
     return (
         <Card >
             <CardHeader title="Steps" subheader="Total duration and intensity" />
-            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                <h1>A grand design </h1>
                 <>
-                    <Grid item xs={12}>
-                        <DailiesStanineContourPlot />
-                    </Grid>
-                    {/* <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <Grid item xs={12} sm={6} md={6} lg={6}>
                         <StepIntensityDonut data2={dailiesIntensityDonutData} title2={"Steps Intensity"} subTitle2={"levels"} />
-                    </Grid> */}
+                    </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStepsDistribution data={dailiesScatterData} title={"Steps"} subTitle={"Total Steps"}/>
                     </Grid>
+                    <Grid item xs={12}>
+                        <DailiesStanineContourPlot />
+                    </Grid>
                 </>
-            </Box>
         </Card>
     );
 
