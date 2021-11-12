@@ -49,7 +49,7 @@ const DashboardOfTeacher = () => {
     ///////////////////////////////////////////////////////////////////////////////////////
     // Can this be moved out into some kind of service? ///////////////////////////////////
     const [periodState, setPeriodState] = useState("daily");
-    const [metricState, setMetricState] = useState("dailies");
+    const [metricState, setMetricState] = useState("steps");
     const [groupByState, setGroupByState] = useState("group");
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
