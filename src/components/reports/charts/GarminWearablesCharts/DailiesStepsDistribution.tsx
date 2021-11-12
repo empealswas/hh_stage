@@ -49,7 +49,7 @@ export default function DailiesStepsDistribution(props: any) {
             <Card>
                 <CardHeader title={props["title"]} subheader={props["subTitle"]} />
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                    <ReactApexChart options={plot.options} series={plot.series} type="scatter" height={350} />
+                    <ReactApexChart options={plot.options} series={plot.series} type="scatter" height={270} />
 
                 </Box>
             </Card>

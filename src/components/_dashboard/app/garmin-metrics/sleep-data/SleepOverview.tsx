@@ -10,7 +10,7 @@ import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts
 export default function SleepOverview(props: any) {
 
     var sleepBaseUrl: string = "https://analytics.healthyhabits.link/api/garminSleep/dates";
-    // var sleepZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminSleep/z-values/dates";
+    var sleepZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminSleep/z-values/dates";
     var startUrl: string = "/start/";
     var endUrl: string = "/end/";
     var periodUrl: string = "/period/";
@@ -21,14 +21,17 @@ export default function SleepOverview(props: any) {
     // constants for retrieved data
     const [sleepDataUser, setSleepUser] = useState<GarminSleepSummaryModel[]>([]);
     const [sleepDataGroup, setSleepGroup] = useState<GarminSleepSummaryModel[]>([]);
+    const [sleepStanineGroup, setSleepStanineGroup] = useState<GarminSleepSummaryModel[]>([]);
+    
 
     // constants for plot data
     const [sleepScatterData, setSleepScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [sleepIntensityDonutData, setSleepIntensityDonutData] = useState<number[]>([]);
+    const [stanineValue, setStanineValue] = useState<number>(1);
 
-     ///////////////////////////////////
+     /////////////////////////////////
     /////  get sleep users data /////
-    ///////////////////////////////////
+    /////////////////////////////////
     useEffect(() => { 
         var sleepDataByUser = sleepBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + userOpt;
 
@@ -60,7 +63,7 @@ export default function SleepOverview(props: any) {
     }, [endUrl, groupedByUrl, periodUrl, props, sleepBaseUrl, startUrl, userOpt]);
 
     ///////////////////////////////////
-    /////  get sleep group data /////
+    /////  get sleep group data   /////
     ///////////////////////////////////
     useEffect(() => {
         const getData = async () => {
@@ -92,6 +95,39 @@ export default function SleepOverview(props: any) {
         getData();
     }, [endUrl, groupOpt, groupedByUrl, periodUrl, props, sleepBaseUrl, startUrl]);
 
+    /////////////////////////////////////
+    /////  get sleep stanine data  /////
+    /////////////////////////////////////
+    useEffect(() => { 
+        var sleepStaninesByUser = sleepZvaluesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"]+ groupedByUrl + groupOpt;
+
+        const getData = async () => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            if (props['idList']) {
+                var raw = JSON.stringify(props['idList'].id);
+                var requestOptions: any = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+                // send request
+                fetch(sleepStaninesByUser, requestOptions)
+                    .then(response => response.text())
+                    .then(result => {
+                        if (result != null) {
+                            var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
+                            console.log(garminData);
+                            setSleepStanineGroup(garminData);
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }
+        }
+        getData();
+    }, [endUrl, sleepZvaluesBaseUrl, groupOpt, groupedByUrl, props, startUrl, userOpt]);  
 
     ///////////////////////////////////////////
     /////  create scatter plot trace data /////
@@ -154,7 +190,21 @@ export default function SleepOverview(props: any) {
         prepDonutIntensityData();
     }, [sleepDataGroup]);
 
-  
+    //////////////////////////////////////////////
+    /////  create stanine heatmap trace data /////
+    //////////////////////////////////////////////
+    useEffect(() => {  
+        const prepStanineHeatmapData = async () => {
+            if(sleepStanineGroup.length>0){
+                setStanineValue(sleepStanineGroup[0].duration);
+            } else {
+                console.log("dailiesStanineGroup: inside useeffcet constant - mo data");
+            }
+        }
+        prepStanineHeatmapData();
+
+    }, [sleepStanineGroup]);
+
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
         var series = [];
@@ -173,13 +223,13 @@ export default function SleepOverview(props: any) {
 
                 <>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} />
+                        <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} labels={["Other", "Light", "Deep"]}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <DailiesStanineContourPlot />
+                        <DailiesStanineContourPlot data={stanineValue}/>
                     </Grid>
                 </>
             </Box>

@@ -30,7 +30,7 @@ if(props['data2']){
                     chart: {
                         type: 'donut',
                     },
-                    labels: ["Regular", "Moderate", "Vigorous"],
+                    labels: [props["labels"][0], props["labels"][1], props["labels"][2]],//["Regular", "Moderate", "Vigorous"],
                     responsive: [{
                         breakpoint: 480,
                         options: {
@@ -50,7 +50,7 @@ if(props['data2']){
                 <Card>
                     <CardHeader title={props["title2"]} subheader={props["subTitle2"]} />
                     <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                        <ReactApexChart type="donut" series={plot.series} options={plot.options} height={350} />
+                        <ReactApexChart type="donut" series={plot.series} options={plot.options} height={270} />
                     </Box>
                 </Card>
             );
@@ -61,7 +61,7 @@ if(props['data2']){
                     chart: {
                         type: 'donut',
                     },
-                    labels: ["Regular", "Moderate", "Vigorous"],
+                    labels: ["", "", ""],
                     responsive: [{
                         breakpoint: 480,
                         options: {

@@ -9,7 +9,7 @@ import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts
 
 export default function SedentaryOverview(props: any) {
     var epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates";
-    // var epochsZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/z-values/dates";
+    var epochsZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/z-values/dates";
     var startUrl: string = "/start/";
     var endUrl: string = "/end/";
     var periodUrl: string = "/period/";
@@ -21,13 +21,15 @@ export default function SedentaryOverview(props: any) {
         // constants for retrieved data
         const [sedentaryDataUser, setSedentaryUser] = useState<GarminEpochsSummaryDataModel[]>([]);
         const [sedentaryDataGroup, setSedentaryGroup] = useState<GarminEpochsSummaryDataModel[]>([]);
+        const [sedentaryStanineGroup, setSedentaryStanineGroup] = useState<GarminEpochsSummaryDataModel[]>([]);
+        const [stanineValue, setStanineValue] = useState<number>(1);
     
         // constants for plot data
         const [sedentaryScatterData, setSedentaryScatterData] = useState<ScatterPlotTraceModel[]>([]);
         const [sedentaryIntensityDonutData, setSedentaryIntensityDonutData] = useState<number[]>([]);
 
-            ///////////////////////////////////
-    /////  get sleep users data /////
+    ///////////////////////////////////
+    /////  get epochs users data  /////
     ///////////////////////////////////
     useEffect(() => { 
         var sedentaryDataByUser = epochsBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + userOpt;
@@ -60,7 +62,7 @@ export default function SedentaryOverview(props: any) {
     }, [endUrl, epochsBaseUrl, groupedByUrl, periodUrl, props, startUrl, userOpt]);
 
     ///////////////////////////////////
-    /////  get dailies group data /////
+    /////  get epochs group data  /////
     ///////////////////////////////////
     useEffect(() => {
         const getData = async () => {
@@ -92,7 +94,40 @@ export default function SedentaryOverview(props: any) {
         getData();
     }, [endUrl, epochsBaseUrl, groupOpt, groupedByUrl, periodUrl, props, startUrl]);
 
+    /////////////////////////////////////
+    /////  get epochs stanine data  /////
+    /////////////////////////////////////
+    useEffect(() => { 
+        var sedentaryStaninesByUser = epochsZvaluesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"]+ groupedByUrl + groupOpt;
 
+        const getData = async () => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            if (props['idList']) {
+                var raw = JSON.stringify(props['idList'].id);
+                var requestOptions: any = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+                // send request
+                fetch(sedentaryStaninesByUser, requestOptions)
+                    .then(response => response.text())
+                    .then(result => {
+                        if (result != null) {
+                            var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
+                            console.log(garminData);
+                            setSedentaryStanineGroup(garminData);
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }
+        }
+        getData();
+    }, [endUrl, epochsZvaluesBaseUrl, groupOpt, groupedByUrl, props, startUrl, userOpt]);    
+    
     ///////////////////////////////////////////
     /////  create scatter plot trace data /////
     ///////////////////////////////////////////
@@ -155,7 +190,23 @@ export default function SedentaryOverview(props: any) {
         prepDonutIntensityData();
     }, [sedentaryDataGroup]);
 
-  
+    //////////////////////////////////////////////
+    /////  create stanine heatmap trace data /////
+    //////////////////////////////////////////////
+    useEffect(() => {  
+
+        const prepStanineHeatmapData = async () => {
+
+            if(sedentaryStanineGroup.length>0){
+                setStanineValue(sedentaryStanineGroup[0].sedentary);
+            } else {
+                console.log("dailiesStanineGroup: inside useeffcet constant - mo data");
+            }
+        }
+        prepStanineHeatmapData();
+
+    }, [sedentaryStanineGroup]);
+
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
         var series = [];
@@ -174,13 +225,13 @@ export default function SedentaryOverview(props: any) {
                 <>
 
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <StepIntensityDonut data2={sedentaryIntensityDonutData} title2={"Sleep vs Activity"} subTitle2={"Comparison"} />
+                        <StepIntensityDonut data2={sedentaryIntensityDonutData} title2={"Sedentary vs Activity"} subTitle2={"Comparison"} labels={["Sedentary", "Active", "Highly Active"]}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStepsDistribution data={sedentaryScatterData} title={"Sedentary"} subTitle={"Total Inactivity"}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <DailiesStanineContourPlot />
+                        <DailiesStanineContourPlot data={stanineValue}/>
                     </Grid>
                 </>
             </Box>

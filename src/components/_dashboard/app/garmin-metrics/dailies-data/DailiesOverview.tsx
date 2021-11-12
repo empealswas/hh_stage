@@ -26,10 +26,12 @@ export default function DailiesOverview(props: any) {
     // constants for creating api query urls
     const [dailiesDataUser, setDailiesUser] = useState<GarminDailiesSummaryModel[]>([]);
     const [dailiesDataGroup, setDailiesGroup] = useState<GarminDailiesSummaryModel[]>([]);
-
+    const [dailiesStanineGroup, setDailiesStanineGroup] = useState<GarminDailiesSummaryModel[]>([]);
+    
     // constants for plot data
     const [dailiesScatterData, setDailiesScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [dailiesIntensityDonutData, setDailiesIntensityDonutData] = useState<number[]>([]);
+    const [stanineValue, setStanineValue] = useState<number>(1);
 
 
     
@@ -111,6 +113,38 @@ export default function DailiesOverview(props: any) {
         return () => { isMounted = false }; 
     }, [dailiesBaseUrl, endUrl, groupOpt, groupedByUrl, periodUrl, props, startUrl]);
 
+    /////////////////////////////////////
+    /////  get steps stanine data  /////
+    /////////////////////////////////////
+    useEffect(() => { 
+        var dailiesStaninesByUser = dailiesZvaluesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"]+ groupedByUrl + groupOpt;
+
+        const getData = async () => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            if (props['idList']) {
+                var raw = JSON.stringify(props['idList'].id);
+                var requestOptions: any = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+                // send request
+                fetch(dailiesStaninesByUser, requestOptions)
+                    .then(response => response.text())
+                    .then(result => {
+                        if (result != null) {
+                            var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
+                            setDailiesStanineGroup(garminData);
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }
+        }
+        getData();
+    }, [endUrl, dailiesZvaluesBaseUrl, groupOpt, groupedByUrl, props, startUrl, userOpt]);  
 
     ///////////////////////////////////////////
     /////  create scatter plot trace data /////
@@ -165,7 +199,6 @@ export default function DailiesOverview(props: any) {
             var stepsRecord = dailiesDataGroup[dailiesDataGroup.length-1];
      
             if (stepsRecord.stepDuration > 0){
-                console.log("and step duration > 0");
                 var duration = stepsRecord.stepDuration - (stepsRecord.moderateIntensity + stepsRecord.vigorousIntensity);
                 percReg = parseFloat((duration / stepsRecord.stepDuration * 100).toPrecision(2));
                 percMod = parseFloat((stepsRecord.moderateIntensity / stepsRecord.stepDuration * 100).toPrecision(2));
@@ -180,7 +213,23 @@ export default function DailiesOverview(props: any) {
         return () => { isMounted = false }; 
     }, [dailiesDataGroup]);
 
-  
+    //////////////////////////////////////////////
+    /////  create stanine heatmap trace data /////
+    //////////////////////////////////////////////
+    useEffect(() => {  
+
+        const prepStanineHeatmapData = async () => {
+
+            if(dailiesStanineGroup.length>0){
+                setStanineValue(dailiesStanineGroup[0].totalSteps);
+            } else {
+                console.log("dailiesStanineGroup: inside useeffcet constant - mo data");
+            }
+        }
+        prepStanineHeatmapData();
+
+    }, [dailiesStanineGroup]);
+
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
         var series = [];
@@ -195,16 +244,16 @@ export default function DailiesOverview(props: any) {
 
     return (
         <Card >
-            <CardHeader title="Steps" subheader="Total duration and intensity" />
+            <CardHeader title="Steps" />
                 <>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <StepIntensityDonut data2={dailiesIntensityDonutData} title2={"Steps Intensity"} subTitle2={"levels"} />
+                        <StepIntensityDonut data2={dailiesIntensityDonutData} title2={"Steps Intensity"} subTitle2={"levels"} labels={["Regular", "Moderate", "Vigorous"]}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStepsDistribution data={dailiesScatterData} title={"Steps"} subTitle={"Total Steps"}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <DailiesStanineContourPlot />
+                        <DailiesStanineContourPlot data={stanineValue}/>
                     </Grid>
                 </>
         </Card>
