@@ -2,14 +2,13 @@ import { Card, CardHeader, Grid } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import { useEffect, useState } from "react";
 import { ScatterPlotTraceModel } from "../../../../../models/garminDataModels/apexChartsScatterDataPair";
-import { GarminSleepSummaryModel } from "../../../../../models/garminDataModels/garminSleepModel";
+import { GarminEpochsSummaryDataModel } from "../../../../../models/garminDataModels/garminEpochsModel";
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 
-export default function SleepOverview(props: any) {
-
-    var sleepBaseUrl: string = "https://analytics.healthyhabits.link/api/garminSleep/dates";
-    // var sleepZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminSleep/z-values/dates";
+export default function SedentaryOverview(props: any) {
+    var epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates";
+    // var epochsZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/z-values/dates";
     var startUrl: string = "/start/";
     var endUrl: string = "/end/";
     var periodUrl: string = "/period/";
@@ -17,19 +16,20 @@ export default function SleepOverview(props: any) {
     var groupOpt: string = "group";
     var userOpt: string = "user";
 
-    // constants for retrieved data
-    const [sleepDataUser, setSleepUser] = useState<GarminSleepSummaryModel[]>([]);
-    const [sleepDataGroup, setSleepGroup] = useState<GarminSleepSummaryModel[]>([]);
 
-    // constants for plot data
-    const [sleepScatterData, setSleepScatterData] = useState<ScatterPlotTraceModel[]>([]);
-    const [sleepIntensityDonutData, setSleepIntensityDonutData] = useState<number[]>([]);
+        // constants for retrieved data
+        const [sedentaryDataUser, setSedentaryUser] = useState<GarminEpochsSummaryDataModel[]>([]);
+        const [sedentaryDataGroup, setSedentaryGroup] = useState<GarminEpochsSummaryDataModel[]>([]);
+    
+        // constants for plot data
+        const [sedentaryScatterData, setSedentaryScatterData] = useState<ScatterPlotTraceModel[]>([]);
+        const [sedentaryIntensityDonutData, setSedentaryIntensityDonutData] = useState<number[]>([]);
 
-     ///////////////////////////////////
+            ///////////////////////////////////
     /////  get sleep users data /////
     ///////////////////////////////////
     useEffect(() => { 
-        var sleepDataByUser = sleepBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + userOpt;
+        var sedentaryDataByUser = epochsBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + userOpt;
 
         const getData = async () => {
             var myHeaders = new Headers();
@@ -44,26 +44,26 @@ export default function SleepOverview(props: any) {
                 };
 
                 // send request
-                fetch(sleepDataByUser, requestOptions)
+                fetch(sedentaryDataByUser, requestOptions)
                     .then(response => response.text())
                     .then(result => {
                         if (result != null) {
-                            var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
-                            setSleepUser(garminData);
+                            var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
+                            setSedentaryUser(garminData);
                         }
                     })
                     .catch(error => console.log('error', error));
             }
         }
         getData();
-    }, [endUrl, groupedByUrl, periodUrl, props, sleepBaseUrl, startUrl, userOpt]);
+    }, [endUrl, epochsBaseUrl, groupedByUrl, periodUrl, props, startUrl, userOpt]);
 
     ///////////////////////////////////
-    /////  get sleep group data /////
+    /////  get dailies group data /////
     ///////////////////////////////////
     useEffect(() => {
         const getData = async () => {
-            var sleepDataByGroup = sleepBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + groupOpt;
+            var sedentaryDataByGroup = epochsBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + groupOpt;
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             if (props['idList']) {
@@ -76,20 +76,20 @@ export default function SleepOverview(props: any) {
                 };
 
                 // send request
-                fetch(sleepDataByGroup, requestOptions)
+                fetch(sedentaryDataByGroup, requestOptions)
                     .then(response => response.text())
                     .then(result => {
                         if (result != null) {
-                            var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
+                            var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
                             
-                            setSleepGroup(garminData);
+                            setSedentaryGroup(garminData);
                         }
                     })
                     .catch(error => console.log('error', error));
             }
         }
         getData();
-    }, [endUrl, groupOpt, groupedByUrl, periodUrl, props, sleepBaseUrl, startUrl]);
+    }, [endUrl, epochsBaseUrl, groupOpt, groupedByUrl, periodUrl, props, startUrl]);
 
 
     ///////////////////////////////////////////
@@ -98,15 +98,15 @@ export default function SleepOverview(props: any) {
     useEffect(() => {  
         // prepare the traces for the scatter plots to be user in the scatterplot
         const prepScatterPlotData = async () => {
-            const uniqueIds = [...Array.from(new Set(sleepDataUser.map(item => item.garminId)))];
+            const uniqueIds = [...Array.from(new Set(sedentaryDataUser.map(item => item.garminId)))];
 
             var dataSeries: ScatterPlotTraceModel[] = [];
             for (var ids of uniqueIds) {
-                const processedData = sleepDataUser.filter(
+                const processedData = sedentaryDataUser.filter(
                     (item) => {return item.garminId === ids;}
                 );
 
-                let result = processedData.map(({ period, duration }) => ({ period, duration }));
+                let result = processedData.map(({ period, sedentary }) => ({ period, sedentary }));
                 var name!: string;
                 // if the 
                 if (ids == null) {
@@ -118,11 +118,11 @@ export default function SleepOverview(props: any) {
                 var newTrace = new ScatterPlotTraceModel(name, data);
                 dataSeries.push(newTrace);
             };
-            setSleepScatterData(dataSeries);
+            setSedentaryScatterData(dataSeries);
         }
         prepScatterPlotData();
       
-    }, [sleepDataUser]);
+    }, [sedentaryDataUser]);
 
     //////////////////////////////////////////////
     /////  create intensity donut trace data /////
@@ -132,26 +132,27 @@ export default function SleepOverview(props: any) {
         const prepDonutIntensityData = async () => {
             // initialis the output data to == 100
             // set like this so i know it is doing something :\
-            var percReg = 40;
-            var percLight = 30;
-            var percDeep = 30;
+            var percSed = 40;
+            var percAct = 30;
+            var percHighAct = 30;
 
         // if data exists and the step suration for the last days
-        if(sleepDataGroup.length >0){
-            var sleepRecord = sleepDataGroup[sleepDataGroup.length-1];
+        if(sedentaryDataGroup.length >0){
+            var sedentaryRecord = sedentaryDataGroup[sedentaryDataGroup.length-1];
      
-            if (sleepRecord.duration > 0){
-                var duration = sleepRecord.duration - (sleepRecord.lightSleep + sleepRecord.deepSleep);
-                percReg = parseFloat((duration / sleepRecord.duration * 100).toPrecision(2));
-                percLight = parseFloat((sleepRecord.lightSleep / sleepRecord.duration * 100).toPrecision(2));
-                percDeep = parseFloat((sleepRecord.deepSleep / sleepRecord.duration * 100).toPrecision(2));
+            if (sedentaryRecord.duration > 0){
+                var totalActive = sedentaryRecord.sedentary + sedentaryRecord.active  + sedentaryRecord.highlyActive;
+                var duration = totalActive - (sedentaryRecord.active  + sedentaryRecord.highlyActive);
+                percSed = parseFloat((duration / sedentaryRecord.sedentary * 100).toPrecision(2));
+                percAct = parseFloat((sedentaryRecord.active  / totalActive * 100).toPrecision(2));
+                percHighAct = parseFloat((sedentaryRecord.highlyActive / totalActive * 100).toPrecision(2));
             }
         }
-        var data: number [] = [percReg, percLight, percDeep];
-        setSleepIntensityDonutData(data);
+        var data: number [] = [percSed, percAct, percHighAct];
+        setSedentaryIntensityDonutData(data);
         }
         prepDonutIntensityData();
-    }, [sleepDataGroup]);
+    }, [sedentaryDataGroup]);
 
   
     function generateGarminDayWiseTimeSeries(inData: any) {
@@ -159,7 +160,7 @@ export default function SleepOverview(props: any) {
         var series = [];
         while (i < inData.length) {
             var x = new Date(inData[i].period).getTime();
-            var y = inData[i].duration
+            var y = inData[i].sedentary
             series.push([x, y]);
             i++;
         }
@@ -169,16 +170,16 @@ export default function SleepOverview(props: any) {
         <Card >
             <CardHeader title="Steps" subheader="Total duration and intensity" />
             <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                <h1>A sleep design </h1>
+                <h1>A sitdown design </h1>
                 <>
                     <Grid item xs={12}>
                         <DailiesStanineContourPlot />
                     </Grid>
                     {/* <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} />
+                        <StepIntensityDonut data2={sedentaryIntensityDonutData} title2={"Sleep vs Activity"} subTitle2={"Comparison"} />
                     </Grid> */}
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"}/>
+                        <DailiesStepsDistribution data={sedentaryScatterData} title={"Sedentary"} subTitle={"Total Inactivity"}/>
                     </Grid>
                 </>
             </Box>

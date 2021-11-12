@@ -74,7 +74,7 @@ export default function DailiesOverview(props: any) {
         }
         getData();
         return () => { isMounted = false }; 
-    }, []);
+    }, [dailiesBaseUrl, endUrl, groupedByUrl, periodUrl, props, startUrl, userOpt]);
 
     ///////////////////////////////////
     /////  get dailies group data /////
@@ -108,7 +108,7 @@ export default function DailiesOverview(props: any) {
         }
         getData();
         return () => { isMounted = false }; 
-    }, []);
+    }, [dailiesBaseUrl, endUrl, groupOpt, groupedByUrl, periodUrl, props, startUrl]);
 
 
     ///////////////////////////////////////////
@@ -195,7 +195,6 @@ export default function DailiesOverview(props: any) {
             <CardHeader title="Steps" subheader="Total duration and intensity" />
             <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                 <h1>A grand design </h1>
-                <h3>start adding plot views below</h3>
                 <>
                     <Grid item xs={12}>
                         <DailiesStanineContourPlot />

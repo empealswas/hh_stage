@@ -26,6 +26,7 @@ import StepIntensityDonut from "../../reports/charts/GarminWearablesCharts/StepI
 import DailiesStepsDistribution from "../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import { healthyHabitsIdModel } from '../../../models/healthyHabitIdsModel';
 import SleepOverview from './garmin-metrics/sleep-data/SleepOverview';
+import SedentaryOverview from './garmin-metrics/sedentary-data/SedentaryOverview';
 
 const DashboardOfTeacher = () => {
     const today = new Date();
@@ -610,15 +611,15 @@ const DashboardOfTeacher = () => {
     // }
     // ;
     const Metrics = () => {
-        if (metricState === "sedentary") {
-            (
+        if (metricState === 'sedentary') {
+            return (
                 <Grid item xs={12}>
-                  <p>sedentary</p>
+                   <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
                 </Grid>
                 
             );
         }
-        if (metricState === 'dailies') {
+        if (metricState === 'steps') {
             return (
                 <Grid item xs={12}>
                     <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
