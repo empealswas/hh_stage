@@ -63,7 +63,7 @@ const query = `query MyQuery {
 `
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const DailyMileCountCard = ({ isLoading }) => {
+const TotalActivities = ({ isLoading }) => {
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -208,8 +208,8 @@ const DailyMileCountCard = ({ isLoading }) => {
     );
 };
 
-DailyMileCountCard.propTypes = {
+TotalActivities.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default DailyMileCountCard;
+export default TotalActivities;

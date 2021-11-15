@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {API, graphqlOperation} from "aws-amplify";
 import {UserContext} from "../../../App";
-import {Classroom, Lesson, Term} from '../../../API';
+import {Classroom, Lesson, Pupil, Term} from '../../../API';
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -19,9 +19,10 @@ import DailiesOverview from './garmin-metrics/dailies-data/DailiesOverview';
 import GroupBySelector from '../../_garmin-selectors/group-by-selector';
 import {Box, Button} from "@mui/material";
 
-import { healthyHabitsIdModel } from '../../../models/healthyHabitIdsModel';
+import {healthyHabitsIdModel} from '../../../models/healthyHabitIdsModel';
 import SleepOverview from './garmin-metrics/sleep-data/SleepOverview';
 import SedentaryOverview from './garmin-metrics/sedentary-data/SedentaryOverview';
+import TabCard from "../../reports/charts/GarminWearablesCharts/TabCard";
 
 const DashboardOfTeacher = () => {
     const today = new Date();
@@ -33,7 +34,6 @@ const DashboardOfTeacher = () => {
 
     var queryData = new GarminQueryData(prevDate, todayDate, 'daily', 'group');
 
-   
 
     const user = useContext(UserContext);
     const [lessons, setLessons] = useState<null | Lesson[]>(null);
@@ -50,7 +50,7 @@ const DashboardOfTeacher = () => {
     const [endDateState, setEndDateState] = useState(todayDate);
     const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
 
- 
+
     const backClick = () => {
         console.log("Backwards");
         var setEndDate = new Date(endDateState);
@@ -119,7 +119,8 @@ const DashboardOfTeacher = () => {
             var hhUsers = new healthyHabitsIdModel([]);
             const result: any = await API.graphql(graphqlOperation(listPupils));
 
-            result.data.listPupils?.items.forEach((item: any) => {
+            result.data.listPupils?.items.forEach((item: Pupil) => {
+                console.log(item.firstName);
                 users.push(item.id);
                 hhUsers.id.push(item.id)
             })
@@ -146,19 +147,22 @@ const DashboardOfTeacher = () => {
     const Metrics = () => {
         if (metricState === 'sedentary') {
             return (
-                   <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
+                <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
+                                   endDate={endDateState} timePeriod={periodState} grouping={groupByState}/>
 
             );
         }
         if (metricState === 'steps') {
             return (
-                    <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
+                <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
+                                 timePeriod={periodState} grouping={groupByState}/>
 
             );
         }
         if (metricState === 'sleep') {
             return (
-                  <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState} timePeriod={periodState} grouping={groupByState} />
+                <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
+                               timePeriod={periodState} grouping={groupByState}/>
 
             );
         }
@@ -167,11 +171,15 @@ const DashboardOfTeacher = () => {
 
     return (
         <Stack direction={'column'}>
-            <Typography variant={'h3'} textAlign={'center'} padding={5}>Plots for the teacher view</Typography>
+            {/*<Typography variant={'h3'} textAlign={'center'} padding={5}>Plots for the teacher view</Typography>*/}
             <Grid container
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="flex-start" spacing={4}>
+                <Grid item>
+                    <TabCard/>
+                </Grid>
+
                 <Grid item>
                     <Card sx={{minHeight: 150}}>
                         <CardContent>
@@ -179,10 +187,10 @@ const DashboardOfTeacher = () => {
                                 <RadioButtonSelector periodChanger={setPeriodState} period={periodState}/>
                                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}
                                        spacing={1}>
-                                    <Button variant={'contained'} color={'secondary'} onClick={backClick}>back</Button>
-                                    <Typography>{startDateState} : {endDateState}</Typography>
-                                    <Button variant={'contained'} color={'secondary'}
-                                            onClick={forwardClick}>forward</Button>
+                                    {/*<Button variant={'contained'} color={'secondary'} onClick={backClick}>back</Button>*/}
+                                    {/*<Typography>{startDateState} : {endDateState}</Typography>*/}
+                                    {/*<Button variant={'contained'} color={'secondary'}*/}
+                                    {/*        onClick={forwardClick}>forward</Button>*/}
                                 </Stack>
                             </Stack>
                         </CardContent>
@@ -204,7 +212,7 @@ const DashboardOfTeacher = () => {
                 </Grid>
             </Grid>
             <Box height={20}/>
-                <Metrics/>
+            <Metrics/>
         </Stack>
 
     );

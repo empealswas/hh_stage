@@ -73,7 +73,7 @@ const query = `query MyQuery {
 }`
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const TotalOrderLineChartCard = ({ isLoading }) => {
+const TotalDailyMiles = ({ isLoading }) => {
     const theme = useTheme();
 
     const [timeValue, setTimeValue] = useState(false);
@@ -190,8 +190,8 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
     );
 };
 
-TotalOrderLineChartCard.propTypes = {
+TotalDailyMiles.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default TotalOrderLineChartCard;
+export default TotalDailyMiles;

@@ -85,10 +85,8 @@ const LessonOverview = () => {
             deleteSubscription.unsubscribe();
             createSubscription.unsubscribe();
         }
-//    }, []);
-    });
+    }, []);
     const onDrop = useCallback(acceptedFiles => {
-        uploadFiles(acceptedFiles)
         setSnackBarOpen(true);
         setFilesToUpload(prevState => [...acceptedFiles, ...prevState])
         setDroppedFiles(acceptedFiles);
@@ -96,28 +94,6 @@ const LessonOverview = () => {
 
     const navigate = useNavigate();
 
-    const uploadFiles = async (files: File[]) => {
-        // for (const file of files) {
-        //     try {
-        //         const fileName = `${Date.now()}-${file.name.replace(/ /g, '_')}`;
-        //         const uploadedFile: any = await Storage.put(fileName, file, {
-        //             contentType: file.type,
-        //         })
-        //         const input: any = {
-        //             key: uploadedFile.key,
-        //             bucket: awsConfig.aws_user_files_s3_bucket,
-        //             region: awsConfig.aws_user_files_s3_bucket_region,
-        //             lessonID: lessonId
-        //         };
-        //         const result: any = await API.graphql(graphqlOperation(createFile, {input}));
-        //         snackbar.enqueueSnackbar('File added: ' + result.data.createFile.key, {variant: 'success'});
-        //         console.log(result);
-        //
-        //     } catch (error) {
-        //         console.error(`During the file uploading error occurred:`, error)
-        //     }
-        // }
-    }
 
     return (
         <div>

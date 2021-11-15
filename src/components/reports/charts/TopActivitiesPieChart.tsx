@@ -93,6 +93,9 @@ export default function TopActivitiesPieChart(props: { activities: any }) {
                 .map((item: any) => item.lessonRecord);
         }
         data = data.reduce((acc: any, value: any) => {
+            if (!value) {
+                return acc;
+            }
             if (!acc[value.activity]) {
                 acc[value.activity] = [];
             }

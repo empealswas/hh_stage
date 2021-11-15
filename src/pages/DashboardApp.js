@@ -31,8 +31,8 @@ import TopPupilsByPhysicalActivities from "../components/reports/charts/TopPupil
 import ActivityGoalChart from "../components/reports/charts/ActivityGoalChart";
 import {listPELessonRecords} from "../graphql/queries";
 import axios from "axios";
-import DailyMileCountCard from "../components/cards/DailyMileCountCard";
-import TotalOrderLineChartCard from "../components/cards/TotalOrderLineChartCard";
+import TotalActivities from "../components/cards/TotalActivities";
+import TotalDailyMiles from "../components/cards/TotalDailyMiles";
 import ActivityLineChart from "../components/reports/charts/ActivityLineChart";
 import HeatMap from "../components/reports/charts/HeatMap";
 import TimeCompletedCard from "../components/cards/TimeCompletedCard";
@@ -55,22 +55,22 @@ export default function DashboardApp() {
                 <Box sx={{pb: 5}}>
                     <Typography variant="h4">Welcome back, {user.firstName}</Typography>
                 </Box>
-                <Grid container spacing={5}>
+                <Grid container spacing={5} >
                     <Grid item xs={12} sm={6} md={4} lg={4}>
-                        <DailyMileCountCard/>
+                        <TotalActivities/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
-                        <TotalOrderLineChartCard/>
+                        <TotalDailyMiles/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
                         <TimeCompletedCard/>
                     </Grid>
-                    <Grid item xs={12} md={6} lg={6}>
-                        <AverageStepsChart/>
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={6}>
-                        <AverageSleepChart/>
-                    </Grid>
+                    {/*<Grid item xs={12} md={6} lg={6}>*/}
+                    {/*    <AverageStepsChart/>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={12} md={6} lg={6}>*/}
+                    {/*    <AverageSleepChart/>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={12} md={6} lg={6}>
                         <TopActivitiesPieChart/>
                     </Grid>
@@ -82,12 +82,12 @@ export default function DashboardApp() {
                             <DashboardOfTeacher/>
                         </Grid>
                     </Can>
-                    <Grid item xs={12} md={12} lg={12}>
-                        <ActivityLineChart/>
-                    </Grid>
-                    <Grid item xs={12} md={12} lg={12}>
-                        <HeatMap/>
-                    </Grid>
+                    {/*<Grid item xs={12} md={12} lg={12}>*/}
+                    {/*    <ActivityLineChart/>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={12} md={12} lg={12}>*/}
+                    {/*    <HeatMap/>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={12} md={6} lg={6}>
                         <TopPupilsByRewardBarChart/>
                     </Grid>

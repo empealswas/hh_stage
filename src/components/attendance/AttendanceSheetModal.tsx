@@ -77,61 +77,9 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
     };
 
     const handleClose = () => {
-        setAttendanceByPupil(null);
-        setSuccess(false);
         setOpen(false);
     };
-    const handleAttendance = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAttendanceByPupil(prevState => (
-            {...prevState, [event.target.name]: event.target.checked})
-        );
-        console.log('attendance!!!', attendanceByPupil);
-    };
 
-
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [selectedClassroom, setSelectedClassroom] = useState<string>('');
-    const [attendanceByPupil, setAttendanceByPupil] = useState<{ [name: string]: boolean } | null>(null);
-    const handleChange = (event: any) => {
-        setSelectedClassroom(event.target.value)
-    };
-    const user = useContext(UserContext);
-    console.log('user', user)
-
-    function updateAttendanceSheet(pupils: Pupil[]) {
-        return async () => {
-            if (!attendanceByPupil) return;
-            setLoading(true);
-            pupils.map(async pupil => {
-                if (pupil.Attendances?.items?.length == 0) {
-                    const input = {
-                        lessonID: props.lessonId,
-                        pupilID: pupil.id,
-                        present: attendanceByPupil[pupil.id]
-                    }
-                    await API.graphql(graphqlOperation(createAttendance, {input}))
-                } else {
-                    let [attendance] = pupil.Attendances?.items as Attendance[]
-                    console.log('updating attendance', attendance)
-                    if (attendance) {
-
-                        const input = {
-                            id: attendance.id,
-                            pupilID: pupil.id,
-                            lessonID: props.lessonId,
-                            present: attendanceByPupil[pupil.id]
-                        };
-                        await API.graphql(graphqlOperation(updateAttendance, {input}))
-                    }
-                }
-            })
-            setLoading(false);
-            setSuccess(true);
-
-
-        };
-    }
 
     return (
         <div>

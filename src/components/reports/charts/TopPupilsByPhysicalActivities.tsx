@@ -105,8 +105,10 @@ export default function TopPupilsByPhysicalActivities() {
                     pupils[`${pupil.firstName} ${pupil.lastName}`] = 0;
                     pupil.Attendances?.items?.map((item: any)=>item.lessonRecord).map(
                         (item: any) =>{
+                            if (item) {
                             // @ts-ignore
                             pupils[`${pupil.firstName} ${pupil.lastName}`] += item.duration;
+                            }
                         }
                     )
                 })

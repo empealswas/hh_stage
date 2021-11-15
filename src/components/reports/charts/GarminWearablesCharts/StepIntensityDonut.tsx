@@ -50,7 +50,7 @@ if(props['data2']){
                 <Card>
                     <CardHeader title={props["title2"]} subheader={props["subTitle2"]} />
                     <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                        <ReactApexChart type="donut" series={plot.series} options={plot.options} height={270} />
+                        <ReactApexChart type="donut" series={plot.series} options={plot.options} height={350} />
                     </Box>
                 </Card>
             );
@@ -81,7 +81,7 @@ if(props['data2']){
                 <Card>
                     <CardHeader title={props["title2"]} subheader={props["subTitle2"]} />
                     <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                        <ReactApexChart type="donut" series={plot.series} options={plot.options} height={350} />
+                        <ReactApexChart type="donut" series={plot.series} options={plot.options} />
                     </Box>
                 </Card>
             );

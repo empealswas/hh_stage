@@ -18,13 +18,18 @@ import {useSnackbar} from "notistack";
 const activities = ['Walking', 'Running', 'Swimming', 'Gym', 'Dance', 'Soccer', 'Rugby', 'Gaelic', 'Other']
 const RegisterSchema = Yup.object().shape({
     deliveredBy: Yup.mixed()
-        .oneOf(['Teacher', 'Sport Coach', 'Other']).nullable(),
+        .oneOf(['Teacher', 'Sport Coach', 'Other'])
+        .nullable(),
     duration: Yup.mixed()
-        .oneOf([5, 10, 15, 30, 45, 60]).nullable(),
+        .oneOf([5, 10, 15, 30, 45, 60])
+        .nullable(),
     activity: Yup.mixed()
-        .oneOf(activities),
-    notes: Yup.string().nullable(),
-    rating: Yup.number().min(1).max(5).nullable(),
+        .oneOf(activities)
+        .nullable(),
+    notes: Yup.string()
+        .nullable(),
+    rating: Yup.number().min(1).max(5)
+        .nullable(),
 });
 const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
     const {lessonRecord} = {...props};
@@ -39,6 +44,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
         }
     }, [])
     useEffect(() => {
+        console.log('---------------', lessonRecord)
         formik.setValues({
             'deliveredBy': lessonRecord.deliveredBy,
             'notes': lessonRecord.notes,
@@ -69,14 +75,14 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
             input: {
                 id: lessonRecord.id,
                 date: format(date ?? new Date(), 'yyyy-MM-dd'),
-                deliveredBy: getFieldProps('deliveredBy').value ?? null,
+                deliveredBy: getFieldProps('deliveredBy').value,
                 duration: 15,
                 activity: 'Daily Mile',
-                rating: getFieldProps('rating').value ?? null,
-                notes: getFieldProps('notes').value ?? null,
+                rating: getFieldProps('rating').value,
+                notes: getFieldProps('notes').value,
             }
         }));
-        console.log('result', result)
+        console.log('Update Lesson Record', result)
     }
     const snackbar = useSnackbar();
     const [loading, setLoading] = useState(false);
@@ -143,7 +149,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord }) => {
                                 variant="contained"
                                 loading={loading}
                             >
-                                Make Record
+                                Update Record
                             </LoadingButton>
                         </Can>
                     </Stack>

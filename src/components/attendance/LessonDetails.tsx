@@ -15,6 +15,7 @@ import {Form, FormikProvider, useFormik} from "formik";
 import * as Yup from "yup";
 import LessonDetailsForm from "./LessonDetailsForm";
 import {format} from "date-fns";
+import {useSnackbar} from "notistack";
 
 
 const query = `query MyQuery($id: ID = "", $classroomId: ID = "", $teacherId: ID = "") {
@@ -38,6 +39,7 @@ const query = `query MyQuery($id: ID = "", $classroomId: ID = "", $teacherId: ID
 const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }) => {
     const user = useContext(UserContext);
         const {lessonId, selectedClassroom} = {...props};
+        const snackbar = useSnackbar();
 
     const [lessonRecord, setLessonRecord] = useState<PELessonRecord | null>(null);
     useEffect(() => {
@@ -57,7 +59,9 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }
                         date: format(new Date(), 'yyyy-MM-dd'),
                     }
                 }));
-                setLessonRecord(result);
+                snackbar.enqueueSnackbar("Daily Mile Record Created", {variant: 'success'})
+                console.log('Created Lesson Result', result);
+                setLessonRecord(result.data.createPELessonRecord);
             } else {
                 setLessonRecord(records[0]);
             }
