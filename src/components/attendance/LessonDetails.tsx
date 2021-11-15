@@ -56,6 +56,7 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }
                         classroomID: selectedClassroom.id,
                         teacherID: user?.email,
                         lessonID: lessonId,
+                        activity: 'Daily Mile',
                         date: format(new Date(), 'yyyy-MM-dd'),
                     }
                 }));
