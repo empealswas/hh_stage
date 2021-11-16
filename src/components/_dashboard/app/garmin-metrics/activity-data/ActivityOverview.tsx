@@ -8,6 +8,7 @@ import DailiesStepsDistribution from "../../../../reports/charts/GarminWearables
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 import {CardContent} from "@mui/material";
 import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
+import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
 
 export default function ActivityOverview(props: any) {
     var epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates";
@@ -254,8 +255,8 @@ export default function ActivityOverview(props: any) {
                     <GarminMetricsRadialChart  data={radialValue} title={"Activity"} subTitle={"% Target Achieved"}/>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-
-                    <DailiesStanineContourPlot data={stanineValue}/>
+                    <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Activity"}/>
+                    {/* <DailiesStanineContourPlot data={stanineValue}/> */}
                 </Grid>
                 </Grid>
             </CardContent>

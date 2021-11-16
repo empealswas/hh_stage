@@ -8,6 +8,7 @@ import DailiesStepsDistribution from "../../../../reports/charts/GarminWearables
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 import {CardContent} from "@mui/material";
 import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
+import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
 
 
 export default function DailiesOverview(props: any) {
@@ -278,7 +279,8 @@ export default function DailiesOverview(props: any) {
                     <GarminMetricsRadialChart  data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"}/>
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
-                <DailiesStanineContourPlot data={stanineValue}/>
+                <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Steps"}/>
+                {/* <DailiesStanineContourPlot data={stanineValue}/> */}
             </Grid>
         </Grid>
     );
