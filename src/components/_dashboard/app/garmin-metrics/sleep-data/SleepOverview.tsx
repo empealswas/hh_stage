@@ -6,7 +6,9 @@ import { GarminSleepSummaryModel } from "../../../../../models/garminDataModels/
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
-import {CardContent} from "@mui/material";
+import { CardContent } from "@mui/material";
+import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
+import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
 
 export default function SleepOverview(props: any) {
 
@@ -23,17 +25,18 @@ export default function SleepOverview(props: any) {
     const [sleepDataUser, setSleepUser] = useState<GarminSleepSummaryModel[]>([]);
     const [sleepDataGroup, setSleepGroup] = useState<GarminSleepSummaryModel[]>([]);
     const [sleepStanineGroup, setSleepStanineGroup] = useState<GarminSleepSummaryModel[]>([]);
-    
+
 
     // constants for plot data
     const [sleepScatterData, setSleepScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [sleepIntensityDonutData, setSleepIntensityDonutData] = useState<number[]>([]);
     const [stanineValue, setStanineValue] = useState<number>(1);
+    const [radialValue, setRadialValue] = useState<number>(1);
 
-     /////////////////////////////////
+    /////////////////////////////////
     /////  get sleep users data /////
     /////////////////////////////////
-    useEffect(() => { 
+    useEffect(() => {
         var sleepDataByUser = sleepBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + userOpt;
 
         const getData = async () => {
@@ -86,7 +89,7 @@ export default function SleepOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
-                            
+
                             setSleepGroup(garminData);
                         }
                     })
@@ -99,8 +102,8 @@ export default function SleepOverview(props: any) {
     /////////////////////////////////////
     /////  get sleep stanine data  /////
     /////////////////////////////////////
-    useEffect(() => { 
-        var sleepStaninesByUser = sleepZvaluesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"]+ groupedByUrl + groupOpt;
+    useEffect(() => {
+        var sleepStaninesByUser = sleepZvaluesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + groupedByUrl + groupOpt;
 
         const getData = async () => {
             var myHeaders = new Headers();
@@ -128,12 +131,12 @@ export default function SleepOverview(props: any) {
             }
         }
         getData();
-    }, [endUrl, sleepZvaluesBaseUrl, groupOpt, groupedByUrl, props, startUrl, userOpt]);  
+    }, [endUrl, sleepZvaluesBaseUrl, groupOpt, groupedByUrl, props, startUrl, userOpt]);
 
     ///////////////////////////////////////////
     /////  create scatter plot trace data /////
     ///////////////////////////////////////////
-    useEffect(() => {  
+    useEffect(() => {
         // prepare the traces for the scatter plots to be user in the scatterplot
         const prepScatterPlotData = async () => {
             const uniqueIds = [...Array.from(new Set(sleepDataUser.map(item => item.garminId)))];
@@ -141,16 +144,16 @@ export default function SleepOverview(props: any) {
             var dataSeries: ScatterPlotTraceModel[] = [];
             for (var ids of uniqueIds) {
                 const processedData = sleepDataUser.filter(
-                    (item) => {return item.garminId === ids;}
+                    (item) => { return item.garminId === ids; }
                 );
 
                 let result = processedData.map(({ period, duration }) => ({ period, duration }));
                 var name!: string;
                 // if the 
                 if (ids == null) {
-                     name = "";
+                    name = "";
                 } else {
-                     name = ids;
+                    name = ids;
                 }
                 var data = generateGarminDayWiseTimeSeries(result);
                 var newTrace = new ScatterPlotTraceModel(name, data);
@@ -159,13 +162,13 @@ export default function SleepOverview(props: any) {
             setSleepScatterData(dataSeries);
         }
         prepScatterPlotData();
-      
+
     }, [sleepDataUser]);
 
     //////////////////////////////////////////////
     /////  create intensity donut trace data /////
     //////////////////////////////////////////////
-    useEffect(() => {  
+    useEffect(() => {
         // prepare the trace data for the donut chart of step intensity
         const prepDonutIntensityData = async () => {
             // initialis the output data to == 100
@@ -174,19 +177,19 @@ export default function SleepOverview(props: any) {
             var percLight = 30;
             var percDeep = 30;
 
-        // if data exists and the step suration for the last days
-        if(sleepDataGroup.length >0){
-            var sleepRecord = sleepDataGroup[sleepDataGroup.length-1];
-     
-            if (sleepRecord.duration > 0){
-                var duration = sleepRecord.duration - (sleepRecord.lightSleep + sleepRecord.deepSleep);
-                percReg = parseFloat((duration / sleepRecord.duration * 100).toPrecision(2));
-                percLight = parseFloat((sleepRecord.lightSleep / sleepRecord.duration * 100).toPrecision(2));
-                percDeep = parseFloat((sleepRecord.deepSleep / sleepRecord.duration * 100).toPrecision(2));
+            // if data exists and the step suration for the last days
+            if (sleepDataGroup.length > 0) {
+                var sleepRecord = sleepDataGroup[sleepDataGroup.length - 1];
+
+                if (sleepRecord.duration > 0) {
+                    var duration = sleepRecord.duration - (sleepRecord.lightSleep + sleepRecord.deepSleep);
+                    percReg = parseFloat((duration / sleepRecord.duration * 100).toPrecision(2));
+                    percLight = parseFloat((sleepRecord.lightSleep / sleepRecord.duration * 100).toPrecision(2));
+                    percDeep = parseFloat((sleepRecord.deepSleep / sleepRecord.duration * 100).toPrecision(2));
+                }
             }
-        }
-        var data: number [] = [percReg, percLight, percDeep];
-        setSleepIntensityDonutData(data);
+            var data: number[] = [percReg, percLight, percDeep];
+            setSleepIntensityDonutData(data);
         }
         prepDonutIntensityData();
     }, [sleepDataGroup]);
@@ -194,24 +197,39 @@ export default function SleepOverview(props: any) {
     //////////////////////////////////////////////
     /////  create stanine heatmap trace data /////
     //////////////////////////////////////////////
-    useEffect(() => {  
+    useEffect(() => {
         const prepStanineHeatmapData = async () => {
-            if(sleepStanineGroup.length>0){
+            if (sleepStanineGroup.length > 0) {
                 setStanineValue(sleepStanineGroup[0].duration);
             } else {
-                console.log("dailiesStanineGroup: inside useeffcet constant - mo data");
+                console.log("Sleep Staninie trace: no data");
             }
         }
         prepStanineHeatmapData();
-
     }, [sleepStanineGroup]);
+
+
+    //////////////////////////////////////////////
+    /////  create %target radial trace data  /////
+    //////////////////////////////////////////////
+    useEffect(() => {
+        const prepTargetRadialData = async () => {
+            if (sleepDataGroup.length > 0) {
+                var x = parseFloat((sleepDataGroup[0].duration / 32400 * 100).toPrecision(2));
+                setRadialValue(x);
+            } else {
+                console.log("Sleep radial trace no data");
+            }
+        }
+        prepTargetRadialData();
+    }, [sleepDataGroup]);
 
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
         var series = [];
         while (i < inData.length) {
             var x = new Date(inData[i].period).getTime();
-            var y = parseFloat((inData[i].duration/3600).toPrecision(2));
+            var y = parseFloat((inData[i].duration / 3600).toPrecision(2));
             series.push([x, y]);
             i++;
         }
@@ -220,20 +238,24 @@ export default function SleepOverview(props: any) {
     return (
         <Card >
             <CardHeader title="Sleep" subheader="Total duration and intensity" />
-                <CardContent>
-                    <Grid container spacing={2}>
+            <CardContent>
+                <Grid container spacing={2}>
 
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} labels={["Other", "Light", "Deep"]}/>
+                        <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} labels={["Other", "Light", "Deep"]} />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"}/>
+                        <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"} />
                     </Grid>
-                    <Grid item xs={12}>
-                        <DailiesStanineContourPlot data={stanineValue}/>
+                    <Grid item xs={12} sm={6} md={6} lg={6}>
+                        <GarminMetricsRadialChart data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"} />
                     </Grid>
+                    <Grid item xs={12} sm={6} md={6} lg={6}>
+                        <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Sleep"} />
+                        {/* <DailiesStanineContourPlot data={stanineValue}/> */}
                     </Grid>
-                </CardContent>
+                </Grid>
+            </CardContent>
         </Card>
     );
 }

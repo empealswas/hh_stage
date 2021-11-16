@@ -7,6 +7,8 @@ import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearable
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 import {CardContent} from "@mui/material";
+import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
+import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
 
 
 export default function DailiesOverview(props: any) {
@@ -33,7 +35,7 @@ export default function DailiesOverview(props: any) {
     const [dailiesScatterData, setDailiesScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [dailiesIntensityDonutData, setDailiesIntensityDonutData] = useState<number[]>([]);
     const [stanineValue, setStanineValue] = useState<number>(1);
-
+    const [radialValue, setRadialValue] = useState<number>(1);
 
     // const dailesDataQuery = dailiesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + props["grouping"];
     // const dailiesStanineQuery = dailiesZvaluesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + props["grouping"];
@@ -190,7 +192,6 @@ export default function DailiesOverview(props: any) {
     /////  create intensity donut trace data /////
     //////////////////////////////////////////////
     useEffect(() => {
-        console.log("intensity: do an useeffect");
         let isMounted = true;
         // prepare the trace data for the donut chart of step intensity
         const prepDonutIntensityData = async () => {
@@ -226,18 +227,30 @@ export default function DailiesOverview(props: any) {
     /////  create stanine heatmap trace data /////
     //////////////////////////////////////////////
     useEffect(() => {
-
         const prepStanineHeatmapData = async () => {
-
             if (dailiesStanineGroup.length > 0) {
                 setStanineValue(dailiesStanineGroup[0].totalSteps);
             } else {
-                console.log("dailiesStanineGroup: inside useeffcet constant - mo data");
+                console.log("dailies Stanine Group: no data");
             }
         }
         prepStanineHeatmapData();
-
     }, [dailiesStanineGroup]);
+
+    //////////////////////////////////////////////
+    /////  create %target radial trace data  /////
+    //////////////////////////////////////////////
+    useEffect(() => {  
+        const prepTargetRadialData = async () => {
+            if(dailiesDataGroup.length>0){
+                var x = parseFloat((dailiesDataGroup[0].totalSteps/ 5000 * 100).toPrecision(2));
+                setRadialValue(x);
+            } else {
+                console.log("dailies Radial Trace: no data");
+            }
+        }
+        prepTargetRadialData();
+    }, [dailiesDataGroup]);
 
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
@@ -261,8 +274,12 @@ export default function DailiesOverview(props: any) {
             <Grid item xs={12} sm={6} md={6} lg={6}>
                 <DailiesStepsDistribution data={dailiesScatterData} title={"Steps"} subTitle={"Total Steps"}/>
             </Grid>
-            <Grid item xs={12}>
-                <DailiesStanineContourPlot data={stanineValue}/>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <GarminMetricsRadialChart  data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"}/>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+                <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Steps"}/>
+                {/* <DailiesStanineContourPlot data={stanineValue}/> */}
             </Grid>
         </Grid>
     );

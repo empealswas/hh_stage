@@ -21,6 +21,7 @@ import SkeletonEarningCard from "./SkeletonEarningCard";
 import MainCard from "./MainCard";
 import {API, graphqlOperation} from "aws-amplify";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
 
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -68,6 +69,7 @@ const query = `query MyQuery {
   listPELessonRecords(filter: {activity: {eq: "Daily Mile"}}) {
     items {
       activity
+      id
     }
   }
 }`
@@ -77,19 +79,35 @@ const TotalDailyMiles = ({ isLoading }) => {
     const theme = useTheme();
 
     const [timeValue, setTimeValue] = useState(false);
+    const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
+    const [dailyMileCount, setDailyMileCount] = useState(null);
+
     const handleChangeTime = (event, newValue) => {
         setTimeValue(newValue);
     };
-    const [dailyMileCount, setDailyMileCount] = useState(null);
+   
     useEffect(()=>{
+        console.warn(dailyMileTotAveswitchState);
         const getCount = async () =>{
+            const users = [];
             const result = await API.graphql(graphqlOperation(query));
-            setDailyMileCount(result.data.listPELessonRecords.items.length);
+            
 
+            result.data.listPELessonRecords.items.forEach((item: any) => {
+                users.push( {'id':item.id});
+            })
+            if(dailyMileTotAveswitchState ==='total'){
+                setDailyMileCount(result.data.listPELessonRecords.items.length);
+            } else {
+                const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+                setDailyMileCount(parseFloat((result.data.listPELessonRecords.items.length/uniqueIds.length).toPrecision(2)) );
+                // setDuration(parseFloat((duration).toPrecision(2)));
+                console.log(uniqueIds);
+            }
         }
         getCount()
 
-    },[])
+    },[dailyMileTotAveswitchState])
 
     return (
         <>
@@ -115,6 +133,11 @@ const TotalDailyMiles = ({ isLoading }) => {
                                             <DirectionsRunIcon/>
                                         </Avatar>
                                     </Grid>
+                                   {/* added by TL */}
+                                    {/* <Grid item>
+                                        <TotalAverageSwitch />
+                                    </Grid> */}
+                                    
                                     <Grid item>
                                         <Button
                                             disableElevation
@@ -134,6 +157,7 @@ const TotalDailyMiles = ({ isLoading }) => {
                                         >
                                             Year
                                         </Button>
+                                  
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -178,7 +202,18 @@ const TotalDailyMiles = ({ isLoading }) => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={6}>
+                                        
+                                        {/* added by TL */}
+                                        <>
+                                        <Grid item xs={12}>
                                         {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+                                        </Grid>
+                                        <Grid item xs={12}  >
+                                            <TotalAverageSwitch totAveChanger={setDailyMileTotAveSwitchState} switchVal={dailyMileTotAveswitchState}/>                                      
+                                        </Grid>
+                                        </>
+                                        {/* added by TL */}
+
                                     </Grid>
                                 </Grid>
                             </Grid>

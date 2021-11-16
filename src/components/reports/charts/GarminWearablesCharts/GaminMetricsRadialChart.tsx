@@ -1,9 +1,9 @@
-// import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, Box } from '@material-ui/core';
 import ReactApexChart from 'react-apexcharts';
 import { ApexRadialGraphModel } from '../../../../models/garminDataModels/ApexRadialGraphData';
 
-export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
+export default function GarminMetricsRadialChart(props: any) {
+
 
     if (!props) {
         return (
@@ -12,10 +12,8 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
             </Card>
         );
     } else {
-        var processedData = generateRadialBars(props);
-
         const plot = {
-            series: [processedData.active, processedData.sedentary, processedData.sleep, processedData.steps],
+            series: [props["data"]],
             options: {
               chart: {
                 height: 390,
@@ -38,8 +36,8 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
                   }
                 }
               },
-              colors: [getDataColour(processedData.active), getSedentaryDataColour(processedData.sedentary), getDataColour(processedData.sleep), getDataColour(processedData.steps)],
-              labels: ['% Active', '% Sedentary', '% Sleep', '% Steps'],
+              colors: [getDataColour(props["data"])],
+              labels: [props["title"]],
               legend: {
                 show: true, floating: true,
                 fontSize: '12px', position: 'left',
@@ -68,7 +66,7 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
         
         return (
             <Card>
-                <CardHeader title="User Metrics" subheader="Percentage target reached from Wearable Data" />
+                <CardHeader title={props["title"]} subheader={props["subTitle"] }/>
                 <Box sx={{ p: 3, pb: 1 }} dir="ltr">
                 <ReactApexChart options={plot.options} series={plot.series} type="radialBar" height={350} />
                 </Box>
@@ -76,14 +74,27 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
         )
     }
 
-    function generateRadialBars(props: ApexRadialGraphModel ) {
+    function generateRadialBars(props: any ) {
       
-      var adjustedData = new ApexRadialGraphModel (0,0,0,0);
-      adjustedData.active = parseFloat((props.active/ 60 * 100).toPrecision(2));
-      adjustedData.sleep = parseFloat((props.sleep/ 540 * 100).toPrecision(2));
-      adjustedData.steps = parseFloat((props.steps/ 5000 * 100).toPrecision(2));
-      adjustedData.sedentary = parseFloat((props.sedentary/ 240 * 100).toPrecision(2));
-      return adjustedData
+      var targetAcheived!: number;
+      console.log(props["title"]);
+      if(props["title"] === "Steps") {
+        targetAcheived = parseFloat((props.steps/ 5000 * 100).toPrecision(2));
+      } else if(props["title"] ===  "Sedentary") {
+        targetAcheived = parseFloat((props.sedentary/ 240 * 100).toPrecision(2));
+      } else if(props["title"] ===  "Sleep"){
+        targetAcheived = parseFloat((props.sleep/ 540 * 100).toPrecision(2));
+      } else if(props["title"] === "Active") {
+        targetAcheived = parseFloat((props.active/ 60 * 100).toPrecision(2));
+      }
+   
+     return targetAcheived;
+     // var adjustedData = new ApexRadialGraphModel (0,0,0,0);
+      // adjustedData.active = parseFloat((props.active/ 60 * 100).toPrecision(2));
+      // adjustedData.sleep = parseFloat((props.sleep/ 540 * 100).toPrecision(2));
+      // adjustedData.steps = parseFloat((props.steps/ 5000 * 100).toPrecision(2));
+      // adjustedData.sedentary = parseFloat((props.sedentary/ 240 * 100).toPrecision(2));
+      // return adjustedData
     };
 
     function getDataColour(value: number): string {
@@ -100,7 +111,6 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
     }
 
     function getSedentaryDataColour(value: number): string {
-
       if ( value < 39 ) {
         return '#0713f2';
       } else if(value >= 40 && value < 69 ){
@@ -113,4 +123,4 @@ export default function GarminMetricsRadialChart(props: ApexRadialGraphModel) {
         return 'grey';
       }
     }
-}
+  }

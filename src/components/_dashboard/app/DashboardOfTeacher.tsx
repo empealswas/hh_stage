@@ -23,6 +23,8 @@ import {healthyHabitsIdModel} from '../../../models/healthyHabitIdsModel';
 import SleepOverview from './garmin-metrics/sleep-data/SleepOverview';
 import SedentaryOverview from './garmin-metrics/sedentary-data/SedentaryOverview';
 import TabCard from "../../reports/charts/GarminWearablesCharts/TabCard";
+import ActivityOverview from './garmin-metrics/activity-data/ActivityOverview';
+import TotalAverageSwitch from '../../_garmin-selectors/total-average-switch';
 
 const DashboardOfTeacher = () => {
     const today = new Date();
@@ -49,7 +51,6 @@ const DashboardOfTeacher = () => {
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
     const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
-
 
     const backClick = () => {
         console.log("Backwards");
@@ -134,13 +135,6 @@ const DashboardOfTeacher = () => {
         queryData.startDate = startDateState;
         queryData.period = periodState;
         queryData.groupedBy = groupByState;
-
-        console.log(groupByState);
-        console.log(queryData.groupedBy);
-
-        // healthyHabitIdList.data = listOfHealthyHabitsIdsState;
-        // console.log(listOfHealthyHabitsIdsState);
-
     }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
 
 
@@ -166,6 +160,14 @@ const DashboardOfTeacher = () => {
 
             );
         }
+
+        if (metricState === 'activity') {
+            return (
+                <ActivityOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
+                                 timePeriod={periodState} grouping={groupByState}/>
+
+            );
+        }
         return <Typography>Nothing selected</Typography>
     }
 
@@ -176,39 +178,38 @@ const DashboardOfTeacher = () => {
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="flex-start" spacing={4}>
+                {/*<Grid item>*/}
+                {/*    <TabCard/>*/}
+                {/*</Grid>*/}
                 <Grid item>
-                    <TabCard/>
-                </Grid>
-
-                <Grid item>
-                    <Card sx={{minHeight: 150}}>
+                    <Card>
                         <CardContent>
                             <Stack spacing={2}>
                                 <RadioButtonSelector periodChanger={setPeriodState} period={periodState}/>
-                                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}
-                                       spacing={1}>
-                                    {/*<Button variant={'contained'} color={'secondary'} onClick={backClick}>back</Button>*/}
-                                    {/*<Typography>{startDateState} : {endDateState}</Typography>*/}
-                                    {/*<Button variant={'contained'} color={'secondary'}*/}
-                                    {/*        onClick={forwardClick}>forward</Button>*/}
-                                </Stack>
+                                {/*<Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}*/}
+                                {/*       spacing={1}>*/}
+                                {/*    /!*<Button variant={'contained'} color={'secondary'} onClick={backClick}>back</Button>*!/*/}
+                                {/*    /!*<Typography>{startDateState} : {endDateState}</Typography>*!/*/}
+                                {/*    /!*<Button variant={'contained'} color={'secondary'}*!/*/}
+                                {/*    /!*        onClick={forwardClick}>forward</Button>*!/*/}
+                                {/*</Stack>*/}
                             </Stack>
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid item>
-                    <Card sx={{minHeight: 150}}>
+                    <Card >
                         <CardContent>
                             <GarminMetricSelector metricChanger={setMetricState} metric={metricState}/>
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid item>
-                    <Card sx={{minHeight: 150}}>
+                    {/* <Card sx={{minHeight: 150}}>
                         <CardContent>
                             <GroupBySelector groupByChanger={setGroupByState} group={groupByState}/>
                         </CardContent>
-                    </Card>
+                    </Card> */}
                 </Grid>
             </Grid>
             <Box height={20}/>
