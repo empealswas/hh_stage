@@ -192,7 +192,6 @@ export default function DailiesOverview(props: any) {
     /////  create intensity donut trace data /////
     //////////////////////////////////////////////
     useEffect(() => {
-        console.log("intensity: do an useeffect");
         let isMounted = true;
         // prepare the trace data for the donut chart of step intensity
         const prepDonutIntensityData = async () => {

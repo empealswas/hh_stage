@@ -51,8 +51,6 @@ const DashboardOfTeacher = () => {
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
     const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
-    const [testTotAveSwitchState, setTestTotAveSwitchState] = useState("total");
-
 
     const backClick = () => {
         console.log("Backwards");
@@ -137,9 +135,7 @@ const DashboardOfTeacher = () => {
         queryData.startDate = startDateState;
         queryData.period = periodState;
         queryData.groupedBy = groupByState;
-        console.info(testTotAveSwitchState);
-
-    }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState, testTotAveSwitchState]);
+    }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
 
 
     const Metrics = () => {
@@ -184,9 +180,6 @@ const DashboardOfTeacher = () => {
                   alignItems="flex-start" spacing={4}>
                 <Grid item>
                     <TabCard/>
-                </Grid>
-                <Grid>
-                    <TotalAverageSwitch totAveChanger={setTestTotAveSwitchState} switchVal={testTotAveSwitchState}/>
                 </Grid>
                 <Grid item>
                     <Card sx={{minHeight: 150}}>

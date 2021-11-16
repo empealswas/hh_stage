@@ -56,6 +56,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const query = `query MyQuery {
   listPELessonRecords {
     items {
+      id
       activity
       duration
     }
@@ -81,14 +82,22 @@ const TimeCompletedCard = ({ isLoading }) => {
         console.info(timeCompletedTotAveswitchState)
         const getCount = async () =>{
             const result = await API.graphql(graphqlOperation(query));
+           
             let duration = 0;
+            const users = [];
             result.data.listPELessonRecords.items.forEach((item: any) => {
                 if (item.duration) {
-                duration += item.duration
+                users.push( {'id':item.id});
+                duration += item.duration;
                 }
             })
-            setDuration(duration);
-
+            if(timeCompletedTotAveswitchState ==='total'){
+                setDuration(duration);
+            } else {
+                const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+                setDuration(parseFloat((duration/uniqueIds.length).toPrecision(2)));
+                console.log(uniqueIds);
+            }
         }
         getCount()
 
