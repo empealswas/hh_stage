@@ -2,7 +2,7 @@ import {FormControl, InputLabel, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 
 function GarminMetricSelector( {metricChanger, metric}) {
-    let metricOptions = ["steps", "sleep", "sedentary"];
+    let metricOptions = ["steps", "sleep", "sedentary", "activity"];
 
     const handleChange = (event) => {
         metricChanger(event.target.value);

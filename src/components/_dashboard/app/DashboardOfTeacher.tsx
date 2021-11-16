@@ -23,6 +23,7 @@ import {healthyHabitsIdModel} from '../../../models/healthyHabitIdsModel';
 import SleepOverview from './garmin-metrics/sleep-data/SleepOverview';
 import SedentaryOverview from './garmin-metrics/sedentary-data/SedentaryOverview';
 import TabCard from "../../reports/charts/GarminWearablesCharts/TabCard";
+import ActivityOverview from './garmin-metrics/activity-data/ActivityOverview';
 
 const DashboardOfTeacher = () => {
     const today = new Date();
@@ -135,12 +136,6 @@ const DashboardOfTeacher = () => {
         queryData.period = periodState;
         queryData.groupedBy = groupByState;
 
-        console.log(groupByState);
-        console.log(queryData.groupedBy);
-
-        // healthyHabitIdList.data = listOfHealthyHabitsIdsState;
-        // console.log(listOfHealthyHabitsIdsState);
-
     }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
 
 
@@ -163,6 +158,14 @@ const DashboardOfTeacher = () => {
             return (
                 <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
                                timePeriod={periodState} grouping={groupByState}/>
+
+            );
+        }
+
+        if (metricState === 'activity') {
+            return (
+                <ActivityOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
+                                 timePeriod={periodState} grouping={groupByState}/>
 
             );
         }
@@ -204,11 +207,11 @@ const DashboardOfTeacher = () => {
                     </Card>
                 </Grid>
                 <Grid item>
-                    <Card sx={{minHeight: 150}}>
+                    {/* <Card sx={{minHeight: 150}}>
                         <CardContent>
                             <GroupBySelector groupByChanger={setGroupByState} group={groupByState}/>
                         </CardContent>
-                    </Card>
+                    </Card> */}
                 </Grid>
             </Grid>
             <Box height={20}/>
