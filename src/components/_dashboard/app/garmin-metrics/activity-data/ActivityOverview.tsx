@@ -200,7 +200,7 @@ export default function ActivityOverview(props: any) {
         const prepStanineHeatmapData = async () => {
 
             if (activityStanineGroup.length > 0) {
-                setStanineValue(activityStanineGroup[0].sedentary);
+                setStanineValue(activityStanineGroup[0].active);
             } else {
                 console.log("Sedentary Stanine Group: no data");
             }
@@ -214,7 +214,7 @@ export default function ActivityOverview(props: any) {
     useEffect(() => {  
         const prepTargetRadialData = async () => {
             if(activityDataGroup.length>0){
-                var x = parseFloat((activityDataGroup[0].active/ 3600 * 100).toPrecision(2));
+                var x = parseFloat(((inData[0].active + inData[0].highlyActive) / 3600 * 100).toPrecision(2));
                 setRadialValue(x);
             } else {
                 console.log("Active radial trace: no data");
@@ -228,7 +228,7 @@ export default function ActivityOverview(props: any) {
         var series = [];
         while (i < inData.length) {
             var x = new Date(inData[i].period).getTime();
-            var y = parseFloat((inData[i].active / 3600).toPrecision(2));
+            var y = parseFloat(((inData[i].active + inData[i].highlyActive) / 3600).toPrecision(2));
             series.push([x, y]);
             i++;
         }
