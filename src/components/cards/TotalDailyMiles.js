@@ -21,6 +21,7 @@ import SkeletonEarningCard from "./SkeletonEarningCard";
 import MainCard from "./MainCard";
 import {API, graphqlOperation} from "aws-amplify";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
 
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -77,6 +78,7 @@ const TotalDailyMiles = ({ isLoading }) => {
     const theme = useTheme();
 
     const [timeValue, setTimeValue] = useState(false);
+    // const [testTotAveswitchState, setTestTotAveSwitchState] = useState("on");
     const handleChangeTime = (event, newValue) => {
         setTimeValue(newValue);
     };
@@ -115,6 +117,11 @@ const TotalDailyMiles = ({ isLoading }) => {
                                             <DirectionsRunIcon/>
                                         </Avatar>
                                     </Grid>
+                                   {/* added by TL */}
+                                    {/* <Grid item>
+                                        <TotalAverageSwitch />
+                                    </Grid> */}
+                                    
                                     <Grid item>
                                         <Button
                                             disableElevation
@@ -134,6 +141,7 @@ const TotalDailyMiles = ({ isLoading }) => {
                                         >
                                             Year
                                         </Button>
+                                  
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -178,7 +186,18 @@ const TotalDailyMiles = ({ isLoading }) => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={6}>
+                                        
+                                        {/* added by TL */}
+                                        <>
+                                        <Grid item xs={12}>
                                         {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+                                        </Grid>
+                                        {/* <Grid item xs={12}  >
+                                            <TotalAverageSwitch totAveChanger={setTestTotAveSwitchState}/>                                         
+                                        </Grid> */}
+                                        </>
+                                        {/* added by TL */}
+
                                     </Grid>
                                 </Grid>
                             </Grid>

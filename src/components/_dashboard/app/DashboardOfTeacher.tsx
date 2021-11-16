@@ -24,6 +24,7 @@ import SleepOverview from './garmin-metrics/sleep-data/SleepOverview';
 import SedentaryOverview from './garmin-metrics/sedentary-data/SedentaryOverview';
 import TabCard from "../../reports/charts/GarminWearablesCharts/TabCard";
 import ActivityOverview from './garmin-metrics/activity-data/ActivityOverview';
+import TotalAverageSwitch from '../../_garmin-selectors/total-average-switch';
 
 const DashboardOfTeacher = () => {
     const today = new Date();
@@ -50,6 +51,7 @@ const DashboardOfTeacher = () => {
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
     const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
+    const [testTotAveSwitchState, setTestTotAveSwitchState] = useState("total");
 
 
     const backClick = () => {
@@ -135,8 +137,9 @@ const DashboardOfTeacher = () => {
         queryData.startDate = startDateState;
         queryData.period = periodState;
         queryData.groupedBy = groupByState;
+        console.log(testTotAveSwitchState);
 
-    }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
+    }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState, testTotAveSwitchState]);
 
 
     const Metrics = () => {
@@ -182,7 +185,9 @@ const DashboardOfTeacher = () => {
                 <Grid item>
                     <TabCard/>
                 </Grid>
-
+                <Grid>
+                    <TotalAverageSwitch totAveChanger={setTestTotAveSwitchState} switchVal={testTotAveSwitchState}/>
+                </Grid>
                 <Grid item>
                     <Card sx={{minHeight: 150}}>
                         <CardContent>
