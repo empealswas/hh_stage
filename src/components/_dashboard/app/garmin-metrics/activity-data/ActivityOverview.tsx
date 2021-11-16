@@ -214,7 +214,7 @@ export default function ActivityOverview(props: any) {
     useEffect(() => {  
         const prepTargetRadialData = async () => {
             if(activityDataGroup.length>0){
-                var x = parseFloat(((inData[0].active + inData[0].highlyActive) / 3600 * 100).toPrecision(2));
+                var x = parseFloat(((activityDataGroup[0].active + activityDataGroup[0].highlyActive) / 3600 * 100).toPrecision(2));
                 setRadialValue(x);
             } else {
                 console.log("Active radial trace: no data");
