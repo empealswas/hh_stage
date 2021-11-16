@@ -78,12 +78,14 @@ const TotalDailyMiles = ({ isLoading }) => {
     const theme = useTheme();
 
     const [timeValue, setTimeValue] = useState(false);
-    // const [testTotAveswitchState, setTestTotAveSwitchState] = useState("on");
+    const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
     const handleChangeTime = (event, newValue) => {
         setTimeValue(newValue);
     };
     const [dailyMileCount, setDailyMileCount] = useState(null);
+
     useEffect(()=>{
+        console.warn(dailyMileTotAveswitchState);
         const getCount = async () =>{
             const result = await API.graphql(graphqlOperation(query));
             setDailyMileCount(result.data.listPELessonRecords.items.length);
@@ -91,7 +93,7 @@ const TotalDailyMiles = ({ isLoading }) => {
         }
         getCount()
 
-    },[])
+    },[dailyMileTotAveswitchState])
 
     return (
         <>
@@ -192,9 +194,9 @@ const TotalDailyMiles = ({ isLoading }) => {
                                         <Grid item xs={12}>
                                         {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
                                         </Grid>
-                                        {/* <Grid item xs={12}  >
-                                            <TotalAverageSwitch totAveChanger={setTestTotAveSwitchState}/>                                         
-                                        </Grid> */}
+                                        <Grid item xs={12}  >
+                                            <TotalAverageSwitch totAveChanger={setDailyMileTotAveSwitchState} switchVal={dailyMileTotAveswitchState}/>                                      
+                                        </Grid>
                                         </>
                                         {/* added by TL */}
 

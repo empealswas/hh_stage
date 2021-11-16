@@ -137,7 +137,7 @@ const DashboardOfTeacher = () => {
         queryData.startDate = startDateState;
         queryData.period = periodState;
         queryData.groupedBy = groupByState;
-        console.log(testTotAveSwitchState);
+        console.info(testTotAveSwitchState);
 
     }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState, testTotAveSwitchState]);
 

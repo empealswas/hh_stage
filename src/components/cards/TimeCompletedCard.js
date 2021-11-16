@@ -16,6 +16,7 @@ import SkeletonEarningCard from "./SkeletonEarningCard";
 import {API, graphqlOperation} from "aws-amplify";
 import {Menu} from "@material-ui/core";
 import TimelapseIcon from '@mui/icons-material/Timelapse';
+import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
@@ -64,6 +65,7 @@ const query = `query MyQuery {
 
 const TimeCompletedCard = ({ isLoading }) => {
     const theme = useTheme();
+    const [timeCompletedTotAveswitchState, setTimeCompletedTotAveSwitchState] = useState("total");
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -76,6 +78,7 @@ const TimeCompletedCard = ({ isLoading }) => {
     };
     const [duration, setDuration] = useState(null);
     useEffect(()=>{
+        console.info(timeCompletedTotAveswitchState)
         const getCount = async () =>{
             const result = await API.graphql(graphqlOperation(query));
             let duration = 0;
@@ -89,7 +92,7 @@ const TimeCompletedCard = ({ isLoading }) => {
         }
         getCount()
 
-    },[])
+    },[timeCompletedTotAveswitchState])
 
     return (
         <>
@@ -184,6 +187,7 @@ const TimeCompletedCard = ({ isLoading }) => {
                                 </Grid>
                             </Grid>
                             <Grid item sx={{ mb: 1.25 }}>
+                                <>
                                 <Stack direction={'row'}><Typography
                                     sx={{
                                         fontSize: '1rem',
@@ -193,8 +197,10 @@ const TimeCompletedCard = ({ isLoading }) => {
                                 >
                                     Active time
                                 </Typography>
-
                                 </Stack>
+                                {/* Added by TL */}
+                                <TotalAverageSwitch totAveChanger={setTimeCompletedTotAveSwitchState} switchVal={timeCompletedTotAveswitchState}/>   
+                                </>
                             </Grid>
                         </Grid>
                     </Box>
