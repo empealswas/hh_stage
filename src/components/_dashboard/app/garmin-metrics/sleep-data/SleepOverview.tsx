@@ -7,6 +7,7 @@ import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearable
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 import {CardContent} from "@mui/material";
+import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
 
 export default function SleepOverview(props: any) {
 
@@ -29,6 +30,7 @@ export default function SleepOverview(props: any) {
     const [sleepScatterData, setSleepScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [sleepIntensityDonutData, setSleepIntensityDonutData] = useState<number[]>([]);
     const [stanineValue, setStanineValue] = useState<number>(1);
+    const [radialValue, setRadialValue] = useState<number>(1);
 
      /////////////////////////////////
     /////  get sleep users data /////
@@ -199,13 +201,28 @@ export default function SleepOverview(props: any) {
             if(sleepStanineGroup.length>0){
                 setStanineValue(sleepStanineGroup[0].duration);
             } else {
-                console.log("dailiesStanineGroup: inside useeffcet constant - mo data");
+                console.log("Sleep Staninie trace: no data");
             }
         }
         prepStanineHeatmapData();
-
     }, [sleepStanineGroup]);
 
+
+    //////////////////////////////////////////////
+    /////  create %target radial trace data  /////
+    //////////////////////////////////////////////
+    useEffect(() => {  
+        const prepTargetRadialData = async () => {
+            if(sleepDataGroup.length>0){
+                var x = parseFloat((sleepDataGroup[0].duration/ 32400 * 100).toPrecision(2));
+                setRadialValue(x);
+            } else {
+                console.log("Sleep radial trace no data");
+            }
+        }
+        prepTargetRadialData();
+    }, [sleepDataGroup]);
+    
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
         var series = [];
@@ -229,7 +246,10 @@ export default function SleepOverview(props: any) {
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"}/>
                     </Grid>
-                    <Grid item xs={12}>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <GarminMetricsRadialChart  data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"}/>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
                         <DailiesStanineContourPlot data={stanineValue}/>
                     </Grid>
                     </Grid>

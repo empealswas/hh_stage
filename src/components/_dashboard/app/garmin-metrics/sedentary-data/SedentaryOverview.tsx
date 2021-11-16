@@ -7,6 +7,7 @@ import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearable
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
 import {CardContent} from "@mui/material";
+import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
 
 export default function SedentaryOverview(props: any) {
     var epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates";
@@ -28,6 +29,7 @@ export default function SedentaryOverview(props: any) {
     // constants for plot data
     const [sedentaryScatterData, setSedentaryScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [sedentaryIntensityDonutData, setSedentaryIntensityDonutData] = useState<number[]>([]);
+    const [radialValue, setRadialValue] = useState<number>(1);
 
     ///////////////////////////////////
     /////  get epochs users data  /////
@@ -198,18 +200,31 @@ export default function SedentaryOverview(props: any) {
     /////  create stanine heatmap trace data /////
     //////////////////////////////////////////////
     useEffect(() => {
-
         const prepStanineHeatmapData = async () => {
 
             if (sedentaryStanineGroup.length > 0) {
                 setStanineValue(sedentaryStanineGroup[0].sedentary);
             } else {
-                console.log("dailiesStanineGroup: inside useeffcet constant - mo data");
+                console.log("Sedentary Stanine Group: no data");
             }
         }
         prepStanineHeatmapData();
-
     }, [sedentaryStanineGroup]);
+
+    //////////////////////////////////////////////
+    /////  create %target radial trace data  /////
+    //////////////////////////////////////////////
+    useEffect(() => {  
+        const prepTargetRadialData = async () => {
+            if(sedentaryDataGroup.length>0){
+                var x = parseFloat((sedentaryDataGroup[0].sedentary/ 14440 * 100).toPrecision(2));
+                setRadialValue(x);
+            } else {
+                console.log("Sedentary radial trace: no data");
+            }
+        }
+        prepTargetRadialData();
+    }, [sedentaryDataGroup]);
 
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
@@ -238,7 +253,11 @@ export default function SedentaryOverview(props: any) {
                     <DailiesStepsDistribution data={sedentaryScatterData} title={"Sedentary"}
                                               subTitle={"Total Inactivity"}/>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <GarminMetricsRadialChart  data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"}/>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+
                     <DailiesStanineContourPlot data={stanineValue}/>
                 </Grid>
                 </Grid>
