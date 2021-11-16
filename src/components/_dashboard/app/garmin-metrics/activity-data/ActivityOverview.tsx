@@ -146,7 +146,7 @@ export default function ActivityOverview(props: any) {
                     }
                 );
 
-                let result = processedData.map(({period, active}) => ({period, active}));
+                let result = processedData.map(({period, active, highlyActive}) => ({period, active, highlyActive}));
                 var name!: string;
                 if (ids == null) {
                     name = "";
