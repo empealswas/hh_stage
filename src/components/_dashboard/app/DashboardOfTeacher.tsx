@@ -178,27 +178,27 @@ const DashboardOfTeacher = () => {
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="flex-start" spacing={4}>
+                {/*<Grid item>*/}
+                {/*    <TabCard/>*/}
+                {/*</Grid>*/}
                 <Grid item>
-                    <TabCard/>
-                </Grid>
-                <Grid item>
-                    <Card sx={{minHeight: 150}}>
+                    <Card>
                         <CardContent>
                             <Stack spacing={2}>
                                 <RadioButtonSelector periodChanger={setPeriodState} period={periodState}/>
-                                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}
-                                       spacing={1}>
-                                    {/*<Button variant={'contained'} color={'secondary'} onClick={backClick}>back</Button>*/}
-                                    {/*<Typography>{startDateState} : {endDateState}</Typography>*/}
-                                    {/*<Button variant={'contained'} color={'secondary'}*/}
-                                    {/*        onClick={forwardClick}>forward</Button>*/}
-                                </Stack>
+                                {/*<Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}*/}
+                                {/*       spacing={1}>*/}
+                                {/*    /!*<Button variant={'contained'} color={'secondary'} onClick={backClick}>back</Button>*!/*/}
+                                {/*    /!*<Typography>{startDateState} : {endDateState}</Typography>*!/*/}
+                                {/*    /!*<Button variant={'contained'} color={'secondary'}*!/*/}
+                                {/*    /!*        onClick={forwardClick}>forward</Button>*!/*/}
+                                {/*</Stack>*/}
                             </Stack>
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid item>
-                    <Card sx={{minHeight: 150}}>
+                    <Card >
                         <CardContent>
                             <GarminMetricSelector metricChanger={setMetricState} metric={metricState}/>
                         </CardContent>
