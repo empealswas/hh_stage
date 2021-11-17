@@ -55,17 +55,17 @@ export default function StanineLineChart(props: any) {
                         opacityTo: 1,
 
                         colorStops: [
-                            { offset: 0, color: '#A50303', opacity: 1 },
-                            { offset: 10, color: '#A50303', opacity: 1 },
-                            { offset: 20, color: '#FD7208', opacity: 1 },
-                            { offset: 30, color: '#FCE803', opacity: 1 },
-                            { offset: 40, color: '#9DFC03', opacity: 1 },
-                            { offset: 50, color: '#38AB03', opacity: 1 },
-                            { offset: 60, color: '#02B647', opacity: 1 },
-                            { offset: 70, color: '#02CAC3', opacity: 1 },
-                            { offset: 80, color: '#0D65FD', opacity: 1 },
-                            { offset: 90, color: '#020EF2', opacity: 1 },
-                            { offset: 100, color: '#020EF2', opacity: 1 }
+                            { offset: 0, color: '#A50303', opacity: 0.7 },
+                            { offset: 10, color: '#A50303', opacity: 0.7 },
+                            { offset: 20, color: '#FD7208', opacity: 0.7 },
+                            { offset: 30, color: '#FCE803', opacity: 0.7 },
+                            { offset: 40, color: '#9DFC03', opacity: 0.7 },
+                            { offset: 50, color: '#38AB03', opacity: 0.7 },
+                            { offset: 60, color: '#02B647', opacity: 0.7 },
+                            { offset: 70, color: '#02CAC3', opacity: 0.7 },
+                            { offset: 80, color: '#0D65FD', opacity: 0.7 },
+                            { offset: 90, color: '#020EF2', opacity: 0.7 },
+                            { offset: 100, color: '#020EF2', opacity: 0.7 }
                         ]
                     },
                 },
@@ -96,44 +96,7 @@ export default function StanineLineChart(props: any) {
         )
     }
 
-    // function generateRadialBars(props: ApexRadialGraphModel ) {
-
-    //   var adjustedData = new ApexRadialGraphModel (0,0,0,0);
-    //   adjustedData.active = parseFloat((props.active/ 60 * 100).toPrecision(2));
-    //   adjustedData.sleep = parseFloat((props.sleep/ 540 * 100).toPrecision(2));
-    //   adjustedData.steps = parseFloat((props.steps/ 5000 * 100).toPrecision(2));
-    //   adjustedData.sedentary = parseFloat((props.sedentary/ 240 * 100).toPrecision(2));
-    //   return adjustedData
-    // };
-
-    // function getDataColour(value: number): string {
-
-    //   if(value >= 50 && value < 69){
-    //     return '#f29407';
-    //   } else if (value >= 70 && value< 99 ){
-    //     return '#f29407';
-    //   } else if (value >= 100){
-    //     return '#0713f2';
-    //   } else {
-    //     return '#f25207';
-    //   }
-    // }
-
-    // function getSedentaryDataColour(value: number): string {
-
-    //   if ( value < 39 ) {
-    //     return '#0713f2';
-    //   } else if(value >= 40 && value < 69 ){
-    //     return '#f29407';
-    //   } else if (value >= 70 && value < 99 ){
-    //     return '#f29407';
-    //   } else if (value >= 100){
-    //     return '#f25207';
-    //   } else {
-    //     return 'grey';
-    //   }
-    // }
-
+    
     function getStanineColours(score: number): string[] {
 
         var brightCols: string[] = ['#742701', '#885201', '#7B9301', '#2E8D01', '#017927', '#017444', '#017973', '#01436F', '#010660'];

@@ -56,7 +56,7 @@ export default function SedentaryOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
-                            replaceHealthyHabitIdsWithUsername(garminData);
+                            // replaceHealthyHabitIdsWithUsername(garminData);
                             setSedentaryUser(garminData);
                         }
                     })

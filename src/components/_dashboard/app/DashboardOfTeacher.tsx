@@ -26,6 +26,23 @@ import TabCard from "../../reports/charts/GarminWearablesCharts/TabCard";
 import ActivityOverview from './garmin-metrics/activity-data/ActivityOverview';
 import TotalAverageSwitch from '../../_garmin-selectors/total-average-switch';
 
+
+const teacherQuery = `query MyQuery($id: ID = "") {
+    getTeacher(id: $id) {
+      classrooms {
+        items {
+          classroom {
+            pupils {
+              items {
+                pupilID
+              }
+            }
+          }
+        }
+      }
+    }
+  }`
+
 const DashboardOfTeacher = () => {
     const today = new Date();
     const dailySubstract = 7;
@@ -51,6 +68,7 @@ const DashboardOfTeacher = () => {
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
     const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
+    const [listOfHHidsAndUserNamesState, setHHidsAndUsernames] = useState<any[]>();
 
     const backClick = () => {
         console.log("Backwards");
@@ -117,15 +135,44 @@ const DashboardOfTeacher = () => {
     useEffect(() => {
         const getAllUsers = async () => {
             const users: string[] = [];
+            const usernames: any[] = [];
             var hhUsers = new healthyHabitsIdModel([]);
-            const result: any = await API.graphql(graphqlOperation(listPupils));
+            ////////////////////////////////////////////////////////////////////
 
-            result.data.listPupils?.items.forEach((item: Pupil) => {
-                console.log(item.firstName);
-                users.push(item.id);
-                hhUsers.id.push(item.id)
-            })
-            setHealthyHabitsIds(hhUsers);
+
+            // const result: any = await API.graphql(graphqlOperation(listPupils));
+            // result.data.listPupils?.items.forEach((item: Pupil) => {
+            //     users.push(item.id);
+            //     var name = item.firstName+ " "+ item.lastName;
+            //     usernames.push({'id':item.id, 'name': name})
+            //     hhUsers.id.push(item.id)
+            // })
+            // setHealthyHabitsIds(hhUsers);
+            // setHHidsAndUsernames(usernames);
+            // console.log(usernames.length);
+            // console.warn(usernames);
+            ////////////////////////////////////
+
+                const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
+                result.data.getTeacher?.classrooms.items
+                    .map((item: any) => item.classroom)
+                    .flatMap((item: Classroom) => item.pupils?.items).forEach((pupil: any) => {
+                        // console.log(pupil);
+                    users.push(pupil.pupilID);
+                    var name = pupil.firstName+ " "+ pupil.lastName;
+                    usernames.push({'id':pupil.pupilID, 'name': name});
+                    hhUsers.id.push(pupil.pupilID);
+                });
+                // for(var i=0; i<5; i++) {
+                //     hhUsers[i]['name'] = 'bob';
+                // }
+                // console.log(hhUsers);
+                setHealthyHabitsIds(hhUsers);
+                setHHidsAndUsernames(usernames);
+                // console.log(usernames.length);
+                // console.warn(usernames);
+                // console.log(hhUsers);
+            //////////////////////////////////////
         }
         getAllUsers();
     }, []);
@@ -141,21 +188,24 @@ const DashboardOfTeacher = () => {
     const Metrics = () => {
         if (metricState === 'sedentary') {
             return (
-                <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
-                                   endDate={endDateState} timePeriod={periodState} grouping={groupByState}/>
+                <SedentaryOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState} 
+                                   startDate={startDateState} endDate={endDateState} 
+                                   timePeriod={periodState} grouping={groupByState}/>
 
             );
         }
         if (metricState === 'steps') {
             return (
-                <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
+                <DailiesOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState} 
+                                startDate={startDateState} endDate={endDateState}
                                  timePeriod={periodState} grouping={groupByState}/>
 
             );
         }
         if (metricState === 'sleep') {
             return (
-                <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
+                <SleepOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState} 
+                            startDate={startDateState} endDate={endDateState}
                                timePeriod={periodState} grouping={groupByState}/>
 
             );
@@ -163,7 +213,8 @@ const DashboardOfTeacher = () => {
 
         if (metricState === 'activity') {
             return (
-                <ActivityOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
+                <ActivityOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState} 
+                                    startDate={startDateState} endDate={endDateState}
                                  timePeriod={periodState} grouping={groupByState}/>
 
             );

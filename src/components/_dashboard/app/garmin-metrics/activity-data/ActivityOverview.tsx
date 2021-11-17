@@ -42,6 +42,7 @@ export default function ActivityOverview(props: any) {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             if (props['idList']) {
+                console.log(props['idList']);
                 var raw = JSON.stringify(props['idList'].id);
                 var requestOptions: any = {
                     method: 'POST',
@@ -56,7 +57,8 @@ export default function ActivityOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
-                            replaceHealthyHabitIdsWithUsername(garminData);
+                            // replaceHealthyHabitIdsWithUsername(garminData);
+                            console.warn(garminData);
                             setActivityUser(garminData);
                         }
                     })
@@ -122,7 +124,7 @@ export default function ActivityOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
-                            console.log(garminData);
+                            // console.log(garminData);
                             setActivityStanineGroup(garminData);
                         }
                     })
