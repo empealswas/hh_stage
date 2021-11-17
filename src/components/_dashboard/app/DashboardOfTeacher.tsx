@@ -17,7 +17,7 @@ import RadioButtonSelector from '../../_garmin-selectors/radio-button-selector';
 import GarminMetricSelector from '../../_garmin-selectors/garin-metric-selector';
 import DailiesOverview from './garmin-metrics/dailies-data/DailiesOverview';
 import GroupBySelector from '../../_garmin-selectors/group-by-selector';
-import {Box, Button} from "@mui/material";
+import {Box, Button, CardHeader} from "@mui/material";
 
 import {healthyHabitsIdModel} from '../../../models/healthyHabitIdsModel';
 import SleepOverview from './garmin-metrics/sleep-data/SleepOverview';
@@ -25,6 +25,8 @@ import SedentaryOverview from './garmin-metrics/sedentary-data/SedentaryOverview
 import TabCard from "../../reports/charts/GarminWearablesCharts/TabCard";
 import ActivityOverview from './garmin-metrics/activity-data/ActivityOverview';
 import TotalAverageSwitch from '../../_garmin-selectors/total-average-switch';
+import {useSelector} from "react-redux";
+import {useTheme} from "@mui/material/styles";
 
 const DashboardOfTeacher = () => {
     const today = new Date();
@@ -35,13 +37,9 @@ const DashboardOfTeacher = () => {
     var prevDate: string = pastDate.getFullYear() + "-" + String(pastDate.getMonth() + 1).padStart(2, '0') + "-" + String(pastDate.getDate()).padStart(2, '0');
 
     var queryData = new GarminQueryData(prevDate, todayDate, 'daily', 'group');
+    const customization = useSelector((state: any) => state.customization);
 
 
-    const user = useContext(UserContext);
-    const [lessons, setLessons] = useState<null | Lesson[]>(null);
-    const [classrooms, setClassrooms] = useState<null | Classroom[]>(null);
-    const [selectedTerm, setSelectedTerm] = useState<Term | null>(null);
-    const [terms, setTerms] = useState<Term[] | null>(null);
 
     ///////////////////////////////////////////////////////////////////////////////////////
     // Can this be moved out into some kind of service? ///////////////////////////////////
@@ -51,6 +49,7 @@ const DashboardOfTeacher = () => {
     const [startDateState, setStartDateState] = useState(prevDate);
     const [endDateState, setEndDateState] = useState(todayDate);
     const [listOfHealthyHabitsIdsState, setHealthyHabitsIds] = useState<healthyHabitsIdModel>();
+
 
     const backClick = () => {
         console.log("Backwards");
@@ -133,87 +132,86 @@ const DashboardOfTeacher = () => {
     useEffect(() => {
         queryData.endDate = endDateState;
         queryData.startDate = startDateState;
-        queryData.period = periodState;
+        queryData.period = customization.period;
         queryData.groupedBy = groupByState;
-    }, [periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
+    }, [customization.period, periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
 
-
+    const theme: any = useTheme();
     const Metrics = () => {
-        if (metricState === 'sedentary') {
-            return (
-                <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
-                                   endDate={endDateState} timePeriod={periodState} grouping={groupByState}/>
+        return (
+            <>
+                {customization.showSteps &&
+                <Grid item>
+                    <Card sx={{backgroundColor: theme.palette.secondary.light}}>
 
-            );
-        }
-        if (metricState === 'steps') {
-            return (
-                <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
-                                 timePeriod={periodState} grouping={groupByState}/>
+                        <CardHeader title={'Steps'}/>
+                        <CardContent>
+                            <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
+                                             endDate={endDateState}
+                                             timePeriod={customization.period} grouping={groupByState}/>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                }
+                {customization.showSleep &&
+                <Grid item>
+                    <Card sx={{backgroundColor: theme.palette.primary.light}}>
 
-            );
-        }
-        if (metricState === 'sleep') {
-            return (
-                <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
-                               timePeriod={periodState} grouping={groupByState}/>
 
-            );
-        }
+                    <CardHeader title={'Sleep'}/>
+                    <CardContent>
 
-        if (metricState === 'activity') {
-            return (
-                <ActivityOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState} endDate={endDateState}
-                                 timePeriod={periodState} grouping={groupByState}/>
+                        <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
+                                       endDate={endDateState}
+                                       timePeriod={customization.period} grouping={groupByState}/>
+                    </CardContent>
+                </Card>
+                </Grid>
 
-            );
-        }
-        return <Typography>Nothing selected</Typography>
+                }
+                {customization.showSedentary &&
+                <Grid item>
+
+                    <Card sx={{backgroundColor: theme.palette.warning.light}}>
+
+                    <CardHeader title={'Sedentary'}/>
+                    <CardContent>
+
+                        <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
+                                           endDate={endDateState} timePeriod={customization.period} grouping={groupByState}/>
+                    </CardContent>
+                </Card>
+                </Grid>
+
+                }
+                {customization.showActivity &&
+                <Grid item>
+
+                    <Card sx={{backgroundColor: theme.palette.success.light}}>
+                    <CardHeader title={'Activity'}/>
+                    <CardContent>
+                        <ActivityOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
+                                          endDate={endDateState}
+                                          timePeriod={customization.period} grouping={groupByState}/>
+
+                    </CardContent>
+                </Card>
+                </Grid>
+
+                }
+            </>
+
+        );
     }
 
     return (
         <Stack direction={'column'}>
-            {/*<Typography variant={'h3'} textAlign={'center'} padding={5}>Plots for the teacher view</Typography>*/}
             <Grid container
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="flex-start" spacing={4}>
-                {/*<Grid item>*/}
-                {/*    <TabCard/>*/}
-                {/*</Grid>*/}
-                <Grid item>
-                    <Card>
-                        <CardContent>
-                            <Stack spacing={2}>
-                                <RadioButtonSelector periodChanger={setPeriodState} period={periodState}/>
-                                {/*<Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}*/}
-                                {/*       spacing={1}>*/}
-                                {/*    /!*<Button variant={'contained'} color={'secondary'} onClick={backClick}>back</Button>*!/*/}
-                                {/*    /!*<Typography>{startDateState} : {endDateState}</Typography>*!/*/}
-                                {/*    /!*<Button variant={'contained'} color={'secondary'}*!/*/}
-                                {/*    /!*        onClick={forwardClick}>forward</Button>*!/*/}
-                                {/*</Stack>*/}
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item>
-                    <Card >
-                        <CardContent>
-                            <GarminMetricSelector metricChanger={setMetricState} metric={metricState}/>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item>
-                    {/* <Card sx={{minHeight: 150}}>
-                        <CardContent>
-                            <GroupBySelector groupByChanger={setGroupByState} group={groupByState}/>
-                        </CardContent>
-                    </Card> */}
-                </Grid>
+                <Metrics/>
             </Grid>
-            <Box height={20}/>
-            <Metrics/>
         </Stack>
 
     );

@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import {useEffect, useState} from 'react';
 
 // material-ui
-import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
+import {useTheme, styled} from '@mui/material/styles';
+import {Avatar, Box, Button, Grid, Stack, Typography} from '@mui/material';
 
 // third-party
 import Chart from 'react-apexcharts';
@@ -24,7 +24,7 @@ import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
 
 
-const CardWrapper = styled(MainCard)(({ theme }) => ({
+const CardWrapper = styled(MainCard)(({theme}) => ({
     backgroundColor: theme.palette.primary.dark,
     color: '#fff',
     overflow: 'hidden',
@@ -75,7 +75,7 @@ const query = `query MyQuery {
 }`
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const TotalDailyMiles = ({ isLoading }) => {
+const TotalDailyMiles = ({isLoading}) => {
     const theme = useTheme();
 
     const [timeValue, setTimeValue] = useState(false);
@@ -85,37 +85,37 @@ const TotalDailyMiles = ({ isLoading }) => {
     const handleChangeTime = (event, newValue) => {
         setTimeValue(newValue);
     };
-   
-    useEffect(()=>{
+
+    useEffect(() => {
         console.warn(dailyMileTotAveswitchState);
-        const getCount = async () =>{
+        const getCount = async () => {
             const users = [];
             const result = await API.graphql(graphqlOperation(query));
-            
 
-            result.data.listPELessonRecords.items.forEach((item: any) => {
-                users.push( {'id':item.id});
+
+            result.data.listPELessonRecords.items.forEach((item:any) => {
+                users.push({'id': item.id});
             })
-            if(dailyMileTotAveswitchState ==='total'){
+            if (dailyMileTotAveswitchState === 'total') {
                 setDailyMileCount(result.data.listPELessonRecords.items.length);
             } else {
                 const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-                setDailyMileCount(parseFloat((result.data.listPELessonRecords.items.length/uniqueIds.length).toPrecision(2)) );
+                setDailyMileCount(parseFloat((result.data.listPELessonRecords.items.length / uniqueIds.length).toPrecision(2)));
                 // setDuration(parseFloat((duration).toPrecision(2)));
                 console.log(uniqueIds);
             }
         }
         getCount()
 
-    },[dailyMileTotAveswitchState])
+    }, [dailyMileTotAveswitchState])
 
     return (
         <>
             {!dailyMileCount ? (
-                <SkeletonEarningCard />
+                <SkeletonEarningCard/>
             ) : (
                 <CardWrapper border={false} content={false}>
-                    <Box sx={{ p: 2.25 }}>
+                    <Box sx={{p: 2.25}}>
                         <Grid container direction="column">
                             <Grid item>
                                 <Grid container justifyContent="space-between">
@@ -133,45 +133,63 @@ const TotalDailyMiles = ({ isLoading }) => {
                                             <DirectionsRunIcon/>
                                         </Avatar>
                                     </Grid>
-                                   {/* added by TL */}
+                                    {/* added by TL */}
                                     {/* <Grid item>
                                         <TotalAverageSwitch />
                                     </Grid> */}
-                                    
+
                                     <Grid item>
-                                        <Button
-                                            disableElevation
-                                            variant={timeValue ? 'contained' : 'text'}
-                                            size="small"
-                                            sx={{ color: 'inherit' }}
-                                            onClick={(e) => handleChangeTime(e, true)}
-                                        >
-                                            Month
-                                        </Button>
-                                        <Button
-                                            disableElevation
-                                            variant={!timeValue ? 'contained' : 'text'}
-                                            size="small"
-                                            sx={{ color: 'inherit' }}
-                                            onClick={(e) => handleChangeTime(e, false)}
-                                        >
-                                            Year
-                                        </Button>
-                                  
+                                        <Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
+                                            <TotalAverageSwitch totAveChanger={setDailyMileTotAveSwitchState}
+                                                                switchVal={dailyMileTotAveswitchState}/>
+                                            <>
+                                                <Button
+                                                    disableElevation
+                                                    variant={timeValue ? 'contained' : 'text'}
+                                                    size="small"
+                                                    sx={{color: 'inherit'}}
+                                                    onClick={(e) => handleChangeTime(e, true)}
+                                                >
+                                                    Month
+                                                </Button>
+                                                <Button
+                                                    disableElevation
+                                                    variant={!timeValue ? 'contained' : 'text'}
+                                                    size="small"
+                                                    sx={{color: 'inherit'}}
+                                                    onClick={(e) => handleChangeTime(e, false)}
+                                                >
+                                                    Year
+                                                </Button>
+                                            </>
+                                        </Stack>
+
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item sx={{ mb: 0.75 }}>
+                            <Grid item sx={{mb: 0.75}}>
                                 <Grid container alignItems="center">
                                     <Grid item xs={6}>
                                         <Grid container alignItems="center">
                                             <Grid item>
                                                 {timeValue ? (
-                                                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                                                    <Typography sx={{
+                                                        fontSize: '2.125rem',
+                                                        fontWeight: 500,
+                                                        mr: 1,
+                                                        mt: 1.75,
+                                                        mb: 0.75
+                                                    }}>
                                                         {dailyMileCount}
                                                     </Typography>
                                                 ) : (
-                                                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                                                    <Typography sx={{
+                                                        fontSize: '2.125rem',
+                                                        fontWeight: 500,
+                                                        mr: 1,
+                                                        mt: 1.75,
+                                                        mb: 0.75
+                                                    }}>
                                                         {dailyMileCount}
                                                     </Typography>
                                                 )}
@@ -185,7 +203,8 @@ const TotalDailyMiles = ({ isLoading }) => {
                                                         color: theme.palette.primary.dark
                                                     }}
                                                 >
-                                                    <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+                                                    <ArrowDownwardIcon fontSize="inherit"
+                                                                       sx={{transform: 'rotate3d(1, 1, 1, 45deg)'}}/>
                                                 </Avatar>
                                             </Grid>
                                             <Grid item xs={12}>
@@ -202,17 +221,14 @@ const TotalDailyMiles = ({ isLoading }) => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        
-                                        {/* added by TL */}
+
                                         <>
-                                        <Grid item xs={12}>
-                                        {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
-                                        </Grid>
-                                        <Grid item xs={12}  >
-                                            <TotalAverageSwitch totAveChanger={setDailyMileTotAveSwitchState} switchVal={dailyMileTotAveswitchState}/>                                      
-                                        </Grid>
+                                            <Grid item xs={12}>
+                                                {timeValue ? <Chart {...ChartDataMonth} /> :
+                                                    <Chart {...ChartDataYear} />}
+                                            </Grid>
+
                                         </>
-                                        {/* added by TL */}
 
                                     </Grid>
                                 </Grid>

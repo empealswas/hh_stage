@@ -2,9 +2,13 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import {Tooltip} from "@mui/material";
 
 const AveTotSwitch = styled(Switch)(({ theme }) => ({
     width: 28,
@@ -52,32 +56,39 @@ const AveTotSwitch = styled(Switch)(({ theme }) => ({
 
 function TotalAverageSwitch({totAveChanger, switchVal}) {
     // store the current value of the 
-    const [toggleValue, setSwitchState] = React.useState("total");
 
-
-    const handleChange = (event) => {
-        if(event.target.value==="total"){
-            setSwitchState("average");
-            totAveChanger("average");
-        } else if(event.target.value==="average"){
-            setSwitchState("total")
-            totAveChanger("total");
+    const handleAlignment = (event, newAlignment) => {
+        if (switchVal !== null) {
+            totAveChanger(newAlignment);
         }
+    };
 
-        
-  };
     return (
-        <FormGroup>
-          <Stack direction="row" spacing={1} alignItems="right">
-            <Typography>Ave</Typography>
-            <AveTotSwitch 
-                defaultChecked inputProps={{ 'aria-label': 'ant design' }} 
-                value={switchVal}
-                onChange={handleChange}
-            />
-            <Typography>Tot</Typography>
-          </Stack>
-        </FormGroup>
+        <ToggleButtonGroup
+            value={switchVal}
+            exclusive
+            onChange={handleAlignment}
+            aria-label="text alignment"
+            color="error"
+        >
+            <ToggleButton value="average" aria-label="left aligned">
+                Avg
+            </ToggleButton>
+            <ToggleButton value="total" aria-label="centered">
+                Tot
+            </ToggleButton>
+        </ToggleButtonGroup>
+        // <FormGroup>
+        //   <Stack direction="row" spacing={1} alignItems="right">
+        //     <Typography>Ave</Typography>
+        //     <AveTotSwitch
+        //         defaultChecked inputProps={{ 'aria-label': 'ant design' }}
+        //         value={switchVal}
+        //         onChange={handleChange}
+        //     />
+        //     <Typography>Tot</Typography>
+        //   </Stack>
+        // </FormGroup>
       );
     }
     export default TotalAverageSwitch;

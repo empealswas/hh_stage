@@ -2,8 +2,8 @@
 import 'simplebar/src/simplebar.css';
 
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import {BrowserRouter} from 'react-router-dom';
+import {HelmetProvider} from 'react-helmet-async';
 
 //
 import App from './App';
@@ -12,19 +12,24 @@ import reportWebVitals from './reportWebVitals';
 import './global.css'
 import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
 
-import { pdfjs } from 'react-pdf';
+import {pdfjs} from 'react-pdf';
+import {Provider} from "react-redux";
+import {store} from "./store/store";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 // ----------------------------------------------------------------------
 
 ReactDOM.render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </HelmetProvider>,
-  document.getElementById('root')
-);
+    <Provider store={store}>
+        <HelmetProvider>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </HelmetProvider>
+    </Provider>,
+    document.getElementById('root')
+)
+;
 
 // If you want to enable client cache, register instead.
 serviceWorker.unregister();
