@@ -87,12 +87,9 @@ const TotalDailyMiles = ({ isLoading }) => {
     };
    
     useEffect(()=>{
-        console.warn(dailyMileTotAveswitchState);
         const getCount = async () =>{
             const users = [];
             const result = await API.graphql(graphqlOperation(query));
-            
-
             result.data.listPELessonRecords.items.forEach((item: any) => {
                 users.push( {'id':item.id});
             })
@@ -101,8 +98,6 @@ const TotalDailyMiles = ({ isLoading }) => {
             } else {
                 const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
                 setDailyMileCount(parseFloat((result.data.listPELessonRecords.items.length/uniqueIds.length).toPrecision(2)) );
-                // setDuration(parseFloat((duration).toPrecision(2)));
-                console.log(uniqueIds);
             }
         }
         getCount()
