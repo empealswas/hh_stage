@@ -56,6 +56,7 @@ export default function ActivityOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
+                            replaceHealthyHabitIdsWithUsername(garminData);
                             setActivityUser(garminData);
                         }
                     })
@@ -236,6 +237,16 @@ export default function ActivityOverview(props: any) {
         return series;
     }
 
+    function replaceHealthyHabitIdsWithUsername(inData: GarminEpochsSummaryDataModel[]) {
+        // replaces the healthyhabits id with the corresponding user name
+        var dataCounter = 0;
+        while (dataCounter < inData.length) {
+            var name = props['usernames'].find(obj => obj.id ===inData[dataCounter].garminId);
+            inData[dataCounter].garminId = name.name;
+            dataCounter++;
+        }
+    }
+
     return (
         <Card>
             <CardHeader title="Activity levels" subheader="Total duration and intensity"/>
@@ -255,7 +266,7 @@ export default function ActivityOverview(props: any) {
                     <GarminMetricsRadialChart  data={radialValue} title={"Activity"} subTitle={"% Target Achieved"}/>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Activity"}/>
+                    <StanineLineChart data={stanineValue} title={"Activity"} subTitle={"Stanine"}/>
                     {/* <DailiesStanineContourPlot data={stanineValue}/> */}
                 </Grid>
                 </Grid>

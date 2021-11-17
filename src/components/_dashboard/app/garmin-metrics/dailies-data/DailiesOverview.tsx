@@ -69,6 +69,7 @@ export default function DailiesOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
+                            replaceHealthyHabitIdsWithUsername(garminData);
                             setDailiesUser(garminData);
                         }
                     })
@@ -264,6 +265,16 @@ export default function DailiesOverview(props: any) {
         return series;
     }
 
+    function replaceHealthyHabitIdsWithUsername(inData: GarminDailiesSummaryModel[]) {
+        // replaces the healthyhabits id with the corresponding user name
+        var dataCounter = 0;
+        while (dataCounter < inData.length) {
+            var name = props['usernames'].find(obj => obj.id ===inData[dataCounter].garminId);
+            inData[dataCounter].garminId = name.name;
+            dataCounter++;
+        }
+    }
+
     return (
         <Grid container spacing={2}>
 
@@ -275,10 +286,10 @@ export default function DailiesOverview(props: any) {
                 <DailiesStepsDistribution data={dailiesScatterData} title={"Steps"} subTitle={"Total Steps"}/>
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <GarminMetricsRadialChart  data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"}/>
+                    <GarminMetricsRadialChart  data={radialValue} title={"Steps"} subTitle={"% Target Achieved"}/>
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
-                <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Steps"}/>
+                <StanineLineChart data={stanineValue} title={"Steps"} subTitle={"Stanine"}/>
                 {/* <DailiesStanineContourPlot data={stanineValue}/> */}
             </Grid>
         </Grid>
