@@ -39,6 +39,7 @@ import TimeCompletedCard from "../components/cards/TimeCompletedCard";
 import AverageStepsChart from "../components/reports/charts/AverageStepsChart";
 import AverageSleepChart from "../components/reports/charts/AverageSleepChart";
 import {getAverage} from "../apiFunctions/apiFunctions";
+import DashboardSettings from "../components/_dashboard/app/DashboardSettings";
 
 
 // ----------------------------------------------------------------------
@@ -75,13 +76,13 @@ export default function DashboardApp() {
                         <TopActivitiesPieChart/>
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
-                        <ActivityGoalChart goalTime={100000}/>
+                        <ActivityGoalChart goalTime={10000}/>
                     </Grid>
-                    <Can I={'read'} a={'teacherDashboard'}>
-                        <Grid item xs={12}>
-                            <DashboardOfTeacher/>
-                        </Grid>
-                    </Can>
+                    {/*<Can I={'read'} a={'teacherDashboard'}>*/}
+                    {/*    <Grid item xs={12}>*/}
+                    {/*        <DashboardOfTeacher/>*/}
+                    {/*    </Grid>*/}
+                    {/*</Can>*/}
                     {/*<Grid item xs={12} md={12} lg={12}>*/}
                     {/*    <ActivityLineChart/>*/}
                     {/*</Grid>*/}
@@ -97,6 +98,7 @@ export default function DashboardApp() {
                     <Grid item xs={12} md={12} lg={12}>
                         <SchoolHousesPage/>
                     </Grid>
+                    {/*<DashboardSettings/>*/}
 
                 </Grid>
             </Container>

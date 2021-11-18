@@ -251,10 +251,7 @@ export default function SedentaryOverview(props: any) {
     }
 
     return (
-        <Card>
-            <CardHeader title="Activity levels" subheader="Total duration and intensity"/>
 
-            <CardContent>
                 <Grid container spacing={2}>
 
                 <Grid item xs={12} sm={6} md={6} lg={6}>
@@ -273,8 +270,6 @@ export default function SedentaryOverview(props: any) {
                     {/* <DailiesStanineContourPlot data={stanineValue}/> */}
                 </Grid>
                 </Grid>
-            </CardContent>
 
-        </Card>
     );
 }

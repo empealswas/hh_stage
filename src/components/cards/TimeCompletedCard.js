@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 
 // material-ui
 import {styled, useTheme} from '@mui/material/styles';
-import {Avatar, Box, Grid, Stack, Typography} from '@mui/material';
+import {Avatar, Box, Button, Grid, Stack, Typography} from '@mui/material';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 
@@ -85,7 +85,7 @@ const TimeCompletedCard = ({ isLoading }) => {
            
             let duration = 0;
             const users = [];
-            result.data.listPELessonRecords.items.forEach((item: any) => {
+            result.data.listPELessonRecords.items.forEach((item) => {
                 if (item.duration) {
                 users.push( {'id':item.id});
                 duration += item.duration;
@@ -110,9 +110,11 @@ const TimeCompletedCard = ({ isLoading }) => {
             ) : (
                 <CardWrapper border={false} content={false}>
                     <Box sx={{ p: 2.25 }}>
+
                         <Grid container direction="column">
+                        <Stack direction={'row'} spacing={1} >
                             <Grid item>
-                                <Grid container justifyContent="space-between">
+                                <Grid container justifyContent="spacing" spacing={2}>
                                     <Grid item>
                                         <Avatar
                                             variant="rounded"
@@ -127,53 +129,15 @@ const TimeCompletedCard = ({ isLoading }) => {
                                         </Avatar>
                                     </Grid>
                                     <Grid item>
-                                        <Avatar
-                                            variant="rounded"
-                                            sx={{
-                                                ...theme.typography.body2,
-                                                ...theme.typography.body1,
-                                                backgroundColor: theme.palette.primary.dark,
-                                                color: theme.palette.secondary[200],
-                                                zIndex: 1
-                                            }}
-                                            aria-controls="menu-earning-card"
-                                            aria-haspopup="true"
-                                            onClick={handleClick}
-                                        >
-                                            <MoreHorizIcon fontSize="inherit" />
-                                        </Avatar>
-                                        {/*<Menu*/}
-                                        {/*    id="menu-earning-card"*/}
-                                        {/*    anchorEl={anchorEl}*/}
-                                        {/*    keepMounted*/}
-                                        {/*    open={Boolean(anchorEl)}*/}
-                                        {/*    onClose={handleClose}*/}
-                                        {/*    variant="selectedMenu"*/}
-                                        {/*    anchorOrigin={{*/}
-                                        {/*        vertical: 'bottom',*/}
-                                        {/*        horizontal: 'right'*/}
-                                        {/*    }}*/}
-                                        {/*    transformOrigin={{*/}
-                                        {/*        vertical: 'top',*/}
-                                        {/*        horizontal: 'right'*/}
-                                        {/*    }}*/}
-                                        {/*>*/}
-                                        {/*    <MenuItem onClick={handleClose}>*/}
-                                        {/*        <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> Import Card*/}
-                                        {/*    </MenuItem>*/}
-                                        {/*    <MenuItem onClick={handleClose}>*/}
-                                        {/*        <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copy Data*/}
-                                        {/*    </MenuItem>*/}
-                                        {/*    <MenuItem onClick={handleClose}>*/}
-                                        {/*        <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Export*/}
-                                        {/*    </MenuItem>*/}
-                                        {/*    <MenuItem onClick={handleClose}>*/}
-                                        {/*        <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File*/}
-                                        {/*    </MenuItem>*/}
-                                        {/*</Menu>*/}
+                                            <TotalAverageSwitch totAveChanger={setTimeCompletedTotAveSwitchState}
+                                                                switchVal={timeCompletedTotAveswitchState}/>
+
                                     </Grid>
                                 </Grid>
                             </Grid>
+                            {/*<TotalAverageSwitch totAveChanger={setTimeCompletedTotAveSwitchState} switchVal={timeCompletedTotAveswitchState}/>*/}
+                        </Stack>
+
                             <Grid item>
                                 <Grid container alignItems="center">
                                     <Grid item>
@@ -207,8 +171,6 @@ const TimeCompletedCard = ({ isLoading }) => {
                                     Active time
                                 </Typography>
                                 </Stack>
-                                {/* Added by TL */}
-                                <TotalAverageSwitch totAveChanger={setTimeCompletedTotAveSwitchState} switchVal={timeCompletedTotAveswitchState}/>   
                                 </>
                             </Grid>
                         </Grid>
