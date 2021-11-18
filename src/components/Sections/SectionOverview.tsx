@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Stack, Typography} from "@material-ui/core";
-import {Box, Container, Divider} from "@mui/material";
+import {Box, Breadcrumbs, Container, Divider, Link} from "@mui/material";
 import {Can} from "../../utils/Ability";
 import AddSectionModal from "./AddSectionModal";
 import SectionGrid from "./SectionGrid";
 import DeletionModal from "../Lesson/YearPage/DeletionModal";
 import HeaderOptions from "../Lesson/YearPage/Title";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link as RouterLink, useNavigate, useParams} from "react-router-dom";
 import {Section} from "../../API";
 import {API, graphqlOperation} from "aws-amplify";
-import {getSection} from "../../graphql/queries";
+import {getSection, listSections} from "../../graphql/queries";
 import EditSectionModal from "./EditSectionModal";
 import {onUpdateSection} from "../../graphql/subscriptions";
 import {deleteSection} from "../../graphql/mutations";
@@ -21,7 +21,7 @@ import LessonsGridSection from "./LessonsGridSection";
 const SectionOverview = () => {
     const {sectionId} = useParams();
     const [section, setSection] = useState<Section | null>(null);
-
+    const [allSections, setAllSections] = useState<Section[] | null>(null);
 
     useEffect(() => {
         const getSectionAsync = async () => {
@@ -29,8 +29,13 @@ const SectionOverview = () => {
             let fetchedSection = result.data.getSection;
             setSection(fetchedSection);
         }
+        const getBreadcrumbs = async () => {
+            const result: any = await API.graphql(graphqlOperation(listSections));
+            setAllSections(result.data.listSections.items);
+        }
         if (sectionId) {
             getSectionAsync();
+            getBreadcrumbs();
         }
         const createSubscription: any = API.graphql(graphqlOperation(onUpdateSection));
         const updateSubscription = createSubscription.subscribe({
@@ -51,6 +56,27 @@ const SectionOverview = () => {
     }
     const snackbar = useSnackbar();
     const navigate = useNavigate();
+    const BreadcrumbsHeader = () => {
+        if (!allSections) {
+            return <></>;
+        }
+        const links: Section[] = [];
+        let parent: Section | undefined = allSections?.filter(section => section.id === sectionId)[0];
+        while (parent) {
+            parent = allSections?.filter(section => section.id === parent?.parentID)[0];
+            if (parent) {
+                links.push(parent);
+            }
+        }
+        allSections?.filter(section => section.id === sectionId);
+        return (
+            <Breadcrumbs aria-label="breadcrumb">
+                {links.reverse().map(section => <Link component={RouterLink} underline={'hover'} color={'secondary'} to={`${section.id}`}>
+                    {section.name}
+                </Link>)}
+            </Breadcrumbs>
+        )
+    }
     return (
         <Container>
             {section && <HeaderOptions title={sectionId ? section?.name ?? "Sections" : "Sections"}
@@ -73,7 +99,9 @@ const SectionOverview = () => {
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                 <Typography variant="h4" gutterBottom>
-                    Sections
+                    {allSections &&
+                    <BreadcrumbsHeader/>
+                    }
                 </Typography>
                 <Can I={'create'} a={'curriculum'}>
                     <AddSectionModal/>

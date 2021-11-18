@@ -78,11 +78,11 @@ export default function DashboardApp() {
                     <Grid item xs={12} md={6} lg={6}>
                         <ActivityGoalChart goalTime={10000}/>
                     </Grid>
-                    <Can I={'read'} a={'teacherDashboard'}>
-                        <Grid item xs={12}>
-                            <DashboardOfTeacher/>
-                        </Grid>
-                    </Can>
+                    {/*<Can I={'read'} a={'teacherDashboard'}>*/}
+                    {/*    <Grid item xs={12}>*/}
+                    {/*        <DashboardOfTeacher/>*/}
+                    {/*    </Grid>*/}
+                    {/*</Can>*/}
                     {/*<Grid item xs={12} md={12} lg={12}>*/}
                     {/*    <ActivityLineChart/>*/}
                     {/*</Grid>*/}
@@ -98,7 +98,7 @@ export default function DashboardApp() {
                     <Grid item xs={12} md={12} lg={12}>
                         <SchoolHousesPage/>
                     </Grid>
-                    <DashboardSettings/>
+                    {/*<DashboardSettings/>*/}
 
                 </Grid>
             </Container>

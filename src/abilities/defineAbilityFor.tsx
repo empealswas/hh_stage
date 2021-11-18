@@ -27,9 +27,11 @@ export default function defineAbilityFor(user: User | null) {
     } else if (user instanceof  Teacher) {
         can('visit', 'lessons');
         can('visit', 'reports');
-        can('visit', 'dashboard')
+        can('visit', 'dashboard');
+        can('visit', 'wearables');
         can('read', 'attendance');
         can('read', 'teacherDashboard')
+
     } else if (user instanceof Parent) {
         can('visit', 'dashboard')
         can('visit', 'parent');

@@ -34,6 +34,7 @@ import PEForm from "./components/Lesson/pe/PEForm";
 import ParentOverview from "./components/parent/ParentOverview";
 import SectionGrid from "./components/Sections/SectionGrid";
 import SectionOverview from "./components/Sections/SectionOverview";
+import Wearables from "./components/_dashboard/wearables/Wearables";
 
 // ----------------------------------------------------------------------
 
@@ -70,14 +71,16 @@ export default function Router() {
                         }
                     ]
                 },
+                {path: 'wearables', element: <Outlet/>, children: [
+                        {element: <Wearables/>}
+                    ]},
                 {
                     path: 'reports', element: <Outlet/>, children: [
                         {element: <ReportPage/>},
                     ]
                 },
                 {path: 'parent', element: <ParentSection/>},
-                {
-                    path: 'section', element: <SectionOverview/>,
+                {path: 'section', element: <SectionOverview/>,
                     children: [{
                         path: ':sectionId', element: <SectionOverview/>
                     },
