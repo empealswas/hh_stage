@@ -259,7 +259,7 @@ export default function DailiesOverview(props: any) {
         var series = [];
         while (i < inData.length) {
             var x = new Date(inData[i].period).getTime();
-            var y = inData[i].totalSteps
+            var y = parseFloat((inData[i].totalSteps).toPrecision(2));
             series.push([x, y]);
             i++;
         }
@@ -267,7 +267,7 @@ export default function DailiesOverview(props: any) {
     }
 
     function replaceHealthyHabitIdsWithUsername(inData: GarminDailiesSummaryModel[]) {
-        // replaces the healthyhabits id with the corresponding user name
+        // replaces the healthy habits id with the corresponding user name
         var dataCounter = 0;
         while (dataCounter < inData.length) {
             var name = props['usernames'].find(obj => obj.id ===inData[dataCounter].garminId);
