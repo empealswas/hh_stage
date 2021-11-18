@@ -10,6 +10,7 @@ import {CardContent} from "@mui/material";
 import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
 import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
 
+
 export default function SedentaryOverview(props: any) {
     var epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates";
     var epochsZvaluesBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/z-values/dates";
