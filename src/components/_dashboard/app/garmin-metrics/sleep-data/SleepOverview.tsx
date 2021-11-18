@@ -57,7 +57,7 @@ export default function SleepOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
-                            // replaceHealthyHabitIdsWithUsername(garminData);
+                            replaceHealthyHabitIdsWithUsername(garminData);
                             setSleepUser(garminData);
                         }
                     })
