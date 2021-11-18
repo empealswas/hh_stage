@@ -55,7 +55,7 @@ const DashboardOfTeacher = () => {
 
     var queryData = new GarminQueryData(prevDate, todayDate, 'daily', 'group');
     const customization = useSelector((state: any) => state.customization);
-
+    const user = useContext(UserContext);
 
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -259,7 +259,6 @@ const DashboardOfTeacher = () => {
                 <Metrics/>
             </Grid>
         </Stack>
-
     );
 };
 
