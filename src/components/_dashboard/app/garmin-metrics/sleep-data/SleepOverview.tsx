@@ -57,6 +57,7 @@ export default function SleepOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminSleepSummaryModel[] = JSON.parse(result);
+                            // replaceHealthyHabitIdsWithUsername(garminData);
                             setSleepUser(garminData);
                         }
                     })
@@ -235,6 +236,16 @@ export default function SleepOverview(props: any) {
         }
         return series;
     }
+
+    function replaceHealthyHabitIdsWithUsername(inData: GarminSleepSummaryModel[]) {
+        // replaces the healthyhabits id with the corresponding user name
+        var dataCounter = 0;
+        while (dataCounter < inData.length) {
+            var name = props['usernames'].find(obj => obj.id ===inData[dataCounter].garminId);
+            inData[dataCounter].garminId = name.name;
+            dataCounter++;
+        }
+    }
     return (
 
                 <Grid container spacing={2}>
@@ -246,10 +257,10 @@ export default function SleepOverview(props: any) {
                         <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"} />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <GarminMetricsRadialChart data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"} />
+                        <GarminMetricsRadialChart data={radialValue} title={"Sleeo"} subTitle={"% Target Achieved"} />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Sleep"} />
+                        <StanineLineChart data={stanineValue} title={"Sleep"} subTitle={"Stanine"} />
                         {/* <DailiesStanineContourPlot data={stanineValue}/> */}
                     </Grid>
                 </Grid>

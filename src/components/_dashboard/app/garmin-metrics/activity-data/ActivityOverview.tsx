@@ -42,6 +42,7 @@ export default function ActivityOverview(props: any) {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             if (props['idList']) {
+                console.log(props['idList']);
                 var raw = JSON.stringify(props['idList'].id);
                 var requestOptions: any = {
                     method: 'POST',
@@ -56,6 +57,8 @@ export default function ActivityOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
+                            // replaceHealthyHabitIdsWithUsername(garminData);
+                            console.warn(garminData);
                             setActivityUser(garminData);
                         }
                     })
@@ -121,7 +124,7 @@ export default function ActivityOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
-                            console.log(garminData);
+                            // console.log(garminData);
                             setActivityStanineGroup(garminData);
                         }
                     })
@@ -236,6 +239,16 @@ export default function ActivityOverview(props: any) {
         return series;
     }
 
+    function replaceHealthyHabitIdsWithUsername(inData: GarminEpochsSummaryDataModel[]) {
+        // replaces the healthyhabits id with the corresponding user name
+        var dataCounter = 0;
+        while (dataCounter < inData.length) {
+            var name = props['usernames'].find(obj => obj.id ===inData[dataCounter].garminId);
+            inData[dataCounter].garminId = name.name;
+            dataCounter++;
+        }
+    }
+
     return (
 
                 <Grid container spacing={2}>
@@ -252,7 +265,7 @@ export default function ActivityOverview(props: any) {
                     <GarminMetricsRadialChart  data={radialValue} title={"Activity"} subTitle={"% Target Achieved"}/>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <StanineLineChart data={stanineValue} title={"Stanine"} subTitle={"Activity"}/>
+                    <StanineLineChart data={stanineValue} title={"Activity"} subTitle={"Stanine"}/>
                     {/* <DailiesStanineContourPlot data={stanineValue}/> */}
                 </Grid>
                 </Grid>
