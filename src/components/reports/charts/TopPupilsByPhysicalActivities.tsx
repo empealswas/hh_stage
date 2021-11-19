@@ -132,7 +132,7 @@ export default function TopPupilsByPhysicalActivities() {
     const CHART_DATA = [{data: data.map(item => item.minutes)}];
     const chartOptions: any = merge(BaseOptionChart(), {
         stroke: {colors: [theme.palette.background.paper]},
-        legend: {floating: true, horizontalAlign: 'center'},
+        legend: {show: false, floating: true, horizontalAlign: 'center'},
         dataLabels: {enabled: true, dropShadow: {enabled: false}},
         tooltip: {
             marker: {show: false},

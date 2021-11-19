@@ -94,7 +94,7 @@ export default function TopPupilsByRewardPiechrat() {
     }, [])
     const chartOptions: any = merge(BaseOptionChart(), {
         stroke: {colors: [theme.palette.background.paper]},
-        legend: {floating: true, horizontalAlign: 'center'},
+        legend: {show: false, floating: true, horizontalAlign: 'center'},
         dataLabels: {enabled: true, dropShadow: {enabled: false}},
         tooltip: {
             marker: {show: false},
@@ -116,12 +116,13 @@ export default function TopPupilsByRewardPiechrat() {
             }
         },
         xaxis: {
-            categories: pupilsNames
+            categories: pupilsNames,
+            show: true,
         },
         yaxis: {
             labels: {
 
-                show: false
+                show: false,
             }
         },
     });
