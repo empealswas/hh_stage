@@ -6,7 +6,7 @@ export class Parent extends User {
 
     async getCredentials(): Promise<void> {
         const result: any = await API.graphql(graphqlOperation(getParent, {id: this._email}));
-        const teacher: any = result.data.getTeacher;
+        const teacher: any = result.data.getParent;
         this.firstName = teacher.firstName;
         this.lastName = teacher.lastName;
     }

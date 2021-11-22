@@ -24,8 +24,6 @@ import LessonOverview from "./components/Lesson/LessonContent/LessonOerview";
 import SchoolOutlet from "./components/School/SchoolOutlet";
 import SchoolManagement from "./components/School/SchoolManagement";
 import ClassroomOverview from "./components/classrooms/ClassroomOverview";
-import ClassroomsTable from "./components/classrooms/ClassroomsTable";
-import ClassroomPage from "./components/classrooms/ClassroomPage";
 import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
@@ -33,7 +31,6 @@ import SchoolHousesPage from "./pages/SchoolHousesPage";
 
 import PEForm from "./components/Lesson/pe/PEForm";
 import ParentOverview from "./components/parent/ParentOverview";
-import SectionGrid from "./components/Sections/SectionGrid";
 import SectionOverview from "./components/Sections/SectionOverview";
 import Wearables from "./components/_dashboard/wearables/Wearables";
 import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
@@ -53,8 +50,8 @@ export function PreLoginRouter(){
                 {path: '*', element: <Navigate to="/login"/>}
             ]
         },
-
         {path: '*', element: <Navigate to="/404" replace/>}
+
     ]);
 }
 
@@ -148,8 +145,10 @@ export default function Router() {
                 {path: 'app', element: <DashboardApp/>},
                 {path: 'user', element: <User/>},
                 {path: 'products', element: <Products/>},
-                {path: 'blog', element: <Blog/>}
+                {path: 'blog', element: <Blog/>},
             ]
         },
+        {path: '*', element: <Navigate to="/dashboard/app" replace/>}
+        ,
     ]);
 }

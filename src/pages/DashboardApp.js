@@ -21,12 +21,11 @@ import {Organization} from "../models/Organization";
 
 export default function DashboardApp() {
     const user = useContext(UserContext);
-    const [greeting, setGreeting] = useState('');
     return (
         <Page title="Dashboard | Healthy Habits">
             <Container maxWidth="xl">
                 <Box sx={{pb: 5}}>
-                    <Typography variant="h4">Welcome back, {greeting}</Typography>
+                    <Typography variant="h4">Welcome back, {user.firstName}</Typography>
                 </Box>
                 {user instanceof Organization ?
                 <></>

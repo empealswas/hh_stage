@@ -1,5 +1,4 @@
 // routes
-import Router, {PreLoginRouter} from './routes';
 import {AuthState} from '@aws-amplify/ui-components';
 
 
@@ -19,6 +18,7 @@ import {SnackbarProvider} from "notistack";
 
 import {createUser} from "./models/createUser";
 import {styled} from "@material-ui/core/styles";
+import Router, {PreLoginRouter} from "./routes";
 
 Amplify.configure(config)
 Amplify.register(Auth);
@@ -82,20 +82,27 @@ function App() {
             .catch(() => console.log('Not signed in'));
     }
 
+    console.log(user)
+
+    if (!user) {
+        console.log('not user')
+        return (
+            <ThemeConfig>
+                <PreLoginRouter/>
+            </ThemeConfig>
+        )
+    }
+    console.log('user')
     return (
 
         <ThemeConfig>
             <SnackbarProvider maxSnack={3}>
-                {user ?
                     <UserContext.Provider value={user}>
                         <AbilityContext.Provider value={defineAbilityFor(user)}>
                             <ScrollToTop/>
                             <Router/>
                         </AbilityContext.Provider>
                     </UserContext.Provider>
-                    :
-                    <PreLoginRouter/>
-                }
             </SnackbarProvider>
         </ThemeConfig>
 
