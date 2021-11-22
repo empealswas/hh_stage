@@ -30,13 +30,33 @@ import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 import SchoolHousesPage from "./pages/SchoolHousesPage";
+
 import PEForm from "./components/Lesson/pe/PEForm";
 import ParentOverview from "./components/parent/ParentOverview";
 import SectionGrid from "./components/Sections/SectionGrid";
 import SectionOverview from "./components/Sections/SectionOverview";
 import Wearables from "./components/_dashboard/wearables/Wearables";
+import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
 
-// ----------------------------------------------------------------------
+
+export function PreLoginRouter(){
+    return useRoutes([
+        {
+            path: '/',
+            element: <LogoOnlyLayout/>,
+            children: [
+                {path: 'login', element: <Login/>},
+                {path: 'register', element: <Register/>},
+                {path: '404', element: <NotFound/>},
+                {path: 'confirmation', element: <NotYetConfirmedPage/>},
+                {path: '/', element: <Navigate to="/login"/>},
+                {path: '*', element: <Navigate to="/login"/>}
+            ]
+        },
+
+        {path: '*', element: <Navigate to="/404" replace/>}
+    ]);
+}
 
 export default function Router() {
     return useRoutes([
@@ -84,7 +104,7 @@ export default function Router() {
                     children: [{
                         path: ':sectionId', element: <SectionOverview/>
                     },
-                       ]
+                    ]
                 },
                 {
                     path: 'lessons', element: <LessonOutlet/>, children: [
@@ -131,19 +151,5 @@ export default function Router() {
                 {path: 'blog', element: <Blog/>}
             ]
         },
-
-        {
-            path: '/',
-            element: <LogoOnlyLayout/>,
-            children: [
-                {path: 'login', element: <Login/>},
-                {path: 'register', element: <Register/>},
-                {path: '404', element: <NotFound/>},
-                {path: '/', element: <Navigate to="/dashboard"/>},
-                {path: '*', element: <Navigate to="/404"/>}
-            ]
-        },
-
-        {path: '*', element: <Navigate to="/404" replace/>}
     ]);
 }

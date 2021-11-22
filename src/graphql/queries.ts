@@ -583,8 +583,16 @@ export const getPrincipal = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -601,6 +609,7 @@ export const listPrincipals = /* GraphQL */ `
         lastName
         email
         schoolID
+        organizationID
         createdAt
         updatedAt
       }
@@ -720,6 +729,38 @@ export const listPELessonRecords = /* GraphQL */ `
         notes
         classroomID
         lessonID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getOrganization = /* GraphQL */ `
+  query GetOrganization($id: ID!) {
+    getOrganization(id: $id) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listOrganizations = /* GraphQL */ `
+  query ListOrganizations(
+    $filter: ModelOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        type
         createdAt
         updatedAt
       }

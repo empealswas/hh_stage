@@ -1,19 +1,13 @@
 // routes
-import Router from './routes';
-import {withAuthenticator,} from "@aws-amplify/ui-react";
-import {AuthState, onAuthUIStateChange} from '@aws-amplify/ui-components';
-import {
-    AmplifyAuthenticator,
-    AmplifySignUp,
-    AmplifySignIn,
-    AmplifySignOut,
-    AmplifyForgotPassword
-} from '@aws-amplify/ui-react';
+import Router, {PreLoginRouter} from './routes';
+import {AuthState} from '@aws-amplify/ui-components';
+
 
 // components
 import ScrollToTop from './components/ScrollToTop';
 import ThemeConfig from "./theme";
-import {createContext, useEffect, useState} from "react";
+// import "../node_modules/video-react/dist/video-react.css"
+import React, {createContext, useEffect, useState} from "react";
 import {User} from "./models/User";
 
 // ----------------------------------------------------------------------
@@ -21,11 +15,10 @@ import config from './aws-exports'
 import {Amplify, API, Auth, Hub} from "aws-amplify";
 import {AbilityContext} from "./utils/Ability";
 import defineAbilityFor from "./abilities/defineAbilityFor";
-import "../node_modules/video-react/dist/video-react.css"
-import './global.css'
-import React from 'react';
 import {SnackbarProvider} from "notistack";
+
 import {createUser} from "./models/createUser";
+import {styled} from "@material-ui/core/styles";
 
 Amplify.configure(config)
 Amplify.register(Auth);
@@ -79,6 +72,7 @@ function App() {
 
     }, []);
 
+
     function getUser() {
         return Auth.currentAuthenticatedUser()
             .then(userData => {
@@ -89,25 +83,22 @@ function App() {
     }
 
     return (
-        <ThemeConfig>
 
+        <ThemeConfig>
             <SnackbarProvider maxSnack={3}>
                 {user ?
                     <UserContext.Provider value={user}>
                         <AbilityContext.Provider value={defineAbilityFor(user)}>
-                            {/*<SnackbarProvider maxSnack={3}>*/}
                             <ScrollToTop/>
                             <Router/>
-                            {/*</SnackbarProvider>*/}
                         </AbilityContext.Provider>
                     </UserContext.Provider>
                     :
-                    <AmplifyAuthenticator>
-                        <AmplifySignIn slot="sign-in" hideSignUp></AmplifySignIn>
-                    </AmplifyAuthenticator>
+                    <PreLoginRouter/>
                 }
             </SnackbarProvider>
         </ThemeConfig>
+
     );
 }
 

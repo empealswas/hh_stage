@@ -1216,8 +1216,16 @@ export const onCreatePrincipal = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1238,8 +1246,16 @@ export const onUpdatePrincipal = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1260,8 +1276,16 @@ export const onDeletePrincipal = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1707,6 +1731,48 @@ export const onDeletePELessonRecord = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateOrganization = /* GraphQL */ `
+  subscription OnCreateOrganization {
+    onCreateOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateOrganization = /* GraphQL */ `
+  subscription OnUpdateOrganization {
+    onUpdateOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteOrganization = /* GraphQL */ `
+  subscription OnDeleteOrganization {
+    onDeleteOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
       createdAt
       updatedAt
     }
