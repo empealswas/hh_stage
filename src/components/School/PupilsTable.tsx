@@ -6,7 +6,7 @@ import {Pupil, SchoolHouse} from "../../API";
 import {Container, IconButton, Stack, Tooltip} from "@material-ui/core";
 import CachedIcon from '@material-ui/icons/Cached';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
-
+import WatchIcon from '@mui/icons-material/Watch';
 import FaceIcon from '@material-ui/icons/Face';
 // @ts-ignore
 import {DataGrid, GridColDef, GridValueGetterParams} from '@material-ui/data-grid';
@@ -15,8 +15,6 @@ import {Link} from "react-router-dom";
 import {RenderHouseCell, renderHouseEdit} from "./PupilsTableRenders";
 import {listSchoolHouses} from "../../graphql/queries";
 import {updateAttendance, updatePupil} from "../../graphql/mutations";
-// /
-
 
 
 export default function PupilsTable() {
@@ -27,11 +25,13 @@ export default function PupilsTable() {
             headerName: 'First name',
             width: 150,
             flex: 1,
+            editable: true
         },
         {
             field: 'lastName',
             headerName: 'Last name',
             flex: 1,
+            editable: true
         },
         {
             field: 'schoolHouseID',
@@ -43,7 +43,7 @@ export default function PupilsTable() {
             renderCell: params => {
                 return renderHouseEdit(params, houses ?? [])
             },
-            renderEditCell:  params => {
+            renderEditCell: params => {
                 return renderHouseEdit(params, houses ?? []);
             }
         },
@@ -68,6 +68,13 @@ export default function PupilsTable() {
                                 <EditRoundedIcon/>
                             </IconButton>
                         </Tooltip>
+                        <Tooltip title={'Connect To Garmin'}>
+                            <IconButton color={'primary'} onClick={() => {
+                                window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${params.id}/${params.getValue(params.id, 'firstName')}${params.getValue(params.id, 'lastName')}`, '_blank')
+                            }}>
+                                <WatchIcon/>
+                            </IconButton>
+                        </Tooltip>
                     </Stack>
                 )
             }
@@ -81,9 +88,9 @@ export default function PupilsTable() {
 
     async function getPupils() {
         console.log('school Id', school?.id)
-        return API.graphql(graphqlOperation(`query MyQuery($id: ID = "") {
+        return API.graphql(graphqlOperation(`query MyQuery($id: ID = "", $limit: Int = 10000) {
   getSchool(id: $id) {
-    Pupils {
+    Pupils(limit: $limit) {
       items {
         firstName
         lastName
@@ -93,13 +100,14 @@ export default function PupilsTable() {
     }
   }
 }
-`, {id: school?.id}));
+
+`, {id: school?.id},));
     }
 
     function loadPupils() {
         setPupils(null);
         setHouses(null);
-        const getHouses = async () =>{
+        const getHouses = async () => {
             const result: any = await API.graphql(graphqlOperation(listSchoolHouses));
             setHouses(result.data.listSchoolHouses.items);
         }
@@ -154,15 +162,10 @@ export default function PupilsTable() {
                                 ...pupil
                             }
                         }
-
                     ) ?? []}
+
                     columns={columns}
-                    disableSelectionOnClick={true}
                     loading={!pupils || !houses}
-                    onCellClick={params => {
-                        console.log(params)
-                    }}
-                    rowsPerPageOptions={[5, 20, 100]}
 
                     autoHeight={true}
                 />

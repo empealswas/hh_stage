@@ -32,4 +32,5 @@
 
   "screenshotsFolder": "cypress/report/screenshots",
 
-  "videosFolder": "cypress/report/videos"}
+  "videosFolder": "cypress/report/videos"
+}

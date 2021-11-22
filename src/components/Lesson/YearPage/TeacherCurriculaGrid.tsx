@@ -42,6 +42,7 @@ const CurriculaGrid = () => {
         return newData;
     }
     const user = useContext(UserContext);
+    console.log("User", user)
     return (
         <Grid container
               direction="row"

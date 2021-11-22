@@ -14,6 +14,8 @@ import chartAreaspline from '@iconify/icons-mdi/chart-areaspline';
 import BungalowIcon from '@mui/icons-material/Bungalow';
 import FestivalIcon from '@mui/icons-material/Festival';
 import homeGroup from '@iconify/icons-mdi/home-group';
+import runFast from '@iconify/icons-mdi/run-fast';
+
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
@@ -36,9 +38,14 @@ const sidebarConfig = [
     icon: getIcon(fileTextFill)
   },*/
   {
-    title: 'class overview',
+    title: 'dashboard',
     path: '/dashboard/app',
     icon: getIcon(pieChart2Fill)
+  },
+  {
+    title: 'wearables',
+    path: '/dashboard/wearables',
+    icon: getIcon(runFast)
   },
   {
     title: 'reports',

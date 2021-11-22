@@ -7,7 +7,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 
 const CardSkeleton = () => {
     return (
-        <Grid item minWidth={300}>
+        <Grid item minWidth={300} xs={12} sm={6} md={3}>
             <Card>
                 <CardContent>
                     <Typography variant={'h5'}>

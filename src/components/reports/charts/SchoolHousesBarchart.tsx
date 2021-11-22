@@ -16,13 +16,13 @@ export type HouseData = {
 }
 export default function SchoolHousesBarchart(props: {houses: HouseData[]}) {
     const {houses} = {...props};
-    console.log(houses)
+    // console.log(houses)
     const theme = useTheme();
     const data: number [] = houses.map(house => house.amountOfTrophies)
 const CHART_DATA = [{data: data }];
     const chartOptions: any = merge(BaseOptionChart(), {
         stroke: { colors: [theme.palette.background.paper] },
-        colors: ['#3e3af1', 'rgba(31,255,0,0.71)', '#f64fa1', '#fd9dca'],
+        colors: ['#faa044','#1687F1', '#00A24F', '#e8092a'],
         legend: { floating: true, horizontalAlign: 'center' },
         dataLabels: { enabled: true, dropShadow: { enabled: false } },
         tooltip: {

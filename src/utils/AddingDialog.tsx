@@ -25,7 +25,8 @@ import Dialog from "@material-ui/core/Dialog";
 import {TransitionProps} from "@material-ui/core/transitions";
 import Slide from "@material-ui/core/Slide";
 import ProgressButton from "../components/Buttons/ProgressButton";
-import {ButtonTypeMap, ExtendButtonBase} from "@mui/material";
+import {ButtonTypeMap, ExtendButtonBase, Tooltip} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement },
@@ -38,6 +39,7 @@ interface AddingDialogProps {
     title: string,
     buttonName: string,
     children?: ReactNode,
+    edit?: boolean,
     onSubmit: () => Promise<any>,
 }
 
@@ -73,11 +75,16 @@ export default function AddingDialog(props: AddingDialogProps) {
     }
     return (
         <>
-
-            <Button variant="contained"
+            {props.edit?? false ? <Tooltip title={'Edit'}>
+                <IconButton onClick={handleOpen}>
+                    <EditIcon fontSize={'large'}/>
+                </IconButton>
+            </Tooltip> :
+                <Button variant="contained"
                     startIcon={<Icon icon={plusFill}/>} onClick={handleOpen}>
                 {props.buttonName}
             </Button>
+            }
             <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">

@@ -54,6 +54,7 @@ const DeletionModal = (props: DeletionModalProps) => {
 
                         props.onDelete().then(value => {
                             setLoading(false);
+                            setOpen(false);
                         })
                     }}>Delete</LoadingButton>
 

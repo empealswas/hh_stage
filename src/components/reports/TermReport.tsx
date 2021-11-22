@@ -75,37 +75,41 @@ const TermReport = (params: { term: Term }) => {
     }
 
     return (
-        termData ? <div style={{height:'100vh', overflowY:'scroll'}}>
+        termData ? <>
+            <Grid container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={2}
+            >
                 {termData.TermLessons?.items?.map((item: any) => item.lesson).map((lesson: Lesson) => {
                     const allAttendancesAmount: number = lesson.Attendances?.items?.length as number;
                     const presentAttendances: number = lesson.Attendances?.items?.filter(item => item?.present).length as number;
                     return (
-                        <Box >
-                            <Typography variant={'h5'}>
-                                Name of Lesson: {lesson.title}
-                            </Typography>
-                            <Stack direction={'row'} spacing={2} style={{marginBottom: 10}}>
-                                <Typography variant={'h6'}>
-                                    Average rating: {getAverageScoreForLesson(lesson)}/5
-                                </Typography>
-                                <Rating size={"large"} precision={0.1} disabled={true}
-                                        value={getAverageScoreForLesson(lesson)}/>
-                            </Stack>
-                                <Carousel autoPlay={true} showArrows={true} infiniteLoop={true}>
-                                    <Grid item xs={12} sm={12} md={6} lg={'auto'} >
-                                        <AttendancePieChart amountOfPresent={presentAttendances}
-                                                            amountOfAbsent={allAttendancesAmount - presentAttendances}/>
-                                    </Grid>
-                                    <Grid item xs={12} sm={12} md={6} lg={'auto'}>
-                                        <AttendanceBarchart amountOfPresent={presentAttendances}
-                                                            amountOfAbsent={allAttendancesAmount - presentAttendances}/>
-                                    </Grid>
-                                </Carousel>
 
-                        </Box>
+                            <Grid item xs={12} sm={12} md={6} lg={4}>
+                                <Typography variant={'h5'}>
+                                    Name of Lesson: {lesson.title}
+                                </Typography>
+                                <Stack direction={'row'} spacing={2} style={{marginBottom: 10}}>
+                                    <Typography variant={'h6'}>
+                                        Average rating: {getAverageScoreForLesson(lesson)}/5
+                                    </Typography>
+                                    <Rating size={"large"} precision={0.1} disabled={true}
+                                            value={getAverageScoreForLesson(lesson)}/>
+                                </Stack>
+                                {/*<Carousel autoPlay={false} showArrows={true} infiniteLoop={true}>*/}
+                                    <AttendancePieChart amountOfPresent={presentAttendances}
+                                                        amountOfAbsent={allAttendancesAmount - presentAttendances}/>
+                                {/*    <AttendanceBarchart amountOfPresent={presentAttendances}*/}
+                                {/*                        amountOfAbsent={allAttendancesAmount - presentAttendances}/>*/}
+                                {/*</Carousel>*/}
+                            </Grid>
                     );
                 })}
-            </div>
+            </Grid>
+
+            </>
             :
             <></>
     );

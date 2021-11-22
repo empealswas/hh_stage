@@ -175,7 +175,7 @@ const SchoolAddingForm = () => {
                             </h3>
                             :
                             <h3>
-                                Your from contains errors
+                                Your form contains errors
                             </h3>
                         }
                     </FormHelperText>

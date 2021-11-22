@@ -77,7 +77,9 @@ const LessonEditForm = (props: LessonEditFormProps) => {
                     description: getFieldProps('description').value
                 }
             }));
+            if (lessonId) {
             await uploadFiles(lessonId);
+            }
             formik.setSubmitting(false);
         }
     });

@@ -40,7 +40,9 @@ const PupilOverview = () => {
                         </Box>
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6} lg={8}>
-                                <StepsChart/>
+                                {pupilId &&
+                                <StepsChart pupilId={pupilId}/>
+                                }
                             </Grid>
                             <Grid item xs={12} md={6} lg={4}>
                                 <PupilActivitiesChart/>

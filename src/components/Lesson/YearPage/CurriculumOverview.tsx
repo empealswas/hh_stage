@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import SubjectElements from "../Subject/SubjectElements";
@@ -10,26 +10,41 @@ import {onUpdateCurriculum} from "../../../graphql/subscriptions";
 import DeletionModal from "./DeletionModal";
 import {useSnackbar} from "notistack";
 import {Can} from "../../../utils/Ability";
+import {UserContext} from '../../../App';
+import ActivityCard from "../pe/ActivityCard";
+import {Admin} from "../../../models/Admin";
 
 
 const CurriculumOverview = () => {
     const {id} = useParams();
     const [name, setName] = useState(null);
-    const navigate = useNavigate();
-    useEffect(() => {
-        const fetchName = async () => {
-            const result: any = await API.graphql(graphqlOperation(getCurriculum, {id: id}));
-            console.log(result.data)
-            setName(result.data.getCurriculum.name);
+    const [title, setTitle] = useState('');
+    const user = useContext(UserContext);
+    const fetchName = async () => {
+        const result: any = await API.graphql(graphqlOperation(getCurriculum, {id: id}));
+        console.log(result.data)
+        setName(result.data.getCurriculum.name);
+        return result.data.getCurriculum.name;
 
-        }
+    }
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
         const createSubscription: any = API.graphql(graphqlOperation(onUpdateCurriculum));
         const updateSubscription = createSubscription.subscribe({
             next: (postData: any) => {
                 fetchName();
             }
         })
-        fetchName()
+        if (user instanceof Admin) {
+            fetchName().then(data => {
+                setTitle(data);
+            })
+        } else {
+            setTitle(`Lesson plan of ${user?.firstName} ${user?.lastName}`)
+        }
         return () => {
             updateSubscription.unsubscribe();
         };
@@ -44,7 +59,7 @@ const CurriculumOverview = () => {
     }
     return (
         <>
-            <HeaderOptions title={name}
+            <HeaderOptions title={title}
                            editingForm={
                                <Can I={'update'} a={'curriculum'}>
                                    <YearPageForm/>
@@ -60,7 +75,7 @@ const CurriculumOverview = () => {
                                                   }}/>
                                </Can>
                            }
-                           />
+            />
             <SubjectElements/>
         </>
     );

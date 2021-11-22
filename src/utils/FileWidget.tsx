@@ -5,15 +5,16 @@ import Label from "../components/Label";
 import {Link as RouterLink} from "react-router-dom";
 import {Document, Page} from "react-pdf";
 import {getFileDescription} from "./filenameExtractor";
-import {Storage} from "aws-amplify";
+import {API, Storage} from "aws-amplify";
 import FileContainer from "./FileContainer";
+import {getFilenameFromUrl} from "pdfjs-dist";
+import {genUrlOfThumbnailOfFile} from "../apiFunctions/apiFunctions";
 
 const FileWidget = (props: { file: File }) => {
     const [linkToShow, setLinkToShow] = useState('');
     const {file} = {...props};
     const {fileName, extension} = getFileDescription(file);
-    const [onItemClick, setOnItemClick] = useState<() => void>(() => {
-    });
+
     useEffect(() => {
         Storage.get(file?.key as string, {expires: 10000}).then((link: any) => setLinkToShow(link))
         return () => {
@@ -38,7 +39,7 @@ const FileWidget = (props: { file: File }) => {
                     {extension}
                 </Label>
             </Box>
-                {linkToShow && <FileContainer fileExtension={extension} linkToFile={linkToShow} fileName={fileName}/>}
+            {linkToShow && <FileContainer file={file} fileExtension={extension} linkToFile={linkToShow} fileName={fileName}/>}
 
         </Card>
     );

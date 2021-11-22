@@ -2,7 +2,7 @@
   "providers": [
     "awscloudformation"
   ],
-  "projectName": "healthyhabits",
+  "projectName": "HealthyHabitsV2",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
