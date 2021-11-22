@@ -6,6 +6,7 @@ export default function defineAbilityFor(user: User | null) {
     if (!user) {
         return build();
     }
+    // can('visit', 'register');
     // can('visit', 'login');
     if (user.isAdmin()) {
         can('visit', 'schools');

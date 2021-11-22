@@ -13,7 +13,6 @@ import MenuPopover from '../../components/MenuPopover';
 import account from '../../_mocks_/account';
 import {Amplify, Auth, Hub} from "aws-amplify";
 
-import {AmplifySignOut} from "@aws-amplify/ui-react";
 import {UserContext} from "../../App";
 
 // ----------------------------------------------------------------------
@@ -126,13 +125,12 @@ export default function AccountPopover() {
 
                 <Box sx={{p: 2, pt: 1.5}}>
 
-                    <AmplifySignOut style={{borderRadius: 10, bgcolor: 'white'}}/>
-                    {/*<Button fullWidth color="inherit" variant="outlined" onClick={async () => {*/}
-                    {/*    await Auth.signOut();*/}
-                    {/*    window.location.reload();*/}
-                    {/*}}>*/}
-                    {/*    Logout*/}
-                    {/*</Button>*/}
+                    {/*<AmplifySignOut style={{borderRadius: 10, bgcolor: 'white'}}/>*/}
+                    <Button fullWidth color="inherit" variant="outlined" onClick={async () => {
+                        await Auth.signOut();
+                    }}>
+                        Logout
+                    </Button>
                 </Box>
             </MenuPopover>
         </>

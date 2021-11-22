@@ -1,19 +1,13 @@
 // routes
-import Router from './routes';
-import {withAuthenticator,} from "@aws-amplify/ui-react";
-import {AuthState, onAuthUIStateChange} from '@aws-amplify/ui-components';
-import {
-    AmplifyAuthenticator,
-    AmplifySignUp,
-    AmplifySignIn,
-    AmplifySignOut,
-    AmplifyForgotPassword
-} from '@aws-amplify/ui-react';
+import Router, {PreLoginRouter} from './routes';
+import {AuthState} from '@aws-amplify/ui-components';
+
 
 // components
 import ScrollToTop from './components/ScrollToTop';
 import ThemeConfig from "./theme";
-import {createContext, useEffect, useState} from "react";
+// import "../node_modules/video-react/dist/video-react.css"
+import React, {createContext, useEffect, useState} from "react";
 import {User} from "./models/User";
 
 // ----------------------------------------------------------------------
@@ -21,10 +15,12 @@ import config from './aws-exports'
 import {Amplify, API, Auth, Hub} from "aws-amplify";
 import {AbilityContext} from "./utils/Ability";
 import defineAbilityFor from "./abilities/defineAbilityFor";
-import "../node_modules/video-react/dist/video-react.css"
-import './global.css'
-import React from 'react';
 import {SnackbarProvider} from "notistack";
+<<<<<<< Updated upstream
+=======
+import {createUser} from "./models/createUser";
+import {styled} from "@material-ui/core/styles";
+>>>>>>> Stashed changes
 
 Amplify.configure(config)
 Amplify.register(Auth);
@@ -83,6 +79,7 @@ function App() {
     }
 
     return (
+<<<<<<< Updated upstream
         <ThemeConfig>
             {user ?
                 <UserContext.Provider value={user}>
@@ -98,7 +95,24 @@ function App() {
                     <AmplifySignIn slot="sign-in" hideSignUp></AmplifySignIn>
                 </AmplifyAuthenticator>
             }
+=======
+
+        <ThemeConfig>
+            <SnackbarProvider maxSnack={3}>
+                {user ?
+                    <UserContext.Provider value={user}>
+                        <AbilityContext.Provider value={defineAbilityFor(user)}>
+                            <ScrollToTop/>
+                            <Router/>
+                        </AbilityContext.Provider>
+                    </UserContext.Provider>
+                    :
+                    <PreLoginRouter/>
+                }
+            </SnackbarProvider>
+>>>>>>> Stashed changes
         </ThemeConfig>
+
     );
 }
 

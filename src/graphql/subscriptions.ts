@@ -882,8 +882,16 @@ export const onDeleteTeacher = /* GraphQL */ `
       LessonTeacher {
         nextToken
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -907,7 +915,32 @@ export const onCreatePupil = /* GraphQL */ `
         createdAt
         updatedAt
       }
+<<<<<<< Updated upstream
       school {
+=======
+      organizationID
+      createdAt
+      updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeletePrincipal = /* GraphQL */ `
+  subscription OnDeletePrincipal {
+    onDeletePrincipal {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+>>>>>>> Stashed changes
         id
         name
         country
@@ -916,8 +949,16 @@ export const onCreatePupil = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1211,3 +1252,366 @@ export const onDeleteCurriculumSubject = /* GraphQL */ `
     }
   }
 `;
+<<<<<<< Updated upstream
+=======
+export const onCreatePELessonRecord = /* GraphQL */ `
+  subscription OnCreatePELessonRecord {
+    onCreatePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePELessonRecord = /* GraphQL */ `
+  subscription OnUpdatePELessonRecord {
+    onUpdatePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePELessonRecord = /* GraphQL */ `
+  subscription OnDeletePELessonRecord {
+    onDeletePELessonRecord {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateOrganization = /* GraphQL */ `
+  subscription OnCreateOrganization {
+    onCreateOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateOrganization = /* GraphQL */ `
+  subscription OnUpdateOrganization {
+    onUpdateOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteOrganization = /* GraphQL */ `
+  subscription OnDeleteOrganization {
+    onDeleteOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePupil = /* GraphQL */ `
+  subscription OnCreatePupil {
+    onCreatePupil {
+      id
+      firstName
+      lastName
+      Attendances {
+        nextToken
+      }
+      classrooms {
+        nextToken
+      }
+      schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      parents {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      Interventions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdatePupil = /* GraphQL */ `
+  subscription OnUpdatePupil {
+    onUpdatePupil {
+      id
+      firstName
+      lastName
+      Attendances {
+        nextToken
+      }
+      classrooms {
+        nextToken
+      }
+      schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      parents {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      Interventions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeletePupil = /* GraphQL */ `
+  subscription OnDeletePupil {
+    onDeletePupil {
+      id
+      firstName
+      lastName
+      Attendances {
+        nextToken
+      }
+      classrooms {
+        nextToken
+      }
+      schoolID
+      schoolHouseID
+      schoolHouse {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      school {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      parents {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      Interventions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateIntervention = /* GraphQL */ `
+  subscription OnCreateIntervention {
+    onCreateIntervention {
+      id
+      pupilID
+      message
+      createdAt
+      updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateIntervention = /* GraphQL */ `
+  subscription OnUpdateIntervention {
+    onUpdateIntervention {
+      id
+      pupilID
+      message
+      createdAt
+      updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteIntervention = /* GraphQL */ `
+  subscription OnDeleteIntervention {
+    onDeleteIntervention {
+      id
+      pupilID
+      message
+      createdAt
+      updatedAt
+      Pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+>>>>>>> Stashed changes

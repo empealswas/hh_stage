@@ -427,6 +427,60 @@ export const listParents = /* GraphQL */ `
     }
   }
 `;
+<<<<<<< Updated upstream
+=======
+export const getPrincipal = /* GraphQL */ `
+  query GetPrincipal($id: ID!) {
+    getPrincipal(id: $id) {
+      id
+      firstName
+      lastName
+      email
+      schoolID
+      School {
+        id
+        name
+        country
+        region
+        principal
+        createdAt
+        updatedAt
+      }
+      organizationID
+      createdAt
+      updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listPrincipals = /* GraphQL */ `
+  query ListPrincipals(
+    $filter: ModelPrincipalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPrincipals(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        organizationID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+>>>>>>> Stashed changes
 export const getTeacher = /* GraphQL */ `
   query GetTeacher($id: ID!) {
     getTeacher(id: $id) {
@@ -466,6 +520,112 @@ export const listTeachers = /* GraphQL */ `
     }
   }
 `;
+<<<<<<< Updated upstream
+=======
+export const getPELessonRecord = /* GraphQL */ `
+  query GetPELessonRecord($id: ID!) {
+    getPELessonRecord(id: $id) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPELessonRecords = /* GraphQL */ `
+  query ListPELessonRecords(
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPELessonRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getOrganization = /* GraphQL */ `
+  query GetOrganization($id: ID!) {
+    getOrganization(id: $id) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listOrganizations = /* GraphQL */ `
+  query ListOrganizations(
+    $filter: ModelOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+>>>>>>> Stashed changes
 export const getPupil = /* GraphQL */ `
   query GetPupil($id: ID!) {
     getPupil(id: $id) {

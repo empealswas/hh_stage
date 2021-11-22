@@ -30,8 +30,36 @@ import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 import SchoolHousesPage from "./pages/SchoolHousesPage";
+<<<<<<< Updated upstream
+=======
+import PEForm from "./components/Lesson/pe/PEForm";
+import ParentOverview from "./components/parent/ParentOverview";
+import SectionGrid from "./components/Sections/SectionGrid";
+import SectionOverview from "./components/Sections/SectionOverview";
+import Wearables from "./components/_dashboard/wearables/Wearables";
+import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
+>>>>>>> Stashed changes
 
 // ----------------------------------------------------------------------
+
+export function PreLoginRouter(){
+    return useRoutes([
+        {
+            path: '/',
+            element: <LogoOnlyLayout/>,
+            children: [
+                {path: 'login', element: <Login/>},
+                {path: 'register', element: <Register/>},
+                {path: '404', element: <NotFound/>},
+                {path: 'confirmation', element: <NotYetConfirmedPage/>},
+                {path: '/', element: <Navigate to="/login"/>},
+                {path: '*', element: <Navigate to="/login"/>}
+            ]
+        },
+
+        {path: '*', element: <Navigate to="/404" replace/>}
+    ]);
+}
 
 export default function Router() {
     return useRoutes([
@@ -87,7 +115,7 @@ export default function Router() {
             path: '/',
             element: <LogoOnlyLayout/>,
             children: [
-                {path: 'login', element: <Login/>},
+                {path: 'login', element: <Navigate to="/dashboard/app" replace/>},
                 {path: 'register', element: <Register/>},
                 {path: '404', element: <NotFound/>},
                 {path: '/', element: <Navigate to="/dashboard"/>},
