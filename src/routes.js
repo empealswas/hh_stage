@@ -30,17 +30,14 @@ import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 import SchoolHousesPage from "./pages/SchoolHousesPage";
-<<<<<<< Updated upstream
-=======
+
 import PEForm from "./components/Lesson/pe/PEForm";
 import ParentOverview from "./components/parent/ParentOverview";
 import SectionGrid from "./components/Sections/SectionGrid";
 import SectionOverview from "./components/Sections/SectionOverview";
 import Wearables from "./components/_dashboard/wearables/Wearables";
 import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
->>>>>>> Stashed changes
 
-// ----------------------------------------------------------------------
 
 export function PreLoginRouter(){
     return useRoutes([
@@ -67,62 +64,92 @@ export default function Router() {
             path: '/dashboard',
             element: <DashboardLayout/>,
             children: [
-                {path: '/', element: <Navigate to="/dashboard/app" replace/>},
-                {path: 'schools', element: <SchoolOutlet/>, children: [
-                        {path: '/', element: <Schools/>},
-                        {path: ':id', element: <SchoolOutlet/>, children: [
-                                {path: 'manage', element: <SchoolManagement/>},
-                                {path: 'classrooms', element: <Outlet/>, children:[
-                                        {path: '/', element: <ClassroomOverview/>},
-                                        {path: ':classroomId', element: <ClassroomPageNew/>}
-                                    ]}
-                            ]}
-                    ]},
-                {path: 'reports', element: <Outlet/>, children: [
-                        {path: '/', element: <ReportPage/>},
-                    ]},
-                {path: 'parent', element: <ParentSection/>},
-                {path: 'curricula', element: <Lessons/>, children: [
-                        {path: ':id', element: <CurriculumOverview/> },
-                        {path: '/', element: <CurriculaComponents/>},
-                        {path: 'subjects', element: <SubjectOutlet/>, children:[
-                                {path: ':id', element: <TermElements/>},
-                                {path: '/', element: <Navigate to={'../../curricula'}/>},
-                                {path: 'terms', element: <TermOutlet/>, children:[
-                                        {path: ':id', element: <LessonElements/>},
-                                        {path: 'lessons', element: <LessonOutlet/>, children: [
-                                                {path: ':lessonId', element: <LessonOverview/>}
-                                            ]}
+                {element: <Navigate to="/dashboard/app" replace/>},
+                {
+                    path: 'schools', element: <SchoolOutlet/>, children: [
+                        {element: <Schools/>},
+                        {
+                            path: ':id', element: <SchoolOutlet/>, children: [
+                                {
+                                    path: 'manage', element: <Outlet/>, children: [
+                                        {element: <SchoolManagement/>},
+                                        {
+                                            path: 'parent', element: <Outlet/>, children: [
+                                                {path: ':parentId', element: <ParentOverview/>}
+                                            ]
+                                        }
+                                    ]
+                                },
 
-                                    ]}
-                            ]}
+                                {
+                                    path: 'classrooms', element: <Outlet/>, children: [
+                                        {element: <ClassroomOverview/>},
+                                        {path: ':classroomId', element: <ClassroomPageNew/>}
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 },
-                {path: 'pupils', element: <Outlet/>, children: [
+                {path: 'wearables', element: <Outlet/>, children: [
+                        {element: <Wearables/>}
+                    ]},
+                {
+                    path: 'reports', element: <Outlet/>, children: [
+                        {element: <ReportPage/>},
+                    ]
+                },
+                {path: 'parent', element: <ParentSection/>},
+                {path: 'section', element: <SectionOverview/>,
+                    children: [{
+                        path: ':sectionId', element: <SectionOverview/>
+                    },
+                    ]
+                },
+                {
+                    path: 'lessons', element: <LessonOutlet/>, children: [
+                        {path: ':lessonId', element: <LessonOverview/>}
+                    ]
+                },
+                {
+                    path: 'curricula', element: <Lessons/>, children: [
+                        {element: <CurriculaComponents/>},
+                        {path: 'pe', element: <PEForm/>},
+                        {path: ':id', element: <CurriculumOverview/>},
+                        {
+                            path: 'subjects', element: <SubjectOutlet/>, children: [
+                                {path: ':id', element: <TermElements/>},
+                                {element: <Navigate to={'../../curricula'}/>},
+                                {
+                                    path: 'terms', element: <TermOutlet/>, children: [
+                                        {path: ':id', element: <LessonElements/>},
+                                        {
+                                            path: 'lessons', element: <LessonOutlet/>, children: [
+                                                {path: ':lessonId', element: <LessonOverview/>}
+                                            ]
+                                        }
+
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    path: 'pupils', element: <Outlet/>, children: [
                         {path: ':pupilId', element: <PupilOverview/>}
-                    ]},
-                {path: 'houses', element: <Outlet/>, children: [
-                        {path: '/', element: <SchoolHousesPage/>},
-                    ]},
+                    ]
+                },
+                {
+                    path: 'houses', element: <Outlet/>, children: [
+                        {element: <SchoolHousesPage/>},
+                    ]
+                },
                 {path: 'app', element: <DashboardApp/>},
                 {path: 'user', element: <User/>},
                 {path: 'products', element: <Products/>},
                 {path: 'blog', element: <Blog/>}
             ]
         },
-
-        {
-            path: '/',
-            element: <LogoOnlyLayout/>,
-            children: [
-                {path: 'login', element: <Navigate to="/dashboard/app" replace/>},
-                {path: 'register', element: <Register/>},
-                {path: '404', element: <NotFound/>},
-                {path: '/', element: <Navigate to="/dashboard"/>},
-                {path: '*', element: <Navigate to="/404"/>}
-            ]
-        },
-
-        {path: '*', element: <Navigate to="/404" replace/>}
     ]);
 }

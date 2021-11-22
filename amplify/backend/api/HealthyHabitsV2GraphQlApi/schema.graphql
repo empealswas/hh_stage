@@ -1,13 +1,3 @@
-<<<<<<< Updated upstream:amplify/backend/api/healthyapi/schema.graphql
-type File @model @auth (rules: [{allow: private}]) @key(name: "byLesson", fields: ["lessonID"]) {
-  id: ID!
-  key: String
-  region: String
-  bucket: String
-  lessonID: ID
-}
-
-=======
 type File
 @model
 @key(name: "byLesson", fields: ["lessonID"])
@@ -68,7 +58,6 @@ type PELessonRecord @model
     lessonID: ID
     Lesson: Lesson @connection(fields: ["lessonID"])
 }
->>>>>>> Stashed changes:amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql
 
 type SchoolHouse @model
 {
@@ -76,9 +65,6 @@ type SchoolHouse @model
     name: String
     Pupils: [Pupil] @connection(keyName: "bySchoolHouse", fields: ["id"])
 }
-<<<<<<< Updated upstream:amplify/backend/api/healthyapi/schema.graphql
-
-=======
 type ClassroomLesson @model
 @key(name: "byClassroom", fields: ["classroomID"])
 @key(name: "byLesson", fields: ["lessonID"]){
@@ -89,9 +75,7 @@ type ClassroomLesson @model
     Lesson: Lesson @connection(fields: ["lessonID"])
     completed: Boolean
 }
->>>>>>> Stashed changes:amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql
 type Classroom @model
-@auth(rules: [{allow: private}])
 @key(name: "bySchool", fields: ["schoolID"])
 @key(name: "byCurriculum", fields: ["yearGroupID"])
 {
@@ -104,6 +88,7 @@ type Classroom @model
     yearGroupID: ID
     yearGroup: Curriculum @connection(fields: ["yearGroupID"])
 }
+
 
 type TeacherClassroom @model(queries: null) @key(name: "byTeacher", fields: ["teacherID", "classroomID"]) @key(name: "byClassroom", fields: ["classroomID", "teacherID"]) {
     id: ID!
@@ -120,17 +105,6 @@ type PupilClassroom @model(queries: null) @key(name: "byPupil", fields: ["pupilI
     classroom: Classroom! @connection(fields: ["classroomID"])
 }
 
-<<<<<<< Updated upstream:amplify/backend/api/healthyapi/schema.graphql
-type School @model @auth(rules: [{allow: private}]) {
-  id: ID!
-  name: String
-  country: String
-  region: String
-  principal: String
-  Teachers: [Teacher] @connection(keyName: "bySchool", fields: ["id"])
-  Pupils: [Pupil] @connection(keyName: "bySchool", fields: ["id"])
-  classrooms: [Classroom] @connection(keyName: "bySchool", fields: ["id"])
-=======
 type School @model {
     id: ID!
     name: String
@@ -142,7 +116,6 @@ type School @model {
     Principals: [Principal] @connection(keyName: "bySchool", fields: ["id"])
     Pupils: [Pupil] @connection(keyName: "bySchool", fields: ["id"])
     classrooms: [Classroom] @connection(keyName: "bySchool", fields: ["id"])
->>>>>>> Stashed changes:amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql
 }
 
 type Organization @model
@@ -157,18 +130,7 @@ type Organization @model
 
 
 type Attendance @model
-@auth(rules: [{allow: private}])
 @key(name: "byPupil", fields: ["pupilID"])
-<<<<<<< Updated upstream:amplify/backend/api/healthyapi/schema.graphql
-@key(name: "byLesson", fields: ["lessonID"]) {
-  id: ID!
-  present: Boolean
-  wasRewarded: Boolean
-  pupilID: ID
-  lessonID: ID
-  Pupil: Pupil @connection(fields: ["pupilID"])
-  Lesson: Lesson @connection(fields: ["lessonID"])
-=======
 @key(name: "byLesson", fields: ["lessonID"])
 @key(name: "byPELessonRecord", fields: ["lessonRecordID"]){
     id: ID!
@@ -180,7 +142,6 @@ type Attendance @model
     Lesson: Lesson @connection(fields: ["lessonID"])
     lessonRecord: PELessonRecord @connection(fields: ["lessonRecordID"])
     lessonRecordID: ID
->>>>>>> Stashed changes:amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql
 }
 
 type LessonTeacher @model
@@ -194,55 +155,7 @@ type LessonTeacher @model
     score: Int
 }
 
-type Lesson @model @auth(rules: [{allow: private}]) {
-  id: ID!
-  title: String
-  description: String
-  terms: [TermLesson] @connection(keyName: "byLesson", fields: ["id"])
-  Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
-  Files: [File] @connection(keyName: "byLesson", fields: ["id"])
-  LessonTeacher: [LessonTeacher] @connection(keyName: "byLesson", fields: ["id"])
-}
 
-<<<<<<< Updated upstream:amplify/backend/api/healthyapi/schema.graphql
-type Term @model @auth(rules: [{allow: private}]) {
-  id: ID!
-  nam: String
-  startDate: AWSDate
-  finishDate: AWSDate
-  subjects: [SubjectTerm] @connection(keyName: "byTerm", fields: ["id"])
-  TermLessons: [TermLesson] @connection(keyName: "byTerm", fields: ["id"])
-}
-
-type Subject @model @auth(rules: [{allow: private}]) {
-  id: ID!
-  name: String
-  SubjectTerms: [SubjectTerm] @connection(keyName: "bySubject", fields: ["id"])
-  curriculums: [CurriculumSubject] @connection(keyName: "bySubject", fields: ["id"])
-}
-
-type Curriculum @model @auth(rules: [{allow: private}]) {
-  id: ID!
-  name: String
-  subjects: [CurriculumSubject] @connection(keyName: "byCurriculum", fields: ["id"])
-}
-
-type Parent @model @auth(rules: [{allow: private}]) {
-  id: ID!
-  firstName: String
-  lastName: String
-  email: AWSEmail
-}
-
-type Teacher @model @auth(rules: [{allow: private}]) @key(name: "bySchool", fields: ["schoolID"]) {
-  id: ID!
-  firstName: String
-  lastName: String
-  email: AWSEmail
-  schoolID: ID
-  classrooms: [TeacherClassroom] @connection(keyName: "byTeacher", fields: ["id"])
-  LessonTeacher: [LessonTeacher] @connection(keyName: "byTeacher", fields: ["id"])
-=======
 
 type Term @model  {
     id: ID!
@@ -307,49 +220,10 @@ type Teacher @model  @key(name: "bySchool", fields: ["schoolID"]) {
     classrooms: [TeacherClassroom] @connection(keyName: "byTeacher", fields: ["id"])
     LessonTeacher: [LessonTeacher] @connection(keyName: "byTeacher", fields: ["id"])
     School: School @connection(fields: ["schoolID"])
->>>>>>> Stashed changes:amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql
 }
 
 type Pupil @model
-@auth(rules: [{allow: private}])
 @key(name: "bySchool", fields: ["schoolID"])
-<<<<<<< Updated upstream:amplify/backend/api/healthyapi/schema.graphql
-@key(name: "bySchoolHouse", fields:["schoolHouseID"]){
-  id: ID!
-  firstName: String
-  lastName: String
-  Attendances: [Attendance] @connection(keyName: "byPupil", fields: ["id"])
-  classrooms: [PupilClassroom] @connection(keyName: "byPupil", fields: ["id"])
-  schoolID: ID
-  schoolHouseID: ID
-  schoolHouse: SchoolHouse @connection(fields: ["schoolHouseID"])
-  school: School @connection(fields: ["schoolID"])
-
-}
-
-type SubjectTerm @model(queries: null) @key(name: "bySubject", fields: ["subjectID", "termID"]) @key(name: "byTerm", fields: ["termID", "subjectID"]) @auth(rules: [{allow: private}, {allow: private}]) {
-  id: ID!
-  subjectID: ID!
-  termID: ID!
-  subject: Subject! @connection(fields: ["subjectID"])
-  term: Term! @connection(fields: ["termID"])
-}
-
-type TermLesson @model(queries: null) @key(name: "byTerm", fields: ["termID", "lessonID"]) @key(name: "byLesson", fields: ["lessonID", "termID"]) @auth(rules: [{allow: private}, {allow: private}]) {
-  id: ID!
-  termID: ID!
-  lessonID: ID!
-  term: Term! @connection(fields: ["termID"])
-  lesson: Lesson! @connection(fields: ["lessonID"])
-}
-
-type CurriculumSubject @model(queries: null) @key(name: "byCurriculum", fields: ["curriculumID", "subjectID"]) @key(name: "bySubject", fields: ["subjectID", "curriculumID"]) @auth(rules: [{allow: private}, {allow: private}]) {
-  id: ID!
-  curriculumID: ID!
-  subjectID: ID!
-  curriculum: Curriculum! @connection(fields: ["curriculumID"])
-  subject: Subject! @connection(fields: ["subjectID"])
-=======
 @key(name: "bySchoolHouse", fields:["schoolHouseID"])
 @auth(rules: [{ allow: public, provider: iam },
     { allow: public, provider: apiKey },{allow: private}])
@@ -399,5 +273,4 @@ type CurriculumSubject @model(queries: null) @key(name: "byCurriculum", fields: 
     subjectID: ID!
     curriculum: Curriculum! @connection(fields: ["curriculumID"])
     subject: Subject! @connection(fields: ["subjectID"])
->>>>>>> Stashed changes:amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql
 }
