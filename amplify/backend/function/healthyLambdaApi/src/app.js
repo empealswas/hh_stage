@@ -52,6 +52,20 @@ app.get('/api/getUrlToObject', function (req, res) {
     });
     res.json({success: 'got url', url: gotURl});
 });
+app.get('/api/listUnconfirmedOrganizations', function (req, res) {
+    return lambda.invoke({
+        FunctionName: 'listOrganizationsToBeVerifiedHealthyHabits-dev',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify({}) // pass params
+    }, function (error, data) {
+        if (error) {
+            res.json({error: error, users: []})
+        }
+        if (data.Payload) {
+            res.json({success: 'returned', users: data.Payload})
+        }
+    });
+});
 
 app.get('/api/getAverage', async function (req, res) {
     const statement = `select * from "Attendance-z3pgonvfxjgxjbgblzjkb3kvv4-dev"`

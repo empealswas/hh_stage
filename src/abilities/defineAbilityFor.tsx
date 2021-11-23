@@ -23,6 +23,7 @@ export default function defineAbilityFor(user: User | null) {
         can('visit', 'dashboard')
         can('visit', 'reports');
         can('visit', 'houses');
+        can('visit', 'organizations');
 
 
     } else if (user instanceof  Teacher) {

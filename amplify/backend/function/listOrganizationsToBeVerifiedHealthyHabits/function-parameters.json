@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "auth": {
+      "healthyhabitsv24aea1e5f": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "api": {
+      "HealthyHabitsV2API": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

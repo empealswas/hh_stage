@@ -58,6 +58,11 @@ const sidebarConfig = [
     icon: getIcon(schoolIcon)
   },
   {
+    title: 'organizations',
+    path: '/dashboard/organizations',
+    icon: getIcon(schoolIcon)
+  },
+  {
     title: 'parent',
     path: '/dashboard/parent',
     icon: getIcon(humanMaleChild)

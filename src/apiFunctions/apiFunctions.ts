@@ -30,6 +30,11 @@ export async function addPrincipalApi(params: AddParentRequest){
     });
     return result;
 }
+export async function listUnconfirmedOrganizations(){
+    const result = await API.get(apiName, '/api/listUnconfirmedOrganizations', {
+    });
+    return result;
+}
 
 
 export async function getAverage(){

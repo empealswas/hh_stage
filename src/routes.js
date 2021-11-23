@@ -34,6 +34,7 @@ import ParentOverview from "./components/parent/ParentOverview";
 import SectionOverview from "./components/Sections/SectionOverview";
 import Wearables from "./components/_dashboard/wearables/Wearables";
 import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
+import Organizations from "./pages/Organizations";
 
 
 export function PreLoginRouter(){
@@ -143,6 +144,7 @@ export default function Router() {
                     ]
                 },
                 {path: 'app', element: <DashboardApp/>},
+                {path: 'organizations', element: <Organizations/>},
                 {path: 'user', element: <User/>},
                 {path: 'products', element: <Products/>},
                 {path: 'blog', element: <Blog/>},
