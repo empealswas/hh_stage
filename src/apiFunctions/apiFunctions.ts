@@ -35,6 +35,20 @@ export async function listUnconfirmedOrganizations(){
     });
     return result;
 }
+type ConfirmOrganizationParams = {
+    email: string
+}
+export async function confirmOrganization(params: ConfirmOrganizationParams){
+    console.log(params)
+    const result = await API.post(apiName, '/api/confirmOrganization', {
+        body: {
+           ...params
+        }
+    });
+    console.log(result)
+    return result;
+}
+
 
 
 export async function getAverage(){

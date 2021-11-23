@@ -1,0 +1,320 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthyhabitsv2-dev-205646-authRole",
+      "UnauthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-205646-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-205646-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+      "UnauthRoleName": "amplify-healthyhabitsv2-dev-205646-unauthRole",
+      "StackName": "amplify-healthyhabitsv2-dev-205646",
+      "StackId": "arn:aws:cloudformation:eu-west-2:397429649444:stack/amplify-healthyhabitsv2-dev-205646/9dc1b580-1c97-11ec-b06c-029d9b2e75d2",
+      "AmplifyAppId": "d3uepp1xwpcqwk"
+    }
+  },
+  "auth": {
+    "healthyhabitsv24aea1e5f": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "loginMechanisms": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ]
+      },
+      "output": {
+        "CreatedSNSRole": "arn:aws:iam::397429649444:role/sns4aea1e5f205646-dev",
+        "UserPoolId": "eu-west-2_v5CzGdnVr",
+        "AppClientIDWeb": "hqt941fkl4rp6ml22k92ftahl",
+        "AppClientID": "7kmeofg5m9ajk0eq1p9te797ea",
+        "IdentityPoolId": "eu-west-2:f741df3a-0df7-4759-a8d7-4f1270bea0fc",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-west-2:397429649444:userpool/eu-west-2_v5CzGdnVr",
+        "IdentityPoolName": "healthyhabitsv24aea1e5f_identitypool_4aea1e5f__dev",
+        "UserPoolName": "healthyhabitsv24aea1e5f_userpool_4aea1e5f"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.544Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/auth/healthyhabitsv24aea1e5f-cloudformation-template.json",
+        "logicalId": "authhealthyhabitsv24aea1e5f"
+      }
+    }
+  },
+  "api": {
+    "HealthyHabitsV2GraphQlApi": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authhealthyhabitsv24aea1e5f"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "description": ""
+              }
+            },
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "z3pgonvfxjgxjbgblzjkb3kvv4",
+        "GraphQLAPIEndpointOutput": "https://5qrx3hnrlvfzrmkbnp3yui35ue.appsync-api.eu-west-2.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-zpmpagzgwfaibbojmysuhcezt4"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.547Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiHealthyHabitsV2GraphQlApi"
+      }
+    },
+    "HealthyHabitsV2API": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "healthyLambdaApi",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ],
+      "output": {
+        "ApiName": "HealthyHabitsV2API",
+        "RootUrl": "https://msiemijnx1.execute-api.eu-west-2.amazonaws.com/dev",
+        "ApiId": "msiemijnx1"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.550Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/api/HealthyHabitsV2API-cloudformation-template.json",
+        "logicalId": "apiHealthyHabitsV2API"
+      }
+    }
+  },
+  "function": {
+    "healthyLambdaApi": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "Region": "eu-west-2",
+        "Arn": "arn:aws:lambda:eu-west-2:397429649444:function:healthyLambdaApi-dev",
+        "Name": "healthyLambdaApi-dev",
+        "LambdaExecutionRole": "healthyhabitsv2LambdaRole7d8343e3-dev"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.595Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/function/healthyLambdaApi-cloudformation-template.json",
+        "logicalId": "functionhealthyLambdaApi"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+        "s3Key": "amplify-builds/healthyLambdaApi-364d4861766b566b5963-build.zip"
+      },
+      "lastBuildTimeStamp": "2021-11-23T21:30:50.428Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2021-11-23T21:30:50.934Z",
+      "distZipFilename": "healthyLambdaApi-364d4861766b566b5963-build.zip",
+      "lastPushDirHash": "vQkbn6tSeA2eOzEQds6nhBBZ7WE="
+    },
+    "RemoveFileFromS3Bucket": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "healthyhabitsv24aea1e5f",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2GraphQlApi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "HealthyHabitsV2",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ],
+      "output": {
+        "Region": "eu-west-2",
+        "Arn": "arn:aws:lambda:eu-west-2:397429649444:function:RemoveFileFromS3Bucket-dev",
+        "Name": "RemoveFileFromS3Bucket-dev",
+        "LambdaExecutionRole": "healthyhabitsv2LambdaRoled3f4a4b1-dev"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.555Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/function/RemoveFileFromS3Bucket-cloudformation-template.json",
+        "logicalId": "functionRemoveFileFromS3Bucket"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+        "s3Key": "amplify-builds/RemoveFileFromS3Bucket-69303749774350524654-build.zip"
+      }
+    },
+    "AddInterventionForPupil": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2GraphQlApi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ]
+        }
+      ],
+      "output": {
+        "Region": "eu-west-2",
+        "Arn": "arn:aws:lambda:eu-west-2:397429649444:function:AddInterventionForPupil-dev",
+        "Name": "AddInterventionForPupil-dev",
+        "LambdaExecutionRole": "healthyhabitsv2LambdaRole381efb13-dev"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.558Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/function/AddInterventionForPupil-cloudformation-template.json",
+        "logicalId": "functionAddInterventionForPupil"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+        "s3Key": "amplify-builds/AddInterventionForPupil-5244493067502f414455-build.zip"
+      }
+    },
+    "listOrganizationsToBeVerifiedHealthyHabits": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "healthyhabitsv24aea1e5f",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2API",
+          "attributes": [
+            "ApiName",
+            "ApiId"
+          ]
+        }
+      ],
+      "lastBuildTimeStamp": "2021-11-23T21:08:18.506Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2021-11-23T21:08:18.562Z",
+      "distZipFilename": "listOrganizationsToBeVerifiedHealthyHabits-4e3478326b4533565472-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+        "s3Key": "amplify-builds/listOrganizationsToBeVerifiedHealthyHabits-4e3478326b4533565472-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/function/listOrganizationsToBeVerifiedHealthyHabits-cloudformation-template.json",
+        "logicalId": "functionlistOrganizationsToBeVerifiedHealthyHabits"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.560Z",
+      "output": {
+        "Region": "eu-west-2",
+        "Arn": "arn:aws:lambda:eu-west-2:397429649444:function:listOrganizationsToBeVerifiedHealthyHabits-dev",
+        "Name": "listOrganizationsToBeVerifiedHealthyHabits-dev",
+        "LambdaExecutionRole": "healthyhabitsv2LambdaRoleab2b38b7-dev"
+      },
+      "lastPushDirHash": "l85UJSs0RPTk4FBgyT54gZLY9TE="
+    },
+    "ConfirmOrganization": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "healthyhabitsv24aea1e5f",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2API",
+          "attributes": [
+            "ApiName",
+            "ApiId"
+          ]
+        }
+      ],
+      "lastBuildTimeStamp": "2021-11-23T21:08:18.504Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2021-11-23T21:08:18.558Z",
+      "distZipFilename": "ConfirmOrganization-6139494d48667238504b-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+        "s3Key": "amplify-builds/ConfirmOrganization-6139494d48667238504b-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/function/ConfirmOrganization-cloudformation-template.json",
+        "logicalId": "functionConfirmOrganization"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.563Z",
+      "output": {
+        "Region": "eu-west-2",
+        "Arn": "arn:aws:lambda:eu-west-2:397429649444:function:ConfirmOrganization-dev",
+        "Name": "ConfirmOrganization-dev",
+        "LambdaExecutionRole": "healthyhabitsv2LambdaRoled8cd7e6a-dev"
+      },
+      "lastPushDirHash": "OMft3v1XobnBPoYHpLYj329zwJM="
+    }
+  },
+  "storage": {
+    "HealthyHabitsV2": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "BucketName": "healthy-habits-v2-content205646-dev",
+        "Region": "eu-west-2"
+      },
+      "lastPushTimeStamp": "2021-11-23T21:32:27.565Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-healthyhabitsv2-dev-205646-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storageHealthyHabitsV2"
+      }
+    }
+  }
+}
