@@ -1,4 +1,4 @@
-import {Navigate, Outlet, useRoutes} from 'react-router-dom';
+
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
@@ -35,7 +35,8 @@ import SectionOverview from "./components/Sections/SectionOverview";
 import Wearables from "./components/_dashboard/wearables/Wearables";
 import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
 import Organizations from "./pages/Organizations";
-
+import {Navigate, useRoutes} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 
 export function PreLoginRouter(){
     return useRoutes([
@@ -63,11 +64,9 @@ export default function Router() {
             element: <DashboardLayout/>,
             children: [
                 {element: <Navigate to="/dashboard/app" replace/>},
-                {
-                    path: 'schools', element: <SchoolOutlet/>, children: [
+                {path: 'schools', element: <SchoolOutlet/>, children: [
                         {element: <Schools/>},
-                        {
-                            path: ':id', element: <SchoolOutlet/>, children: [
+                        {path: ':id', element: <SchoolOutlet/>, children: [
                                 {
                                     path: 'manage', element: <Outlet/>, children: [
                                         {element: <SchoolManagement/>},
@@ -89,9 +88,6 @@ export default function Router() {
                         }
                     ]
                 },
-                {path: 'wearables', element: <Outlet/>, children: [
-                        {element: <Wearables/>}
-                    ]},
                 {
                     path: 'reports', element: <Outlet/>, children: [
                         {element: <ReportPage/>},
@@ -143,8 +139,12 @@ export default function Router() {
                         {element: <SchoolHousesPage/>},
                     ]
                 },
+
                 {path: 'app', element: <DashboardApp/>},
                 {path: 'organizations', element: <Organizations/>},
+                {path: 'wearables', element: <Wearables/>, children: [
+                        { element: <Wearables/>},
+                    ]},
                 {path: 'user', element: <User/>},
                 {path: 'products', element: <Products/>},
                 {path: 'blog', element: <Blog/>},
@@ -152,5 +152,8 @@ export default function Router() {
         },
         {path: '*', element: <Navigate to="/dashboard/app" replace/>}
         ,
-    ]);
+    ]
+
+
+    );
 }

@@ -82,27 +82,22 @@ function App() {
             .catch(() => console.log('Not signed in'));
     }
 
-    console.log(user)
 
-    if (!user) {
-        console.log('not user')
-        return (
-            <ThemeConfig>
-                <PreLoginRouter/>
-            </ThemeConfig>
-        )
-    }
-    console.log('user')
     return (
 
         <ThemeConfig>
             <SnackbarProvider maxSnack={3}>
+                {user ?
                     <UserContext.Provider value={user}>
                         <AbilityContext.Provider value={defineAbilityFor(user)}>
                             <ScrollToTop/>
                             <Router/>
                         </AbilityContext.Provider>
                     </UserContext.Provider>
+                    :
+                    <PreLoginRouter/>
+
+                }
             </SnackbarProvider>
         </ThemeConfig>
 
