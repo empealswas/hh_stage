@@ -103,10 +103,8 @@ const TotalDailyMiles = ({ isLoading }) => {
   }
 
   function createSparkLineTrace(data){
-    console.log("creating trace");
-    console.log(data);
+
     let sparklineData = [];
-    // console.log(dateRangeState);
     if(dateRangeState?.length>0){
       dateRangeState.forEach(day => {
         let mileCount =0;
@@ -152,14 +150,10 @@ const TotalDailyMiles = ({ isLoading }) => {
     getdates();
   }, [timeValue]);
 
-  // useEffect(() => {
-  // }, [dateRangeState]);
-
   useEffect(() => {
     //create a trace for sparkline
     const createTrace = async() => {
       setSparkLineDataState(createSparkLineTrace(filteredDataState));
-
     }
     createTrace();
   }, [filteredDataState]);
@@ -170,29 +164,20 @@ const TotalDailyMiles = ({ isLoading }) => {
     const getCount = async () => {
       const users = [];
       const result = await API.graphql(graphqlOperation(query));
-      console.warn("list of daily miles");
       if (dateRangeState) {
         let filteredData = result.data.listPELessonRecords.items.filter(
           x => dateRangeState.includes(x.date)
         );
         setFilteredDataState(filteredData);
 
-        
-        
-        console.log(filteredData);
         filteredData.forEach((item: any) => {
           users.push({ 'id': item.id });
         });
-
-
 
         if (dailyMileTotAveswitchState === 'total') {
           setDailyMileCount(filteredData.length);
         } else {
           const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-          console.log(uniqueIds);
-          console.log(filteredData.length);
-          console.log(uniqueIds.length);
           setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
         }
         // result.data.listPELessonRecords.items.forEach((item: any) => {
@@ -236,10 +221,6 @@ const TotalDailyMiles = ({ isLoading }) => {
                       <DirectionsRunIcon />
                     </Avatar>
                   </Grid>
-                  {/* added by TL */}
-                  {/* <Grid item>
-                                        <TotalAverageSwitch />
-                                    </Grid> */}
 
                   <Grid item>
                     <Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
