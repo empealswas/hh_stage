@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
-import {useTheme, styled} from '@mui/material/styles';
-import {Avatar, Box, Button, Grid, Stack, Typography} from '@mui/material';
+import { useTheme, styled } from '@mui/material/styles';
+import { Avatar, Box, Button, Grid, Stack, Typography } from '@mui/material';
 
 // third-party
 import Chart from 'react-apexcharts';
@@ -19,227 +19,334 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SkeletonEarningCard from "./SkeletonEarningCard";
 import MainCard from "./MainCard";
-import {API, graphqlOperation} from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
+import DailyMileChart from '../reports/charts/KpiCharts/DailyMileChart';
 
 
-const CardWrapper = styled(MainCard)(({theme}) => ({
-    backgroundColor: theme.palette.primary.dark,
-    color: '#fff',
-    overflow: 'hidden',
+
+const CardWrapper = styled(MainCard)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  color: '#fff',
+  overflow: 'hidden',
+  position: 'relative',
+  '&>div': {
     position: 'relative',
-    '&>div': {
-        position: 'relative',
-        zIndex: 5
-    },
-    '&:after': {
-        content: '""',
-        position: 'absolute',
-        width: 210,
-        height: 210,
-        background: theme.palette.primary[800],
-        borderRadius: '50%',
-        zIndex: 1,
-        top: -85,
-        right: -95,
-        [theme.breakpoints.down('sm')]: {
-            top: -105,
-            right: -140
-        }
-    },
-    '&:before': {
-        content: '""',
-        position: 'absolute',
-        zIndex: 1,
-        width: 210,
-        height: 210,
-        background: theme.palette.primary[800],
-        borderRadius: '50%',
-        top: -125,
-        right: -15,
-        opacity: 0.5,
-        [theme.breakpoints.down('sm')]: {
-            top: -155,
-            right: -70
-        }
+    zIndex: 5
+  },
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    width: 210,
+    height: 210,
+    background: theme.palette.primary[800],
+    borderRadius: '50%',
+    zIndex: 1,
+    top: -85,
+    right: -95,
+    [theme.breakpoints.down('sm')]: {
+      top: -105,
+      right: -140
     }
+  },
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    zIndex: 1,
+    width: 210,
+    height: 210,
+    background: theme.palette.primary[800],
+    borderRadius: '50%',
+    top: -125,
+    right: -15,
+    opacity: 0.5,
+    [theme.breakpoints.down('sm')]: {
+      top: -155,
+      right: -70
+    }
+  }
 }));
+
 const query = `query MyQuery {
-  listPELessonRecords(filter: {activity: {eq: "Daily Mile"}}) {
+  listPELessonRecords(filter: {
+      activity: { eq: "Daily Mile" }
+    } ) {
     items {
       activity
       id
+      date
     }
   }
 }`
+
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const TotalDailyMiles = ({isLoading}) => {
-    const theme = useTheme();
+const TotalDailyMiles = ({ isLoading }) => {
+  const theme = useTheme();
 
-    const [timeValue, setTimeValue] = useState(false);
-    const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
-    const [dailyMileCount, setDailyMileCount] = useState(null);
+  const [timeValue, setTimeValue] = useState(false);
+  const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
+  const [dailyMileCount, setDailyMileCount] = useState(null);
 
-    const handleChangeTime = (event, newValue) => {
-        setTimeValue(newValue);
-    };
+  const [dateRangeState, setDateRange] = useState();
+  const [filteredDataState, setFilteredDataState] = useState();
+  const [sparkLineDataState, setSparkLineDataState] = useState();
+  // const [cObj, setcObj] = useState([]);
 
-   
-    useEffect(()=>{
-        const getCount = async () =>{
-            const users = [];
-            const result = await API.graphql(graphqlOperation(query));
-            result.data.listPELessonRecords.items.forEach((item: any) => {
-                users.push( {'id':item.id});
-            })
-            if (dailyMileTotAveswitchState === 'total') {
-                setDailyMileCount(result.data.listPELessonRecords.items.length);
-            } else {
-                const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-                setDailyMileCount(parseFloat((result.data.listPELessonRecords.items.length/uniqueIds.length).toPrecision(2)) );
+  const handleChangeTime = (event, newValue) => {
+    setTimeValue(newValue);
+  };
 
-            }
+  function convertDateToString(date) {
+    return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0');
+  }
+
+  function createSparkLineTrace(data){
+    console.log("creating trace");
+    console.log(data);
+    let sparklineData = [];
+    // console.log(dateRangeState);
+    if(dateRangeState?.length>0){
+      dateRangeState.forEach(day => {
+        let mileCount =0;
+        data.forEach(item => {
+          if(item.date === day){
+            mileCount++;
+          }
+        })
+        sparklineData.push( mileCount);
+      })
+    }
+    return sparklineData;
+  }
+
+
+  useEffect(() => {
+    // detect change in Week/ month & create an array of dates as appropriate
+    // for week- date for prev 7 daya
+    // for month - dates from start of current month
+    const getdates = async () => {
+      let endDate = new Date();
+      let startDate = new Date();
+      let dateRange = [];
+
+      if (timeValue) {
+        // if month
+        startDate.setDate(1);
+      } else {
+        // if week
+        startDate.setDate(startDate.getDate() - 6)
+      }
+
+      while (startDate < endDate) {
+        // convert startDate to string and piush to array
+        let dateRec = convertDateToString(startDate);
+        dateRange.push(dateRec);
+        startDate.setDate(startDate.getDate() + 1);
+      };
+      // add current date to array then set const
+      dateRange.push(convertDateToString(endDate));
+      setDateRange(dateRange);
+    }
+    getdates();
+  }, [timeValue]);
+
+  // useEffect(() => {
+  // }, [dateRangeState]);
+
+  useEffect(() => {
+    //create a trace for sparkline
+    const createTrace = async() => {
+      setSparkLineDataState(createSparkLineTrace(filteredDataState));
+
+    }
+    createTrace();
+  }, [filteredDataState]);
+
+
+  useEffect(() => {
+    // get data to populate KPI box
+    const getCount = async () => {
+      const users = [];
+      const result = await API.graphql(graphqlOperation(query));
+      console.warn("list of daily miles");
+      if (dateRangeState) {
+        let filteredData = result.data.listPELessonRecords.items.filter(
+          x => dateRangeState.includes(x.date)
+        );
+        setFilteredDataState(filteredData);
+
+        
+        
+        console.log(filteredData);
+        filteredData.forEach((item: any) => {
+          users.push({ 'id': item.id });
+        });
+
+
+
+        if (dailyMileTotAveswitchState === 'total') {
+          setDailyMileCount(filteredData.length);
+        } else {
+          const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+          console.log(uniqueIds);
+          console.log(filteredData.length);
+          console.log(uniqueIds.length);
+          setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
         }
-        getCount()
+        // result.data.listPELessonRecords.items.forEach((item: any) => {
+        //   users.push({ 'id': item.id });
+        // });
 
-    }, [dailyMileTotAveswitchState])
+        // if (dailyMileTotAveswitchState === 'total') {
+        //   setDailyMileCount(result.data.listPELessonRecords.items.length);
+        // } else {
+        //   const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+        //   setDailyMileCount(parseFloat((result.data.listPELessonRecords.items.length / uniqueIds.length).toPrecision(2)));
 
-    return (
-        <>
-            {!dailyMileCount ? (
-                <SkeletonEarningCard/>
-            ) : (
-                <CardWrapper border={false} content={false}>
-                    <Box sx={{p: 2.25}}>
-                        <Grid container direction="column">
-                            <Grid item>
-                                <Grid container justifyContent="space-between">
-                                    <Grid item>
-                                        <Avatar
-                                            variant="rounded"
-                                            sx={{
-                                                ...theme.typography.body2,
-                                                ...theme.typography.body1,
-                                                backgroundColor: theme.palette.secondary.dark,
-                                                color: '#fff',
-                                                mt: 1
-                                            }}
-                                        >
-                                            <DirectionsRunIcon/>
-                                        </Avatar>
-                                    </Grid>
-                                    {/* added by TL */}
-                                    {/* <Grid item>
+        // }
+      }
+    }
+    getCount()
+
+  }, [dailyMileTotAveswitchState, dateRangeState])
+
+  return (
+    <>
+      {!dailyMileCount ? (
+        <SkeletonEarningCard />
+      ) : (
+        <CardWrapper border={false} content={false}>
+          <Box sx={{ p: 2.25 }}>
+            <Grid container direction="column">
+              <Grid item>
+                <Grid container justifyContent="space-between">
+                  <Grid item>
+                    <Avatar
+                      variant="rounded"
+                      sx={{
+                        ...theme.typography.body2,
+                        ...theme.typography.body1,
+                        backgroundColor: theme.palette.secondary.dark,
+                        color: '#fff',
+                        mt: 1
+                      }}
+                    >
+                      <DirectionsRunIcon />
+                    </Avatar>
+                  </Grid>
+                  {/* added by TL */}
+                  {/* <Grid item>
                                         <TotalAverageSwitch />
                                     </Grid> */}
 
-                                    <Grid item>
-                                        <Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
-                                            <TotalAverageSwitch totAveChanger={setDailyMileTotAveSwitchState}
-                                                                switchVal={dailyMileTotAveswitchState}/>
-                                            <>
-                                                <Button
-                                                    disableElevation
-                                                    variant={timeValue ? 'contained' : 'text'}
-                                                    size="small"
-                                                    sx={{color: 'inherit'}}
-                                                    onClick={(e) => handleChangeTime(e, true)}
-                                                >
-                                                    Month
-                                                </Button>
-                                                <Button
-                                                    disableElevation
-                                                    variant={!timeValue ? 'contained' : 'text'}
-                                                    size="small"
-                                                    sx={{color: 'inherit'}}
-                                                    onClick={(e) => handleChangeTime(e, false)}
-                                                >
-                                                    Year
-                                                </Button>
-                                            </>
-                                        </Stack>
+                  <Grid item>
+                    <Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
+                      <TotalAverageSwitch totAveChanger={setDailyMileTotAveSwitchState}
+                        switchVal={dailyMileTotAveswitchState} />
+                      <>
+                        <Button
+                          disableElevation
+                          variant={timeValue ? 'contained' : 'text'}
+                          size="small"
+                          sx={{ color: 'inherit' }}
+                          onClick={(e) => handleChangeTime(e, true)}
+                        >
+                          Month
+                        </Button>
+                        <Button
+                          disableElevation
+                          variant={!timeValue ? 'contained' : 'text'}
+                          size="small"
+                          sx={{ color: 'inherit' }}
+                          onClick={(e) => handleChangeTime(e, false)}
+                        >
+                          Year
+                        </Button>
+                      </>
+                    </Stack>
 
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item sx={{mb: 0.75}}>
-                                <Grid container alignItems="center">
-                                    <Grid item xs={6}>
-                                        <Grid container alignItems="center">
-                                            <Grid item>
-                                                {timeValue ? (
-                                                    <Typography sx={{
-                                                        fontSize: '2.125rem',
-                                                        fontWeight: 500,
-                                                        mr: 1,
-                                                        mt: 1.75,
-                                                        mb: 0.75
-                                                    }}>
-                                                        {dailyMileCount}
-                                                    </Typography>
-                                                ) : (
-                                                    <Typography sx={{
-                                                        fontSize: '2.125rem',
-                                                        fontWeight: 500,
-                                                        mr: 1,
-                                                        mt: 1.75,
-                                                        mb: 0.75
-                                                    }}>
-                                                        {dailyMileCount}
-                                                    </Typography>
-                                                )}
-                                            </Grid>
-                                            <Grid item>
-                                                <Avatar
-                                                    sx={{
-                                                        ...theme.typography.subtitle2,
-                                                        cursor: 'pointer',
-                                                        backgroundColor: theme.palette.primary[200],
-                                                        color: theme.palette.primary.dark
-                                                    }}
-                                                >
-                                                    <ArrowDownwardIcon fontSize="inherit"
-                                                                       sx={{transform: 'rotate3d(1, 1, 1, 45deg)'}}/>
-                                                </Avatar>
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <Typography
-                                                    sx={{
-                                                        fontSize: '1rem',
-                                                        fontWeight: 500,
-                                                        color: theme.palette.primary[200]
-                                                    }}
-                                                >
-                                                    Total Miles
-                                                </Typography>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={6}>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ mb: 0.75 }}>
+                <Grid container alignItems="center">
+                  <Grid item xs={6}>
+                    <Grid container alignItems="center">
+                      <Grid item>
+                        {timeValue ? (
+                          <Typography sx={{
+                            fontSize: '2.125rem',
+                            fontWeight: 500,
+                            mr: 1,
+                            mt: 1.75,
+                            mb: 0.75
+                          }}>
+                            {dailyMileCount}
+                          </Typography>
+                        ) : (
+                          <Typography sx={{
+                            fontSize: '2.125rem',
+                            fontWeight: 500,
+                            mr: 1,
+                            mt: 1.75,
+                            mb: 0.75
+                          }}>
+                            {dailyMileCount}
+                          </Typography>
+                        )}
+                      </Grid>
+                      <Grid item>
+                        <Avatar
+                          sx={{
+                            ...theme.typography.subtitle2,
+                            cursor: 'pointer',
+                            backgroundColor: theme.palette.primary[200],
+                            color: theme.palette.primary.dark
+                          }}
+                        >
+                          <ArrowDownwardIcon fontSize="inherit"
+                            sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+                        </Avatar>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography
+                          sx={{
+                            fontSize: '1rem',
+                            fontWeight: 500,
+                            color: theme.palette.primary[200]
+                          }}
+                        >
+                          Total Miles
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={6}>
 
-                                        <>
-                                            <Grid item xs={12}>
-                                                {timeValue ? <Chart {...ChartDataMonth} /> :
-                                                    <Chart {...ChartDataYear} />}
-                                            </Grid>
+                    <>
+                      <Grid item xs={12}>
+                        
+                        {sparkLineDataState ? <DailyMileChart trace={sparkLineDataState}/>:
+                          <Chart {...ChartDataYear} />}
+                      </Grid>
 
-                                        </>
+                    </>
 
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </CardWrapper>
-            )}
-        </>
-    );
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Box>
+        </CardWrapper>
+      )}
+    </>
+  );
 };
 
 TotalDailyMiles.propTypes = {
-    isLoading: PropTypes.bool
+  isLoading: PropTypes.bool
 };
 
 export default TotalDailyMiles;

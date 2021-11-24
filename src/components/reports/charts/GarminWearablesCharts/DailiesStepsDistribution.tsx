@@ -1,71 +1,76 @@
-import { Card, CardHeader, Box } from '@material-ui/core';
-
-import ReactApexChart from 'react-apexcharts';
-
+import { Card, CardHeader, Box } from "@material-ui/core";
+import { useState } from "react";
+import ScatterSwitch from "../../../_garmin-selectors/scatter-switch";
+import MetricDistributionPlot from "./MetricDistributionPlot";
+import MetricDistributionTable from "./MetricDistributionTable";
 
 export default function DailiesStepsDistribution(props: any) {
+  const [scatterPlotSwitchState, setScatterPlotSwitchState] = useState("plot");
 
-
-    if (props['data'].length===0) {
-        return (
-            <Card>
-                <CardHeader title="Garmin Metrics Data" subheader="No data available" />
-            </Card>
-        );
+  if (props["data"].length === 0) {
+    return (
+      <Card>
+        <CardHeader title="Garmin Metrics Data" subheader="No data available" />
+      </Card>
+    );
+  } else {
+    if (scatterPlotSwitchState === "table") {
+      return (
+        <Card>
+          <CardHeader title={props["title"]} subheader={props["subTitle"]} />
+          <ScatterSwitch totAveChanger={setScatterPlotSwitchState} switchVal={scatterPlotSwitchState}/>
+          <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+            <MetricDistributionTable tableData={props["tableData"]}/>
+          </Box>
+        </Card>
+      );
     } else {
-      var dataSeries = props['data'];
-        const plot = {
-            series: [...dataSeries],
-            options: {
-              chart: {
-                height: 350,
-                type: 'scatter',
-                zoom: {
-                  type: 'xy'
-                }
-              },
-              dataLabels: {
-                enabled: false
-              },
-              grid: {
-                xaxis: {
-                  lines: {
-                    show: true
-                  }
-                },
-                yaxis: {
-                  lines: {
-                    show: true
-                  }
-                },
-              },
-              xaxis: {
-                type: 'datetime',
-              },
-              yaxis: { }
-            },
-        };
-        return (
-            <Card>
-                <CardHeader title={props["title"]} subheader={props["subTitle"]} />
-                <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-                    <ReactApexChart options={plot.options} series={plot.series} type="scatter" height={338  } />
-
-                </Box>
-            </Card>
-        )
+      return (
+        <Card>
+          <CardHeader title={props["title"]} subheader={props["subTitle"]} />
+          <ScatterSwitch totAveChanger={setScatterPlotSwitchState} switchVal={scatterPlotSwitchState}/>
+          <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+            <MetricDistributionPlot data={props["data"]} title={props["title"]} subTitle={props["subTitle"]} />
+          </Box>
+        </Card>
+      );
     }
-
-  //   function generateGarminDayWiseTimeSeries(inData: any) {
-  //     var i = 0;
-  //     var series = [];
-    
-  //     while (i < inData.length) {
-  //         var x = new Date(inData[i].period).getTime();
-  //         var y = inData[i].totalSteps
-  //         series.push([x, y]);
-  //         i++;
-  //     }
-  //     return series;
-  // }
+  }
 }
+
+
+      // var dataSeries = props["data"];
+      // const plot = {
+      //   series: [...dataSeries],
+      //   options: {
+      //     chart: {
+      //       height: 350,
+      //       type: "scatter",
+      //       zoom: {
+      //         type: "xy",
+      //       },
+      //     },
+      //     dataLabels: {
+      //       enabled: false,
+      //     },
+      //     grid: {
+      //       xaxis: {
+      //         lines: {
+      //           show: true,
+      //         },
+      //       },
+      //       yaxis: {
+      //         lines: {
+      //           show: true,
+      //         },
+      //       },
+      //     },
+      //     xaxis: {
+      //       type: "datetime",
+      //     },
+      //     yaxis: {},
+      //   },
+      // };
+
+
+  {/* <ReactApexChart options={plot.options} series={plot.series} type="scatter" height={338} /> */}

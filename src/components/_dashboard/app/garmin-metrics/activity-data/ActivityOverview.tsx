@@ -9,6 +9,9 @@ import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts
 import {CardContent} from "@mui/material";
 import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
 import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
+import TotalAverageSwitch from "../../../../_garmin-selectors/total-average-switch";
+import { TableDataModel } from "../../../../../models/garminDataModels/scatterTableData";
+
 
 export default function ActivityOverview(props: any) {
     var epochsBaseUrl: string = "https://analytics.healthyhabits.link/api/garminEpochs/dates";
@@ -31,7 +34,7 @@ export default function ActivityOverview(props: any) {
     const [activityScatterData, setScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [activityIntensityDonutData, setIntensityDonutData] = useState<number[]>([]);
     const [radialValue, setRadialValue] = useState<number>(1);
-
+    const [tableData, setTableData] = useState<TableDataModel[]>([]);
     ///////////////////////////////////
     /////  get epochs users data  /////
     ///////////////////////////////////
@@ -227,6 +230,26 @@ export default function ActivityOverview(props: any) {
         prepTargetRadialData();
     }, [activityDataGroup]);
 
+    //////////////////////////////////////////////
+    /////  Structure table data              /////
+    //////////////////////////////////////////////  
+    useEffect(() => {  
+        const prepTargetRadialData = async () => {
+            
+            if(activityDataUser.length>0){
+                let id = 0;
+                let tableData: TableDataModel[]=[];
+                for(let activity of activityDataUser) {
+                    let tableRec = new TableDataModel (id, activity.garminId, activity.active, "active");
+                    tableData.push(tableRec);
+                    id++
+                }
+                setTableData(tableData);
+            } 
+        }
+        prepTargetRadialData();
+    }, [activityDataUser]);
+
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
         var series = [];
@@ -258,7 +281,7 @@ export default function ActivityOverview(props: any) {
                                         subTitle2={"Comparison"} labels={["Sedentary", "Active", "Highly Active"]}/>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <DailiesStepsDistribution data={ activityScatterData} title={"Activity"}
+                    <DailiesStepsDistribution tableData={tableData} data={ activityScatterData} title={"Activity"}
                                               subTitle={"Total Activity"}/>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
