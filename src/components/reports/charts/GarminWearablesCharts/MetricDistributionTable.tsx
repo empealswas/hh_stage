@@ -1,7 +1,7 @@
 import { Table } from "@material-ui/core";
 
-function MetricDistributionTable({ data }) {
-//   let data = props["tableData"];
+function MetricDistributionTable(props:any) {
+  let data = props["tableData"];
   return (
     <Table>
       <thead>
