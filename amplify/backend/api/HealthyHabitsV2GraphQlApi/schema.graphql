@@ -105,6 +105,26 @@ type PupilClassroom @model(queries: null) @key(name: "byPupil", fields: ["pupilI
     classroom: Classroom! @connection(fields: ["classroomID"])
 }
 
+type PupilOrganizationRequest
+@key(name: "byPupil", fields: ["pupilID", "organizationID"]) @key(name: "byOrganization", fields: ["organizationID", "pupilID"])
+@model{
+    id: ID!
+    pupilID: ID!
+    organizationID: ID!
+    pupil: Pupil! @connection(fields: ["pupilID"])
+    organization: Organization! @connection(fields: ["organizationID"])
+}
+
+type PupilOrganizationAccepted
+@key(name: "byPupil", fields: ["pupilID", "organizationID"]) @key(name: "byOrganization", fields: ["organizationID", "pupilID"])
+@model{
+    id: ID!
+    pupilID: ID!
+    organizationID: ID!
+    pupil: Pupil! @connection(fields: ["pupilID"])
+    organization: Organization! @connection(fields: ["organizationID"])
+}
+
 type School @model {
     id: ID!
     name: String
@@ -125,6 +145,8 @@ type Organization @model
     id: ID!
     name: String
     Principals: [Principal] @connection(keyName: "byOrganization", fields: ["id"])
+    WaitingForAcceptPupils: [PupilOrganizationRequest] @connection(keyName: "byOrganization", fields: ["id"])
+    AcceptedPupils: [PupilOrganizationAccepted] @connection(keyName: "byOrganization", fields: ["id"])
     type: String
 }
 
@@ -233,6 +255,8 @@ type Pupil @model
     lastName: String
     Attendances: [Attendance] @connection(keyName: "byPupil", fields: ["id"])
     classrooms: [PupilClassroom] @connection(keyName: "byPupil", fields: ["id"])
+    Organizations: [PupilOrganizationAccepted] @connection(keyName: "byPupil", fields: ["id"])
+    OrganizationsRequests: [PupilOrganizationRequest] @connection(keyName: "byPupil", fields: ["id"])
     schoolID: ID
     schoolHouseID: ID
     schoolHouse: SchoolHouse @connection(fields: ["schoolHouseID"])

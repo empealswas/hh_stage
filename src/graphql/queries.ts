@@ -273,6 +273,104 @@ export const listClassrooms = /* GraphQL */ `
     }
   }
 `;
+export const getPupilOrganizationRequest = /* GraphQL */ `
+  query GetPupilOrganizationRequest($id: ID!) {
+    getPupilOrganizationRequest(id: $id) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listPupilOrganizationRequests = /* GraphQL */ `
+  query ListPupilOrganizationRequests(
+    $filter: ModelPupilOrganizationRequestFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPupilOrganizationRequests(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        pupilID
+        organizationID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPupilOrganizationAccepted = /* GraphQL */ `
+  query GetPupilOrganizationAccepted($id: ID!) {
+    getPupilOrganizationAccepted(id: $id) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listPupilOrganizationAccepteds = /* GraphQL */ `
+  query ListPupilOrganizationAccepteds(
+    $filter: ModelPupilOrganizationAcceptedFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPupilOrganizationAccepteds(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        pupilID
+        organizationID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getSchool = /* GraphQL */ `
   query GetSchool($id: ID!) {
     getSchool(id: $id) {
@@ -744,6 +842,12 @@ export const getOrganization = /* GraphQL */ `
       Principals {
         nextToken
       }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
       type
       createdAt
       updatedAt
@@ -778,6 +882,12 @@ export const getPupil = /* GraphQL */ `
         nextToken
       }
       classrooms {
+        nextToken
+      }
+      Organizations {
+        nextToken
+      }
+      OrganizationsRequests {
         nextToken
       }
       schoolID

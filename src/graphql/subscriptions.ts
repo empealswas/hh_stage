@@ -632,6 +632,168 @@ export const onDeletePupilClassroom = /* GraphQL */ `
     }
   }
 `;
+export const onCreatePupilOrganizationRequest = /* GraphQL */ `
+  subscription OnCreatePupilOrganizationRequest {
+    onCreatePupilOrganizationRequest {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdatePupilOrganizationRequest = /* GraphQL */ `
+  subscription OnUpdatePupilOrganizationRequest {
+    onUpdatePupilOrganizationRequest {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeletePupilOrganizationRequest = /* GraphQL */ `
+  subscription OnDeletePupilOrganizationRequest {
+    onDeletePupilOrganizationRequest {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onCreatePupilOrganizationAccepted = /* GraphQL */ `
+  subscription OnCreatePupilOrganizationAccepted {
+    onCreatePupilOrganizationAccepted {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdatePupilOrganizationAccepted = /* GraphQL */ `
+  subscription OnUpdatePupilOrganizationAccepted {
+    onUpdatePupilOrganizationAccepted {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeletePupilOrganizationAccepted = /* GraphQL */ `
+  subscription OnDeletePupilOrganizationAccepted {
+    onDeletePupilOrganizationAccepted {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 export const onCreateSchool = /* GraphQL */ `
   subscription OnCreateSchool {
     onCreateSchool {
@@ -1744,6 +1906,12 @@ export const onCreateOrganization = /* GraphQL */ `
       Principals {
         nextToken
       }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
       type
       createdAt
       updatedAt
@@ -1758,6 +1926,12 @@ export const onUpdateOrganization = /* GraphQL */ `
       Principals {
         nextToken
       }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
       type
       createdAt
       updatedAt
@@ -1770,6 +1944,12 @@ export const onDeleteOrganization = /* GraphQL */ `
       id
       name
       Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
         nextToken
       }
       type
@@ -1788,6 +1968,12 @@ export const onCreatePupil = /* GraphQL */ `
         nextToken
       }
       classrooms {
+        nextToken
+      }
+      Organizations {
+        nextToken
+      }
+      OrganizationsRequests {
         nextToken
       }
       schoolID
@@ -1830,6 +2016,12 @@ export const onUpdatePupil = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      Organizations {
+        nextToken
+      }
+      OrganizationsRequests {
+        nextToken
+      }
       schoolID
       schoolHouseID
       schoolHouse {
@@ -1868,6 +2060,12 @@ export const onDeletePupil = /* GraphQL */ `
         nextToken
       }
       classrooms {
+        nextToken
+      }
+      Organizations {
+        nextToken
+      }
+      OrganizationsRequests {
         nextToken
       }
       schoolID

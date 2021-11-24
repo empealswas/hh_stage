@@ -63,7 +63,7 @@ const InterventionsList = (props: { pupil: Pupil }) => {
         )
     }
     if (interventions.length === 0) {
-        return (<Typography variant={'h6'}>Here will be displayed achievements and highlights of your child school
+        return (<Typography variant={'h6'} textAlign={'center'}>Here will be displayed achievements and highlights of your child school
             life.</Typography>);
     }
     return (

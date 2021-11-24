@@ -63,11 +63,6 @@ const sidebarConfig = [
     icon: getIcon(domainIcon)
   },
   {
-    title: 'parent',
-    path: '/dashboard/parent',
-    icon: getIcon(humanMaleChild)
-  },
-  {
     title: 'lessons',
     path: '/dashboard/curricula',
     icon: getIcon(googleClassroom)

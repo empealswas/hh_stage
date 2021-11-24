@@ -14,6 +14,7 @@ import TotalActivities from "../components/cards/TotalActivities";
 import TotalDailyMiles from "../components/cards/TotalDailyMiles";
 import TimeCompletedCard from "../components/cards/TimeCompletedCard";
 import {Organization} from "../models/Organization";
+import OrganizationOverview from "../components/organizations/OrganizationOverview";
 
 
 
@@ -28,7 +29,7 @@ export default function DashboardApp() {
                     <Typography variant="h4">Welcome back, {user.firstName}</Typography>
                 </Box>
                 {user instanceof Organization ?
-                <></>
+                <OrganizationOverview/>
                 :
                     <Grid container spacing={5} >
                         <Grid item xs={12} sm={6} md={4} lg={4}>

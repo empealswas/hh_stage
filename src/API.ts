@@ -342,6 +342,8 @@ export type Pupil = {
   lastName?: string | null,
   Attendances?: ModelAttendanceConnection | null,
   classrooms?: ModelPupilClassroomConnection | null,
+  Organizations?: ModelPupilOrganizationAcceptedConnection | null,
+  OrganizationsRequests?: ModelPupilOrganizationRequestConnection | null,
   schoolID?: string | null,
   schoolHouseID?: string | null,
   schoolHouse?: SchoolHouse | null,
@@ -352,19 +354,53 @@ export type Pupil = {
   Interventions?: ModelInterventionConnection | null,
 };
 
-export type SchoolHouse = {
-  __typename: "SchoolHouse",
-  id: string,
-  name?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  Pupils?: ModelPupilConnection | null,
+export type ModelPupilOrganizationAcceptedConnection = {
+  __typename: "ModelPupilOrganizationAcceptedConnection",
+  items:  Array<PupilOrganizationAccepted >,
+  nextToken?: string | null,
 };
 
-export type ModelPupilConnection = {
-  __typename: "ModelPupilConnection",
-  items:  Array<Pupil >,
+export type PupilOrganizationAccepted = {
+  __typename: "PupilOrganizationAccepted",
+  id: string,
+  pupilID: string,
+  organizationID: string,
+  createdAt: string,
+  updatedAt: string,
+  organization: Organization,
+  pupil: Pupil,
+};
+
+export type Organization = {
+  __typename: "Organization",
+  id: string,
+  name?: string | null,
+  Principals?: ModelPrincipalConnection | null,
+  WaitingForAcceptPupils?: ModelPupilOrganizationRequestConnection | null,
+  AcceptedPupils?: ModelPupilOrganizationAcceptedConnection | null,
+  type?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelPrincipalConnection = {
+  __typename: "ModelPrincipalConnection",
+  items:  Array<Principal >,
   nextToken?: string | null,
+};
+
+export type Principal = {
+  __typename: "Principal",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+  School?: School | null,
+  organizationID?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  Organization?: Organization | null,
 };
 
 export type School = {
@@ -388,40 +424,42 @@ export type ModelTeacherConnection = {
   nextToken?: string | null,
 };
 
-export type ModelPrincipalConnection = {
-  __typename: "ModelPrincipalConnection",
-  items:  Array<Principal >,
-  nextToken?: string | null,
-};
-
-export type Principal = {
-  __typename: "Principal",
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  email?: string | null,
-  schoolID?: string | null,
-  School?: School | null,
-  organizationID?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  Organization?: Organization | null,
-};
-
-export type Organization = {
-  __typename: "Organization",
-  id: string,
-  name?: string | null,
-  Principals?: ModelPrincipalConnection | null,
-  type?: string | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
 export type ModelClassroomConnection = {
   __typename: "ModelClassroomConnection",
   items:  Array<Classroom >,
   nextToken?: string | null,
+};
+
+export type ModelPupilConnection = {
+  __typename: "ModelPupilConnection",
+  items:  Array<Pupil >,
+  nextToken?: string | null,
+};
+
+export type ModelPupilOrganizationRequestConnection = {
+  __typename: "ModelPupilOrganizationRequestConnection",
+  items:  Array<PupilOrganizationRequest >,
+  nextToken?: string | null,
+};
+
+export type PupilOrganizationRequest = {
+  __typename: "PupilOrganizationRequest",
+  id: string,
+  pupilID: string,
+  organizationID: string,
+  createdAt: string,
+  updatedAt: string,
+  organization: Organization,
+  pupil: Pupil,
+};
+
+export type SchoolHouse = {
+  __typename: "SchoolHouse",
+  id: string,
+  name?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  Pupils?: ModelPupilConnection | null,
 };
 
 export type ModelPupilParentConnection = {
@@ -675,6 +713,54 @@ export type UpdatePupilClassroomInput = {
 };
 
 export type DeletePupilClassroomInput = {
+  id: string,
+};
+
+export type CreatePupilOrganizationRequestInput = {
+  id?: string | null,
+  pupilID: string,
+  organizationID: string,
+};
+
+export type ModelPupilOrganizationRequestConditionInput = {
+  pupilID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  and?: Array< ModelPupilOrganizationRequestConditionInput | null > | null,
+  or?: Array< ModelPupilOrganizationRequestConditionInput | null > | null,
+  not?: ModelPupilOrganizationRequestConditionInput | null,
+};
+
+export type UpdatePupilOrganizationRequestInput = {
+  id: string,
+  pupilID?: string | null,
+  organizationID?: string | null,
+};
+
+export type DeletePupilOrganizationRequestInput = {
+  id: string,
+};
+
+export type CreatePupilOrganizationAcceptedInput = {
+  id?: string | null,
+  pupilID: string,
+  organizationID: string,
+};
+
+export type ModelPupilOrganizationAcceptedConditionInput = {
+  pupilID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  and?: Array< ModelPupilOrganizationAcceptedConditionInput | null > | null,
+  or?: Array< ModelPupilOrganizationAcceptedConditionInput | null > | null,
+  not?: ModelPupilOrganizationAcceptedConditionInput | null,
+};
+
+export type UpdatePupilOrganizationAcceptedInput = {
+  id: string,
+  pupilID?: string | null,
+  organizationID?: string | null,
+};
+
+export type DeletePupilOrganizationAcceptedInput = {
   id: string,
 };
 
@@ -1233,6 +1319,24 @@ export type ModelClassroomFilterInput = {
   and?: Array< ModelClassroomFilterInput | null > | null,
   or?: Array< ModelClassroomFilterInput | null > | null,
   not?: ModelClassroomFilterInput | null,
+};
+
+export type ModelPupilOrganizationRequestFilterInput = {
+  id?: ModelIDInput | null,
+  pupilID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  and?: Array< ModelPupilOrganizationRequestFilterInput | null > | null,
+  or?: Array< ModelPupilOrganizationRequestFilterInput | null > | null,
+  not?: ModelPupilOrganizationRequestFilterInput | null,
+};
+
+export type ModelPupilOrganizationAcceptedFilterInput = {
+  id?: ModelIDInput | null,
+  pupilID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  and?: Array< ModelPupilOrganizationAcceptedFilterInput | null > | null,
+  or?: Array< ModelPupilOrganizationAcceptedFilterInput | null > | null,
+  not?: ModelPupilOrganizationAcceptedFilterInput | null,
 };
 
 export type ModelSchoolFilterInput = {
@@ -2205,6 +2309,210 @@ export type DeletePupilClassroomMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type CreatePupilOrganizationRequestMutationVariables = {
+  input: CreatePupilOrganizationRequestInput,
+  condition?: ModelPupilOrganizationRequestConditionInput | null,
+};
+
+export type CreatePupilOrganizationRequestMutation = {
+  createPupilOrganizationRequest?:  {
+    __typename: "PupilOrganizationRequest",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type UpdatePupilOrganizationRequestMutationVariables = {
+  input: UpdatePupilOrganizationRequestInput,
+  condition?: ModelPupilOrganizationRequestConditionInput | null,
+};
+
+export type UpdatePupilOrganizationRequestMutation = {
+  updatePupilOrganizationRequest?:  {
+    __typename: "PupilOrganizationRequest",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type DeletePupilOrganizationRequestMutationVariables = {
+  input: DeletePupilOrganizationRequestInput,
+  condition?: ModelPupilOrganizationRequestConditionInput | null,
+};
+
+export type DeletePupilOrganizationRequestMutation = {
+  deletePupilOrganizationRequest?:  {
+    __typename: "PupilOrganizationRequest",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type CreatePupilOrganizationAcceptedMutationVariables = {
+  input: CreatePupilOrganizationAcceptedInput,
+  condition?: ModelPupilOrganizationAcceptedConditionInput | null,
+};
+
+export type CreatePupilOrganizationAcceptedMutation = {
+  createPupilOrganizationAccepted?:  {
+    __typename: "PupilOrganizationAccepted",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type UpdatePupilOrganizationAcceptedMutationVariables = {
+  input: UpdatePupilOrganizationAcceptedInput,
+  condition?: ModelPupilOrganizationAcceptedConditionInput | null,
+};
+
+export type UpdatePupilOrganizationAcceptedMutation = {
+  updatePupilOrganizationAccepted?:  {
+    __typename: "PupilOrganizationAccepted",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type DeletePupilOrganizationAcceptedMutationVariables = {
+  input: DeletePupilOrganizationAcceptedInput,
+  condition?: ModelPupilOrganizationAcceptedConditionInput | null,
+};
+
+export type DeletePupilOrganizationAcceptedMutation = {
+  deletePupilOrganizationAccepted?:  {
+    __typename: "PupilOrganizationAccepted",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     pupil:  {
       __typename: "Pupil",
       id: string,
@@ -3642,6 +3950,14 @@ export type CreateOrganizationMutation = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -3662,6 +3978,14 @@ export type UpdateOrganizationMutation = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -3680,6 +4004,14 @@ export type DeleteOrganizationMutation = {
     name?: string | null,
     Principals?:  {
       __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -3705,6 +4037,14 @@ export type CreatePupilMutation = {
     } | null,
     classrooms?:  {
       __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
       nextToken?: string | null,
     } | null,
     schoolID?: string | null,
@@ -3758,6 +4098,14 @@ export type UpdatePupilMutation = {
       __typename: "ModelPupilClassroomConnection",
       nextToken?: string | null,
     } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
     schoolID?: string | null,
     schoolHouseID?: string | null,
     schoolHouse?:  {
@@ -3807,6 +4155,14 @@ export type DeletePupilMutation = {
     } | null,
     classrooms?:  {
       __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
       nextToken?: string | null,
     } | null,
     schoolID?: string | null,
@@ -4237,6 +4593,114 @@ export type ListClassroomsQuery = {
       name?: string | null,
       schoolID?: string | null,
       yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetPupilOrganizationRequestQueryVariables = {
+  id: string,
+};
+
+export type GetPupilOrganizationRequestQuery = {
+  getPupilOrganizationRequest?:  {
+    __typename: "PupilOrganizationRequest",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type ListPupilOrganizationRequestsQueryVariables = {
+  filter?: ModelPupilOrganizationRequestFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPupilOrganizationRequestsQuery = {
+  listPupilOrganizationRequests?:  {
+    __typename: "ModelPupilOrganizationRequestConnection",
+    items:  Array< {
+      __typename: "PupilOrganizationRequest",
+      id: string,
+      pupilID: string,
+      organizationID: string,
+      createdAt: string,
+      updatedAt: string,
+    } >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetPupilOrganizationAcceptedQueryVariables = {
+  id: string,
+};
+
+export type GetPupilOrganizationAcceptedQuery = {
+  getPupilOrganizationAccepted?:  {
+    __typename: "PupilOrganizationAccepted",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type ListPupilOrganizationAcceptedsQueryVariables = {
+  filter?: ModelPupilOrganizationAcceptedFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPupilOrganizationAcceptedsQuery = {
+  listPupilOrganizationAccepteds?:  {
+    __typename: "ModelPupilOrganizationAcceptedConnection",
+    items:  Array< {
+      __typename: "PupilOrganizationAccepted",
+      id: string,
+      pupilID: string,
+      organizationID: string,
       createdAt: string,
       updatedAt: string,
     } >,
@@ -4814,6 +5278,14 @@ export type GetOrganizationQuery = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -4857,6 +5329,14 @@ export type GetPupilQuery = {
     } | null,
     classrooms?:  {
       __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
       nextToken?: string | null,
     } | null,
     schoolID?: string | null,
@@ -5637,6 +6117,180 @@ export type OnDeletePupilClassroomSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnCreatePupilOrganizationRequestSubscription = {
+  onCreatePupilOrganizationRequest?:  {
+    __typename: "PupilOrganizationRequest",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnUpdatePupilOrganizationRequestSubscription = {
+  onUpdatePupilOrganizationRequest?:  {
+    __typename: "PupilOrganizationRequest",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnDeletePupilOrganizationRequestSubscription = {
+  onDeletePupilOrganizationRequest?:  {
+    __typename: "PupilOrganizationRequest",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnCreatePupilOrganizationAcceptedSubscription = {
+  onCreatePupilOrganizationAccepted?:  {
+    __typename: "PupilOrganizationAccepted",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnUpdatePupilOrganizationAcceptedSubscription = {
+  onUpdatePupilOrganizationAccepted?:  {
+    __typename: "PupilOrganizationAccepted",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnDeletePupilOrganizationAcceptedSubscription = {
+  onDeletePupilOrganizationAccepted?:  {
+    __typename: "PupilOrganizationAccepted",
+    id: string,
+    pupilID: string,
+    organizationID: string,
+    createdAt: string,
+    updatedAt: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     pupil:  {
       __typename: "Pupil",
       id: string,
@@ -6859,6 +7513,14 @@ export type OnCreateOrganizationSubscription = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -6874,6 +7536,14 @@ export type OnUpdateOrganizationSubscription = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -6887,6 +7557,14 @@ export type OnDeleteOrganizationSubscription = {
     name?: string | null,
     Principals?:  {
       __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -6907,6 +7585,14 @@ export type OnCreatePupilSubscription = {
     } | null,
     classrooms?:  {
       __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
       nextToken?: string | null,
     } | null,
     schoolID?: string | null,
@@ -6955,6 +7641,14 @@ export type OnUpdatePupilSubscription = {
       __typename: "ModelPupilClassroomConnection",
       nextToken?: string | null,
     } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
     schoolID?: string | null,
     schoolHouseID?: string | null,
     schoolHouse?:  {
@@ -6999,6 +7693,14 @@ export type OnDeletePupilSubscription = {
     } | null,
     classrooms?:  {
       __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
       nextToken?: string | null,
     } | null,
     schoolID?: string | null,

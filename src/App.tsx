@@ -19,6 +19,7 @@ import {SnackbarProvider} from "notistack";
 import {createUser} from "./models/createUser";
 import {styled} from "@material-ui/core/styles";
 import Router, {PreLoginRouter} from "./routes";
+import {Authenticator} from "@aws-amplify/ui-react";
 
 Amplify.configure(config)
 Amplify.register(Auth);

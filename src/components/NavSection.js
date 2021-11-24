@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Icon} from '@iconify/react';
 import {NavLink as RouterLink, matchPath, useLocation} from 'react-router-dom';
@@ -8,6 +8,11 @@ import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import {alpha, useTheme, styled} from '@material-ui/core/styles';
 import {Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton} from '@material-ui/core';
 import {Can} from '../utils/Ability';
+import {API, graphqlOperation} from "aws-amplify";
+import {UserContext} from "../App";
+import humanMaleChild from '@iconify/icons-mdi/human-male-child';
+import {Parent} from "../models/Parent";
+
 // ----------------------------------------------------------------------
 
 const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props} />)(
@@ -153,9 +158,71 @@ NavSection.propTypes = {
     navConfig: PropTypes.array
 };
 
+
+const query = `query MyQuery($id: ID = "") {
+  getParent(id: $id) {
+    children {
+      items {
+        Pupil {
+          firstName
+          id
+          lastName
+          parents {
+            items {
+              Parent {
+                firstName
+                id
+                lastName
+              }
+            }
+          }
+          school {
+            name
+          }
+          schoolHouse {
+            name
+          }
+          classrooms {
+            items {
+              classroom {
+                name
+                yearGroup {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
 export default function NavSection({navConfig, ...other}) {
     const {pathname} = useLocation();
+    const user = useContext(UserContext);
+    const [additionalLinks, setAdditionalLinks] = useState(null);
+    console.log(pathname)
     const match = (path) => (path ? !!matchPath({path, end: false}, pathname) : false);
+    useEffect(() => {
+        const getPupils = async () => {
+            const result = await API.graphql(graphqlOperation(query, {id: user.email}));
+            const links = result.data.getParent.children.items.map(item => item.Pupil).map(pupil => {
+                return {
+                    title: `${pupil.firstName} ${pupil.lastName}`,
+                    path: `pupils/${pupil.id}`,
+                    icon: <Icon icon={humanMaleChild} width={22} height={22}/>
+                }
+            });
+            setAdditionalLinks(links);
+        }
+        if(user instanceof Parent){
+            getPupils();
+        }
+        return () => {
+
+        };
+    }, []);
 
     return (
         <Box {...other}>
@@ -165,6 +232,12 @@ export default function NavSection({navConfig, ...other}) {
                         <NavItem key={item.title} item={item} active={match}/>
                     </Can>
                 ))}
+                {additionalLinks &&
+                additionalLinks.map(item => (
+                    <NavItem key={item.title} item={item} active={match}/>
+                ))
+                }
+
             </List>
         </Box>
     );

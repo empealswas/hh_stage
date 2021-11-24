@@ -37,6 +37,8 @@ import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
 import Organizations from "./pages/Organizations";
 import {Navigate, useRoutes} from 'react-router-dom';
 import {Outlet} from 'react-router-dom';
+import ChildOverview from "./components/parent/ChildOverview";
+import ChildOverviewMenu from "./components/parent/ChildOverviewMenu";
 
 export function PreLoginRouter(){
     return useRoutes([
@@ -59,17 +61,18 @@ export function PreLoginRouter(){
 
 export default function Router() {
     return useRoutes([
+            {},
         {
             path: '/dashboard',
             element: <DashboardLayout/>,
             children: [
                 {element: <Navigate to="/dashboard/app" replace/>},
                 {path: 'schools', element: <SchoolOutlet/>, children: [
-                        {element: <Schools/>},
+                        {path: '/dashboard/schools', element: <Schools/>},
                         {path: ':id', element: <SchoolOutlet/>, children: [
                                 {
                                     path: 'manage', element: <Outlet/>, children: [
-                                        {element: <SchoolManagement/>},
+                                        {path: '/dashboard/schools/:id/manage', element: <SchoolManagement/>},
                                         {
                                             path: 'parent', element: <Outlet/>, children: [
                                                 {path: ':parentId', element: <ParentOverview/>}
@@ -80,7 +83,7 @@ export default function Router() {
 
                                 {
                                     path: 'classrooms', element: <Outlet/>, children: [
-                                        {element: <ClassroomOverview/>},
+                                        {path: '/dashboard/schools/:id/classrooms', element: <ClassroomOverview/>},
                                         {path: ':classroomId', element: <ClassroomPageNew/>}
                                     ]
                                 }
@@ -90,16 +93,11 @@ export default function Router() {
                 },
                 {
                     path: 'reports', element: <Outlet/>, children: [
-                        {element: <ReportPage/>},
+                        {path: '/dashboard/reports', element: <ReportPage/>},
                     ]
                 },
                 {path: 'parent', element: <ParentSection/>},
-                {path: 'section', element: <SectionOverview/>,
-                    children: [{
-                        path: ':sectionId', element: <SectionOverview/>
-                    },
-                    ]
-                },
+
                 {
                     path: 'lessons', element: <LessonOutlet/>, children: [
                         {path: ':lessonId', element: <LessonOverview/>}
@@ -107,9 +105,15 @@ export default function Router() {
                 },
                 {
                     path: 'curricula', element: <Lessons/>, children: [
-                        {element: <CurriculaComponents/>},
+                        {path: '/dashboard/curricula', element: <CurriculaComponents/>},
                         {path: 'pe', element: <PEForm/>},
                         {path: ':id', element: <CurriculumOverview/>},
+                        {path: 'section', element: <SectionOverview/>,
+                            children: [{
+                                path: ':sectionId', element: <SectionOverview/>
+                            },
+                            ]
+                        },
                         {
                             path: 'subjects', element: <SubjectOutlet/>, children: [
                                 {path: ':id', element: <TermElements/>},
@@ -131,12 +135,12 @@ export default function Router() {
                 },
                 {
                     path: 'pupils', element: <Outlet/>, children: [
-                        {path: ':pupilId', element: <PupilOverview/>}
+                        {path: ':pupilId', element: <ChildOverviewMenu/>}
                     ]
                 },
                 {
                     path: 'houses', element: <Outlet/>, children: [
-                        {element: <SchoolHousesPage/>},
+                        {path: '/dashboard/houses/', element: <SchoolHousesPage/>},
                     ]
                 },
 
@@ -150,8 +154,12 @@ export default function Router() {
                 {path: 'blog', element: <Blog/>},
             ]
         },
-        {path: '*', element: <Navigate to="/dashboard/app" replace/>}
-        ,
+            {
+                path: '/',
+                element: <LogoOnlyLayout />,
+            },
+
+            {path: '*', element: <Navigate to="/dashboard/app" replace/>}
     ]
 
 

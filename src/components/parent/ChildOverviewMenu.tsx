@@ -1,18 +1,71 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card, CardMedia, Container} from "@material-ui/core";
 import {Avatar, Button, CardActions, IconButton, Stack, Typography} from "@mui/material";
 import ChildTabs from "./tabs";
 import {Classroom, Pupil} from "../../API";
 import WatchIcon from '@mui/icons-material/Watch';
+import {useParams} from "react-router-dom";
+import {API, graphqlOperation} from "aws-amplify";
+import LinearProgressBottom from "../../utils/LinearProgressBottom";
+import OrganizationsSearch from "./OrganizationsSearch";
 
+const query = `query MyQuery($id: ID = "") {
+  getPupil(id: $id) {
+    firstName
+          id
+          lastName
+          parents {
+            items {
+              Parent {
+                firstName
+                id
+                lastName
+              }
+            }
+          }
+          school {
+            name
+          }
+          schoolHouse {
+            name
+          }
+          classrooms {
+            items {
+              classroom {
+                name
+                yearGroup {
+                  name
+                }
+              }
+            }
+          }
+  }
+}
 
-const ChildOverview = (props: {pupil: Pupil}) => {
+`
+const ChildOverviewMenu = () => {
+    const {pupilId} = useParams();
+    const [pupil, setPupil] = useState<Pupil | null>(null);
     const [numberOfAvatar, setNumberOfAvatar] = useState(0);
     const [numberOfCover, setNumberOfCover] = useState(1);
-    const {pupil} = {...props};
+    useEffect(() => {
+        const getPupil = async () =>{
+            const result: any = await API.graphql(graphqlOperation(query, {id: pupilId}));
+            setPupil(result.data.getPupil);
+        }
+        getPupil();
+        return () => {
+
+        };
+    }, [pupilId]);
 
 
     console.log(pupil);
+    if (!pupil) {
+        return (
+            <LinearProgressBottom/>
+        );
+    }
     return (
         <Card>
             <CardMedia
@@ -52,6 +105,7 @@ const ChildOverview = (props: {pupil: Pupil}) => {
                         }}>
                             Connect To Garmin
                         </Button>
+                        <OrganizationsSearch/>
                         <Button variant={'outlined'} color={'secondary'} onClick={() => {
                             setNumberOfAvatar(prevState => prevState + 1)
                         }}>Change Avatar</Button>
@@ -74,4 +128,4 @@ const ChildOverview = (props: {pupil: Pupil}) => {
     );
 };
 
-export default ChildOverview;
+export default ChildOverviewMenu;
