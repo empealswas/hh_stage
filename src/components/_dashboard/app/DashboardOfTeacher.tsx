@@ -1,33 +1,23 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {API, graphqlOperation} from "aws-amplify";
-import {UserContext} from "../../../App";
-import {Classroom, Lesson, Pupil, Term} from '../../../API';
+import React, { useContext, useEffect, useState } from 'react';
+import { API, graphqlOperation } from "aws-amplify";
+import { UserContext } from "../../../App";
+import { Classroom, Lesson, Pupil, Term } from '../../../API';
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import {Stack} from "@material-ui/core";
-import {GarminQueryData} from '../../../models/garminDataModels/garminQueryData';
+import { Stack } from "@material-ui/core";
 
-
-import {listPupils} from '../../../graphql/queries';
-
-
-import RadioButtonSelector from '../../_garmin-selectors/radio-button-selector';
-import GarminMetricSelector from '../../_garmin-selectors/garin-metric-selector';
+import { GarminQueryData } from '../../../models/garminDataModels/garminQueryData';
 import DailiesOverview from './garmin-metrics/dailies-data/DailiesOverview';
-import GroupBySelector from '../../_garmin-selectors/group-by-selector';
-import {Box, Button, CardHeader} from "@mui/material";
-
-import {healthyHabitsIdModel} from '../../../models/healthyHabitIdsModel';
+import { Box, Button, CardHeader } from "@mui/material";
+import { healthyHabitsIdModel } from '../../../models/healthyHabitIdsModel';
 import SleepOverview from './garmin-metrics/sleep-data/SleepOverview';
 import SedentaryOverview from './garmin-metrics/sedentary-data/SedentaryOverview';
 import TabCard from "../../reports/charts/GarminWearablesCharts/TabCard";
 import ActivityOverview from './garmin-metrics/activity-data/ActivityOverview';
 import TotalAverageSwitch from '../../_garmin-selectors/total-average-switch';
-import {useSelector} from "react-redux";
-import {useTheme} from "@mui/material/styles";
-
+import { useSelector } from "react-redux";
+import { useTheme } from "@mui/material/styles";
 
 const teacherQuery = `query MyQuery($id: ID = "") {
     getTeacher(id: $id) {
@@ -36,7 +26,11 @@ const teacherQuery = `query MyQuery($id: ID = "") {
           classroom {
             pupils {
               items {
-                pupilID
+                pupil {
+                  lastName
+                  id
+                  firstName
+                }
               }
             }
           }
@@ -149,28 +143,21 @@ const DashboardOfTeacher = () => {
             // setHealthyHabitsIds(hhUsers);
             // setHHidsAndUsernames(usernames);
             // console.log(usernames.length);
-            // console.warn(usernames);
+            // console.warn(usernames); 
             ////////////////////////////////////
+            const result: any = await API.graphql(graphqlOperation(teacherQuery, { id: user?.email }));
+            result.data.getTeacher?.classrooms.items
+                .map((item: any) => item.classroom)
+                .flatMap((item: Classroom) => item.pupils?.items).forEach((pupil: any) => {
 
-                const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
-                result.data.getTeacher?.classrooms.items
-                    .map((item: any) => item.classroom)
-                    .flatMap((item: Classroom) => item.pupils?.items).forEach((pupil: any) => {
-                        // console.log(pupil);
-                    users.push(pupil.pupilID);
-                    var name = pupil.firstName+ " "+ pupil.lastName;
-                    usernames.push({'id':pupil.pupilID, 'name': name});
-                    hhUsers.id.push(pupil.pupilID);
+                    users.push(pupil.pupil.id);
+                    var name = pupil.pupil.firstName + " " + pupil.pupil.lastName;
+                    usernames.push({ 'id': pupil.pupil.id, 'name': name });
+                    hhUsers.id.push(pupil.pupil.id);
                 });
-                // for(var i=0; i<5; i++) {
-                //     hhUsers[i]['name'] = 'bob';
-                // }
-                // console.log(hhUsers);
-                setHealthyHabitsIds(hhUsers);
-                setHHidsAndUsernames(usernames);
-                // console.log(usernames.length);
-                // console.warn(usernames);
-                // console.log(hhUsers);
+
+            setHealthyHabitsIds(hhUsers);
+            setHHidsAndUsernames(usernames);
             //////////////////////////////////////
         }
         getAllUsers();
@@ -188,75 +175,64 @@ const DashboardOfTeacher = () => {
         return (
             <>
                 {customization.showSteps &&
-                <Grid item>
-                    <Card sx={{backgroundColor: theme.palette.secondary.light}}>
-
-                        <CardHeader title={'Steps'}/>
-                        <CardContent>
-                            <DailiesOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
-                                             endDate={endDateState}
-                                             timePeriod={customization.period} grouping={groupByState}/>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                    <Grid item>
+                        <Card sx={{ backgroundColor: theme.palette.secondary.light }}>
+                            <CardHeader title={'Steps'} />
+                            <CardContent>
+                                <DailiesOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState}
+                                    startDate={startDateState} endDate={endDateState}
+                                    timePeriod={customization.period} grouping={groupByState} />
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 }
                 {customization.showSleep &&
-                <Grid item>
-                    <Card sx={{backgroundColor: theme.palette.primary.light}}>
-
-
-                    <CardHeader title={'Sleep'}/>
-                    <CardContent>
-                        <SleepOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
-                                       endDate={endDateState}
-                                       timePeriod={customization.period} grouping={groupByState}/>
-                    </CardContent>
-                </Card>
-                </Grid>
-
+                    <Grid item>
+                        <Card sx={{ backgroundColor: theme.palette.primary.light }}>
+                            <CardHeader title={'Sleep'} />
+                            <CardContent>
+                                <SleepOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState}
+                                    startDate={startDateState} endDate={endDateState}
+                                    timePeriod={customization.period} grouping={groupByState} />
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 }
                 {customization.showSedentary &&
-                <Grid item>
-
-                    <Card sx={{backgroundColor: theme.palette.warning.light}}>
-
-                    <CardHeader title={'Sedentary'}/>
-                    <CardContent>
-
-                        <SedentaryOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
-                                           endDate={endDateState} timePeriod={customization.period} grouping={groupByState}/>
-                    </CardContent>
-                </Card>
-                </Grid>
-
+                    <Grid item>
+                        <Card sx={{ backgroundColor: theme.palette.warning.light }}>
+                            <CardHeader title={'Sedentary'} />
+                            <CardContent>
+                                <SedentaryOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState}
+                                    startDate={startDateState} endDate={endDateState}
+                                    timePeriod={customization.period} grouping={groupByState} />
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 }
                 {customization.showActivity &&
-                <Grid item>
-
-                    <Card sx={{backgroundColor: theme.palette.success.light}}>
-                    <CardHeader title={'Activity'}/>
-                    <CardContent>
-                        <ActivityOverview idList={listOfHealthyHabitsIdsState} startDate={startDateState}
-                                          endDate={endDateState}
-                                          timePeriod={customization.period} grouping={groupByState}/>
-
-                    </CardContent>
-                </Card>
-                </Grid>
-
+                    <Grid item>
+                        <Card sx={{ backgroundColor: theme.palette.success.light }}>
+                            <CardHeader title={'Activity'} />
+                            <CardContent>
+                                <ActivityOverview idList={listOfHealthyHabitsIdsState} usernames={listOfHHidsAndUserNamesState}
+                                    startDate={startDateState} endDate={endDateState}
+                                    timePeriod={customization.period} grouping={groupByState} />
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 }
             </>
-
         );
     }
 
     return (
         <Stack direction={'column'}>
             <Grid container
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="flex-start" spacing={4}>
-                <Metrics/>
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start" spacing={4}>
+                <Metrics />
             </Grid>
         </Stack>
     );

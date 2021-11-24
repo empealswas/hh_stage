@@ -70,7 +70,7 @@ export default function DailiesOverview(props: any) {
                         if (result != null) {
                             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
                             // console.log(garminData);
-                            // replaceHealthyHabitIdsWithUsername(garminData);
+                            replaceHealthyHabitIdsWithUsername(garminData);
                             setDailiesUser(garminData);
                         }
                     })

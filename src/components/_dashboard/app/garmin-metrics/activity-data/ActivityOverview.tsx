@@ -57,7 +57,7 @@ export default function ActivityOverview(props: any) {
                     .then(result => {
                         if (result != null) {
                             var garminData: GarminEpochsSummaryDataModel[] = JSON.parse(result);
-                            // replaceHealthyHabitIdsWithUsername(garminData);
+                            replaceHealthyHabitIdsWithUsername(garminData);
                             console.warn(garminData);
                             setActivityUser(garminData);
                         }
