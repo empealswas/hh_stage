@@ -64,7 +64,10 @@ export default function DailiesOverview(props: any) {
                         if (result != null) {
                             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
                             // console.log(garminData);
-                            replaceHealthyHabitIdsWithUsername(garminData);
+                            if(garminData){
+                                replaceHealthyHabitIdsWithUsername(garminData);
+                            }
+                            
                             setDailiesUser(garminData);
                         }
                     })
@@ -226,9 +229,7 @@ export default function DailiesOverview(props: any) {
         const prepStanineHeatmapData = async () => {
             if (dailiesStanineGroup.length > 0) {
                 setStanineValue(dailiesStanineGroup[0].totalSteps);
-            } else {
-                console.log("dailies Stanine Group: no data");
-            }
+            };
         }
         prepStanineHeatmapData();
     }, [dailiesStanineGroup]);
@@ -241,9 +242,7 @@ export default function DailiesOverview(props: any) {
             if(dailiesDataGroup.length>0){
                 var x = parseFloat((dailiesDataGroup[0].totalSteps/ 5000 * 100).toPrecision(2));
                 setRadialValue(x);
-            } else {
-                console.log("dailies Radial Trace: no data");
-            }
+            };
         }
         prepTargetRadialData();
     }, [dailiesDataGroup]);

@@ -80,6 +80,39 @@ const query = `query MyQuery {
   }
 }`
 
+// const pupilLessonAttendanceQuery=`query MyQuery {
+//   listAttendances {
+//     items {
+//       createdAt
+//       lessonID
+//     }
+//   }`
+//(filter: {and: {or: [{pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}], lessonID: {eq: "99063afd-9d58-4a9e-88f9-0510a3c6ab38"}}})
+
+//(filter: {or: [{pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}]})
+//   listAttendances(filter: {pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, limit:1000) {
+const pupilLessonAttendanceQuery =`query MyQuery {
+  listAttendances(filter: {and: {
+    or: [{lessonID: {eq: "dd89fb19-4cde-445a-8c4c-fe5d294a53f0"}}, {lessonID: {eq: "99063afd-9d58-4a9e-88f9-0510a3c6ab38"}}], 
+    or: [{pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}]}}, 
+    limit:100000) {
+    items {
+      id
+      createdAt
+      lessonID
+      pupilID
+      Pupil {
+        firstName
+        id
+        lastName
+      }
+      Lesson {
+        title
+      }
+    }
+  }
+}
+`
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
 const TotalDailyMiles = ({ isLoading }) => {
@@ -158,26 +191,39 @@ const TotalDailyMiles = ({ isLoading }) => {
     createTrace();
   }, [filteredDataState]);
 
+  useEffect(() => {
+
+    const getMiles = async()=>{
+      const result2 = await API.graphql(graphqlOperation(pupilLessonAttendanceQuery));
+      console.log("!!!!!!!!!!");
+      console.log(result2);
+      console.log("!!!!!!!!!!");
+    }
+    getMiles();
+  }, []);
 
   useEffect(() => {
     // get data to populate KPI box
     const getCount = async () => {
       const users = [];
       const result = await API.graphql(graphqlOperation(query));
+
       if (dateRangeState) {
         let filteredData = result.data.listPELessonRecords.items.filter(
           x => dateRangeState.includes(x.date)
         );
+        
         setFilteredDataState(filteredData);
 
         filteredData.forEach((item: any) => {
           users.push({ 'id': item.id });
         });
-
+// to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
         if (dailyMileTotAveswitchState === 'total') {
           setDailyMileCount(filteredData.length);
         } else {
           const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+
           setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
         }
         // result.data.listPELessonRecords.items.forEach((item: any) => {
@@ -243,7 +289,7 @@ const TotalDailyMiles = ({ isLoading }) => {
                           sx={{ color: 'inherit' }}
                           onClick={(e) => handleChangeTime(e, false)}
                         >
-                          Year
+                          Week
                         </Button>
                       </>
                     </Stack>
