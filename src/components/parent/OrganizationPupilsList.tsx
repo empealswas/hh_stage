@@ -132,7 +132,7 @@ export default function OrganizationPupilsList() {
 
         }
         if (status === 'accepted') {
-            return <Chip label={'Accepted'} color={'success'}/>
+            return <Chip label={'Accepted'} color={'secondary'}/>
         }
         return (<LoadingButton loading={loading} onClick={sendRequest} variant={'contained'} color={'primary'}>
             Accept

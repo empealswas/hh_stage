@@ -54,6 +54,31 @@ const SendButton = (params: { id: string }) => {
     )
 }
 export default function OrganizationsTable() {
+    const StatusActions = (params: any) => {
+        const status: string = params.getValue(params.id, 'confirmed') as string;
+        const [loading, setLoading] = useState(false);
+        const {id, value, api, field} = params;
+
+        if (status === 'CONFIRMED') {
+            return <Chip label={status} color={'primary'}/>;
+        }
+        return (<Stack spacing={1} direction={'row'}>
+            <Chip label={status} color={'warning'}/>
+            <Tooltip title={'Confirm Organization'}>
+                <LoadingButton loading={loading} variant={'contained'}  startIcon={<CheckIcon/>} onClick={() => {
+                    setLoading(true);
+                    confirmOrganization({email: params.getValue(params.id, 'username') as string}).then(result => {
+                        setLoading(false);
+                        params.api.setEditCellValue({id,field, value: 'CONFIRMED'});
+                        api.commitCellChange({id, field});
+                        api.setCellMode(id, field, 'view');
+                    })
+                }} color={'secondary'}>
+                    Confirm
+                </LoadingButton>
+            </Tooltip>
+        </Stack>);
+    }
     const columns: GridColDef[] = [
         {field: 'id', headerName: 'Email', flex: 1},
         {
@@ -73,30 +98,13 @@ export default function OrganizationsTable() {
             headerName: 'Status',
             flex: 1,
             editable: false,
-            renderCell: params => {
-                const status: string = params.getValue(params.id, 'confirmed') as string;
-                if (status === 'CONFIRMED') {
-                    return <Chip label={status} color={'primary'}/>;
-                }
-                return (<Stack spacing={1} direction={'row'}>
-                    <Chip label={status} color={'warning'}/>
-                    <Tooltip title={'Confirm Organization'}>
-                        <IconButton onClick={()=>{
-                            confirmOrganization({email: params.getValue(params.id, 'username') as string}).then(result =>{
-                                getOrganizations();
-                            })
-                        }} color={'primary'}>
-                            <CheckIcon/>
-                        </IconButton>
-                    </Tooltip>
-                </Stack>);
-
-            }
+            renderCell: StatusActions
 
         },
 
 
     ];
+
 
     const getOrganizations = async () => {
         setOrganizations(null);
