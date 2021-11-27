@@ -79,45 +79,14 @@ const query = `query MyQuery {
     }
   }
 }`
-
-// const pupilLessonAttendanceQuery=`query MyQuery {
-//   listAttendances {
-//     items {
-//       createdAt
-//       lessonID
-//     }
-//   }`
-//(filter: {and: {or: [{pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}], lessonID: {eq: "99063afd-9d58-4a9e-88f9-0510a3c6ab38"}}})
-
-//(filter: {or: [{pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}]})
-//   listAttendances(filter: {pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, limit:1000) {
-const pupilLessonAttendanceQuery =`query MyQuery {
-  listAttendances(filter: {and: {
-    or: [{lessonID: {eq: "dd89fb19-4cde-445a-8c4c-fe5d294a53f0"}}, {lessonID: {eq: "99063afd-9d58-4a9e-88f9-0510a3c6ab38"}}], 
-    or: [{pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}]}}, 
-    limit:100000) {
-    items {
-      id
-      createdAt
-      lessonID
-      pupilID
-      Pupil {
-        firstName
-        id
-        lastName
-      }
-      Lesson {
-        title
-      }
-    }
-  }
-}
-`
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
 const TotalDailyMiles = ({ isLoading }) => {
-  const theme = useTheme();
 
+  const theme = useTheme();
+  const [lessonIdsState, setLessonIdsState] = useState([]);
+  const [pupilIdsState, setPupilIdsState] = useState([]);
+  const [getDailyMileAttendanceQuery, setGetDailyMileAttendanceQuery] = useState();
   const [timeValue, setTimeValue] = useState(false);
   const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
   const [dailyMileCount, setDailyMileCount] = useState(null);
@@ -132,21 +101,24 @@ const TotalDailyMiles = ({ isLoading }) => {
   };
 
   function convertDateToString(date) {
+    // create a string from the date format = "yyyy-mm-dd"
     return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0');
   }
 
-  function createSparkLineTrace(data){
-
+  function createSparkLineTrace(data) {
+    // counts the number of Daily miles recorded
+    // each day in the selected date range
+    // loop through the date range, then loop through each day
     let sparklineData = [];
-    if(dateRangeState?.length>0){
+    if (dateRangeState?.length > 0) {
       dateRangeState.forEach(day => {
-        let mileCount =0;
+        let mileCount = 0;
         data.forEach(item => {
-          if(item.date === day){
+          if (splitDate(item.createdAt) === day) {
             mileCount++;
           }
         })
-        sparklineData.push( mileCount);
+        sparklineData.push(mileCount);
       })
     }
     return sparklineData;
@@ -155,7 +127,7 @@ const TotalDailyMiles = ({ isLoading }) => {
 
   useEffect(() => {
     // detect change in Week/ month & create an array of dates as appropriate
-    // for week- date for prev 7 daya
+    // for week- date for prev 7 days
     // for month - dates from start of current month
     const getdates = async () => {
       let endDate = new Date();
@@ -163,11 +135,9 @@ const TotalDailyMiles = ({ isLoading }) => {
       let dateRange = [];
 
       if (timeValue) {
-        // if month
-        startDate.setDate(1);
+        startDate.setDate(1); // if month
       } else {
-        // if week
-        startDate.setDate(startDate.getDate() - 6)
+        startDate.setDate(startDate.getDate() - 6); // if week
       }
 
       while (startDate < endDate) {
@@ -183,9 +153,12 @@ const TotalDailyMiles = ({ isLoading }) => {
     getdates();
   }, [timeValue]);
 
+  
   useEffect(() => {
     //create a trace for sparkline
-    const createTrace = async() => {
+    console.log("preparing the sparkdata");
+    console.log(filteredDataState);
+    const createTrace = async () => {
       setSparkLineDataState(createSparkLineTrace(filteredDataState));
     }
     createTrace();
@@ -193,14 +166,116 @@ const TotalDailyMiles = ({ isLoading }) => {
 
   useEffect(() => {
 
-    const getMiles = async()=>{
-      const result2 = await API.graphql(graphqlOperation(pupilLessonAttendanceQuery));
-      console.log("!!!!!!!!!!");
-      console.log(result2);
-      console.log("!!!!!!!!!!");
+    const getDailyMleLessonIds = async() => {
+      let getLessons = `query MyQuery {
+        listLessons(filter: {sectionID: {eq: "36a01b32-923e-4ba6-bd51-3bdcc538944e"}}) {
+          items {id title}
+        }}`;
+        const lessonIds = [];
+        let lessonIdsString= '[';
+        const results = await API.graphql(graphqlOperation(getLessons));
+        console.log("getting lesson ids results");
+        console.log(results.data.listLessons);
+        let data = results.data.listLessons.items;
+        console.log(data);
+        if(results.data?.listLessons){
+          data.forEach((item: any) => {
+            lessonIdsString = lessonIdsString+ '{lessonID: {eq: "' + item.id + '"}},';
+          // lessonIds.push({lessonID: {eq: item.id }});
+        });
+        //{pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}
+        lessonIdsString = lessonIdsString.slice(0,-1)+']';
+        console.log("getting lesson ids results");
+        console.log(lessonIdsString);
+        setLessonIdsState(lessonIdsString);
+      }
     }
-    getMiles();
+    getDailyMleLessonIds();
   }, []);
+  
+  useEffect(() => {
+    // functio to populate the LessonIdState and pupilIdState with the required 
+    // pupil and lesson ids
+    const setLessonAndUserIds = async () => {
+      // console.log("setting ids");
+      const pupilIds = '[{pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}]';
+      const lessonIds = '[{lessonID: {eq: "dd89fb19-4cde-445a-8c4c-fe5d294a53f0"}}, {lessonID: {eq: "99063afd-9d58-4a9e-88f9-0510a3c6ab38"}}, {lessonID: {eq: "21d0946d-c5bb-4ad1-b50a-a93f6efe6d5b"}}, {lessonID: {eq: "dbd59a2e-507a-478a-9f88-7fc26d79233c"}}]';
+      // setLessonIdsState(lessonIds);
+      setPupilIdsState(pupilIds);
+    }
+    setLessonAndUserIds();
+  }, []);
+
+
+  useEffect(() => {
+    // take the input set of lesson and pupils ids and populate the query
+    // then update the state for that query
+    const pupilLessonAttendanceQuery = async () => {
+      // console.log("doing query");
+      if (lessonIdsState.length > 0 && pupilIdsState.length > 0)  {
+        console.log("building query");
+        console.log(lessonIdsState);
+        let newQuery = `query MyQuery {
+        listAttendances(filter:{ or: ${lessonIdsState} and: {  or: ${pupilIdsState}}}, 
+        limit:1000000) {
+        items {
+          id createdAt lessonID pupilID
+          Pupil {firstName id lastName }
+          Lesson { title }
+        }}}`;
+        setGetDailyMileAttendanceQuery(newQuery);
+      }
+    }
+    pupilLessonAttendanceQuery();
+  }, [lessonIdsState, pupilIdsState]);
+
+
+  function splitDate(dateTime) {
+    const date=dateTime.split("T");
+    return date[0];
+  }
+
+  useEffect(() => {
+    // execute query to get daily mile data for the 
+    // releveant lesson and user ids
+    const createRunQuery = async () => {
+      const users = [];
+
+      if(getDailyMileAttendanceQuery){
+        const result2 = await API.graphql(graphqlOperation(getDailyMileAttendanceQuery));
+        let data = result2.data?.listAttendances.items;
+        data.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+
+        // for(let i=0; i<data.length; i++) {
+        //   data[i].createdAt = splitDate(data[i].createdAt);
+        // }
+
+        // now fiter by date
+        if (dateRangeState) {
+          let filteredData = data.filter(
+            x => dateRangeState.includes(splitDate(x.createdAt))
+          );
+
+          // console.log(filteredData);
+          setFilteredDataState(filteredData);
+
+          filteredData.forEach((item: any) => {
+            users.push({ 'id': item.pupilID });
+          });
+          // to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
+          if (dailyMileTotAveswitchState === 'total') {
+            setDailyMileCount(filteredData.length);
+          } else {
+            const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+  
+            setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
+          }
+        }
+      }
+    }
+    createRunQuery();
+  }, [getDailyMileAttendanceQuery, dailyMileTotAveswitchState, dateRangeState]);
+
 
   useEffect(() => {
     // get data to populate KPI box
@@ -209,34 +284,24 @@ const TotalDailyMiles = ({ isLoading }) => {
       const result = await API.graphql(graphqlOperation(query));
 
       if (dateRangeState) {
-        let filteredData = result.data.listPELessonRecords.items.filter(
-          x => dateRangeState.includes(x.date)
-        );
-        
-        setFilteredDataState(filteredData);
+        // let filteredData = result.data.listPELessonRecords.items.filter(
+        //   x => dateRangeState.includes(x.date)
+        // );
 
-        filteredData.forEach((item: any) => {
-          users.push({ 'id': item.id });
-        });
-// to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
-        if (dailyMileTotAveswitchState === 'total') {
-          setDailyMileCount(filteredData.length);
-        } else {
-          const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+        // setFilteredDataState(filteredData);
 
-          setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
-        }
-        // result.data.listPELessonRecords.items.forEach((item: any) => {
+        // filteredData.forEach((item: any) => {
         //   users.push({ 'id': item.id });
         // });
-
+        // // to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
         // if (dailyMileTotAveswitchState === 'total') {
-        //   setDailyMileCount(result.data.listPELessonRecords.items.length);
+        //   setDailyMileCount(filteredData.length);
         // } else {
         //   const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-        //   setDailyMileCount(parseFloat((result.data.listPELessonRecords.items.length / uniqueIds.length).toPrecision(2)));
 
+        //   setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
         // }
+
       }
     }
     getCount()
@@ -354,8 +419,8 @@ const TotalDailyMiles = ({ isLoading }) => {
 
                     <>
                       <Grid item xs={12}>
-                        
-                        {sparkLineDataState ? <DailyMileChart trace={sparkLineDataState}/>:
+
+                        {sparkLineDataState ? <DailyMileChart trace={sparkLineDataState} /> :
                           <Chart {...ChartDataYear} />}
                       </Grid>
 
