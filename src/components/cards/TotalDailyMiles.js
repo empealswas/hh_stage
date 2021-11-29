@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -83,8 +83,10 @@ const query = `query MyQuery {
 
 // const TotalDailyMiles = ({ isLoading }) => {
   const TotalDailyMiles = (props) => {
-
+    console.log("in kpi");
     console.log(props.user._email);
+    console.log(props.user.getRole());
+    let userRole="Pupil";//props.user.getRole();
   const theme = useTheme();
   const [lessonIdsState, setLessonIdsState] = useState([]);
   const [pupilIdsState, setPupilIdsState] = useState(undefined);
@@ -104,11 +106,17 @@ const query = `query MyQuery {
     setTimeValue(newValue);
   };
 
+  //////////////////////////////////
+  // convert date to a string //////
+  //////////////////////////////////
   function convertDateToString(date) {
     // create a string from the date format = "yyyy-mm-dd"
     return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" + String(date.getDate()).padStart(2, '0');
   }
 
+  //////////////////////////////////
+  ///// prepare sparkline plot /////
+  //////////////////////////////////
   function createSparkLineTrace(data) {
     // counts the number of Daily miles recorded
     // each day in the selected date range
@@ -128,7 +136,9 @@ const query = `query MyQuery {
     return sparklineData;
   }
 
-
+  //////////////////////////////////
+  // detect change in week/ month //
+  //////////////////////////////////
   useEffect(() => {
     // detect change in Week/ month & create an array of dates as appropriate
     // for week- date for prev 7 days
@@ -157,7 +167,9 @@ const query = `query MyQuery {
     getdates();
   }, [timeValue]);
 
-
+  //////////////////////////////////
+  //// create sparkline display ////
+  //////////////////////////////////
   useEffect(() => {
     //create a trace for sparkline
     const createTrace = async () => {
@@ -166,8 +178,10 @@ const query = `query MyQuery {
     createTrace();
   }, [filteredDataState]);
 
+  //////////////////////////////////
+  //  get daily mile lesson ids   //
+  //////////////////////////////////
   useEffect(() => {
-
     const getDailyMleLessonIds = async () => {
       let getLessons = `query MyQuery {
         listLessons(filter: {sectionID: {eq: "36a01b32-923e-4ba6-bd51-3bdcc538944e"}}) {
@@ -188,10 +202,41 @@ const query = `query MyQuery {
     getDailyMleLessonIds();
   }, []);
 
+  //////////////////////////////////
+  //// create sparkline display ////
+  //////////////////////////////////
   useEffect(() => {
     // functio to populate the LessonIdState and pupilIdState with the required 
     // pupil and lesson ids
-      let getPupils = `query MyQuery { getTeacher(id: "${props.user._email}") {classrooms {items { classroom {pupils { items {pupil {id firstName lastName}}}}}}}}`
+    let getPupils;
+    if(userRole==="Teacher"){
+      getPupils = `query MyQuery { getTeacher(id: "${props.user._email}") 
+      {classrooms {items 
+        { classroom {pupils { items {
+          pupil {id firstName lastName}
+        }}}}}}}`
+    } else if(userRole==="Principal"){
+      getPupils=`query MyQuery {
+        getPrincipal(id: "davydovgleb00@gmail.com") {
+          id
+          School {
+            Pupils {items {id firstName lastName
+        }}}}}`
+    } else if(userRole==="Parent") {
+      getPupils=`query MyQuery {
+        getParent(id: "alindsay14@qub.ac.uk") {
+          children {items {
+              pupilID Pupil {firstName id lastName
+        }}}}}`
+    } else {
+      getPupils=`query MyQuery {
+        getPupil(id: "decb3739-9468-4fbd-a578-5379fe39536c") {
+          firstName
+          id
+          lastName
+        }}`
+    }
+
 
       console.log(getPupils);
 
@@ -200,16 +245,48 @@ const query = `query MyQuery {
       
       // if(getPupilIdsQuery){
         const results = await API.graphql(graphqlOperation(getPupils));
-        if(results.data?.getTeacher) {
-          let pupilIdsString = `[`;
-          results.data.getTeacher.classrooms.items[0].classroom.pupils.items.forEach((item: any) => {
-            pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.pupil.id + `"}}, `;
-          });
-          pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
-        // }
-        setPupilsIdsList(pupilIdsString);
+        console.log(results);
+        if(userRole==="Teacher"){
+          if(results.data?.getTeacher) {
+            let pupilIdsString = `[`;
+            results.data.getTeacher.classrooms.items[0].classroom.pupils.items.forEach((item: any) => {
+              pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.pupil.id + `"}}, `;
+            });
+            pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+          // }
+          setPupilsIdsList(pupilIdsString);
+          }
+        } else if(userRole==="Principal"){
 
-        };
+          if(results.data?.getPrincipal) {
+            let pupilIdsString = `[`;
+            results.data.getPrincipal.School.Pupils.items.forEach((item: any) => {
+              pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
+            })
+            pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+            console.log(pupilIdsString);
+            setPupilsIdsList(pupilIdsString);
+          }
+        } else if(userRole==="Parent"){
+          if(results.data?.getParent) {
+            let pupilIdsString = `[`;
+            results.data.getParent.children.items.forEach((item: any) => {
+              pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.pupilID + `"}}, `;
+            })
+            pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+            console.log(pupilIdsString);
+            setPupilsIdsList(pupilIdsString);
+          }
+        } else if(userRole==="Pupil"){
+          if(results.data?.getPupil) {
+            let pupilIdsString = `[{pupilID: {eq: "` + results.data.getPupil.id+ `"}}]`;
+            console.log(pupilIdsString);
+            setPupilsIdsList(pupilIdsString);
+          }
+        } else {
+          console.og("ooops!");
+        }
+
 
     }
     setLessonAndUserIds();

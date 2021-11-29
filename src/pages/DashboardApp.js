@@ -49,6 +49,8 @@ import DashboardSettings from "../components/_dashboard/app/DashboardSettings";
 export default function DashboardApp() {
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const user = useContext(UserContext);
+    console.log("maindashboard");
+    console.log(user.getRole());
 
     return (
         <Page title="Dashboard | Healthy Habits">
