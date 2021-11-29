@@ -61,7 +61,7 @@ export default function DashboardApp() {
                         <TotalActivities/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
-                        <TotalDailyMiles/>
+                        <TotalDailyMiles user={user}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={4}>
                         <TimeCompletedCard/>
