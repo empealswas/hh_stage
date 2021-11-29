@@ -86,7 +86,9 @@ const TotalDailyMiles = ({ isLoading }) => {
   const theme = useTheme();
   const [lessonIdsState, setLessonIdsState] = useState([]);
   const [pupilIdsState, setPupilIdsState] = useState([]);
+  const [pupilsIdsList, setPupilsIdsList] = useState([]);
   const [getDailyMileAttendanceQuery, setGetDailyMileAttendanceQuery] = useState();
+  const [getPupilIdsQuery, setGetPupilIdsQuery] = useState();
   const [timeValue, setTimeValue] = useState(false);
   const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
   const [dailyMileCount, setDailyMileCount] = useState(null);
@@ -153,11 +155,9 @@ const TotalDailyMiles = ({ isLoading }) => {
     getdates();
   }, [timeValue]);
 
-  
+
   useEffect(() => {
     //create a trace for sparkline
-    console.log("preparing the sparkdata");
-    console.log(filteredDataState);
     const createTrace = async () => {
       setSparkLineDataState(createSparkLineTrace(filteredDataState));
     }
@@ -166,57 +166,74 @@ const TotalDailyMiles = ({ isLoading }) => {
 
   useEffect(() => {
 
-    const getDailyMleLessonIds = async() => {
+    const getDailyMleLessonIds = async () => {
       let getLessons = `query MyQuery {
         listLessons(filter: {sectionID: {eq: "36a01b32-923e-4ba6-bd51-3bdcc538944e"}}) {
           items {id title}
         }}`;
-        const lessonIds = [];
-        let lessonIdsString= '[';
-        const results = await API.graphql(graphqlOperation(getLessons));
-        console.log("getting lesson ids results");
-        console.log(results.data.listLessons);
-        let data = results.data.listLessons.items;
-        console.log(data);
-        if(results.data?.listLessons){
-          data.forEach((item: any) => {
-            lessonIdsString = lessonIdsString+ '{lessonID: {eq: "' + item.id + '"}},';
-          // lessonIds.push({lessonID: {eq: item.id }});
+      const lessonIds = [];
+      let lessonIdsString = '[';
+      const results = await API.graphql(graphqlOperation(getLessons));
+      let data = results.data.listLessons.items;
+      if (results.data?.listLessons) {
+        data.forEach((item: any) => {
+          lessonIdsString = lessonIdsString + '{lessonID: {eq: "' + item.id + '"}},';
         });
-        //{pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}
-        lessonIdsString = lessonIdsString.slice(0,-1)+']';
-        console.log("getting lesson ids results");
-        console.log(lessonIdsString);
+        lessonIdsString = lessonIdsString.slice(0, -1) + ']';
         setLessonIdsState(lessonIdsString);
       }
     }
     getDailyMleLessonIds();
   }, []);
-  
+
   useEffect(() => {
     // functio to populate the LessonIdState and pupilIdState with the required 
     // pupil and lesson ids
+      let getPupils = `query MyQuery {
+        getTeacher(id: "lindsay-a5@email.ulster.ac.uk") {
+          classrooms {
+            items { classroom {
+              pupils { items {
+                pupil {id firstName lastName
+        }}}}}}}}`
+
+
     const setLessonAndUserIds = async () => {
-      // console.log("setting ids");
-      const pupilIds = '[{pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}]';
-      const lessonIds = '[{lessonID: {eq: "dd89fb19-4cde-445a-8c4c-fe5d294a53f0"}}, {lessonID: {eq: "99063afd-9d58-4a9e-88f9-0510a3c6ab38"}}, {lessonID: {eq: "21d0946d-c5bb-4ad1-b50a-a93f6efe6d5b"}}, {lessonID: {eq: "dbd59a2e-507a-478a-9f88-7fc26d79233c"}}]';
-      // setLessonIdsState(lessonIds);
-      setPupilIdsState(pupilIds);
+      setGetPupilIdsQuery(getPupils);
+      // const pupilIds = '[{pupilID: {eq: "a0c357a3-b4e2-475b-9796-dff2b7e97dd2"}}, {pupilID: {eq: "65c95845-39e5-4d56-887f-23bc1cfe7c0e"}}, {pupilID: {eq: "49393312-d2a5-4a05-9cda-9f7006c64dc7"}}, {pupilID: {eq: "decb3739-9468-4fbd-a578-5379fe39536c"}}, {pupilID: {eq: "637fc42e-435f-4575-9631-725ccfe7b332"}}]';
+      // // const lessonIds = '[{lessonID: {eq: "dd89fb19-4cde-445a-8c4c-fe5d294a53f0"}}, {lessonID: {eq: "99063afd-9d58-4a9e-88f9-0510a3c6ab38"}}, {lessonID: {eq: "21d0946d-c5bb-4ad1-b50a-a93f6efe6d5b"}}, {lessonID: {eq: "dbd59a2e-507a-478a-9f88-7fc26d79233c"}}]';
+      // // setLessonIdsState(lessonIds);
+      // setPupilIdsState(pupilIds);
     }
     setLessonAndUserIds();
   }, []);
 
+  useEffect(() => {
+    // create a correctly formatted list of pupil ids for the database query
+    const getPupilIds= async() => {
+      const pupilIds = [];
+      let pupilIdsString = '[';
+      if(getPupilIdsQuery){
+        const results = await API.graphql(graphqlOperation(getPupilIdsQuery));
+        results.data.getTeacher.classrooms.items[0].classroom.pupils.items.forEach((item: any) => {
+          pupilIdsString = pupilIdsString + '{pupilID: {eq: "' + item.pupil.id + '"}},';
+        });
+        pupilIdsString = pupilIdsString.slice(0, -1) + ']';
+      }
+      setPupilsIdsList(pupilIdsString);
+    }
+    getPupilIds();
+  }, [getPupilIdsQuery]);
 
+
+  
   useEffect(() => {
     // take the input set of lesson and pupils ids and populate the query
     // then update the state for that query
     const pupilLessonAttendanceQuery = async () => {
-      // console.log("doing query");
-      if (lessonIdsState.length > 0 && pupilIdsState.length > 0)  {
-        console.log("building query");
-        console.log(lessonIdsState);
+      if (lessonIdsState.length > 0 && pupilsIdsList.length > 0) {
         let newQuery = `query MyQuery {
-        listAttendances(filter:{ or: ${lessonIdsState} and: {  or: ${pupilIdsState}}}, 
+        listAttendances(filter:{ or: ${lessonIdsState} and: {  or: ${pupilsIdsList}}}, 
         limit:1000000) {
         items {
           id createdAt lessonID pupilID
@@ -227,11 +244,11 @@ const TotalDailyMiles = ({ isLoading }) => {
       }
     }
     pupilLessonAttendanceQuery();
-  }, [lessonIdsState, pupilIdsState]);
+  }, [lessonIdsState, pupilsIdsList]);
 
 
   function splitDate(dateTime) {
-    const date=dateTime.split("T");
+    const date = dateTime.split("T");
     return date[0];
   }
 
@@ -241,7 +258,7 @@ const TotalDailyMiles = ({ isLoading }) => {
     const createRunQuery = async () => {
       const users = [];
 
-      if(getDailyMileAttendanceQuery){
+      if (getDailyMileAttendanceQuery) {
         const result2 = await API.graphql(graphqlOperation(getDailyMileAttendanceQuery));
         let data = result2.data?.listAttendances.items;
         data.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
@@ -255,8 +272,6 @@ const TotalDailyMiles = ({ isLoading }) => {
           let filteredData = data.filter(
             x => dateRangeState.includes(splitDate(x.createdAt))
           );
-
-          // console.log(filteredData);
           setFilteredDataState(filteredData);
 
           filteredData.forEach((item: any) => {
@@ -267,7 +282,6 @@ const TotalDailyMiles = ({ isLoading }) => {
             setDailyMileCount(filteredData.length);
           } else {
             const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-  
             setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
           }
         }
@@ -277,36 +291,36 @@ const TotalDailyMiles = ({ isLoading }) => {
   }, [getDailyMileAttendanceQuery, dailyMileTotAveswitchState, dateRangeState]);
 
 
-  useEffect(() => {
-    // get data to populate KPI box
-    const getCount = async () => {
-      const users = [];
-      const result = await API.graphql(graphqlOperation(query));
+  // useEffect(() => {
+  //   // get data to populate KPI box
+  //   const getCount = async () => {
+  //     const users = [];
+  //     const result = await API.graphql(graphqlOperation(query));
 
-      if (dateRangeState) {
-        // let filteredData = result.data.listPELessonRecords.items.filter(
-        //   x => dateRangeState.includes(x.date)
-        // );
+  //     if (dateRangeState) {
+  // let filteredData = result.data.listPELessonRecords.items.filter(
+  //   x => dateRangeState.includes(x.date)
+  // );
 
-        // setFilteredDataState(filteredData);
+  // setFilteredDataState(filteredData);
 
-        // filteredData.forEach((item: any) => {
-        //   users.push({ 'id': item.id });
-        // });
-        // // to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
-        // if (dailyMileTotAveswitchState === 'total') {
-        //   setDailyMileCount(filteredData.length);
-        // } else {
-        //   const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+  // filteredData.forEach((item: any) => {
+  //   users.push({ 'id': item.id });
+  // });
+  // // to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
+  // if (dailyMileTotAveswitchState === 'total') {
+  //   setDailyMileCount(filteredData.length);
+  // } else {
+  //   const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
 
-        //   setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
-        // }
+  //   setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
+  // }
 
-      }
-    }
-    getCount()
+  //     }
+  //   }
+  //   getCount()
 
-  }, [dailyMileTotAveswitchState, dateRangeState])
+  // }, [dailyMileTotAveswitchState, dateRangeState])
 
   return (
     <>
