@@ -207,6 +207,7 @@ type Parent @model  {
     lastName: String
     email: AWSEmail
     children: [PupilParent] @connection(keyName: "byParent", fields: ["id"])
+    InterventionFeedback: [ParentInterventionFeedback] @connection(keyName: "byParent", fields: ["id"])
 
 }
 
@@ -265,15 +266,31 @@ type Pupil @model
     Interventions: [Intervention] @connection(keyName: "byPupil", fields: ["id"])
 }
 
-type Intervention @model
+type Intervention @model @searchable
 @key(name: "byPupil", fields: ["pupilID"])
 @auth(rules: [{ allow: public, provider: iam }, { allow: public, provider: apiKey },{allow: private}]) {
     id: ID!
     pupilID: ID!
     Pupil: Pupil @connection(fields: ["pupilID"])
     message: String
-}
+    InterventionFeedback: [ParentInterventionFeedback] @connection(keyName: "byIntervention", fields: ["id"])
+    createdAt: AWSDateTime!
 
+}
+type ParentInterventionFeedback
+@model
+@key(name: "byParent", fields: ["parentID", "interventionID"])
+@key(name: "byIntervention", fields: ["interventionID", "parentID"])
+@auth(rules: [{ allow: public, provider: iam }, { allow: public, provider: apiKey },{allow: private}])
+{
+    id: ID!
+    parentID: ID!
+    interventionID: ID!
+    Parent: Parent! @connection(fields: ["parentID"])
+    Intervention: Intervention! @connection(fields: ["interventionID"])
+    comment: String
+    rating: Int
+}
 
 type SubjectTerm @model(queries: null) @key(name: "bySubject", fields: ["subjectID", "termID"]) @key(name: "byTerm", fields: ["termID", "subjectID"]) {
     id: ID!

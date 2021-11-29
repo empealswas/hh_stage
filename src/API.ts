@@ -488,12 +488,26 @@ export type Parent = {
   children?: ModelPupilParentConnection | null,
   createdAt: string,
   updatedAt: string,
+  InterventionFeedback?: ModelParentInterventionFeedbackConnection | null,
 };
 
-export type ModelInterventionConnection = {
-  __typename: "ModelInterventionConnection",
-  items:  Array<Intervention >,
+export type ModelParentInterventionFeedbackConnection = {
+  __typename: "ModelParentInterventionFeedbackConnection",
+  items:  Array<ParentInterventionFeedback >,
   nextToken?: string | null,
+};
+
+export type ParentInterventionFeedback = {
+  __typename: "ParentInterventionFeedback",
+  id: string,
+  parentID: string,
+  interventionID: string,
+  Parent: Parent,
+  comment?: string | null,
+  rating?: number | null,
+  createdAt: string,
+  updatedAt: string,
+  Intervention: Intervention,
 };
 
 export type Intervention = {
@@ -504,6 +518,13 @@ export type Intervention = {
   createdAt: string,
   updatedAt: string,
   Pupil?: Pupil | null,
+  InterventionFeedback?: ModelParentInterventionFeedbackConnection | null,
+};
+
+export type ModelInterventionConnection = {
+  __typename: "ModelInterventionConnection",
+  items:  Array<Intervention >,
+  nextToken?: string | null,
 };
 
 export type ModelLessonTeacherConnection = {
@@ -1224,11 +1245,13 @@ export type CreateInterventionInput = {
   id?: string | null,
   pupilID: string,
   message?: string | null,
+  createdAt?: string | null,
 };
 
 export type ModelInterventionConditionInput = {
   pupilID?: ModelIDInput | null,
   message?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelInterventionConditionInput | null > | null,
   or?: Array< ModelInterventionConditionInput | null > | null,
   not?: ModelInterventionConditionInput | null,
@@ -1238,9 +1261,40 @@ export type UpdateInterventionInput = {
   id: string,
   pupilID?: string | null,
   message?: string | null,
+  createdAt?: string | null,
 };
 
 export type DeleteInterventionInput = {
+  id: string,
+};
+
+export type CreateParentInterventionFeedbackInput = {
+  id?: string | null,
+  parentID: string,
+  interventionID: string,
+  comment?: string | null,
+  rating?: number | null,
+};
+
+export type ModelParentInterventionFeedbackConditionInput = {
+  parentID?: ModelIDInput | null,
+  interventionID?: ModelIDInput | null,
+  comment?: ModelStringInput | null,
+  rating?: ModelIntInput | null,
+  and?: Array< ModelParentInterventionFeedbackConditionInput | null > | null,
+  or?: Array< ModelParentInterventionFeedbackConditionInput | null > | null,
+  not?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type UpdateParentInterventionFeedbackInput = {
+  id: string,
+  parentID?: string | null,
+  interventionID?: string | null,
+  comment?: string | null,
+  rating?: number | null,
+};
+
+export type DeleteParentInterventionFeedbackInput = {
   id: string,
 };
 
@@ -1507,9 +1561,91 @@ export type ModelInterventionFilterInput = {
   id?: ModelIDInput | null,
   pupilID?: ModelIDInput | null,
   message?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
   and?: Array< ModelInterventionFilterInput | null > | null,
   or?: Array< ModelInterventionFilterInput | null > | null,
   not?: ModelInterventionFilterInput | null,
+};
+
+export type SearchableInterventionFilterInput = {
+  id?: SearchableIDFilterInput | null,
+  pupilID?: SearchableIDFilterInput | null,
+  message?: SearchableStringFilterInput | null,
+  createdAt?: SearchableStringFilterInput | null,
+  and?: Array< SearchableInterventionFilterInput | null > | null,
+  or?: Array< SearchableInterventionFilterInput | null > | null,
+  not?: SearchableInterventionFilterInput | null,
+};
+
+export type SearchableIDFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchableStringFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchableInterventionSortInput = {
+  field?: SearchableInterventionSortableFields | null,
+  direction?: SearchableSortDirection | null,
+};
+
+export enum SearchableInterventionSortableFields {
+  id = "id",
+  pupilID = "pupilID",
+  message = "message",
+  createdAt = "createdAt",
+}
+
+
+export enum SearchableSortDirection {
+  asc = "asc",
+  desc = "desc",
+}
+
+
+export type SearchableInterventionConnection = {
+  __typename: "SearchableInterventionConnection",
+  items:  Array<Intervention >,
+  nextToken?: string | null,
+  total?: number | null,
+};
+
+export type ModelParentInterventionFeedbackFilterInput = {
+  id?: ModelIDInput | null,
+  parentID?: ModelIDInput | null,
+  interventionID?: ModelIDInput | null,
+  comment?: ModelStringInput | null,
+  rating?: ModelIntInput | null,
+  and?: Array< ModelParentInterventionFeedbackFilterInput | null > | null,
+  or?: Array< ModelParentInterventionFeedbackFilterInput | null > | null,
+  not?: ModelParentInterventionFeedbackFilterInput | null,
 };
 
 export type CreateFileMutationVariables = {
@@ -3114,6 +3250,10 @@ export type CreateParentMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -3135,6 +3275,10 @@ export type UpdateParentMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -3156,6 +3300,10 @@ export type DeleteParentMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4220,6 +4368,10 @@ export type CreateInterventionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -4245,6 +4397,10 @@ export type UpdateInterventionMutation = {
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
     } | null,
   } | null,
 };
@@ -4272,6 +4428,115 @@ export type DeleteInterventionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type CreateParentInterventionFeedbackMutationVariables = {
+  input: CreateParentInterventionFeedbackInput,
+  condition?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type CreateParentInterventionFeedbackMutation = {
+  createParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type UpdateParentInterventionFeedbackMutationVariables = {
+  input: UpdateParentInterventionFeedbackInput,
+  condition?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type UpdateParentInterventionFeedbackMutation = {
+  updateParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type DeleteParentInterventionFeedbackMutationVariables = {
+  input: DeleteParentInterventionFeedbackInput,
+  condition?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type DeleteParentInterventionFeedbackMutation = {
+  deleteParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };
 
@@ -5040,6 +5305,10 @@ export type GetParentQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -5416,6 +5685,10 @@ export type GetInterventionQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -5433,6 +5706,87 @@ export type ListInterventionsQuery = {
       id: string,
       pupilID: string,
       message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type SearchInterventionsQueryVariables = {
+  filter?: SearchableInterventionFilterInput | null,
+  sort?: SearchableInterventionSortInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  from?: number | null,
+};
+
+export type SearchInterventionsQuery = {
+  searchInterventions?:  {
+    __typename: "SearchableInterventionConnection",
+    items:  Array< {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } >,
+    nextToken?: string | null,
+    total?: number | null,
+  } | null,
+};
+
+export type GetParentInterventionFeedbackQueryVariables = {
+  id: string,
+};
+
+export type GetParentInterventionFeedbackQuery = {
+  getParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type ListParentInterventionFeedbacksQueryVariables = {
+  filter?: ModelParentInterventionFeedbackFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListParentInterventionFeedbacksQuery = {
+  listParentInterventionFeedbacks?:  {
+    __typename: "ModelParentInterventionFeedbackConnection",
+    items:  Array< {
+      __typename: "ParentInterventionFeedback",
+      id: string,
+      parentID: string,
+      interventionID: string,
+      comment?: string | null,
+      rating?: number | null,
       createdAt: string,
       updatedAt: string,
     } >,
@@ -6797,6 +7151,10 @@ export type OnCreateParentSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -6813,6 +7171,10 @@ export type OnUpdateParentSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -6829,6 +7191,10 @@ export type OnDeleteParentSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -7753,6 +8119,10 @@ export type OnCreateInterventionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -7773,6 +8143,10 @@ export type OnUpdateInterventionSubscription = {
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
     } | null,
   } | null,
 };
@@ -7795,5 +8169,99 @@ export type OnDeleteInterventionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnCreateParentInterventionFeedbackSubscription = {
+  onCreateParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnUpdateParentInterventionFeedbackSubscription = {
+  onUpdateParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+  } | null,
+};
+
+export type OnDeleteParentInterventionFeedbackSubscription = {
+  onDeleteParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
   } | null,
 };

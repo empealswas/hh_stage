@@ -1244,6 +1244,9 @@ export const onCreateParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -1259,6 +1262,9 @@ export const onUpdateParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -1274,6 +1280,9 @@ export const onDeleteParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2113,6 +2122,9 @@ export const onCreateIntervention = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2133,6 +2145,9 @@ export const onUpdateIntervention = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2150,6 +2165,93 @@ export const onDeleteIntervention = /* GraphQL */ `
         lastName
         schoolID
         schoolHouseID
+        createdAt
+        updatedAt
+      }
+      InterventionFeedback {
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateParentInterventionFeedback = /* GraphQL */ `
+  subscription OnCreateParentInterventionFeedback {
+    onCreateParentInterventionFeedback {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateParentInterventionFeedback = /* GraphQL */ `
+  subscription OnUpdateParentInterventionFeedback {
+    onUpdateParentInterventionFeedback {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteParentInterventionFeedback = /* GraphQL */ `
+  subscription OnDeleteParentInterventionFeedback {
+    onDeleteParentInterventionFeedback {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
         createdAt
         updatedAt
       }

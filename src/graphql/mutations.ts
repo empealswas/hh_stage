@@ -1391,6 +1391,9 @@ export const createParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -1409,6 +1412,9 @@ export const updateParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -1427,6 +1433,9 @@ export const deleteParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2350,6 +2359,9 @@ export const createIntervention = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2373,6 +2385,9 @@ export const updateIntervention = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2393,6 +2408,102 @@ export const deleteIntervention = /* GraphQL */ `
         lastName
         schoolID
         schoolHouseID
+        createdAt
+        updatedAt
+      }
+      InterventionFeedback {
+        nextToken
+      }
+    }
+  }
+`;
+export const createParentInterventionFeedback = /* GraphQL */ `
+  mutation CreateParentInterventionFeedback(
+    $input: CreateParentInterventionFeedbackInput!
+    $condition: ModelParentInterventionFeedbackConditionInput
+  ) {
+    createParentInterventionFeedback(input: $input, condition: $condition) {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateParentInterventionFeedback = /* GraphQL */ `
+  mutation UpdateParentInterventionFeedback(
+    $input: UpdateParentInterventionFeedbackInput!
+    $condition: ModelParentInterventionFeedbackConditionInput
+  ) {
+    updateParentInterventionFeedback(input: $input, condition: $condition) {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteParentInterventionFeedback = /* GraphQL */ `
+  mutation DeleteParentInterventionFeedback(
+    $input: DeleteParentInterventionFeedbackInput!
+    $condition: ModelParentInterventionFeedbackConditionInput
+  ) {
+    deleteParentInterventionFeedback(input: $input, condition: $condition) {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
         createdAt
         updatedAt
       }

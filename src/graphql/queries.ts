@@ -642,6 +642,9 @@ export const getParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -955,6 +958,9 @@ export const getIntervention = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -969,6 +975,85 @@ export const listInterventions = /* GraphQL */ `
         id
         pupilID
         message
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const searchInterventions = /* GraphQL */ `
+  query SearchInterventions(
+    $filter: SearchableInterventionFilterInput
+    $sort: SearchableInterventionSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchInterventions(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const getParentInterventionFeedback = /* GraphQL */ `
+  query GetParentInterventionFeedback($id: ID!) {
+    getParentInterventionFeedback(id: $id) {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listParentInterventionFeedbacks = /* GraphQL */ `
+  query ListParentInterventionFeedbacks(
+    $filter: ModelParentInterventionFeedbackFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listParentInterventionFeedbacks(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        parentID
+        interventionID
+        comment
+        rating
         createdAt
         updatedAt
       }
