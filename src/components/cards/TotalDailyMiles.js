@@ -23,6 +23,8 @@ import { API, graphqlOperation } from "aws-amplify";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
 import DailyMileChart from '../reports/charts/KpiCharts/DailyMileChart';
+import { UserContext } from '../../App';
+import { Teacher } from '../../models';
 
 
 
@@ -31,40 +33,21 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   color: '#fff',
   overflow: 'hidden',
   position: 'relative',
-  '&>div': {
-    position: 'relative',
-    zIndex: 5
-  },
+  '&>div': { position: 'relative', zIndex: 5 },
   '&:after': {
     content: '""',
-    position: 'absolute',
-    width: 210,
-    height: 210,
+    position: 'absolute', width: 210, height: 210,
     background: theme.palette.primary[800],
-    borderRadius: '50%',
-    zIndex: 1,
-    top: -85,
-    right: -95,
-    [theme.breakpoints.down('sm')]: {
-      top: -105,
-      right: -140
-    }
+    borderRadius: '50%', zIndex: 1, top: -85, right: -95,
+    [theme.breakpoints.down('sm')]: { top: -105, right: -140 }
   },
   '&:before': {
     content: '""',
-    position: 'absolute',
-    zIndex: 1,
-    width: 210,
-    height: 210,
+    position: 'absolute', zIndex: 1,
+    width: 210, height: 210,
     background: theme.palette.primary[800],
-    borderRadius: '50%',
-    top: -125,
-    right: -15,
-    opacity: 0.5,
-    [theme.breakpoints.down('sm')]: {
-      top: -155,
-      right: -70
-    }
+    borderRadius: '50%', top: -125, right: -15, opacity: 0.5,
+    [theme.breakpoints.down('sm')]: { top: -155, right: -70 }
   }
 }));
 
@@ -82,29 +65,67 @@ const query = `query MyQuery {
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
 // const TotalDailyMiles = ({ isLoading }) => {
-  const TotalDailyMiles = (props) => {
-    console.log("in kpi");
-    console.log(props.user._email);
-    console.log(props.user.getRole());
-    let userRole="Pupil";//props.user.getRole();
+const TotalDailyMiles = (props) => {
+  const user = useContext(UserContext);
+  let userRole = user.getRole();
+
+
+  // console.log(user.getPupilsIds());
+  // let x = user.getPupilsIds();
+  // console.log(x);
   const theme = useTheme();
   const [lessonIdsState, setLessonIdsState] = useState([]);
-  const [pupilIdsState, setPupilIdsState] = useState(undefined);
   const [pupilsIdsList, setPupilsIdsList] = useState();
   const [getDailyMileAttendanceQuery, setGetDailyMileAttendanceQuery] = useState();
-  const [getPupilIdsQuery, setGetPupilIdsQuery] = useState();
   const [timeValue, setTimeValue] = useState(false);
   const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
   const [dailyMileCount, setDailyMileCount] = useState(null);
-
   const [dateRangeState, setDateRange] = useState();
   const [filteredDataState, setFilteredDataState] = useState();
   const [sparkLineDataState, setSparkLineDataState] = useState();
-  // const [cObj, setcObj] = useState([]);
+
+  const [arrayfull, setArrayFull] = useState(false);
+
 
   const handleChangeTime = (event, newValue) => {
     setTimeValue(newValue);
   };
+
+  useEffect(() => {
+
+    const isArrayFull = async () => {
+
+      if(props.userArray){
+        setArrayFull(true);
+        console.log(props.userArray);
+      }
+    }
+    isArrayFull();
+  }, [props]);
+
+  /////////////////////////////////////////////////
+  // Convert string of pupilIds for db query //////
+  /////////////////////////////////////////////////
+  useEffect(() => {
+    
+    const setLessonAndUserIds = async () => {
+      console.log("new string generator");
+      console.log(props.userArray);
+        if(arrayfull){
+          console.log(props.userArray.length);
+          let pupilIdsString = `[`;
+          props.userArray.forEach((item: any) => {
+            pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
+          });
+          pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+          console.log(pupilIdsString);
+          setPupilsIdsList(pupilIdsString);
+      };
+    }
+      setLessonAndUserIds();
+  }, [arrayfull]);
+
+
 
   //////////////////////////////////
   // convert date to a string //////
@@ -187,7 +208,7 @@ const query = `query MyQuery {
         listLessons(filter: {sectionID: {eq: "36a01b32-923e-4ba6-bd51-3bdcc538944e"}}) {
           items {id title}
         }}`;
-      const lessonIds = [];
+
       let lessonIdsString = '[';
       const results = await API.graphql(graphqlOperation(getLessons));
       let data = results.data.listLessons.items;
@@ -202,103 +223,22 @@ const query = `query MyQuery {
     getDailyMleLessonIds();
   }, []);
 
-  //////////////////////////////////
-  //// create sparkline display ////
-  //////////////////////////////////
-  useEffect(() => {
-    // functio to populate the LessonIdState and pupilIdState with the required 
-    // pupil and lesson ids
-    let getPupils;
-    if(userRole==="Teacher"){
-      getPupils = `query MyQuery { getTeacher(id: "${props.user._email}") 
-      {classrooms {items 
-        { classroom {pupils { items {
-          pupil {id firstName lastName}
-        }}}}}}}`
-    } else if(userRole==="Principal"){
-      getPupils=`query MyQuery {
-        getPrincipal(id: "davydovgleb00@gmail.com") {
-          id
-          School {
-            Pupils {items {id firstName lastName
-        }}}}}`
-    } else if(userRole==="Parent") {
-      getPupils=`query MyQuery {
-        getParent(id: "alindsay14@qub.ac.uk") {
-          children {items {
-              pupilID Pupil {firstName id lastName
-        }}}}}`
-    } else {
-      getPupils=`query MyQuery {
-        getPupil(id: "decb3739-9468-4fbd-a578-5379fe39536c") {
-          firstName
-          id
-          lastName
-        }}`
-    }
 
-
-      console.log(getPupils);
-
-    const setLessonAndUserIds = async () => {
-      setGetPupilIdsQuery(getPupils);
-      
-      // if(getPupilIdsQuery){
-        const results = await API.graphql(graphqlOperation(getPupils));
-        console.log(results);
-        if(userRole==="Teacher"){
-          if(results.data?.getTeacher) {
-            let pupilIdsString = `[`;
-            results.data.getTeacher.classrooms.items[0].classroom.pupils.items.forEach((item: any) => {
-              pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.pupil.id + `"}}, `;
-            });
-            pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
-          // }
-          setPupilsIdsList(pupilIdsString);
-          }
-        } else if(userRole==="Principal"){
-
-          if(results.data?.getPrincipal) {
-            let pupilIdsString = `[`;
-            results.data.getPrincipal.School.Pupils.items.forEach((item: any) => {
-              pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
-            })
-            pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
-            console.log(pupilIdsString);
-            setPupilsIdsList(pupilIdsString);
-          }
-        } else if(userRole==="Parent"){
-          if(results.data?.getParent) {
-            let pupilIdsString = `[`;
-            results.data.getParent.children.items.forEach((item: any) => {
-              pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.pupilID + `"}}, `;
-            })
-            pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
-            console.log(pupilIdsString);
-            setPupilsIdsList(pupilIdsString);
-          }
-        } else if(userRole==="Pupil"){
-          if(results.data?.getPupil) {
-            let pupilIdsString = `[{pupilID: {eq: "` + results.data.getPupil.id+ `"}}]`;
-            console.log(pupilIdsString);
-            setPupilsIdsList(pupilIdsString);
-          }
-        } else {
-          console.og("ooops!");
-        }
-
-
-    }
-    setLessonAndUserIds();
-  }, [lessonIdsState]);
-
-  
   useEffect(() => {
     // take the input set of lesson and pupils ids and populate the query
     // then update the state for that query
+    // console.log(pupilsIdsList);
     const pupilLessonAttendanceQuery = async () => {
+
       if (lessonIdsState.length > 0 && pupilsIdsList) {
-        let newQuery = `query MyQuery {listAttendances(filter:{ or: ${lessonIdsState} and: {  or: ${pupilsIdsList} }},limit:1000000) {items {id createdAt lessonID pupilID Pupil {firstName id lastName } Lesson { title }}}}`;
+        console.log("about to query");
+        console.log(pupilsIdsList);
+        let newQuery = `query MyQuery {listAttendances(filter:{ or: ${lessonIdsState} and: {  or: ${pupilsIdsList} }},limit:1000000) 
+          {items {id createdAt lessonID pupilID Pupil {
+            firstName id lastName 
+          } Lesson { 
+            title 
+        }}}}`;
         setGetDailyMileAttendanceQuery(newQuery);
       }
     }
@@ -318,6 +258,7 @@ const query = `query MyQuery {
       const users = [];
 
       if (getDailyMileAttendanceQuery) {
+        // console.log(getDailyMileAttendanceQuery);
         const result2 = await API.graphql(graphqlOperation(getDailyMileAttendanceQuery));
         let data = result2.data?.listAttendances.items;
         data.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
@@ -344,38 +285,6 @@ const query = `query MyQuery {
     }
     createRunQuery();
   }, [getDailyMileAttendanceQuery, dailyMileTotAveswitchState, dateRangeState]);
-
-
-  // useEffect(() => {
-  //   // get data to populate KPI box
-  //   const getCount = async () => {
-  //     const users = [];
-  //     const result = await API.graphql(graphqlOperation(query));
-
-  //     if (dateRangeState) {
-  // let filteredData = result.data.listPELessonRecords.items.filter(
-  //   x => dateRangeState.includes(x.date)
-  // );
-
-  // setFilteredDataState(filteredData);
-
-  // filteredData.forEach((item: any) => {
-  //   users.push({ 'id': item.id });
-  // });
-  // // to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
-  // if (dailyMileTotAveswitchState === 'total') {
-  //   setDailyMileCount(filteredData.length);
-  // } else {
-  //   const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-
-  //   setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
-  // }
-
-  //     }
-  //   }
-  //   getCount()
-
-  // }, [dailyMileTotAveswitchState, dateRangeState])
 
   return (
     <>
@@ -511,3 +420,83 @@ const query = `query MyQuery {
 // };
 
 export default TotalDailyMiles;
+
+
+  // ////////////////////////////////
+  // //  create user id list     ////
+  // ////////////////////////////////
+  // useEffect(() => {
+  //   // functio to populate the LessonIdState and pupilIdState with the required 
+  //   // pupil and lesson ids
+  //   let getPupils;
+  //   if (userRole === "Teacher") {
+  //     getPupils = `query MyQuery { getTeacher(id: "${user._email}") 
+  //     {classrooms {items 
+  //       { classroom {pupils { items {
+  //         pupil {id firstName lastName}
+  //       }}}}}}}`
+  //   } else if (userRole === "Principal") {
+  //     getPupils = `query MyQuery {
+  //       getPrincipal(id: "davydovgleb00@gmail.com") {
+  //         id
+  //         School {
+  //           Pupils {items {id firstName lastName
+  //       }}}}}`
+  //   } else if (userRole === "Parent") {
+  //     getPupils = `query MyQuery {
+  //       getParent(id: "alindsay14@qub.ac.uk") {
+  //         children {items {
+  //             pupilID Pupil {firstName id lastName
+  //       }}}}}`
+  //   } else {
+  //     getPupils = `query MyQuery {
+  //       getPupil(id: "decb3739-9468-4fbd-a578-5379fe39536c") {
+  //         firstName
+  //         id
+  //         lastName
+  //       }}`
+  //   }
+  //   const setLessonAndUserIds = async () => {
+  //     // setGetPupilIdsQuery(getPupils);
+  //     // if(getPupilIdsQuery){
+  //     const results = await API.graphql(graphqlOperation(getPupils));
+  //     if (userRole === "Teacher") {
+  //       if (results.data?.getTeacher) {
+  //         let pupilIdsString = `[`;
+  //         results.data.getTeacher.classrooms.items[0].classroom.pupils.items.forEach((item: any) => {
+  //           pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.pupil.id + `"}}, `;
+  //         });
+  //         pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+  //         // }
+  //         setPupilsIdsList(pupilIdsString);
+  //       }
+  //     } else if (userRole === "Principal") {
+
+  //       if (results.data?.getPrincipal) {
+  //         let pupilIdsString = `[`;
+  //         results.data.getPrincipal.School.Pupils.items.forEach((item: any) => {
+  //           pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
+  //         })
+  //         pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+  //         setPupilsIdsList(pupilIdsString);
+  //       }
+  //     } else if (userRole === "Parent") {
+  //       if (results.data?.getParent) {
+  //         let pupilIdsString = `[`;
+  //         results.data.getParent.children.items.forEach((item: any) => {
+  //           pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.pupilID + `"}}, `;
+  //         })
+  //         pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+  //         setPupilsIdsList(pupilIdsString);
+  //       }
+  //     } else if (userRole === "Pupil") {
+  //       if (results.data?.getPupil) {
+  //         let pupilIdsString = `[{pupilID: {eq: "` + results.data.getPupil.id + `"}}]`;
+  //         setPupilsIdsList(pupilIdsString);
+  //       }
+  //     } else {
+  //       console.og("ooops!");
+  //     }
+  //   }
+  //   setLessonAndUserIds();
+  // }, [lessonIdsState]);

@@ -18,6 +18,7 @@ import ActivityOverview from './garmin-metrics/activity-data/ActivityOverview';
 import TotalAverageSwitch from '../../_garmin-selectors/total-average-switch';
 import { useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
+import { Teacher } from '../../../models/Teacher';
 
 const teacherQuery = `query MyQuery($id: ID = "") {
     getTeacher(id: $id) {
@@ -121,11 +122,22 @@ const DashboardOfTeacher = () => {
         setEndDateState(todayDate);
     };
 
+    // useEffect(() => {
+    //     console.log("getting something?")
+    //     const getAllUsers2 = async() => {
+    //         if(user?.getRole()==="Teacher") {
+    //             let x = user?.getPupilsIds();
+    //             console.log(x);
+    //         }
+    //     }
+    //     getAllUsers2();
+    // }, []);
 
     //////////////////////////////////////
     /////  get  Healthy habits Ids //////
     /////////////////////////////////////
     useEffect(() => {
+   
         const getAllUsers = async () => {
             const users: string[] = [];
             const usernames: any[] = [];
