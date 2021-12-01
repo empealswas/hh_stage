@@ -9,6 +9,7 @@ import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts
 import { CardContent } from "@mui/material";
 import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
 import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
+import { TableDataModel } from "../../../../../models/garminDataModels/scatterTableData";
 
 export default function SleepOverview(props: any) {
 
@@ -32,7 +33,7 @@ export default function SleepOverview(props: any) {
     const [sleepIntensityDonutData, setSleepIntensityDonutData] = useState<number[]>([]);
     const [stanineValue, setStanineValue] = useState<number>(1);
     const [radialValue, setRadialValue] = useState<number>(1);
-
+    const [tableData, setTableData] = useState<TableDataModel[]>([]);
     /////////////////////////////////
     /////  get sleep users data /////
     /////////////////////////////////
@@ -225,6 +226,26 @@ export default function SleepOverview(props: any) {
         prepTargetRadialData();
     }, [sleepDataGroup]);
 
+    //////////////////////////////////////////////
+    /////  Structure table data              /////
+    //////////////////////////////////////////////  
+    useEffect(() => {  
+        const prepTargetRadialData = async () => {
+            
+            if(sleepDataUser.length>0){
+                let id = 0;
+                let tableData: TableDataModel[]=[];
+                for(let sleep of sleepDataUser) {
+                    let tableRec = new TableDataModel (id, sleep.garminId, sleep.duration, "hours");
+                    tableData.push(tableRec);
+                    id++
+                }
+                setTableData(tableData);
+            } 
+        }
+        prepTargetRadialData();
+    }, [sleepDataUser]);
+
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
         var series = [];
@@ -247,14 +268,13 @@ export default function SleepOverview(props: any) {
         }
     }
     return (
-
                 <Grid container spacing={2}>
 
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <StepIntensityDonut data2={sleepIntensityDonutData} title2={"Sleep Intensity"} subTitle2={"Depth"} labels={["Other", "Light", "Deep"]} />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
-                        <DailiesStepsDistribution data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"} />
+                        <DailiesStepsDistribution tableData={tableData} data={sleepScatterData} title={"Sleep"} subTitle={"Total Duration"} />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <GarminMetricsRadialChart data={radialValue} title={"Sleeo"} subTitle={"% Target Achieved"} />

@@ -1,14 +1,15 @@
-import {Card, CardHeader, Grid} from "@material-ui/core";
-import {Box} from "@material-ui/system";
-import {useEffect, useState} from "react";
-import {ScatterPlotTraceModel} from "../../../../../models/garminDataModels/apexChartsScatterDataPair";
-import {GarminEpochsSummaryDataModel} from "../../../../../models/garminDataModels/garminEpochsModel";
+import { Card, CardHeader, Grid } from "@material-ui/core";
+import { Box } from "@material-ui/system";
+import { useEffect, useState } from "react";
+import { ScatterPlotTraceModel } from "../../../../../models/garminDataModels/apexChartsScatterDataPair";
+import { GarminEpochsSummaryDataModel } from "../../../../../models/garminDataModels/garminEpochsModel";
 import DailiesStanineContourPlot from "../../../../reports/charts/GarminWearablesCharts/DailiesStanineContourPlot";
 import DailiesStepsDistribution from "../../../../reports/charts/GarminWearablesCharts/DailiesStepsDistribution";
 import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts/StepIntensityDonut";
-import {CardContent} from "@mui/material";
+import { CardContent } from "@mui/material";
 import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
 import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
+import { TableDataModel } from "../../../../../models/garminDataModels/scatterTableData";
 
 
 export default function SedentaryOverview(props: any) {
@@ -32,7 +33,7 @@ export default function SedentaryOverview(props: any) {
     const [sedentaryScatterData, setSedentaryScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [sedentaryIntensityDonutData, setSedentaryIntensityDonutData] = useState<number[]>([]);
     const [radialValue, setRadialValue] = useState<number>(1);
-
+    const [tableData, setTableData] = useState<TableDataModel[]>([]);
     ///////////////////////////////////
     /////  get epochs users data  /////
     ///////////////////////////////////
@@ -150,7 +151,7 @@ export default function SedentaryOverview(props: any) {
                     }
                 );
 
-                let result = processedData.map(({period, sedentary}) => ({period, sedentary}));
+                let result = processedData.map(({ period, sedentary }) => ({ period, sedentary }));
                 var name!: string;
                 // if the 
                 if (ids == null) {
@@ -193,7 +194,7 @@ export default function SedentaryOverview(props: any) {
                     percHighAct = parseFloat((sedentaryRecord.highlyActive / totalActive * 100).toPrecision(2));
                 }
             }
-            var data: number [] = [percSed, percAct, percHighAct];
+            var data: number[] = [percSed, percAct, percHighAct];
             setSedentaryIntensityDonutData(data);
         }
         prepDonutIntensityData();
@@ -217,10 +218,10 @@ export default function SedentaryOverview(props: any) {
     //////////////////////////////////////////////
     /////  create %target radial trace data  /////
     //////////////////////////////////////////////
-    useEffect(() => {  
+    useEffect(() => {
         const prepTargetRadialData = async () => {
-            if(sedentaryDataGroup.length>0){
-                var x = parseFloat((sedentaryDataGroup[0].sedentary/ 14440 * 100).toPrecision(2));
+            if (sedentaryDataGroup.length > 0) {
+                var x = parseFloat((sedentaryDataGroup[0].sedentary / 14440 * 100).toPrecision(2));
                 setRadialValue(x);
             } else {
                 console.log("Sedentary radial trace: no data");
@@ -228,6 +229,26 @@ export default function SedentaryOverview(props: any) {
         }
         prepTargetRadialData();
     }, [sedentaryDataGroup]);
+
+    //////////////////////////////////////////////
+    /////  Structure table data              /////
+    //////////////////////////////////////////////  
+    useEffect(() => {
+        const prepTargetRadialData = async () => {
+
+            if (sedentaryDataUser.length > 0) {
+                let id = 0;
+                let tableData: TableDataModel[] = [];
+                for (let sedentary of sedentaryDataUser) {
+                    let tableRec = new TableDataModel(id, sedentary.garminId, sedentary.sedentary, "hours");
+                    tableData.push(tableRec);
+                    id++
+                }
+                setTableData(tableData);
+            }
+        }
+        prepTargetRadialData();
+    }, [sedentaryDataUser]);
 
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
@@ -245,7 +266,7 @@ export default function SedentaryOverview(props: any) {
         // replaces the healthyhabits id with the corresponding user name
         var dataCounter = 0;
         while (dataCounter < inData.length) {
-            var name = props['usernames'].find(obj => obj.id ===inData[dataCounter].garminId);
+            var name = props['usernames'].find(obj => obj.id === inData[dataCounter].garminId);
             inData[dataCounter].garminId = name.name;
             dataCounter++;
         }
@@ -253,24 +274,24 @@ export default function SedentaryOverview(props: any) {
 
     return (
 
-                <Grid container spacing={2}>
+        <Grid container spacing={2}>
 
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <StepIntensityDonut data2={sedentaryIntensityDonutData} title2={"Sedentary vs Activity"}
-                                        subTitle2={"Comparison"} labels={["Sedentary", "Active", "Highly Active"]}/>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <DailiesStepsDistribution data={sedentaryScatterData} title={"Sedentary"}
-                                              subTitle={"Total Inactivity"}/>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <GarminMetricsRadialChart  data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"}/>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                    <StanineLineChart data={stanineValue} title={"Sedentary"} subTitle={"Stanine"}/>
-                    {/* <DailiesStanineContourPlot data={stanineValue}/> */}
-                </Grid>
-                </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+                <StepIntensityDonut data2={sedentaryIntensityDonutData} title2={"Sedentary vs Activity"}
+                    subTitle2={"Comparison"} labels={["Sedentary", "Active", "Highly Active"]} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+                <DailiesStepsDistribution tableData={tableData} data={sedentaryScatterData} title={"Sedentary"}
+                    subTitle={"Total Inactivity"} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+                <GarminMetricsRadialChart data={radialValue} title={"Sedentary"} subTitle={"% Target Achieved"} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+                <StanineLineChart data={stanineValue} title={"Sedentary"} subTitle={"Stanine"} />
+                {/* <DailiesStanineContourPlot data={stanineValue}/> */}
+            </Grid>
+        </Grid>
 
     );
 }

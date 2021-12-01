@@ -54,43 +54,28 @@ const query = `query MyQuery {
 }`
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const TimeCompletedCard = (props) => {
+const TotalActivitiesAlt = (props) => {
 	const theme = useTheme();
-	// const [timeCompletedTotAveswitchState, setTimeCompletedTotAveSwitchState] = useState("total");
-	// const [anchorEl, setAnchorEl] = useState(null);
-
-	// const handleClick = (event) => {
-	// 	setAnchorEl(event.currentTarget);
-	// };
-
-	// const handleClose = () => {
-	// 	setAnchorEl(null);
-	// };
-	const [duration, setDuration] = useState(0);
+	const [totalActivity, setTotalActivity] = useState(0);
 
 	///////////////////////////////////////
-	const [pupilsIdsList, setPupilsIdsList] = useState();
-	// const [getActiveTimeQuery, setGetActiveTimeAttendanceQuery] = useState();
-	const [activityAttendanceData, setActivityAttendanceData] = useState();
-	const [attendedLessonData, setAttendedLessonData] = useState();
-	const [durationByDate, setDurationByDate] = useState();
+	const [pupilsIdsList2, setPupilsIdsList2] = useState();
 
-	// const [activeTimeCount, setActiveTimeCount] = useState(null);
-	const [dateRangeState2, setDateRange2] = useState();
-	// const [filteredDataState, setFilteredDataState] = useState();
-	const [durationSparkLineDataState, setDurationSparkLineDataState] = useState();
-	const [arrayfull, setArrayFull] = useState(false);
+	const [totalAttendanceData, setTotalAttendanceData] = useState();
+	const [attendedLessonData2, setAttendedLessonData2] = useState();
+	const [totalByDate, setTotalByDate] = useState();
+
+	const [dateRangeState3, setDateRange3] = useState();
+	const [totalSparkLineDataState, setTotalSparkLineDataState] = useState();
+	const [arrayfull2, setArrayFull2] = useState(false);
 
 	////////////////////////
-	const [timeValue2, setTimeValue2] = useState(false);
-	const [activeDurationTotAveswitchState, setActiveDurationTotAveSwitchState] = useState("total");
-	// const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
-
+	const [timeValue3, setTimeValue3] = useState(false);
+	const [activeTotalsTotAveswitchState, setActiveTotalsTotAveSwitchState] = useState("total");
 
 	//////////////////////////
-	const handleChangeTime2 = (event, newValue) => {
-		console.log(newValue);
-		setTimeValue2(newValue);
+	const handleChangeTime3 = (event, newValue) => {
+		setTimeValue3(newValue);
 	};
 	//////////////////////////////////////////
 	// ensure arry of users ids is present //
@@ -98,7 +83,7 @@ const TimeCompletedCard = (props) => {
 	useEffect(() => {
 		const isArrayFull = async () => {
 			if (props.userArray) {
-				setArrayFull(true);
+				setArrayFull2(true);
 			}
 		}
 		isArrayFull();
@@ -110,18 +95,17 @@ const TimeCompletedCard = (props) => {
 	/////////////////////////////////////////////////
 	useEffect(() => {
 		const setLessonAndUserIds = async () => {
-			console.log("setLessonAndUserIds");
-			if (arrayfull) {
+			if (arrayfull2) {
 				let pupilIdsString = `[`;
 				props.userArray.forEach((item: any) => {
 					pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
 				});
 				pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
-				setPupilsIdsList(pupilIdsString);
+				setPupilsIdsList2(pupilIdsString);
 			};
 		}
 		setLessonAndUserIds();
-	}, [arrayfull]);
+	}, [arrayfull2]);
 
 	//////////////////////////////////
 	// convert date to a string //////
@@ -138,7 +122,7 @@ const TimeCompletedCard = (props) => {
 	function createSparkLineTrace(data) {
 		let sparklineData = [];
 		data.forEach((item) => {
-			sparklineData.push(item.duration);
+			sparklineData.push(item.activities);
 		})
 		return sparklineData;
 	}
@@ -154,12 +138,11 @@ const TimeCompletedCard = (props) => {
 		// detect change in Week/ month & create an array of dates as appropriate
 		// for week- date for prev 7 days && for month - past 28 days
 		const getdates = async () => {
-			console.log("getdates");
 			let endDate = new Date();
 			let startDate = new Date();
 			let dateRange = [];
 
-			if (timeValue2) {
+			if (timeValue3) {
 				startDate.setDate(startDate.getDate() - 28); // if month
 			} else {
 				startDate.setDate(startDate.getDate() - 6); // if week
@@ -173,10 +156,10 @@ const TimeCompletedCard = (props) => {
 			};
 			// add current date to array then set const
 			dateRange.push(convertDateToString(endDate));
-			setDateRange2(dateRange);
+			setDateRange3(dateRange);
 		}
 		getdates();
-	}, [timeValue2]);
+	}, [timeValue3]);
 
 
 	////////////////////////////////////////////////////
@@ -184,9 +167,9 @@ const TimeCompletedCard = (props) => {
 	///////////////////////////////////////////////////
 	useEffect(() => {
 		// take the input set of pupils ids and populate the query
-		const pupilLessonAttendanceQuery = async () => {
-			if (pupilsIdsList) {
-				let newQuery = `query MyQuery {listAttendances(filter:{ or: ${pupilsIdsList} },limit:1000000) 
+		const pupilLessonAttendanceQuery2 = async () => {
+			if (pupilsIdsList2) {
+				let newQuery = `query MyQuery {listAttendances(filter:{ or: ${pupilsIdsList2} },limit:1000000) 
           {items {id createdAt lessonRecordID pupilID 
             Lesson { title }
         }}}`;
@@ -194,31 +177,33 @@ const TimeCompletedCard = (props) => {
 				if (results.data?.listAttendances) {
 					let data = [];
 					let filteredAttendance = results.data.listAttendances.items.filter(
-						x => dateRangeState2.includes(splitDate(x.createdAt))
+						x => dateRangeState3.includes(splitDate(x.createdAt))
 					);
 					filteredAttendance.forEach((item) => {
 						if (item.lessonRecordID != null) {
 							data.push({ date: splitDate(item.createdAt), pupilID: item.pupilID, lessonRecordID: item.lessonRecordID });
 						};
 					});
-					setActivityAttendanceData(data);
+					console.log("totalattendancedata");
+					console.log(data);
+					setTotalAttendanceData(data);
 				}
 			}
 		}
-		pupilLessonAttendanceQuery();
-	}, [pupilsIdsList]);
+		pupilLessonAttendanceQuery2();
+	}, [pupilsIdsList2]);
 
 	///////////////////////////////////////////////////
-	// from the list of activities get the duration  //
+	//   get the list of lesson attended by pupils   //
 	///////////////////////////////////////////////////
 	useEffect(() => {
-		const getActivityDuration = async () => {
+		const getActivityDuration2 = async () => {
 			// get all the lessons with an id recorded in attendances
 			// compute the total activity time based on the duration for each attending pupil
-			if (activityAttendanceData) {
+			if (totalAttendanceData) {
 				let peLessonsString = `[`;
 
-				activityAttendanceData.forEach((item: any) => {
+				totalAttendanceData.forEach((item: any) => {
 					peLessonsString = peLessonsString + `{id: {eq: "` + item.lessonRecordID + `"}}, `;
 				});
 				peLessonsString = peLessonsString.slice(0, -2) + `]`;
@@ -230,67 +215,72 @@ const TimeCompletedCard = (props) => {
           }`
 				const results = await API.graphql(graphqlOperation(query));
 				if (results.data?.listPELessonRecords) {
-					setAttendedLessonData(results.data?.listPELessonRecords.items);
+					setAttendedLessonData2(results.data?.listPELessonRecords.items);
 				}
 			}
 		}
-		getActivityDuration()
-	}, [activityAttendanceData]);
+		getActivityDuration2()
+	}, [totalAttendanceData]);
 
+	//////////////////////////////////////////////////////
+	//   get the total activities completed by pupils   //
+	//////////////////////////////////////////////////////
 	useEffect(() => {
-		
-		const computeDurations = async () => {
-			if (attendedLessonData) {
-				let durationData = [];
-				let filteredLessons = attendedLessonData.filter(
-					x => dateRangeState2.includes(x.date)
+		const computeTotalActivities = async () => {
+			if (attendedLessonData2) {
+				let totalActivityData = [];
+				let filteredLessons = attendedLessonData2.filter(
+					x => dateRangeState3.includes(x.date)
 				);
 				// loop through the time period- filter the lessons by day
-				dateRangeState2.forEach((day) => {
+				dateRangeState3.forEach((day) => {
 
 					// loop through the filtered lessons then filter the attandence by day & lesson
-					let durationCount = 0;
+					let activityCount = 0;
 					filteredLessons.forEach((lesson) => {
-						let filteredPupils = activityAttendanceData.filter(
+						let filteredPupils = totalAttendanceData.filter(
 							x => day.includes(x.date) && lesson.id === x.lessonRecordID
 						);
-						durationCount = filteredPupils.length * lesson.duration;
+						activityCount = filteredPupils.length;
 					})
-					durationData.push({ date: day, duration: durationCount })
+					totalActivityData.push({ date: day, activities: activityCount })
 				})
-				console.log(durationData);
-				setDurationSparkLineDataState(createSparkLineTrace(durationData));
-				setDurationByDate(durationData);
+				console.log(totalActivityData);
+				setTotalSparkLineDataState(createSparkLineTrace(totalActivityData));
+				setTotalByDate(totalActivityData);
 			}
 		}
-		computeDurations();
-	}, [attendedLessonData]);
+		computeTotalActivities();
+	}, [attendedLessonData2]);
 
 
 	useEffect(() => {
 		const getCount = async () => {
-			if(durationSparkLineDataState && activityAttendanceData){
-				let duration = durationSparkLineDataState.reduce((tot, a) => tot+a, 0);
+			if(totalSparkLineDataState && totalAttendanceData){
+				let activities = totalSparkLineDataState.reduce((tot, a) => tot+a, 0);
 
 				const users = [];
-				activityAttendanceData.forEach((item) => {
+				console.log(totalAttendanceData);
+				totalAttendanceData.forEach((item) => {
 						users.push({ 'id': item.pupilID });
 				});
-				if (activeDurationTotAveswitchState === 'total') {
-					setDuration(duration);
+				if (activeTotalsTotAveswitchState === 'total') {
+					setTotalActivity(activities);
 				} else {
+					console.log(users);
 					const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-					setDuration(parseFloat((duration / uniqueIds.length).toPrecision(2)));
+					console.log(uniqueIds);
+					setTotalActivity(parseFloat((activities / uniqueIds.length).toPrecision(2)));
 				}
 			}
 		}
 		getCount()
 
-	}, [activeDurationTotAveswitchState, activityAttendanceData, durationSparkLineDataState, dateRangeState2])
+	}, [activeTotalsTotAveswitchState, totalAttendanceData, totalSparkLineDataState, dateRangeState3])
 
 	return (
 		<>
-			{!duration ? (
+			{!totalActivity ? (
 				<SkeletonEarningCard />
 			) : (
 				<CardWrapper border={false} content={false}>
@@ -315,24 +305,24 @@ const TimeCompletedCard = (props) => {
 
 								<Grid item>
 									<Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
-										<TotalAverageSwitch totAveChanger={setActiveDurationTotAveSwitchState}
-											switchVal={activeDurationTotAveswitchState} />
+										<TotalAverageSwitch totAveChanger={setActiveTotalsTotAveSwitchState}
+											switchVal={activeTotalsTotAveswitchState} />
 										<>
 											<Button
 												disableElevation
-												variant={timeValue2 ? 'contained' : 'text'}
+												variant={timeValue3 ? 'contained' : 'text'}
 												size="small"
 												sx={{ color: 'inherit' }}
-												onClick={(e) => handleChangeTime2(e, true)}
+												onClick={(e) => handleChangeTime3(e, true)}
 											>
 												Month
 											</Button>
 											<Button
 												disableElevation
-												variant={!timeValue2 ? 'contained' : 'text'}
+												variant={!timeValue3 ? 'contained' : 'text'}
 												size="small"
 												sx={{ color: 'inherit' }}
-												onClick={(e) => handleChangeTime2(e, false)}
+												onClick={(e) => handleChangeTime3(e, false)}
 											>
 												Week
 											</Button>
@@ -347,7 +337,7 @@ const TimeCompletedCard = (props) => {
 								<Grid item xs={6}>
 									<Grid container alignItems="center">
 										<Grid item>
-											{timeValue2 ? (
+											{timeValue3 ? (
 												<Typography sx={{
 													fontSize: '2.125rem',
 													fontWeight: 500,
@@ -355,7 +345,7 @@ const TimeCompletedCard = (props) => {
 													mt: 1.75,
 													mb: 0.75
 												}}>
-													{duration}
+													{totalActivity}
 												</Typography>
 											) : (
 												<Typography sx={{
@@ -365,7 +355,7 @@ const TimeCompletedCard = (props) => {
 													mt: 1.75,
 													mb: 0.75
 												}}>
-													{duration}
+													{totalActivity}
 												</Typography>
 											)}
 										</Grid>
@@ -390,7 +380,7 @@ const TimeCompletedCard = (props) => {
 													color: theme.palette.primary[200]
 												}}
 											>
-												Active time (mins)
+												Total Activities
 											</Typography>
 										</Grid>
 									</Grid>
@@ -400,7 +390,7 @@ const TimeCompletedCard = (props) => {
 									<>
 										<Grid item xs={12}>
 
-											{durationSparkLineDataState ? <DailyMileChart trace={durationSparkLineDataState} /> :
+											{totalSparkLineDataState ? <DailyMileChart trace={totalSparkLineDataState} /> :
 												<Chart {...ChartDataYear} />}
 										</Grid>
 
@@ -412,104 +402,9 @@ const TimeCompletedCard = (props) => {
 					</Grid>
 				</Box>
 			</CardWrapper>
-
-
-
-
-
-
-				// <CardWrapper border={false} content={false}>
-				// 	<Box sx={{ p: 2.25 }}>
-
-				// 		<Grid container direction="column">
-				// 			{/* <Stack direction={'row'} spacing={1} > */}
-				// 			<Grid item>
-				// 				<Grid container justifyContent="spacing" spacing={2}>
-				// 					<Grid item>
-				// 						<Avatar
-				// 							variant="rounded"
-				// 							sx={{ ...theme.typography.body2, ...theme.typography.body1, backgroundColor: theme.palette.secondary.dark, mt: 1 }}
-				// 						>
-				// 							<TimelapseIcon />
-				// 						</Avatar>
-				// 					</Grid>
-				// 					<Grid item>
-				// 						<Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
-				// 							<TotalAverageSwitch totAveChanger={setActiveDurationTotAveSwitchState}
-				// 								switchVal={ActiveDurationTotAveswitchState} />
-				// 							<>
-				// 								<Button
-				// 									disableElevation
-				// 									variant={timeValue2 ? 'contained' : 'text'}
-				// 									size="small"
-				// 									sx={{ color: 'inherit' }}
-				// 									onClick={(e) => handleChangeTime2(e, true)}
-				// 								>
-				// 									Month
-				// 								</Button>
-				// 								<Button
-				// 									disableElevation
-				// 									variant={!timeValue2 ? 'contained' : 'text'}
-				// 									size="small"
-				// 									sx={{ color: 'inherit' }}
-				// 									onClick={(e) => handleChangeTime2(e, false)}
-				// 								>
-				// 									Week
-				// 								</Button>
-				// 							</>
-				// 						</Stack>
-				// 					</Grid>
-
-				// 				</Grid>
-				// 			</Grid>
-				// 			{/*<TotalAverageSwitch totAveChanger={setTimeCompletedTotAveSwitchState} switchVal={timeCompletedTotAveswitchState}/>*/}
-				// 			{/* </Stack> */}
-
-				// 			<Grid item>
-				// 				<Grid container alignItems="center">
-				// 					<Grid item>
-				// 						<Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-				// 							{duration}
-				// 						</Typography>
-				// 					</Grid>
-				// 					<Grid item>
-				// 						<Avatar
-				// 							sx={{
-				// 								cursor: 'pointer',
-				// 								...theme.typography.smallAvatar,
-				// 								backgroundColor: theme.palette.secondary[200],
-				// 								color: theme.palette.secondary.dark
-				// 							}}
-				// 						>
-				// 							<ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
-				// 						</Avatar>
-				// 					</Grid>
-				// 				</Grid>
-				// 			</Grid>
-				// 			<Grid item sx={{ mb: 1.25 }}>
-				// 				<>
-				// 					<Stack direction={'row'}><Typography
-				// 						sx={{
-				// 							fontSize: '1rem',
-				// 							fontWeight: 800,
-				// 							color: theme.palette.secondary[200]
-				// 						}}
-				// 					>
-				// 						Active time (mins)
-				// 					</Typography>
-				// 					</Stack>
-				// 				</>
-				// 			</Grid>
-				// 		</Grid>
-				// 	</Box>
-				// </CardWrapper>
 			)}
 		</>
 	);
 };
 
-TimeCompletedCard.propTypes = {
-	isLoading: PropTypes.bool
-};
-
-export default TimeCompletedCard;
+export default TotalActivitiesAlt;
