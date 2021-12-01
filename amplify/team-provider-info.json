@@ -1,0 +1,42 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthyhabitsv2-dev-205646-authRole",
+      "UnauthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-205646-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::397429649444:role/amplify-healthyhabitsv2-dev-205646-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+      "UnauthRoleName": "amplify-healthyhabitsv2-dev-205646-unauthRole",
+      "StackName": "amplify-healthyhabitsv2-dev-205646",
+      "StackId": "arn:aws:cloudformation:eu-west-2:397429649444:stack/amplify-healthyhabitsv2-dev-205646/9dc1b580-1c97-11ec-b06c-029d9b2e75d2",
+      "AmplifyAppId": "d3uepp1xwpcqwk"
+    },
+    "categories": {
+      "function": {
+        "healthyLambdaApi": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/healthyLambdaApi-572f386967494f774c6a-build.zip"
+        },
+        "RemoveFileFromS3Bucket": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/RemoveFileFromS3Bucket-69303749774350524654-build.zip"
+        },
+        "AddInterventionForPupil": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/AddInterventionForPupil-5244493067502f414455-build.zip"
+        },
+        "listOrganizationsToBeVerifiedHealthyHabits": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/listOrganizationsToBeVerifiedHealthyHabits-55567174596b597a2b57-build.zip"
+        },
+        "ConfirmOrganization": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/ConfirmOrganization-6138374c542f48526f2b-build.zip"
+        }
+      },
+      "auth": {
+        "healthyhabitsv24aea1e5f": {}
+      }
+    }
+  }
+}

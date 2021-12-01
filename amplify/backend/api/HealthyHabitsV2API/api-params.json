@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/api",
+      "lambdaFunction": "healthyLambdaApi",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/api"
+    }
+  ],
+  "resourceName": "HealthyHabitsV2API",
+  "apiName": "HealthyHabitsV2API",
+  "functionArns": [
+    {
+      "lambdaFunction": "healthyLambdaApi"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-healthyhabitsv2-dev-205646-authRole",
+    "unAuthRoleName": "amplify-healthyhabitsv2-dev-205646-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "healthyLambdaApi",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

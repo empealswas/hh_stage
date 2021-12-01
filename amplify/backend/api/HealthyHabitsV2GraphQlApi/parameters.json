@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "HealthyHabitsV2GraphQlApi",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authhealthyhabitsv24aea1e5f",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
