@@ -4,6 +4,7 @@ import {Principal} from "../models/Principal";
 import {Admin} from "../models/Admin";
 import {Teacher} from "../models/Teacher";
 import {Parent} from "../models/Parent";
+import {Organization} from "../models/Organization";
 
 export default function defineAbilityFor(user: User | null) {
     const {can, cannot, build} = new AbilityBuilder(Ability);
@@ -39,7 +40,8 @@ export default function defineAbilityFor(user: User | null) {
         can('visit', 'parent');
     } else if (user instanceof Principal) {
         can('visit', 'dashboard')
-
+    }else if (user instanceof Organization) {
+        can('manage', 'pupilList')
     }
 
     return build();

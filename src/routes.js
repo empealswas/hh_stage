@@ -40,6 +40,7 @@ import {Outlet} from 'react-router-dom';
 import ChildOverview from "./components/parent/ChildOverview";
 import ChildOverviewMenu from "./components/parent/ChildOverviewMenu";
 import OrganizationChildrenView from "./components/organizations/OrganizationChildrenView";
+import OrganizationOverview from "./components/organizations/OrganizationOverview";
 
 export function PreLoginRouter(){
     return useRoutes([
@@ -69,7 +70,7 @@ export default function Router() {
             children: [
                 {element: <Navigate to="/dashboard/app" replace/>},
                 {path: 'organization', element: <Outlet/>, children: [
-                        {path: ':id', element: <OrganizationChildrenView/>}
+                        {path: ':id', element: <OrganizationOverview/>}
                     ]},
                 {path: 'schools', element: <SchoolOutlet/>, children: [
                         {path: '/dashboard/schools', element: <Schools/>},
