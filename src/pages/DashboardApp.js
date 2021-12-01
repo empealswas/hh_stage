@@ -33,9 +33,8 @@ import { listPELessonRecords } from "../graphql/queries";
 import axios from "axios";
 import TotalActivities from "../components/cards/TotalActivities";
 import TotalDailyMiles from "../components/cards/TotalDailyMiles";
-import ActivityLineChart from "../components/reports/charts/ActivityLineChart";
-import HeatMap from "../components/reports/charts/HeatMap";
 import TimeCompletedCard from "../components/cards/TimeCompletedCard";
+
 import AverageStepsChart from "../components/reports/charts/AverageStepsChart";
 import AverageSleepChart from "../components/reports/charts/AverageSleepChart";
 import { getAverage } from "../apiFunctions/apiFunctions";
@@ -182,58 +181,67 @@ useEffect(() => {
 
 
 
-	return (
-		<Page title="Dashboard | Healthy Habits">
-			<Container>
-				<Box sx={{ pb: 5 }}>
-					<Typography variant="h4">Welcome back, {user.firstName}</Typography>
-				</Box>
-				<Grid container spacing={5} >
-					<Grid item xs={12} sm={6} md={4} lg={4}>
-						<TotalActivitiesAlt userArray={userIdAndNamesState} />
-					</Grid>
-					<Grid item xs={12} sm={6} md={4} lg={4}>
-						<TotalDailyMiles userArray={userIdAndNamesState}/>
-					</Grid>
-					<Grid item xs={12} sm={6} md={4} lg={4}>
-						<TimeCompletedCard userArray={userIdAndNamesState}/>
-					</Grid>
-					{/*<Grid item xs={12} md={6} lg={6}>*/}
-					{/*    <AverageStepsChart/>*/}
-					{/*</Grid>*/}
-					{/*<Grid item xs={12} md={6} lg={6}>*/}
-					{/*    <AverageSleepChart/>*/}
-					{/*</Grid>*/}
-					<Grid item xs={12} md={6} lg={6}>
-						<TopActivitiesPieChart />
-					</Grid>
-					<Grid item xs={12} md={6} lg={6}>
-						<ActivityGoalChart goalTime={10000} />
-					</Grid>
-					{/*<Can I={'read'} a={'teacherDashboard'}>*/}
-					{/*    <Grid item xs={12}>*/}
-					{/*        <DashboardOfTeacher/>*/}
-					{/*    </Grid>*/}
-					{/*</Can>*/}
-					{/*<Grid item xs={12} md={12} lg={12}>*/}
-					{/*    <ActivityLineChart/>*/}
-					{/*</Grid>*/}
-					{/*<Grid item xs={12} md={12} lg={12}>*/}
-					{/*    <HeatMap/>*/}
-					{/*</Grid>*/}
-					<Grid item xs={12} md={6} lg={6}>
-						<TopPupilsByRewardBarChart />
-					</Grid>
-					<Grid item xs={12} md={6} lg={6}>
-						<TopPupilsByPhysicalActivities />
-					</Grid>
-					<Grid item xs={12} md={12} lg={12}>
-						<SchoolHousesPage />
-					</Grid>
-					{/*<DashboardSettings/>*/}
+// ----------------------------------------------------------------------
 
-				</Grid>
-			</Container>
-		</Page>
-	);
+export default function DashboardApp() {
+    const user = useContext(UserContext);
+    return (
+        <Page title="Dashboard | Healthy Habits">
+            <Container maxWidth="xl">
+                <Box sx={{pb: 5}}>
+                    <Typography variant="h4">Welcome back, {user.firstName}</Typography>
+                </Box>
+                {user instanceof Organization ?
+                <OrganizationOverview/>
+                :
+                    <Grid container spacing={5} >
+                        <Grid item xs={12} sm={6} md={4} lg={4}>
+                            <TotalActivities/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4} lg={4}>
+                            <TotalDailyMiles/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4} lg={4}>
+                            <TimeCompletedCard/>
+                        </Grid>
+                        {/*<Grid item xs={12} md={6} lg={6}>*/}
+                        {/*    <AverageStepsChart/>*/}
+                        {/*</Grid>*/}
+                        {/*<Grid item xs={12} md={6} lg={6}>*/}
+                        {/*    <AverageSleepChart/>*/}
+                        {/*</Grid>*/}
+                        <Grid item xs={12} md={6} lg={6}>
+                            <TopActivitiesPieChart/>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={6}>
+                            <ActivityGoalChart goalTime={10000}/>
+                        </Grid>
+                        {/*<Can I={'read'} a={'teacherDashboard'}>*/}
+                        {/*    <Grid item xs={12}>*/}
+                        {/*        <DashboardOfTeacher/>*/}
+                        {/*    </Grid>*/}
+                        {/*</Can>*/}
+                        {/*<Grid item xs={12} md={12} lg={12}>*/}
+                        {/*    <ActivityLineChart/>*/}
+                        {/*</Grid>*/}
+                        {/*<Grid item xs={12} md={12} lg={12}>*/}
+                        {/*    <HeatMap/>*/}
+                        {/*</Grid>*/}
+                        <Grid item xs={12} md={6} lg={6}>
+                            <TopPupilsByRewardBarChart/>
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={6}>
+                            <TopPupilsByPhysicalActivities/>
+                        </Grid>
+                        <Grid item xs={12} md={12} lg={12}>
+                            <SchoolHousesPage/>
+                        </Grid>
+                        {/*<DashboardSettings/>*/}
+
+                    </Grid>
+                }
+
+            </Container>
+        </Page>
+    );
 }

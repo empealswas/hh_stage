@@ -704,6 +704,186 @@ export const deletePupilClassroom = /* GraphQL */ `
     }
   }
 `;
+export const createPupilOrganizationRequest = /* GraphQL */ `
+  mutation CreatePupilOrganizationRequest(
+    $input: CreatePupilOrganizationRequestInput!
+    $condition: ModelPupilOrganizationRequestConditionInput
+  ) {
+    createPupilOrganizationRequest(input: $input, condition: $condition) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updatePupilOrganizationRequest = /* GraphQL */ `
+  mutation UpdatePupilOrganizationRequest(
+    $input: UpdatePupilOrganizationRequestInput!
+    $condition: ModelPupilOrganizationRequestConditionInput
+  ) {
+    updatePupilOrganizationRequest(input: $input, condition: $condition) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deletePupilOrganizationRequest = /* GraphQL */ `
+  mutation DeletePupilOrganizationRequest(
+    $input: DeletePupilOrganizationRequestInput!
+    $condition: ModelPupilOrganizationRequestConditionInput
+  ) {
+    deletePupilOrganizationRequest(input: $input, condition: $condition) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const createPupilOrganizationAccepted = /* GraphQL */ `
+  mutation CreatePupilOrganizationAccepted(
+    $input: CreatePupilOrganizationAcceptedInput!
+    $condition: ModelPupilOrganizationAcceptedConditionInput
+  ) {
+    createPupilOrganizationAccepted(input: $input, condition: $condition) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updatePupilOrganizationAccepted = /* GraphQL */ `
+  mutation UpdatePupilOrganizationAccepted(
+    $input: UpdatePupilOrganizationAcceptedInput!
+    $condition: ModelPupilOrganizationAcceptedConditionInput
+  ) {
+    updatePupilOrganizationAccepted(input: $input, condition: $condition) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deletePupilOrganizationAccepted = /* GraphQL */ `
+  mutation DeletePupilOrganizationAccepted(
+    $input: DeletePupilOrganizationAcceptedInput!
+    $condition: ModelPupilOrganizationAcceptedConditionInput
+  ) {
+    deletePupilOrganizationAccepted(input: $input, condition: $condition) {
+      id
+      pupilID
+      organizationID
+      createdAt
+      updatedAt
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 export const createSchool = /* GraphQL */ `
   mutation CreateSchool(
     $input: CreateSchoolInput!
@@ -1211,6 +1391,9 @@ export const createParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -1229,6 +1412,9 @@ export const updateParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -1247,6 +1433,9 @@ export const deleteParent = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -1363,8 +1552,16 @@ export const createPrincipal = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1388,8 +1585,16 @@ export const updatePrincipal = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1413,8 +1618,16 @@ export const deletePrincipal = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      organizationID
       createdAt
       updatedAt
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1910,6 +2123,75 @@ export const deletePELessonRecord = /* GraphQL */ `
     }
   }
 `;
+export const createOrganization = /* GraphQL */ `
+  mutation CreateOrganization(
+    $input: CreateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    createOrganization(input: $input, condition: $condition) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateOrganization = /* GraphQL */ `
+  mutation UpdateOrganization(
+    $input: UpdateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    updateOrganization(input: $input, condition: $condition) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteOrganization = /* GraphQL */ `
+  mutation DeleteOrganization(
+    $input: DeleteOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    deleteOrganization(input: $input, condition: $condition) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createPupil = /* GraphQL */ `
   mutation CreatePupil(
     $input: CreatePupilInput!
@@ -1923,6 +2205,12 @@ export const createPupil = /* GraphQL */ `
         nextToken
       }
       classrooms {
+        nextToken
+      }
+      Organizations {
+        nextToken
+      }
+      OrganizationsRequests {
         nextToken
       }
       schoolID
@@ -1968,6 +2256,12 @@ export const updatePupil = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      Organizations {
+        nextToken
+      }
+      OrganizationsRequests {
+        nextToken
+      }
       schoolID
       schoolHouseID
       schoolHouse {
@@ -2009,6 +2303,12 @@ export const deletePupil = /* GraphQL */ `
         nextToken
       }
       classrooms {
+        nextToken
+      }
+      Organizations {
+        nextToken
+      }
+      OrganizationsRequests {
         nextToken
       }
       schoolID
@@ -2059,6 +2359,9 @@ export const createIntervention = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2082,6 +2385,9 @@ export const updateIntervention = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      InterventionFeedback {
+        nextToken
+      }
     }
   }
 `;
@@ -2102,6 +2408,102 @@ export const deleteIntervention = /* GraphQL */ `
         lastName
         schoolID
         schoolHouseID
+        createdAt
+        updatedAt
+      }
+      InterventionFeedback {
+        nextToken
+      }
+    }
+  }
+`;
+export const createParentInterventionFeedback = /* GraphQL */ `
+  mutation CreateParentInterventionFeedback(
+    $input: CreateParentInterventionFeedbackInput!
+    $condition: ModelParentInterventionFeedbackConditionInput
+  ) {
+    createParentInterventionFeedback(input: $input, condition: $condition) {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateParentInterventionFeedback = /* GraphQL */ `
+  mutation UpdateParentInterventionFeedback(
+    $input: UpdateParentInterventionFeedbackInput!
+    $condition: ModelParentInterventionFeedbackConditionInput
+  ) {
+    updateParentInterventionFeedback(input: $input, condition: $condition) {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteParentInterventionFeedback = /* GraphQL */ `
+  mutation DeleteParentInterventionFeedback(
+    $input: DeleteParentInterventionFeedbackInput!
+    $condition: ModelParentInterventionFeedbackConditionInput
+  ) {
+    deleteParentInterventionFeedback(input: $input, condition: $condition) {
+      id
+      parentID
+      interventionID
+      Parent {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      comment
+      rating
+      createdAt
+      updatedAt
+      Intervention {
+        id
+        pupilID
+        message
         createdAt
         updatedAt
       }

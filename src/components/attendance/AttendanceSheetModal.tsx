@@ -27,6 +27,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import AttendanceSheetTable from "./AttendanceSheetTable";
 import LessonDetails from "./LessonDetails";
+import {CardContent} from "@mui/material";
 
 
 const query = `query MyQuery($id: ID = "") {
@@ -96,11 +97,10 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
                     </Typography>
                 </Toolbar>
                 <DialogContent>
-                    <Card style={{
-                        padding: '20px',
-                        margin: '30px'
-                    }}>
+                    <Card>
+                        <CardContent>
                         <AttendanceSheetTable/>
+                        </CardContent>
                     </Card>
                     <DialogContent>
 
