@@ -83,18 +83,30 @@ const TotalDailyMiles = (props) => {
   const [dateRangeState, setDateRange] = useState();
   const [filteredDataState, setFilteredDataState] = useState();
   const [sparkLineDataState, setSparkLineDataState] = useState();
-
   const [arrayfull, setArrayFull] = useState(false);
 
 
   const handleChangeTime = (event, newValue) => {
+    
     setTimeValue(newValue);
   };
 
   useEffect(() => {
+    const getBlah = async() => {
+      if(user.getRole()==="Teacher") {
+        console.log("getting roles vis teacher");
+        let x = await user.getPupilsIds();
+        console.log(x);
+      }
+    }
+    getBlah();
+  }, []);
+  /////////////////////////////////////////////////
+  // check when the array of user ids is ready ///
+  ////////////////////////////////////////////////
+  useEffect(() => {
 
     const isArrayFull = async () => {
-
       if(props.userArray){
         setArrayFull(true);
         console.log(props.userArray);
@@ -109,16 +121,12 @@ const TotalDailyMiles = (props) => {
   useEffect(() => {
     
     const setLessonAndUserIds = async () => {
-      console.log("new string generator");
-      console.log(props.userArray);
         if(arrayfull){
-          console.log(props.userArray.length);
           let pupilIdsString = `[`;
           props.userArray.forEach((item: any) => {
             pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
           });
           pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
-          console.log(pupilIdsString);
           setPupilsIdsList(pupilIdsString);
       };
     }
@@ -208,7 +216,6 @@ const TotalDailyMiles = (props) => {
         listLessons(filter: {sectionID: {eq: "36a01b32-923e-4ba6-bd51-3bdcc538944e"}}) {
           items {id title}
         }}`;
-
       let lessonIdsString = '[';
       const results = await API.graphql(graphqlOperation(getLessons));
       let data = results.data.listLessons.items;
@@ -224,6 +231,9 @@ const TotalDailyMiles = (props) => {
   }, []);
 
 
+  ////////////////////////////////////////////////////
+  //  get daily mile data for lesson & pupil ids   //
+  ///////////////////////////////////////////////////
   useEffect(() => {
     // take the input set of lesson and pupils ids and populate the query
     // then update the state for that query
@@ -336,8 +346,8 @@ const TotalDailyMiles = (props) => {
                         </Button>
                       </>
                     </Stack>
-
                   </Grid>
+                  
                 </Grid>
               </Grid>
               <Grid item sx={{ mb: 0.75 }}>
