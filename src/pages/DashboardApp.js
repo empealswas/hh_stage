@@ -41,6 +41,7 @@ import AverageSleepChart from "../components/reports/charts/AverageSleepChart";
 import { getAverage } from "../apiFunctions/apiFunctions";
 import DashboardSettings from "../components/_dashboard/app/DashboardSettings";
 import { Teacher } from '../models';
+import TotalActivitiesAlt from '../components/cards/TotalActivitiesAlt';
 
 
 // ----------------------------------------------------------------------
@@ -189,7 +190,7 @@ useEffect(() => {
 				</Box>
 				<Grid container spacing={5} >
 					<Grid item xs={12} sm={6} md={4} lg={4}>
-						<TotalActivities />
+						<TotalActivitiesAlt userArray={userIdAndNamesState} />
 					</Grid>
 					<Grid item xs={12} sm={6} md={4} lg={4}>
 						<TotalDailyMiles userArray={userIdAndNamesState}/>
