@@ -162,6 +162,8 @@ const TotalDailyMiles = (props) => {
         sparklineData.push(mileCount);
       })
     }
+    console.log("sparklineData");
+    console.log(sparklineData)
     return sparklineData;
   }
 
@@ -178,7 +180,7 @@ const TotalDailyMiles = (props) => {
       let dateRange = [];
 
       if (timeValue) {
-        startDate.setDate(1); // if month
+        startDate.setDate(startDate.getDate() - 28); // if month
       } else {
         startDate.setDate(startDate.getDate() - 6); // if week
       }
@@ -268,7 +270,6 @@ const TotalDailyMiles = (props) => {
       const users = [];
 
       if (getDailyMileAttendanceQuery) {
-        // console.log(getDailyMileAttendanceQuery);
         const result2 = await API.graphql(graphqlOperation(getDailyMileAttendanceQuery));
         let data = result2.data?.listAttendances.items;
         data.sort((a, b) => a.createdAt.localeCompare(b.createdAt));

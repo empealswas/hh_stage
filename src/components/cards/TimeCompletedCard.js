@@ -6,8 +6,10 @@ import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, Button, Grid, Stack, Typography } from '@mui/material';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
-
+// third-party
+import Chart from 'react-apexcharts';
 // project imports
+import ChartDataYear from './total-order-year-line-chart';
 // assets
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -17,6 +19,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import { Menu } from "@material-ui/core";
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
+import DailyMileChart from '../reports/charts/KpiCharts/DailyMileChart';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
 	backgroundColor: theme.palette.primary.dark,
@@ -63,24 +66,24 @@ const TimeCompletedCard = (props) => {
 	// const handleClose = () => {
 	// 	setAnchorEl(null);
 	// };
-	const [duration, setDuration] = useState(null);
+	const [duration, setDuration] = useState(0);
 
 	///////////////////////////////////////
 	const [pupilsIdsList, setPupilsIdsList] = useState();
-	const [getActiveTimeQuery, setGetActiveTimeAttendanceQuery] = useState();
+	// const [getActiveTimeQuery, setGetActiveTimeAttendanceQuery] = useState();
 	const [activityAttendanceData, setActivityAttendanceData] = useState();
 	const [attendedLessonData, setAttendedLessonData] = useState();
 	const [durationByDate, setDurationByDate] = useState();
 
-	const [activeTimeCount, setActiveTimeCount] = useState(null);
-	const [dateRangeState, setDateRange] = useState();
-	const [filteredDataState, setFilteredDataState] = useState();
-	const [sparkLineDataState, setSparkLineDataState] = useState();
+	// const [activeTimeCount, setActiveTimeCount] = useState(null);
+	const [dateRangeState2, setDateRange2] = useState();
+	// const [filteredDataState, setFilteredDataState] = useState();
+	const [durationSparkLineDataState, setDurationSparkLineDataState] = useState();
 	const [arrayfull, setArrayFull] = useState(false);
 
 	////////////////////////
 	const [timeValue2, setTimeValue2] = useState(false);
-	const [ActiveDurationTotAveswitchState, setActiveDurationTotAveSwitchState] = useState("total");
+	const [activeDurationTotAveswitchState, setActiveDurationTotAveSwitchState] = useState("total");
 	// const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
 
 
@@ -107,7 +110,7 @@ const TimeCompletedCard = (props) => {
 	/////////////////////////////////////////////////
 	useEffect(() => {
 		const setLessonAndUserIds = async () => {
-
+			console.log("setLessonAndUserIds");
 			if (arrayfull) {
 				let pupilIdsString = `[`;
 				props.userArray.forEach((item: any) => {
@@ -129,25 +132,16 @@ const TimeCompletedCard = (props) => {
 	}
 
 
-	// ////////////////////////////////
-	// /// prepare sparkline plot /////
-	// ////////////////////////////////
-	// function createSparkLineTrace(data) {
-
-	// 	let sparklineData = [];
-	// 	if (dateRangeState?.length > 0) {
-	// 		dateRangeState.forEach(day => {
-	// 			let mileCount = 0;
-	// 			data.forEach(item => {
-	// 				if (splitDate(item.createdAt) === day) {
-	// 					mileCount++;
-	// 				}
-	// 			})
-	// 			sparklineData.push(mileCount);
-	// 		})
-	// 	}
-	// 	return sparklineData;
-	// }
+	////////////////////////////////
+	/// prepare sparkline plot /////
+	////////////////////////////////
+	function createSparkLineTrace(data) {
+		let sparklineData = [];
+		data.forEach((item) => {
+			sparklineData.push(item.duration);
+		})
+		return sparklineData;
+	}
 
 	function splitDate(dateTime) {
 		const date = dateTime.split("T");
@@ -158,15 +152,15 @@ const TimeCompletedCard = (props) => {
 	//////////////////////////////////
 	useEffect(() => {
 		// detect change in Week/ month & create an array of dates as appropriate
-		// for week- date for prev 7 days
-		// for month - dates from start of current month
+		// for week- date for prev 7 days && for month - past 28 days
 		const getdates = async () => {
+			console.log("getdates");
 			let endDate = new Date();
 			let startDate = new Date();
 			let dateRange = [];
 
 			if (timeValue2) {
-				startDate.setDate(1); // if month
+				startDate.setDate(startDate.getDate() - 28); // if month
 			} else {
 				startDate.setDate(startDate.getDate() - 6); // if week
 			}
@@ -179,25 +173,19 @@ const TimeCompletedCard = (props) => {
 			};
 			// add current date to array then set const
 			dateRange.push(convertDateToString(endDate));
-			console.log("timecompleted date range");
-			console.log(dateRange);
-			setDateRange(dateRange);
+			setDateRange2(dateRange);
 		}
 		getdates();
 	}, [timeValue2]);
 
 
 	////////////////////////////////////////////////////
-	//  get daily mile data for lesson & pupil ids   //
+	//  get activity attendance data  pupil ids      //
 	///////////////////////////////////////////////////
 	useEffect(() => {
-		// take the input set of lesson and pupils ids and populate the query
-		// then update the state for that query
-		// console.log(pupilsIdsList);
+		// take the input set of pupils ids and populate the query
 		const pupilLessonAttendanceQuery = async () => {
-
 			if (pupilsIdsList) {
-
 				let newQuery = `query MyQuery {listAttendances(filter:{ or: ${pupilsIdsList} },limit:1000000) 
           {items {id createdAt lessonRecordID pupilID 
             Lesson { title }
@@ -205,7 +193,10 @@ const TimeCompletedCard = (props) => {
 				const results = await API.graphql(graphqlOperation(newQuery));
 				if (results.data?.listAttendances) {
 					let data = [];
-					results.data.listAttendances.items.forEach((item) => {
+					let filteredAttendance = results.data.listAttendances.items.filter(
+						x => dateRangeState2.includes(splitDate(x.createdAt))
+					);
+					filteredAttendance.forEach((item) => {
 						if (item.lessonRecordID != null) {
 							data.push({ date: splitDate(item.createdAt), pupilID: item.pupilID, lessonRecordID: item.lessonRecordID });
 						};
@@ -231,6 +222,7 @@ const TimeCompletedCard = (props) => {
 					peLessonsString = peLessonsString + `{id: {eq: "` + item.lessonRecordID + `"}}, `;
 				});
 				peLessonsString = peLessonsString.slice(0, -2) + `]`;
+
 				let query = `query MyQuery {
             listPELessonRecords(filter:{ or: ${peLessonsString} },limit:1000000) {
               items { id activity duration date }
@@ -246,14 +238,15 @@ const TimeCompletedCard = (props) => {
 	}, [activityAttendanceData]);
 
 	useEffect(() => {
+		
 		const computeDurations = async () => {
 			if (attendedLessonData) {
 				let durationData = [];
 				let filteredLessons = attendedLessonData.filter(
-					x => dateRangeState.includes(x.date)
+					x => dateRangeState2.includes(x.date)
 				);
 				// loop through the time period- filter the lessons by day
-				dateRangeState.forEach((day) => {
+				dateRangeState2.forEach((day) => {
 
 					// loop through the filtered lessons then filter the attandence by day & lesson
 					let durationCount = 0;
@@ -265,6 +258,8 @@ const TimeCompletedCard = (props) => {
 					})
 					durationData.push({ date: day, duration: durationCount })
 				})
+				console.log(durationData);
+				setDurationSparkLineDataState(createSparkLineTrace(durationData));
 				setDurationByDate(durationData);
 			}
 		}
@@ -272,45 +267,26 @@ const TimeCompletedCard = (props) => {
 	}, [attendedLessonData]);
 
 
-	///////////////////////////////////////////////////////////
 	useEffect(() => {
-		const createSparkLine = async() => {
-		///////////////////// create sparkline trace here
-		}
-		createSparkLine()
-	}, [attendedLessonData]);
-
-	useEffect(() => {
-		const createDurationValues = async() => {
-			////////create values to populate kpi box see below
-		}
-		createDurationValues()
-	}, [attendedLessonData]);
-	/////////////////////////////////////////////////////////
-
-	useEffect(() => {
-		console.info(ActiveDurationTotAveswitchState)
 		const getCount = async () => {
-			const result = await API.graphql(graphqlOperation(query));
-			let duration = 0;
-			const users = [];
-			result.data.listPELessonRecords.items.forEach((item) => {
-				if (item.duration) {
-					users.push({ 'id': item.id });
-					duration += item.duration;
+			if(durationSparkLineDataState && activityAttendanceData){
+				let duration = durationSparkLineDataState.reduce((tot, a) => tot+a, 0);
+
+				const users = [];
+				activityAttendanceData.forEach((item) => {
+						users.push({ 'id': item.pupilID });
+				});
+				if (activeDurationTotAveswitchState === 'total') {
+					setDuration(duration);
+				} else {
+					const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+					setDuration(parseFloat((duration / uniqueIds.length).toPrecision(2)));
 				}
-			})
-			if (ActiveDurationTotAveswitchState === 'total') {
-				setDuration(duration);
-			} else {
-				const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-				setDuration(parseFloat((duration / uniqueIds.length).toPrecision(2)));
-				console.log(uniqueIds);
 			}
 		}
 		getCount()
 
-	}, [ActiveDurationTotAveswitchState])
+	}, [activeDurationTotAveswitchState, activityAttendanceData, durationSparkLineDataState, dateRangeState2])
 
 	return (
 		<>
@@ -318,90 +294,215 @@ const TimeCompletedCard = (props) => {
 				<SkeletonEarningCard />
 			) : (
 				<CardWrapper border={false} content={false}>
-					<Box sx={{ p: 2.25 }}>
-
-						<Grid container direction="column">
-							{/* <Stack direction={'row'} spacing={1} > */}
-							<Grid item>
-								<Grid container justifyContent="spacing" spacing={2}>
-									<Grid item>
-										<Avatar
-											variant="rounded"
-											sx={{ ...theme.typography.body2, ...theme.typography.body1, backgroundColor: theme.palette.secondary.dark, mt: 1 }}
-										>
-											<TimelapseIcon />
-										</Avatar>
-									</Grid>
-									<Grid item>
-										<Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
-											<TotalAverageSwitch totAveChanger={setActiveDurationTotAveSwitchState}
-												switchVal={ActiveDurationTotAveswitchState} />
-											<>
-												<Button
-													disableElevation
-													variant={timeValue2 ? 'contained' : 'text'}
-													size="small"
-													sx={{ color: 'inherit' }}
-													onClick={(e) => handleChangeTime2(e, true)}
-												>
-													Month
-												</Button>
-												<Button
-													disableElevation
-													variant={!timeValue2 ? 'contained' : 'text'}
-													size="small"
-													sx={{ color: 'inherit' }}
-													onClick={(e) => handleChangeTime2(e, false)}
-												>
-													Week
-												</Button>
-											</>
-										</Stack>
-									</Grid>
-
-								</Grid>
-							</Grid>
-							{/*<TotalAverageSwitch totAveChanger={setTimeCompletedTotAveSwitchState} switchVal={timeCompletedTotAveswitchState}/>*/}
-							{/* </Stack> */}
-
-							<Grid item>
-								<Grid container alignItems="center">
-									<Grid item>
-										<Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-											{duration}
-										</Typography>
-									</Grid>
-									<Grid item>
-										<Avatar
-											sx={{
-												cursor: 'pointer',
-												...theme.typography.smallAvatar,
-												backgroundColor: theme.palette.secondary[200],
-												color: theme.palette.secondary.dark
-											}}
-										>
-											<ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
-										</Avatar>
-									</Grid>
-								</Grid>
-							</Grid>
-							<Grid item sx={{ mb: 1.25 }}>
-								<>
-									<Stack direction={'row'}><Typography
+				<Box sx={{ p: 2.25 }}>
+					<Grid container direction="column">
+						<Grid item>
+							<Grid container justifyContent="space-between">
+								<Grid item>
+									<Avatar
+										variant="rounded"
 										sx={{
-											fontSize: '1rem',
-											fontWeight: 800,
-											color: theme.palette.secondary[200]
+											...theme.typography.body2,
+											...theme.typography.body1,
+											backgroundColor: theme.palette.secondary.dark,
+											color: '#fff',
+											mt: 1
 										}}
 									>
-										Active time (mins)
-									</Typography>
+										<TimelapseIcon />
+									</Avatar>
+								</Grid>
+
+								<Grid item>
+									<Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
+										<TotalAverageSwitch totAveChanger={setActiveDurationTotAveSwitchState}
+											switchVal={activeDurationTotAveswitchState} />
+										<>
+											<Button
+												disableElevation
+												variant={timeValue2 ? 'contained' : 'text'}
+												size="small"
+												sx={{ color: 'inherit' }}
+												onClick={(e) => handleChangeTime2(e, true)}
+											>
+												Month
+											</Button>
+											<Button
+												disableElevation
+												variant={!timeValue2 ? 'contained' : 'text'}
+												size="small"
+												sx={{ color: 'inherit' }}
+												onClick={(e) => handleChangeTime2(e, false)}
+											>
+												Week
+											</Button>
+										</>
 									</Stack>
-								</>
+								</Grid>
+								
 							</Grid>
 						</Grid>
-					</Box>
-				</CardWrapper>
+						<Grid item sx={{ mb: 0.75 }}>
+							<Grid container alignItems="center">
+								<Grid item xs={6}>
+									<Grid container alignItems="center">
+										<Grid item>
+											{timeValue2 ? (
+												<Typography sx={{
+													fontSize: '2.125rem',
+													fontWeight: 500,
+													mr: 1,
+													mt: 1.75,
+													mb: 0.75
+												}}>
+													{duration}
+												</Typography>
+											) : (
+												<Typography sx={{
+													fontSize: '2.125rem',
+													fontWeight: 500,
+													mr: 1,
+													mt: 1.75,
+													mb: 0.75
+												}}>
+													{duration}
+												</Typography>
+											)}
+										</Grid>
+										<Grid item>
+											<Avatar
+												sx={{
+													...theme.typography.subtitle2,
+													cursor: 'pointer',
+													backgroundColor: theme.palette.primary[200],
+													color: theme.palette.primary.dark
+												}}
+											>
+												<ArrowUpwardIcon fontSize="inherit"
+													sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+											</Avatar>
+										</Grid>
+										<Grid item xs={12}>
+											<Typography
+												sx={{
+													fontSize: '1rem',
+													fontWeight: 500,
+													color: theme.palette.primary[200]
+												}}
+											>
+												Active time (mins)
+											</Typography>
+										</Grid>
+									</Grid>
+								</Grid>
+								<Grid item xs={6}>
+
+									<>
+										<Grid item xs={12}>
+
+											{durationSparkLineDataState ? <DailyMileChart trace={durationSparkLineDataState} /> :
+												<Chart {...ChartDataYear} />}
+										</Grid>
+
+									</>
+
+								</Grid>
+							</Grid>
+						</Grid>
+					</Grid>
+				</Box>
+			</CardWrapper>
+
+
+
+
+
+
+				// <CardWrapper border={false} content={false}>
+				// 	<Box sx={{ p: 2.25 }}>
+
+				// 		<Grid container direction="column">
+				// 			{/* <Stack direction={'row'} spacing={1} > */}
+				// 			<Grid item>
+				// 				<Grid container justifyContent="spacing" spacing={2}>
+				// 					<Grid item>
+				// 						<Avatar
+				// 							variant="rounded"
+				// 							sx={{ ...theme.typography.body2, ...theme.typography.body1, backgroundColor: theme.palette.secondary.dark, mt: 1 }}
+				// 						>
+				// 							<TimelapseIcon />
+				// 						</Avatar>
+				// 					</Grid>
+				// 					<Grid item>
+				// 						<Stack direction={'row'} justifyContent={'space-between'} spacing={1}>
+				// 							<TotalAverageSwitch totAveChanger={setActiveDurationTotAveSwitchState}
+				// 								switchVal={ActiveDurationTotAveswitchState} />
+				// 							<>
+				// 								<Button
+				// 									disableElevation
+				// 									variant={timeValue2 ? 'contained' : 'text'}
+				// 									size="small"
+				// 									sx={{ color: 'inherit' }}
+				// 									onClick={(e) => handleChangeTime2(e, true)}
+				// 								>
+				// 									Month
+				// 								</Button>
+				// 								<Button
+				// 									disableElevation
+				// 									variant={!timeValue2 ? 'contained' : 'text'}
+				// 									size="small"
+				// 									sx={{ color: 'inherit' }}
+				// 									onClick={(e) => handleChangeTime2(e, false)}
+				// 								>
+				// 									Week
+				// 								</Button>
+				// 							</>
+				// 						</Stack>
+				// 					</Grid>
+
+				// 				</Grid>
+				// 			</Grid>
+				// 			{/*<TotalAverageSwitch totAveChanger={setTimeCompletedTotAveSwitchState} switchVal={timeCompletedTotAveswitchState}/>*/}
+				// 			{/* </Stack> */}
+
+				// 			<Grid item>
+				// 				<Grid container alignItems="center">
+				// 					<Grid item>
+				// 						<Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+				// 							{duration}
+				// 						</Typography>
+				// 					</Grid>
+				// 					<Grid item>
+				// 						<Avatar
+				// 							sx={{
+				// 								cursor: 'pointer',
+				// 								...theme.typography.smallAvatar,
+				// 								backgroundColor: theme.palette.secondary[200],
+				// 								color: theme.palette.secondary.dark
+				// 							}}
+				// 						>
+				// 							<ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+				// 						</Avatar>
+				// 					</Grid>
+				// 				</Grid>
+				// 			</Grid>
+				// 			<Grid item sx={{ mb: 1.25 }}>
+				// 				<>
+				// 					<Stack direction={'row'}><Typography
+				// 						sx={{
+				// 							fontSize: '1rem',
+				// 							fontWeight: 800,
+				// 							color: theme.palette.secondary[200]
+				// 						}}
+				// 					>
+				// 						Active time (mins)
+				// 					</Typography>
+				// 					</Stack>
+				// 				</>
+				// 			</Grid>
+				// 		</Grid>
+				// 	</Box>
+				// </CardWrapper>
 			)}
 		</>
 	);
