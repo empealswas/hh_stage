@@ -48,8 +48,7 @@ export class Teacher extends User {
 
     async getPupilsIds() {
       if (!this.pupilsIds) {
-          const result: any = API.graphql(graphqlOperation(getPupilsIdQuery, {id: this._email}));
-          console.log(result);
+          const result: any = await API.graphql(graphqlOperation(getPupilsIdQuery, {id: this._email}));
           this.pupilsIds = result.data.getTeacher.classrooms.items
               .map((item: any) => item.classroom)
               .flatMap((classroom: Classroom) => classroom.pupils)

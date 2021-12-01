@@ -128,7 +128,6 @@ export default function DashboardApp() {
 		let userArray = [];
 			const results = await API.graphql(graphqlOperation(getPupils));
 			if (results.data?.getParent) {
-				console.log(results.data.getParent.children.items);
 				results.data.getParent.children.items.forEach((item: any) => {
 					let name = item.Pupil.firstName + " " + item.Pupil.lastName;
 					userArray.push({ id: item.Pupil.id, name: name });
@@ -154,11 +153,11 @@ useEffect(() => {
 
 		const setUserIdArray = async () => {
 
-			if(user.getRole()==="Teacher") {
-				console.log(user.getPupilsIds());
-			}
+			// if(user.getRole()==="Teacher") {
+			// 	console.log(user.getPupilsIds());
+			// }
 
-			let uRole = "parent";
+			let uRole = "teacher";
 			// switch(user.getRole().toLowerCase()){
 			switch (uRole.toLowerCase()) {
 				case "teacher":
@@ -196,7 +195,7 @@ useEffect(() => {
 						<TotalDailyMiles userArray={userIdAndNamesState}/>
 					</Grid>
 					<Grid item xs={12} sm={6} md={4} lg={4}>
-						<TimeCompletedCard />
+						<TimeCompletedCard userArray={userIdAndNamesState}/>
 					</Grid>
 					{/*<Grid item xs={12} md={6} lg={6}>*/}
 					{/*    <AverageStepsChart/>*/}
