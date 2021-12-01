@@ -70,7 +70,7 @@ export default function Login() {
           {/*<AuthSocial />*/}
 
 
-          <MHidden width="smUp">
+          <MHidden width="xsDown">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>
               Don’t have an account?&nbsp;
               <Link variant="subtitle2" component={RouterLink} to="register">

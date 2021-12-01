@@ -32,8 +32,8 @@ const query = `query MyQuery($parentId: ID = "", $id: ID = "a0c357a3-b4e2-475b-9
 }`
 
 
-const getFirstInterventions = `query MyQuery($pupilId: ID = "", $parentId: ID = "") {
-  searchInterventions(filter: {pupilID: {eq: $pupilId}}, limit: 5, sort: {direction: desc, field: createdAt}) {
+const getFirstInterventions = `query MyQuery($pupilId: ID = "", $parentId: ID = "", $direction: SearchableSortDirection = desc) {
+  searchInterventions(filter: {pupilID: {eq: $pupilId}}, limit: 5, sort: {direction: $direction, field: createdAt}) {
     nextToken
     total
     items {
@@ -50,8 +50,8 @@ const getFirstInterventions = `query MyQuery($pupilId: ID = "", $parentId: ID = 
     }
   }
 }`
-const getNextInterventions = `query MyQuery($pupilId: ID = "", $parentId: ID = "", $nextToken: String = "") {
-  searchInterventions(filter: {pupilID: {eq: $pupilId}}, limit: 10, sort: {direction: desc, field: createdAt}, nextToken: $nextToken) {
+const getNextInterventions = `query MyQuery($pupilId: ID = "", $parentId: ID = "", $nextToken: String = "", $direction: SearchableSortDirection = desc) {
+  searchInterventions(filter: {pupilID: {eq: $pupilId}}, limit: 10, sort: {direction: $direction, field: createdAt}, nextToken: $nextToken) {
     nextToken
     total
     items {
@@ -79,7 +79,8 @@ const InterventionsList = (props: { pupil: Pupil }) => {
         const result: any = await API.graphql(graphqlOperation(getNextInterventions, {
             pupilId: props.pupil.id,
             parentId: parent?.email,
-            nextToken: nextToken
+            nextToken: nextToken,
+            direction: sortFilter === 'newest' ? 'desc' : 'asc'
         }));
         nextToken = result.data.searchInterventions.nextToken;
         console.log(nextToken)
@@ -93,9 +94,11 @@ const InterventionsList = (props: { pupil: Pupil }) => {
     }
     useEffect(() => {
         const getInterventions = async () => {
+            setInterventions(null)
             const result: any = await API.graphql(graphqlOperation(getFirstInterventions, {
                 pupilId: props.pupil.id,
-                parentId: parent?.email
+                parentId: parent?.email,
+                direction: sortFilter === 'newest' ? 'desc' : 'asc'
             }));
             nextToken = result.data.searchInterventions.nextToken;
             setInterventions(result.data.searchInterventions.items);
@@ -103,6 +106,13 @@ const InterventionsList = (props: { pupil: Pupil }) => {
             // console.log(result.data.getPupil.Interventions.items)
         }
         getInterventions();
+        return () => {
+
+        };
+    }, [sortFilter]);
+
+    useEffect(() => {
+
         const subscription: any = API.graphql(graphqlOperation(onCreateIntervention));
         const onInterventionAddedSubscription: any = subscription.subscribe({
             next: (result: any) => {
@@ -130,10 +140,11 @@ const InterventionsList = (props: { pupil: Pupil }) => {
         })
     }, [props.pupil])
     window.addEventListener("scroll", handleScroll);
+
     function handleScroll() {
         // console.log('schrollHeight', document.documentElement.scrollHeight);
         // console.log('scrollTop', document.documentElement.scrollTop);
-        var isAtBottom = document.documentElement.scrollHeight - 10 - document.documentElement.scrollTop <= document.documentElement.clientHeight;
+        var isAtBottom = document.documentElement.scrollHeight  - document.documentElement.scrollTop <= document.documentElement.clientHeight;
 
         if (isAtBottom && nextToken && !loading) {
             console.log('loading')
@@ -142,7 +153,8 @@ const InterventionsList = (props: { pupil: Pupil }) => {
         }
 
     }
-    if (!interventions) {
+
+/*    if (!interventions) {
         return (
             <CardSkeleton/>
         )
@@ -152,8 +164,41 @@ const InterventionsList = (props: { pupil: Pupil }) => {
             <Typography variant={'h6'} textAlign={'center'}>Here will be displayed achievements and highlights of your
                 child school
                 life.</Typography>);
+    }*/
+    const Interventios = () => {
+        if (!interventions) {
+            return (
+                <>
+                    <CardSkeleton/>
+                    <CardSkeleton/>
+                </>
+            );
+        }
+        if (interventions.length === 0) {
+            return (
+                <Typography variant={'h6'} textAlign={'center'}>Here will be displayed achievements and highlights of your
+                    child school
+                    life.</Typography>);
+        }
+        return (
+            <>
+                {interventions?.map(value => {
+                    return (
+                        <Card>
+                            <CardHeader title={'Intervention'}
+                                        subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`}/>
+                            <CardContent>
+                                <Typography variant={'body1'}>{value.message}</Typography>
+                            </CardContent>
+                            <CardActions style={{display: 'flex', justifyContent: 'flex-end'}}>
+                                <InterventionMenu intervention={value}/>
+                            </CardActions>
+                        </Card>
+                    );
+                })}
+            </>
+        );
     }
-
 
 
     return (
@@ -180,20 +225,7 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                                     return compareAsc(parseISO(a.createdAt), parseISO(b.createdAt));
                                 }
                             })*/}
-                            {interventions?.map(value => {
-                                return (
-                                    <Card>
-                                        <CardHeader title={'Intervention'}
-                                                    subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`}/>
-                                        <CardContent>
-                                            <Typography variant={'body1'}>{value.message}</Typography>
-                                        </CardContent>
-                                        <CardActions style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                            <InterventionMenu intervention={value}/>
-                                        </CardActions>
-                                    </Card>
-                                );
-                            })}
+                            <Interventios/>
                             {loading &&
                             <>
                                 <CardSkeleton/>

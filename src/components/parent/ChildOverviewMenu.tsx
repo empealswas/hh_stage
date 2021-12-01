@@ -8,6 +8,7 @@ import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import LinearProgressBottom from "../../utils/LinearProgressBottom";
 import OrganizationsSearch from "./OrganizationsSearch";
+import {MHidden} from "../@material-extend";
 
 const query = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
@@ -49,7 +50,7 @@ const ChildOverviewMenu = () => {
     const [numberOfAvatar, setNumberOfAvatar] = useState(0);
     const [numberOfCover, setNumberOfCover] = useState(1);
     useEffect(() => {
-        const getPupil = async () =>{
+        const getPupil = async () => {
             const result: any = await API.graphql(graphqlOperation(query, {id: pupilId}));
             setPupil(result.data.getPupil);
         }
@@ -79,6 +80,7 @@ const ChildOverviewMenu = () => {
                 }}
             />
             <Container maxWidth={false}>
+
                 <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={{xs: 'center', sm: 'space-between'}}
                        alignItems={'center'}>
                     <Stack direction={{xs: 'column', sm: 'row'}} spacing={{xs: 0, sm: 2}}>
@@ -99,26 +101,32 @@ const ChildOverviewMenu = () => {
                             }
                         </div>
                     </Stack>
-                    <Stack direction={'row'} height={40} spacing={2}>
-                        <Button startIcon={<WatchIcon/>} variant={'contained'} onClick={()=>{
-                            window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${pupil.id}/${pupil.firstName}${pupil.lastName}`, '_blank')
-                        }}>
-                            Connect To Garmin
-                        </Button>
-                        <OrganizationsSearch/>
-                        <Button variant={'outlined'} color={'secondary'} onClick={() => {
-                            setNumberOfAvatar(prevState => prevState + 1)
-                        }}>Change Avatar</Button>
-                        <Button variant={'contained'} color={'secondary'} onClick={() => {
-                            setNumberOfCover(prevState => {
-                                if (prevState === 4) {
-                                    return 1;
-                                }
-                                return prevState + 1;
-                            })
-                        }}>Change Cover Photo</Button>
-                    </Stack>
+                    <MHidden width="lgDown">
+                        <Stack direction={'row'} height={40} spacing={2}>
+                            <Button startIcon={<WatchIcon/>} variant={'contained'} onClick={() => {
+                                window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${pupil.id}/${pupil.firstName}${pupil.lastName}`, '_blank')
+                            }}>
+                                Connect To Garmin
+                            </Button>
+                            <OrganizationsSearch/>
+                            <Button variant={'outlined'} color={'secondary'} onClick={() => {
+                                setNumberOfAvatar(prevState => prevState + 1)
+                            }}>Change Avatar</Button>
+                            <Button variant={'contained'} color={'secondary'} onClick={() => {
+                                setNumberOfCover(prevState => {
+                                    if (prevState === 4) {
+                                        return 1;
+                                    }
+                                    return prevState + 1;
+                                })
+                            }}>Change Cover Photo</Button>
+                        </Stack>
+                    </MHidden>
+
+
+
                 </Stack>
+
             </Container>
             <CardActions>
                 <ChildTabs pupil={pupil}/>

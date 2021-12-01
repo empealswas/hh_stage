@@ -39,6 +39,7 @@ import {Navigate, useRoutes} from 'react-router-dom';
 import {Outlet} from 'react-router-dom';
 import ChildOverview from "./components/parent/ChildOverview";
 import ChildOverviewMenu from "./components/parent/ChildOverviewMenu";
+import OrganizationChildrenView from "./components/organizations/OrganizationChildrenView";
 
 export function PreLoginRouter(){
     return useRoutes([
@@ -61,12 +62,15 @@ export function PreLoginRouter(){
 
 export default function Router() {
     return useRoutes([
-            {},
+
         {
             path: '/dashboard',
             element: <DashboardLayout/>,
             children: [
                 {element: <Navigate to="/dashboard/app" replace/>},
+                {path: 'organization', element: <Outlet/>, children: [
+                        {path: ':id', element: <OrganizationChildrenView/>}
+                    ]},
                 {path: 'schools', element: <SchoolOutlet/>, children: [
                         {path: '/dashboard/schools', element: <Schools/>},
                         {path: ':id', element: <SchoolOutlet/>, children: [

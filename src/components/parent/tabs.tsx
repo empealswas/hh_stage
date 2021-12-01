@@ -12,6 +12,8 @@ import PupilActivitiesChart from "../pupil/PupilActivitiesChart";
 import {Pupil} from "../../API";
 import InterventionsList from "./InterventionsList";
 import ChildInfoTab from "./ChildInfoTab";
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import OrganizationsOverview from "./childTabs/OrganizationsOverview";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -62,6 +64,7 @@ export default function ChildTabs(props: {pupil: Pupil}) {
                     <Tab icon={<FeedIcon/>} label="Feed" {...a11yProps(0)} />
                     <Tab icon={<BarChartIcon/>} label="Statistics" {...a11yProps(1)} />
                     <Tab icon={<InfoIcon/>} label="Info" {...a11yProps(2)} />
+                    <Tab icon={<CorporateFareIcon/>} label="Clubs" {...a11yProps(3)}/>
                 </Tabs>
             </Box>
             <TabPanel  value={value} index={0}>
@@ -81,6 +84,9 @@ export default function ChildTabs(props: {pupil: Pupil}) {
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <ChildInfoTab pupil={pupil}/>
+            </TabPanel>
+            <TabPanel value={value} index={3} >
+                <OrganizationsOverview/>
             </TabPanel>
         </Box>
     );
