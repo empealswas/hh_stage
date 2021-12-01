@@ -55,39 +55,30 @@ const query = `query MyQuery {
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
 const TimeCompletedCard = (props) => {
-	const theme = useTheme();
-	// const [timeCompletedTotAveswitchState, setTimeCompletedTotAveSwitchState] = useState("total");
-	// const [anchorEl, setAnchorEl] = useState(null);
 
-	// const handleClick = (event) => {
-	// 	setAnchorEl(event.currentTarget);
-	// };
 
-	// const handleClose = () => {
-	// 	setAnchorEl(null);
-	// };
-	const [duration, setDuration] = useState(0);
-
-	///////////////////////////////////////
-	const [pupilsIdsList, setPupilsIdsList] = useState();
+	const [anchorEl, setAnchorEl] = useState(null);
+	const handleClick = (event) => { setAnchorEl(event.currentTarget); };
+	const handleClose = () => { setAnchorEl(null); };
+	// const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
 	// const [getActiveTimeQuery, setGetActiveTimeAttendanceQuery] = useState();
+	// const [filteredDataState, setFilteredDataState] = useState();
+	// const [activeTimeCount, setActiveTimeCount] = useState(null);
+	const theme = useTheme();
+
+	const [duration, setDuration] = useState(0);
+	const [pupilsIdsList, setPupilsIdsList] = useState();
 	const [activityAttendanceData, setActivityAttendanceData] = useState();
 	const [attendedLessonData, setAttendedLessonData] = useState();
 	const [durationByDate, setDurationByDate] = useState();
-
-	// const [activeTimeCount, setActiveTimeCount] = useState(null);
+	const [timeValue2, setTimeValue2] = useState(false);
 	const [dateRangeState2, setDateRange2] = useState();
-	// const [filteredDataState, setFilteredDataState] = useState();
 	const [durationSparkLineDataState, setDurationSparkLineDataState] = useState();
 	const [arrayfull, setArrayFull] = useState(false);
-
-	////////////////////////
-	const [timeValue2, setTimeValue2] = useState(false);
 	const [activeDurationTotAveswitchState, setActiveDurationTotAveSwitchState] = useState("total");
-	// const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
 
 
-	//////////////////////////
+
 	const handleChangeTime2 = (event, newValue) => {
 		console.log(newValue);
 		setTimeValue2(newValue);
@@ -264,23 +255,18 @@ const TimeCompletedCard = (props) => {
 			}
 		}
 		computeDurations();
-	}, [attendedLessonData]);
+	}, [attendedLessonData, dateRangeState2]);
 
 
 	useEffect(() => {
 		const getCount = async () => {
 			if(durationSparkLineDataState && activityAttendanceData){
 				let duration = durationSparkLineDataState.reduce((tot, a) => tot+a, 0);
-
-				const users = [];
-				activityAttendanceData.forEach((item) => {
-						users.push({ 'id': item.pupilID });
-				});
 				if (activeDurationTotAveswitchState === 'total') {
 					setDuration(duration);
 				} else {
-					const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-					setDuration(parseFloat((duration / uniqueIds.length).toPrecision(2)));
+					// const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+					setDuration(parseFloat((duration / props.userArray.length).toPrecision(2)));
 				}
 			}
 		}

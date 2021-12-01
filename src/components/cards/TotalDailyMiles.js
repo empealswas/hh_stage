@@ -109,7 +109,6 @@ const TotalDailyMiles = (props) => {
     const isArrayFull = async () => {
       if(props.userArray){
         setArrayFull(true);
-        console.log(props.userArray);
       }
     }
     isArrayFull();
@@ -162,8 +161,8 @@ const TotalDailyMiles = (props) => {
         sparklineData.push(mileCount);
       })
     }
-    console.log("sparklineData");
-    console.log(sparklineData)
+    // console.log("sparklineData");
+    // console.log(sparklineData)
     return sparklineData;
   }
 
@@ -243,8 +242,8 @@ const TotalDailyMiles = (props) => {
     const pupilLessonAttendanceQuery = async () => {
 
       if (lessonIdsState.length > 0 && pupilsIdsList) {
-        console.log("about to query");
-        console.log(pupilsIdsList);
+        // console.log("about to query");
+        // console.log(pupilsIdsList);
         let newQuery = `query MyQuery {listAttendances(filter:{ or: ${lessonIdsState} and: {  or: ${pupilsIdsList} }},limit:1000000) 
           {items {id createdAt lessonID pupilID Pupil {
             firstName id lastName 
@@ -267,7 +266,7 @@ const TotalDailyMiles = (props) => {
     // execute query to get daily mile data for the 
     // releveant lesson and user ids
     const createRunQuery = async () => {
-      const users = [];
+      // const users = [];
 
       if (getDailyMileAttendanceQuery) {
         const result2 = await API.graphql(graphqlOperation(getDailyMileAttendanceQuery));
@@ -281,15 +280,15 @@ const TotalDailyMiles = (props) => {
           );
           setFilteredDataState(filteredData);
 
-          filteredData.forEach((item: any) => {
-            users.push({ 'id': item.pupilID });
-          });
+          // filteredData.forEach((item: any) => {
+          //   users.push({ 'id': item.pupilID });
+          // });
           // to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
           if (dailyMileTotAveswitchState === 'total') {
             setDailyMileCount(filteredData.length);
           } else {
-            const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-            setDailyMileCount(parseFloat((filteredData.length / uniqueIds.length).toPrecision(2)));
+            // const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+            setDailyMileCount(parseFloat((filteredData.length / props.userArray.length).toPrecision(2)));
           }
         }
       }

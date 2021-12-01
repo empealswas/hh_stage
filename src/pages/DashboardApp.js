@@ -16,6 +16,7 @@ import TotalDailyMiles from "../components/cards/TotalDailyMiles";
 import TimeCompletedCard from "../components/cards/TimeCompletedCard";
 import {Organization} from "../models/Organization";
 import OrganizationOverview from "../components/organizations/OrganizationOverview";
+import TotalActivitiesAlt from '../components/cards/TotalActivitiesAlt';
 
 
 
@@ -53,8 +54,8 @@ import OrganizationOverview from "../components/organizations/OrganizationOvervi
 		function createIdArrayForTeacher() {
 
 			let getPupils = `query MyQuery { getTeacher(id: "${user._email}") 
-        {classrooms {items 
-          { classroom { pupils { items {
+        {classrooms 
+					{items { classroom { pupils { items {
             pupil {id firstName lastName}
           }}}}}}}`;
 			const getData = async () => {
@@ -117,12 +118,9 @@ import OrganizationOverview from "../components/organizations/OrganizationOvervi
 		}
 
 		useEffect(() => {
-			console.log("userIdsArray")
-			console.log(userIdsArray);
 			if (userIdsArray) {
 				setUserIdAndNamesState(userIdsArray);
-			}
-			;
+			};
 		}, [userIdsArray]);
 
 		//////////////////////////////////////////////////////////////////////
@@ -137,8 +135,8 @@ import OrganizationOverview from "../components/organizations/OrganizationOvervi
 				// }
 
 				let uRole = "teacher";
-				// switch(user.getRole().toLowerCase()){
-				switch (uRole.toLowerCase()) {
+				switch(user.getRole().toLowerCase()){
+				// switch (uRole.toLowerCase()) {
 					case "teacher":
 						createIdArrayForTeacher()
 						break;
@@ -168,13 +166,15 @@ import OrganizationOverview from "../components/organizations/OrganizationOvervi
 						:
 						<Grid container spacing={5}>
 							<Grid item xs={12} sm={6} md={4} lg={4}>
-								<TotalActivities/>
+							<TotalDailyMiles userArray={userIdsArray}/>
+								{/* <TotalActivities/> */}
+								{/* <TotalActivitiesAlt userArray={userIdsArray}/> */}
 							</Grid>
 							<Grid item xs={12} sm={6} md={4} lg={4}>
-								<TotalDailyMiles/>
+								<TotalDailyMiles userArray={userIdsArray}/>
 							</Grid>
 							<Grid item xs={12} sm={6} md={4} lg={4}>
-								<TimeCompletedCard/>
+								<TimeCompletedCard userArray={userIdsArray}/>
 							</Grid>
 							{/*<Grid item xs={12} md={6} lg={6}>*/}
 							{/*    <AverageStepsChart/>*/}

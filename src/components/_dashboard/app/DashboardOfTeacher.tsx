@@ -41,6 +41,9 @@ const teacherQuery = `query MyQuery($id: ID = "") {
   }`
 
 const DashboardOfTeacher = () => {
+
+    const user = useContext(UserContext);
+
     const today = new Date();
     const dailySubstract = 7;
     var pastDate = new Date();
@@ -50,7 +53,7 @@ const DashboardOfTeacher = () => {
 
     var queryData = new GarminQueryData(prevDate, todayDate, 'daily', 'group');
     const customization = useSelector((state: any) => state.customization);
-    const user = useContext(UserContext);
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -139,48 +142,47 @@ const DashboardOfTeacher = () => {
     useEffect(() => {
    
         const getAllUsers = async () => {
-            const users: string[] = [];
+            let  users = new healthyHabitsIdModel([])
             const usernames: any[] = [];
-            var hhUsers = new healthyHabitsIdModel([]);
-            ////////////////////////////////////////////////////////////////////
+
+            if(user.getRole()==="Teacher") {
+                const userIds = await user.getPupilsIds();
+                userIds.forEach((item) => {
+                    users.id.push(item.id);
+                });
+                setHealthyHabitsIds(users);
+                setHHidsAndUsernames(userIds);
+                console.log("userIds");
+                console.log(userIds);
+            };
 
 
-            // const result: any = await API.graphql(graphqlOperation(listPupils));
-            // result.data.listPupils?.items.forEach((item: Pupil) => {
-            //     users.push(item.id);
-            //     var name = item.firstName+ " "+ item.lastName;
-            //     usernames.push({'id':item.id, 'name': name})
-            //     hhUsers.id.push(item.id)
-            // })
+            // var hhUsers = new healthyHabitsIdModel([]);
+
+            // const result: any = await API.graphql(graphqlOperation(teacherQuery, { id: user?.email }));
+            // result.data.getTeacher?.classrooms.items
+            //     .map((item: any) => item.classroom)
+            //     .flatMap((item: Classroom) => item.pupils?.items).forEach((pupil: any) => {
+
+            //         users.push(pupil.pupil.id);
+            //         var name = pupil.pupil.firstName + " " + pupil.pupil.lastName;
+            //         usernames.push({ 'id': pupil.pupil.id, 'name': name });
+            //         hhUsers.id.push(pupil.pupil.id);
+            //     });
+
             // setHealthyHabitsIds(hhUsers);
             // setHHidsAndUsernames(usernames);
-            // console.log(usernames.length);
-            // console.warn(usernames); 
-            ////////////////////////////////////
-            const result: any = await API.graphql(graphqlOperation(teacherQuery, { id: user?.email }));
-            result.data.getTeacher?.classrooms.items
-                .map((item: any) => item.classroom)
-                .flatMap((item: Classroom) => item.pupils?.items).forEach((pupil: any) => {
-
-                    users.push(pupil.pupil.id);
-                    var name = pupil.pupil.firstName + " " + pupil.pupil.lastName;
-                    usernames.push({ 'id': pupil.pupil.id, 'name': name });
-                    hhUsers.id.push(pupil.pupil.id);
-                });
-
-            setHealthyHabitsIds(hhUsers);
-            setHHidsAndUsernames(usernames);
             //////////////////////////////////////
         }
         getAllUsers();
     }, []);
 
-    useEffect(() => {
-        queryData.endDate = endDateState;
-        queryData.startDate = startDateState;
-        queryData.period = customization.period;
-        queryData.groupedBy = groupByState;
-    }, [customization.period, periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
+    // useEffect(() => {
+    //     queryData.endDate = endDateState;
+    //     queryData.startDate = startDateState;
+    //     queryData.period = customization.period;
+    //     queryData.groupedBy = groupByState;
+    // }, [customization.period, periodState, groupByState, startDateState, endDateState, listOfHealthyHabitsIdsState]);
 
     const theme: any = useTheme();
     const Metrics = () => {
