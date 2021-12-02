@@ -15,6 +15,7 @@ const getClassroomsQuery = `query MyQuery($id: ID = "") {
   }
 }
 `
+
 const getPupilsIdQuery = 
 `query MyQuery($id: ID = "") {
   getTeacher(id: $id) {

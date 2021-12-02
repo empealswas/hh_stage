@@ -65,7 +65,8 @@ const query = `query MyQuery {
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
 // const TotalDailyMiles = ({ isLoading }) => {
-const TotalDailyMiles = (props) => {
+const TotalDailyMiles = () => {
+
   const user = useContext(UserContext);
   let userRole = user.getRole();
 
@@ -75,6 +76,7 @@ const TotalDailyMiles = (props) => {
   // console.log(x);
   const theme = useTheme();
   const [lessonIdsState, setLessonIdsState] = useState([]);
+
   const [pupilsIdsList, setPupilsIdsList] = useState();
   const [getDailyMileAttendanceQuery, setGetDailyMileAttendanceQuery] = useState();
   const [timeValue, setTimeValue] = useState(false);
@@ -83,36 +85,40 @@ const TotalDailyMiles = (props) => {
   const [dateRangeState, setDateRange] = useState();
   const [filteredDataState, setFilteredDataState] = useState();
   const [sparkLineDataState, setSparkLineDataState] = useState();
-  const [arrayfull, setArrayFull] = useState(false);
+  // const [arrayfull, setArrayFull] = useState(false);
 
+  ///////////////////////////////////////////////////////
+  const [pupilIdArray, setPupilIdArray] = useState();
+  ///////////////////////////////////////////////////////
 
   const handleChangeTime = (event, newValue) => {
     
     setTimeValue(newValue);
   };
 
-  useEffect(() => {
-    const getBlah = async() => {
-      if(user.getRole()==="Teacher") {
-        console.log("getting roles vis teacher");
-        let x = await user.getPupilsIds();
-        console.log(x);
-      }
-    }
-    getBlah();
-  }, []);
   /////////////////////////////////////////////////
   // check when the array of user ids is ready ///
   ////////////////////////////////////////////////
   useEffect(() => {
-
-    const isArrayFull = async () => {
-      if(props.userArray){
-        setArrayFull(true);
-      }
+    const getPupilIds = async() => {
+        let x = await user.getPupilsIds();
+        setPupilIdArray(x);
     }
-    isArrayFull();
-  }, [props]);
+    getPupilIds();
+  }, [user]);
+
+  // /////////////////////////////////////////////////
+  // // check when the array of user ids is ready ///
+  // ////////////////////////////////////////////////
+  // useEffect(() => {
+
+  //   const isArrayFull = async () => {
+  //     if(props.userArray){
+  //       setArrayFull(true);
+  //     }
+  //   }
+  //   isArrayFull();
+  // }, [props]);
 
   /////////////////////////////////////////////////
   // Convert string of pupilIds for db query //////
@@ -120,9 +126,9 @@ const TotalDailyMiles = (props) => {
   useEffect(() => {
     
     const setLessonAndUserIds = async () => {
-        if(arrayfull){
+        if(pupilIdArray){
           let pupilIdsString = `[`;
-          props.userArray.forEach((item: any) => {
+          pupilIdArray.forEach((item: any) => {
             pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
           });
           pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
@@ -130,7 +136,7 @@ const TotalDailyMiles = (props) => {
       };
     }
       setLessonAndUserIds();
-  }, [arrayfull]);
+  }, [pupilIdArray]);
 
 
 
@@ -229,7 +235,7 @@ const TotalDailyMiles = (props) => {
       }
     }
     getDailyMleLessonIds();
-  }, []);
+  }, [pupilsIdsList]);
 
 
   ////////////////////////////////////////////////////
@@ -288,7 +294,7 @@ const TotalDailyMiles = (props) => {
             setDailyMileCount(filteredData.length);
           } else {
             // const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-            setDailyMileCount(parseFloat((filteredData.length / props.userArray.length).toPrecision(2)));
+            setDailyMileCount(parseFloat((filteredData.length / pupilIdArray.length).toPrecision(2)));
           }
         }
       }
