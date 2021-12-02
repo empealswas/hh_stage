@@ -42,6 +42,7 @@ exports.handler = async (event) => {
             }
         });
         console.log('Response: ', graphqlData);
+        console.log('Response: ', graphqlData);
         const body = {
             //todo change to key of returned object
             message: `Successfully removed file: ${id}`
