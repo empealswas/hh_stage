@@ -74,7 +74,6 @@ const OrganizationsOverview = () => {
                                     <CardContent>
                                         <CardMedia
                                             component="img"
-                                            height="194"
                                             image="/static/HHT logo RGB.png"
                                             alt="Paella dish"
                                         />

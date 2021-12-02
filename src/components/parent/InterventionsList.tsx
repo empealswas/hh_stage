@@ -109,7 +109,7 @@ const InterventionsList = (props: { pupil: Pupil }) => {
         return () => {
 
         };
-    }, [sortFilter]);
+    }, [sortFilter, props.pupil]);
 
     useEffect(() => {
 
