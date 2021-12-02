@@ -5,6 +5,7 @@ import Page from "../../Page";
 import DashboardSettings from "../app/DashboardSettings";
 import DashboardOfTeacher from "../app/DashboardOfTeacher";
 import {Can} from "../../../utils/Ability";
+import {Outlet} from "react-router-dom";
 
 const Wearables = () => {
     return (

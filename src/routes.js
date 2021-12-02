@@ -1,4 +1,4 @@
-import {Navigate, Outlet, useRoutes} from 'react-router-dom';
+
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
@@ -24,35 +24,55 @@ import LessonOverview from "./components/Lesson/LessonContent/LessonOerview";
 import SchoolOutlet from "./components/School/SchoolOutlet";
 import SchoolManagement from "./components/School/SchoolManagement";
 import ClassroomOverview from "./components/classrooms/ClassroomOverview";
-import ClassroomsTable from "./components/classrooms/ClassroomsTable";
-import ClassroomPage from "./components/classrooms/ClassroomPage";
 import PupilOverview from "./components/pupil/PupilOverview";
 import ReportPage from "./pages/ReportPage";
 import ClassroomPageNew from "./components/classrooms/ClassroomPageNew";
 import SchoolHousesPage from "./pages/SchoolHousesPage";
+
 import PEForm from "./components/Lesson/pe/PEForm";
 import ParentOverview from "./components/parent/ParentOverview";
-import SectionGrid from "./components/Sections/SectionGrid";
 import SectionOverview from "./components/Sections/SectionOverview";
 import Wearables from "./components/_dashboard/wearables/Wearables";
+import NotYetConfirmedPage from "./pages/NotYetConfirmedPage";
+import Organizations from "./pages/Organizations";
+import {Navigate, useRoutes} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
+import ChildOverview from "./components/parent/ChildOverview";
+import ChildOverviewMenu from "./components/parent/ChildOverviewMenu";
 
-// ----------------------------------------------------------------------
+export function PreLoginRouter(){
+    return useRoutes([
+        {
+            path: '/',
+            element: <LogoOnlyLayout/>,
+            children: [
+                {path: 'login', element: <Login/>},
+                {path: 'register', element: <Register/>},
+                {path: '404', element: <NotFound/>},
+                {path: 'confirmation', element: <NotYetConfirmedPage/>},
+                {path: '/', element: <Navigate to="/login"/>},
+                {path: '*', element: <Navigate to="/login"/>}
+            ]
+        },
+        {path: '*', element: <Navigate to="/404" replace/>}
+
+    ]);
+}
 
 export default function Router() {
     return useRoutes([
+            {},
         {
             path: '/dashboard',
             element: <DashboardLayout/>,
             children: [
                 {element: <Navigate to="/dashboard/app" replace/>},
-                {
-                    path: 'schools', element: <SchoolOutlet/>, children: [
-                        {element: <Schools/>},
-                        {
-                            path: ':id', element: <SchoolOutlet/>, children: [
+                {path: 'schools', element: <SchoolOutlet/>, children: [
+                        {path: '/dashboard/schools', element: <Schools/>},
+                        {path: ':id', element: <SchoolOutlet/>, children: [
                                 {
                                     path: 'manage', element: <Outlet/>, children: [
-                                        {element: <SchoolManagement/>},
+                                        {path: '/dashboard/schools/:id/manage', element: <SchoolManagement/>},
                                         {
                                             path: 'parent', element: <Outlet/>, children: [
                                                 {path: ':parentId', element: <ParentOverview/>}
@@ -63,7 +83,7 @@ export default function Router() {
 
                                 {
                                     path: 'classrooms', element: <Outlet/>, children: [
-                                        {element: <ClassroomOverview/>},
+                                        {path: '/dashboard/schools/:id/classrooms', element: <ClassroomOverview/>},
                                         {path: ':classroomId', element: <ClassroomPageNew/>}
                                     ]
                                 }
@@ -71,21 +91,13 @@ export default function Router() {
                         }
                     ]
                 },
-                {path: 'wearables', element: <Outlet/>, children: [
-                        {element: <Wearables/>}
-                    ]},
                 {
                     path: 'reports', element: <Outlet/>, children: [
-                        {element: <ReportPage/>},
+                        {path: '/dashboard/reports', element: <ReportPage/>},
                     ]
                 },
                 {path: 'parent', element: <ParentSection/>},
-                {path: 'section', element: <SectionOverview/>,
-                    children: [{
-                        path: ':sectionId', element: <SectionOverview/>
-                    },
-                       ]
-                },
+
                 {
                     path: 'lessons', element: <LessonOutlet/>, children: [
                         {path: ':lessonId', element: <LessonOverview/>}
@@ -93,9 +105,15 @@ export default function Router() {
                 },
                 {
                     path: 'curricula', element: <Lessons/>, children: [
-                        {element: <CurriculaComponents/>},
+                        {path: '/dashboard/curricula', element: <CurriculaComponents/>},
                         {path: 'pe', element: <PEForm/>},
                         {path: ':id', element: <CurriculumOverview/>},
+                        {path: 'section', element: <SectionOverview/>,
+                            children: [{
+                                path: ':sectionId', element: <SectionOverview/>
+                            },
+                            ]
+                        },
                         {
                             path: 'subjects', element: <SubjectOutlet/>, children: [
                                 {path: ':id', element: <TermElements/>},
@@ -117,33 +135,33 @@ export default function Router() {
                 },
                 {
                     path: 'pupils', element: <Outlet/>, children: [
-                        {path: ':pupilId', element: <PupilOverview/>}
+                        {path: ':pupilId', element: <ChildOverviewMenu/>}
                     ]
                 },
                 {
                     path: 'houses', element: <Outlet/>, children: [
-                        {element: <SchoolHousesPage/>},
+                        {path: '/dashboard/houses/', element: <SchoolHousesPage/>},
                     ]
                 },
+
                 {path: 'app', element: <DashboardApp/>},
+                {path: 'organizations', element: <Organizations/>},
+                {path: 'wearables', element: <Wearables/>, children: [
+                        { element: <Wearables/>},
+                    ]},
                 {path: 'user', element: <User/>},
                 {path: 'products', element: <Products/>},
-                {path: 'blog', element: <Blog/>}
+                {path: 'blog', element: <Blog/>},
             ]
         },
+            {
+                path: '/',
+                element: <LogoOnlyLayout />,
+            },
 
-        {
-            path: '/',
-            element: <LogoOnlyLayout/>,
-            children: [
-                {path: 'login', element: <Login/>},
-                {path: 'register', element: <Register/>},
-                {path: '404', element: <NotFound/>},
-                {path: '/', element: <Navigate to="/dashboard"/>},
-                {path: '*', element: <Navigate to="/404"/>}
-            ]
-        },
+            {path: '*', element: <Navigate to="/dashboard/app" replace/>}
+    ]
 
-        {path: '*', element: <Navigate to="/404" replace/>}
-    ]);
+
+    );
 }

@@ -9,6 +9,7 @@ import StepIntensityDonut from "../../../../reports/charts/GarminWearablesCharts
 import {CardContent} from "@mui/material";
 import GarminMetricsRadialChart from "../../../../reports/charts/GarminWearablesCharts/GaminMetricsRadialChart";
 import StanineLineChart from "../../../../reports/charts/GarminWearablesCharts/StanineLineChart";
+import { TableDataModel } from "../../../../../models/garminDataModels/scatterTableData";
 
 
 export default function DailiesOverview(props: any) {
@@ -36,14 +37,7 @@ export default function DailiesOverview(props: any) {
     const [dailiesIntensityDonutData, setDailiesIntensityDonutData] = useState<number[]>([]);
     const [stanineValue, setStanineValue] = useState<number>(1);
     const [radialValue, setRadialValue] = useState<number>(1);
-
-    // const dailesDataQuery = dailiesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + props["grouping"];
-    // const dailiesStanineQuery = dailiesZvaluesBaseUrl + startUrl + props["startDate"] + endUrl + props["endDate"] + periodUrl + props["timePeriod"] + groupedByUrl + props["grouping"];
-
-    // var radialGraphData = new ApexRadialGraphModel(0, 0, 0, 0);
-    // var stepsIntensityData!: GarminDailiesSummaryModel;
-    // var userDailies: GarminDailiesSummaryModel[] = [];
-
+    const [tableData, setTableData] = useState<TableDataModel[]>([]);
 
     ///////////////////////////////////
     /////  get dailies users data /////
@@ -70,7 +64,10 @@ export default function DailiesOverview(props: any) {
                         if (result != null) {
                             var garminData: GarminDailiesSummaryModel[] = JSON.parse(result);
                             // console.log(garminData);
-                            // replaceHealthyHabitIdsWithUsername(garminData);
+                            if(garminData){
+                                replaceHealthyHabitIdsWithUsername(garminData);
+                            }
+                            
                             setDailiesUser(garminData);
                         }
                     })
@@ -232,9 +229,7 @@ export default function DailiesOverview(props: any) {
         const prepStanineHeatmapData = async () => {
             if (dailiesStanineGroup.length > 0) {
                 setStanineValue(dailiesStanineGroup[0].totalSteps);
-            } else {
-                console.log("dailies Stanine Group: no data");
-            }
+            };
         }
         prepStanineHeatmapData();
     }, [dailiesStanineGroup]);
@@ -247,12 +242,30 @@ export default function DailiesOverview(props: any) {
             if(dailiesDataGroup.length>0){
                 var x = parseFloat((dailiesDataGroup[0].totalSteps/ 5000 * 100).toPrecision(2));
                 setRadialValue(x);
-            } else {
-                console.log("dailies Radial Trace: no data");
-            }
+            };
         }
         prepTargetRadialData();
     }, [dailiesDataGroup]);
+
+    //////////////////////////////////////////////
+    /////  Structure table data              /////
+    //////////////////////////////////////////////  
+    useEffect(() => {  
+        const prepTargetRadialData = async () => {
+            
+            if(dailiesDataUser.length>0){
+                let id = 0;
+                let tableData: TableDataModel[]=[];
+                for(let dailies of dailiesDataUser) {
+                    let tableRec = new TableDataModel (id, dailies.garminId, dailies.totalSteps, "dailies");
+                    tableData.push(tableRec);
+                    id++
+                }
+                setTableData(tableData);
+            } 
+        }
+        prepTargetRadialData();
+    }, [dailiesDataUser]);
 
     function generateGarminDayWiseTimeSeries(inData: any) {
         var i = 0;
@@ -284,7 +297,7 @@ export default function DailiesOverview(props: any) {
                                     labels={["Regular", "Moderate", "Vigorous"]}/>
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
-                <DailiesStepsDistribution data={dailiesScatterData} title={"Steps"} subTitle={"Total Steps"}/>
+                <DailiesStepsDistribution tableData={tableData} data={dailiesScatterData} title={"Steps"} subTitle={"Total Steps"}/>
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
                     <GarminMetricsRadialChart  data={radialValue} title={"Steps"} subTitle={"% Target Achieved"}/>

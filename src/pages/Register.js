@@ -1,14 +1,14 @@
-import { Link as RouterLink } from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
 // material
-import { styled } from '@material-ui/core/styles';
-import { Box, Card, Link, Container, Typography } from '@material-ui/core';
+import {styled} from '@material-ui/core/styles';
+import {Box, Card, Container, Link, Typography} from '@material-ui/core';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
-import { MHidden } from '../components/@material-extend';
-import { RegisterForm } from '../components/authentication/register';
-import AuthSocial from '../components/authentication/AuthSocial';
+import {MHidden} from '../components/@material-extend';
+import {RegisterForm} from '../components/authentication/register';
+import * as React from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -40,8 +40,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
+
   return (
-    <RootStyle title="Register | Minimal-UI">
+    <RootStyle title="Register | Healthy Habits">
       <AuthLayout>
         Already have an account? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
@@ -51,9 +52,14 @@ export default function Register() {
 
       <MHidden width="mdDown">
         <SectionStyle>
-          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Manage the job more effectively with Minimal
+          <div>
+          <Typography variant="h3" sx={{ px: 5, mt: 10}}>
+            Register with
           </Typography>
+          <Typography variant="h2" sx={{ px: 5, mb: 5 }} color={'green'}>
+            Healthy Habits
+          </Typography>
+          </div>
           <img alt="register" src="/static/illustrations/illustration_register.png" />
         </SectionStyle>
       </MHidden>
@@ -62,19 +68,20 @@ export default function Register() {
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Get started absolutely free.
+              Create your organization.
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Free forever. No credit card needed.
+              You will need to wait until your organization is verified.
             </Typography>
           </Box>
 
-          <AuthSocial />
+          {/*<AuthSocial />*/}
 
-          <RegisterForm />
+
+          <RegisterForm/>
 
           <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-            By registering, I agree to Minimal&nbsp;
+            By registering, I agree to Healthy Habits&nbsp;
             <Link underline="always" sx={{ color: 'text.primary' }}>
               Terms of Service
             </Link>

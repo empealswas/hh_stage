@@ -10,6 +10,7 @@ export default function defineAbilityFor(user: User | null) {
     if (!user) {
         return build();
     }
+    // can('visit', 'register');
     // can('visit', 'login');
     if (user instanceof Admin) {
         can('visit', 'schools');
@@ -22,6 +23,7 @@ export default function defineAbilityFor(user: User | null) {
         can('visit', 'dashboard')
         can('visit', 'reports');
         can('visit', 'houses');
+        can('visit', 'organizations');
 
 
     } else if (user instanceof  Teacher) {

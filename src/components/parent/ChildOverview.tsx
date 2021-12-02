@@ -11,7 +11,8 @@ const ChildOverview = (props: {pupil: Pupil}) => {
     const [numberOfCover, setNumberOfCover] = useState(1);
     const {pupil} = {...props};
 
-    console.log(pupil)
+
+    console.log(pupil);
     return (
         <Card>
             <CardMedia

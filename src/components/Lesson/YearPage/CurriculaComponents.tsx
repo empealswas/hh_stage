@@ -37,7 +37,7 @@ const CurriculaComponents = () => {
             <Box height={20}/>
             <Grid container justifyContent="center">
                 <Grid item xs={12} sm={6} m={4} lg={4}>
-                    <Link component={RouterLink} to={`../section/2d93de97-d7bc-41a9-84d4-29e6b691f8f3`} underline={'none'}>
+                    <Link component={RouterLink} to={'../section/2d93de97-d7bc-41a9-84d4-29e6b691f8f3'} underline={'none'}>
                         <Card>
                             <CardActionArea>
                                 <CardHeader style={{textAlign: 'center'}} title={'Sections'}/>

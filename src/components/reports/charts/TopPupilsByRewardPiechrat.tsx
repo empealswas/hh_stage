@@ -13,6 +13,7 @@ import TotalGrowthBarChartSkeleton from "./TotalGrowthBarChartSkeleton";
 import {UserContext} from "../../../App";
 import {Principal} from "../../../models/Principal";
 import {Admin} from "../../../models/Admin";
+import {Teacher} from "../../../models/Teacher";
 
 // ----------------------------------------------------------------------
 
@@ -65,11 +66,11 @@ export default function TopPupilsByRewardPiechrat() {
     const [pupilsNames, setPupilsNames] = useState<any>([]);
     const user = useContext(UserContext);
     const getTopPupilsByTrophies = async () => {
-        let pupils;
+        let pupils = [];
         if (user instanceof Admin || user instanceof Principal) {
         const result: any = await API.graphql(graphqlOperation(topByRewardsQuery));
             pupils = result.data.listPupils.items;
-        }else{
+        }else if (user instanceof Teacher){
             const result: any = await API.graphql(graphqlOperation(teacherQuery, {id: user?.email}));
             pupils = result.data.getTeacher.classrooms.items
                 .map((item: any) => item.classroom)

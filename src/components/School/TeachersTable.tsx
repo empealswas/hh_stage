@@ -18,6 +18,7 @@ import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {LoadingButton} from "@material-ui/lab";
 import {GridCellParams} from "@mui/x-data-grid";
 import {useSnackbar} from "notistack";
+import {Dialog, DialogContent, DialogTitle, TextField} from "@mui/material";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -28,25 +29,51 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 const SendButton = (params: { id: string }) => {
     const [loading, setLoading] = useState(false);
-    const [open, setOpen] = React.useState(false);
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const [open, setOpen] = useState(false);
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const ResendPasswordModal = (props: {open: boolean, onClose: any}) => {
+        const [password, setPassword] = useState('');
+
+        const { onClose, open } = props;
+        const handleClose = () => {
+            onClose();
+        };
+        return (
+            <Dialog fullWidth={true} onClose={handleClose} open={open}>
+                <DialogTitle>Resend invitation message</DialogTitle>
+                <DialogContent>
+                    <Stack direction={'column'} spacing={2}>
+                        <TextField id="outlined-basic" variant="outlined" label={'Temporary password(optional)'} value={password}
+                                   onChange={event => setPassword(event.target.value)}/>
+                        <LoadingButton loading={loading} startIcon={<SendIcon/>} onClick={() => {
+                            setLoading(true);
+                            resendCodeToTeacher({teacherEmail: params.id, password: password})
+                                .then(value => {
+                                    setOpen(true);
+                                    setLoading(false);
+                                    enqueueSnackbar(`Invitation has been sent to ${params.id}`, {variant: 'success'})
+                                });
+                        }}>
+                            Resend
+                        </LoadingButton>
+                    </Stack>
+                </DialogContent>
+            </Dialog>
+        );
+    }
     return (
         <div>
             <Stack direction={'row'}>
-                <Tooltip title={'Resend Invite Message'}>
-                    <LoadingButton loading={loading} startIcon={<SendIcon/>} onClick={() => {
-                        setLoading(true);
-                        resendCodeToTeacher({teacherEmail: params.id})
-                            .then(value => {
-                                setOpen(true);
-                                setLoading(false);
-                                enqueueSnackbar(`Invitation has been sent to ${params.id}`, {variant: 'success'})
-                            });
-                    }}>
-                        Resend
-                    </LoadingButton>
-                </Tooltip>
+                <Button variant={'contained'} onClick={handleClickOpen}>Resend password</Button>
+                <ResendPasswordModal   open={open} onClose={handleClose}/>
             </Stack>
         </div>
     )
