@@ -15,14 +15,16 @@ const getClassroomsQuery = `query MyQuery($id: ID = "") {
   }
 }
 `
-const getPupilsIdQuery = `query MyQuery($id: ID = "") {
+
+const getPupilsIdQuery = 
+`query MyQuery($id: ID = "") {
   getTeacher(id: $id) {
     classrooms {
       items {
         classroom {
           pupils {
             items {
-              id
+              pupil {id firstName lastName}
             }
           }
         }
@@ -33,7 +35,7 @@ const getPupilsIdQuery = `query MyQuery($id: ID = "") {
 `
 
 export class Teacher extends User {
-    pupilsIds: null | [] = null;
+    pupilsIds: null | any[] = null;
 
     async getCredentials(): Promise<void> {
         const result: any = await API.graphql(graphqlOperation(getTeacher, {id: this._email}));
@@ -48,12 +50,19 @@ export class Teacher extends User {
 
     async getPupilsIds() {
       if (!this.pupilsIds) {
-
           const result: any = await API.graphql(graphqlOperation(getPupilsIdQuery, {id: this._email}));
-          this.pupilsIds = result.data.getTeacher.classrooms.items
-              .map((item: any) => item.classroom)
-              .flatMap((classroom: Classroom) => classroom.pupils?.items)
-              .map((item: Pupil) => item.id);
+          let data: any[] = [];
+          if (result.data?.getTeacher) {
+            result.data.getTeacher.classrooms.items[0].classroom.pupils.items.forEach((item: any) => {
+              let name = item.pupil.firstName + " " + item.pupil.lastName;
+              data.push({id: item.pupil.id, name: name});
+            })
+            this.pupilsIds=data;
+          }
+          // this.pupilsIds = result.data.getTeacher.classrooms.items
+          //     .map((item: any) => item.classroom)
+          //     .flatMap((classroom: Classroom) => classroom.pupils.items)
+          //     .map((item: Pupil) => item.firstName);
       }
       return this.pupilsIds;
   }
@@ -62,3 +71,4 @@ export class Teacher extends User {
         return 'Teacher'
     }
 }
+

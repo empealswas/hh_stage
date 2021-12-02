@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -20,6 +20,7 @@ import { Menu } from "@material-ui/core";
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import TotalAverageSwitch from '../_garmin-selectors/total-average-switch';
 import DailyMileChart from '../reports/charts/KpiCharts/DailyMileChart';
+import { UserContext } from '../../App';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
 	backgroundColor: theme.palette.primary.dark,
@@ -54,56 +55,62 @@ const query = `query MyQuery {
 }`
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const TimeCompletedCard = (props) => {
-	const theme = useTheme();
-	// const [timeCompletedTotAveswitchState, setTimeCompletedTotAveSwitchState] = useState("total");
-	// const [anchorEl, setAnchorEl] = useState(null);
+const TimeCompletedCard = () => {
 
-	// const handleClick = (event) => {
-	// 	setAnchorEl(event.currentTarget);
-	// };
 
-	// const handleClose = () => {
-	// 	setAnchorEl(null);
-	// };
-	const [duration, setDuration] = useState(0);
-
-	///////////////////////////////////////
-	const [pupilsIdsList, setPupilsIdsList] = useState();
+	const [anchorEl, setAnchorEl] = useState(null);
+	const handleClick = (event) => { setAnchorEl(event.currentTarget); };
+	const handleClose = () => { setAnchorEl(null); };
+	// const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
 	// const [getActiveTimeQuery, setGetActiveTimeAttendanceQuery] = useState();
+	// const [filteredDataState, setFilteredDataState] = useState();
+	// const [activeTimeCount, setActiveTimeCount] = useState(null);
+	const theme = useTheme();
+	const user = useContext(UserContext);
+	let userRole = user.getRole();
+
+	const [duration, setDuration] = useState(0);
+	const [pupilsIdsList, setPupilsIdsList] = useState();
 	const [activityAttendanceData, setActivityAttendanceData] = useState();
 	const [attendedLessonData, setAttendedLessonData] = useState();
 	const [durationByDate, setDurationByDate] = useState();
-
-	// const [activeTimeCount, setActiveTimeCount] = useState(null);
+	const [timeValue2, setTimeValue2] = useState(false);
 	const [dateRangeState2, setDateRange2] = useState();
-	// const [filteredDataState, setFilteredDataState] = useState();
 	const [durationSparkLineDataState, setDurationSparkLineDataState] = useState();
 	const [arrayfull, setArrayFull] = useState(false);
-
-	////////////////////////
-	const [timeValue2, setTimeValue2] = useState(false);
 	const [activeDurationTotAveswitchState, setActiveDurationTotAveSwitchState] = useState("total");
-	// const [dailyMileTotAveswitchState, setDailyMileTotAveSwitchState] = useState("total");
 
 
-	//////////////////////////
+  ///////////////////////////////////////////////////////
+  const [pupilIdArray, setPupilIdArray] = useState();
+  ///////////////////////////////////////////////////////
 	const handleChangeTime2 = (event, newValue) => {
 		console.log(newValue);
 		setTimeValue2(newValue);
 	};
-	//////////////////////////////////////////
-	// ensure arry of users ids is present //
-	/////////////////////////////////////////
-	useEffect(() => {
-		const isArrayFull = async () => {
-			if (props.userArray) {
-				setArrayFull(true);
-			}
-		}
-		isArrayFull();
-	}, [props]);
+	// //////////////////////////////////////////
+	// // ensure arry of users ids is present //
+	// /////////////////////////////////////////
+	// useEffect(() => {
+	// 	const isArrayFull = async () => {
+	// 		if (props.userArray) {
+	// 			setArrayFull(true);
+	// 		}
+	// 	}
+	// 	isArrayFull();
+	// }, [props]);
 
+
+	/////////////////////////////////////////////////
+  // check when the array of user ids is ready ///
+  ////////////////////////////////////////////////
+  useEffect(() => {
+    const getPupilIds = async() => {
+        let x = await user.getPupilsIds();
+        setPupilIdArray(x);
+    }
+    getPupilIds();
+  }, [user]);
 
 	/////////////////////////////////////////////////
 	// Convert string of pupilIds for db query //////
@@ -111,9 +118,9 @@ const TimeCompletedCard = (props) => {
 	useEffect(() => {
 		const setLessonAndUserIds = async () => {
 			console.log("setLessonAndUserIds");
-			if (arrayfull) {
+			if (pupilIdArray) {
 				let pupilIdsString = `[`;
-				props.userArray.forEach((item: any) => {
+				pupilIdArray.forEach((item: any) => {
 					pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
 				});
 				pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
@@ -121,7 +128,7 @@ const TimeCompletedCard = (props) => {
 			};
 		}
 		setLessonAndUserIds();
-	}, [arrayfull]);
+	}, [pupilIdArray]);
 
 	//////////////////////////////////
 	// convert date to a string //////
@@ -264,23 +271,18 @@ const TimeCompletedCard = (props) => {
 			}
 		}
 		computeDurations();
-	}, [attendedLessonData]);
+	}, [attendedLessonData, dateRangeState2]);
 
 
 	useEffect(() => {
 		const getCount = async () => {
 			if(durationSparkLineDataState && activityAttendanceData){
 				let duration = durationSparkLineDataState.reduce((tot, a) => tot+a, 0);
-
-				const users = [];
-				activityAttendanceData.forEach((item) => {
-						users.push({ 'id': item.pupilID });
-				});
 				if (activeDurationTotAveswitchState === 'total') {
 					setDuration(duration);
 				} else {
-					const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-					setDuration(parseFloat((duration / uniqueIds.length).toPrecision(2)));
+					// const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+					setDuration(parseFloat((duration / pupilIdArray.length).toPrecision(2)));
 				}
 			}
 		}
