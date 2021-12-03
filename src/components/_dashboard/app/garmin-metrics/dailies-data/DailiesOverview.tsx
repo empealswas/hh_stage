@@ -35,7 +35,7 @@ export default function DailiesOverview(props: any) {
     // constants for plot data
     const [dailiesScatterData, setDailiesScatterData] = useState<ScatterPlotTraceModel[]>([]);
     const [dailiesIntensityDonutData, setDailiesIntensityDonutData] = useState<number[]>([]);
-    const [stanineValue, setStanineValue] = useState<number>(1);
+    const [stanineValue, setStanineValue] = useState<number>(0);
     const [radialValue, setRadialValue] = useState<number>(1);
     const [tableData, setTableData] = useState<TableDataModel[]>([]);
 
@@ -228,6 +228,7 @@ export default function DailiesOverview(props: any) {
     useEffect(() => {
         const prepStanineHeatmapData = async () => {
             if (dailiesStanineGroup.length > 0) {
+                console.log("stanine value =     " + dailiesStanineGroup[0].totalSteps);
                 setStanineValue(dailiesStanineGroup[0].totalSteps);
             };
         }

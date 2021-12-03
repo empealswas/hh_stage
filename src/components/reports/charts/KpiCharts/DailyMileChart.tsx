@@ -2,6 +2,7 @@ import ReactApexChart from 'react-apexcharts';
 
 export default function DailyMileChart(props: any) {
 
+    // console.log(props);
     const chartData = {
         type: 'line',
         height: 90,

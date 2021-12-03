@@ -17,6 +17,8 @@ import TimeCompletedCard from "../components/cards/TimeCompletedCard";
 import {Organization} from "../models/Organization";
 import OrganizationOverview from "../components/organizations/OrganizationOverview";
 import TotalActivitiesAlt from '../components/cards/TotalActivitiesAlt';
+import ActivitiesDuration from '../components/cards/ActivitiesDuration';
+import ActivitiesTotal from '../components/cards/ActivitiesTotal';
 
 
 
@@ -166,15 +168,16 @@ import TotalActivitiesAlt from '../components/cards/TotalActivitiesAlt';
 						:
 						<Grid container spacing={5}>
 							<Grid item xs={12} sm={6} md={4} lg={4}>
-							
+								
 								{/* <TotalActivities/> */}
-								<TotalActivitiesAlt />
+								<ActivitiesTotal />
 							</Grid>
 							<Grid item xs={12} sm={6} md={4} lg={4}>
 								<TotalDailyMiles />
 							</Grid>
 							<Grid item xs={12} sm={6} md={4} lg={4}>
-								<TimeCompletedCard />
+								<ActivitiesDuration />
+								{/* <TimeCompletedCard /> */}
 							</Grid>
 							{/*<Grid item xs={12} md={6} lg={6}>*/}
 							{/*    <AverageStepsChart/>*/}
