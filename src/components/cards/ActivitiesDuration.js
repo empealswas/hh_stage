@@ -119,7 +119,7 @@ useEffect(() => {
   /////////////////////////////////////////////////
   useEffect(() => {
       const setLessonAndUserIds = async () => {
-          console.log("setLessonAndUserIds");
+        //   console.log("setLessonAndUserIds");
           if (pupilIdArray) {
               let pupilIdsString = `[`;
               pupilIdArray.forEach((item: any) => {
@@ -163,7 +163,7 @@ useEffect(() => {
       // detect change in Week/ month & create an array of dates as appropriate
       // for week- date for prev 7 days && for month - past 28 days
       const getdates = async () => {
-          console.log("getdates");
+        //   console.log("getdates");
           let endDate = new Date();
           let startDate = new Date();
           let dateRange = [];
@@ -267,7 +267,7 @@ useEffect(() => {
                   })
                   durationData.push({ date: day, duration: durationCount })
               })
-              console.log(durationData);
+            //   console.log(durationData);
               setDurationSparkLineDataState(createSparkLineTrace(durationData));
               setDurationByDate(durationData);
           }
@@ -280,12 +280,25 @@ useEffect(() => {
       const getCount = async () => {
           if(durationSparkLineDataState && activityAttendanceData){
               let duration = durationSparkLineDataState.reduce((tot, a) => tot+a, 0);
-              if (activeDurationTotAveswitchState === 'total') {
-                  setDuration(duration);
+              let datasize = 0;
+              if (duration === 0) {
+                datasize = 0;
+                setDuration("0");
               } else {
-                  // const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-                  setDuration(parseFloat((duration / pupilIdArray.length).toPrecision(2)));
-              }
+                datasize = duration;
+                if (activeDurationTotAveswitchState === 'total') {
+                    setDuration(datasize);
+                } else {
+                  let val = parseFloat((datasize / pupilIdArray.length).toPrecision(2));
+                  setDuration(val);
+                }
+              };
+            //   if (activeDurationTotAveswitchState === 'total') {
+            //       setDuration(duration);
+            //   } else {
+            //       // const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+            //       setDuration(parseFloat((duration / pupilIdArray.length).toPrecision(2)));
+            //   }
           }
       }
       getCount()

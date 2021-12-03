@@ -212,8 +212,8 @@ useEffect(() => {
                           data.push({ date: splitDate(item.createdAt), pupilID: item.pupilID, lessonRecordID: item.lessonRecordID });
                       };
                   });
-                  console.log("totalattendancedata");
-                  console.log(data);
+                //   console.log("totalattendancedata");
+                //   console.log(data);
                   setTotalAttendanceData(data);
               }
           }
@@ -262,7 +262,6 @@ useEffect(() => {
               );
               // loop through the time period- filter the lessons by day
               dateRangeState3.forEach((day) => {
-
                   // loop through the filtered lessons then filter the attandence by day & lesson
                   let activityCount = 0;
                   filteredLessons.forEach((lesson) => {
@@ -273,33 +272,44 @@ useEffect(() => {
                   })
                   totalActivityData.push({ date: day, activities: activityCount })
               })
-              console.log(totalActivityData);
               setTotalSparkLineDataState(createSparkLineTrace(totalActivityData));
               setTotalByDate(totalActivityData);
           }
       }
       computeTotalActivities();
-  }, [attendedLessonData2]);
+  }, [attendedLessonData2, dateRangeState3]);
 
 
   useEffect(() => {
       const getCount = async () => {
           if(totalSparkLineDataState && totalAttendanceData){
               let activities = totalSparkLineDataState.reduce((tot, a) => tot+a, 0);
-
-              const users = [];
-              console.log(totalAttendanceData);
-              totalAttendanceData.forEach((item) => {
-                      users.push({ 'id': item.pupilID });
-              });
-              if (activeTotalsTotAveswitchState === 'total') {
-                  setTotalActivity(activities);
+              let datasize = 0;
+              if (activities === 0) {
+                datasize = 0;
+                setTotalActivity("0");
               } else {
-                  console.log(users);
-                  const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-                  console.log(uniqueIds);
-                  setTotalActivity(parseFloat((activities / pupilIdArray.length).toPrecision(2)));
-              }
+                datasize = activities
+                if (activeTotalsTotAveswitchState === 'total') {
+                    setTotalActivity(datasize);
+                } else {
+                  let val = parseFloat((datasize / pupilIdArray.length).toPrecision(2));
+                  setTotalActivity(val);
+                }
+              };
+            //   const users = [];
+            //   console.log(totalAttendanceData);
+            //   totalAttendanceData.forEach((item) => {
+            //           users.push({ 'id': item.pupilID });
+            //   });
+            //   if (activeTotalsTotAveswitchState === 'total') {
+            //       setTotalActivity(activities);
+            //   } else {
+            //       console.log(users);
+            //       const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
+            //       console.log(uniqueIds);
+            //       setTotalActivity(parseFloat((activities / pupilIdArray.length).toPrecision(2)));
+            //   }
           }
       }
       getCount()

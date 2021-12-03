@@ -97,9 +97,9 @@ export default function StanineLineChart(props: any) {
 			</Card>
 		);
 	} else{
-		console.log("stanine props")
-		console.log(props);
-		console.log(plot);
+		// console.log("stanine props")
+		// console.log(props);
+		// console.log(plot);
 		// return (
 		// 	<Card>
 		// 		<CardHeader title="Garmin Metrics Data" subheader="No data available" />

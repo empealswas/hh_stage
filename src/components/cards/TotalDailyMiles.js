@@ -70,10 +70,6 @@ const TotalDailyMiles = () => {
   const user = useContext(UserContext);
   let userRole = user.getRole();
 
-
-  // console.log(user.getPupilsIds());
-  // let x = user.getPupilsIds();
-  // console.log(x);
   const theme = useTheme();
   const [lessonIdsState, setLessonIdsState] = useState([]);
 
@@ -92,7 +88,7 @@ const TotalDailyMiles = () => {
   ///////////////////////////////////////////////////////
 
   const handleChangeTime = (event, newValue) => {
-    
+
     setTimeValue(newValue);
   };
 
@@ -100,44 +96,29 @@ const TotalDailyMiles = () => {
   // check when the array of user ids is ready ///
   ////////////////////////////////////////////////
   useEffect(() => {
-    const getPupilIds = async() => {
-        let x = await user.getPupilsIds();
-        // console.log(getPupilIds);
-        // console.log(x);
-        setPupilIdArray(x);
+    const getPupilIds = async () => {
+      let x = await user.getPupilsIds();
+      setPupilIdArray(x);
     }
     getPupilIds();
   }, [user]);
-
-  // /////////////////////////////////////////////////
-  // // check when the array of user ids is ready ///
-  // ////////////////////////////////////////////////
-  // useEffect(() => {
-
-  //   const isArrayFull = async () => {
-  //     if(props.userArray){
-  //       setArrayFull(true);
-  //     }
-  //   }
-  //   isArrayFull();
-  // }, [props]);
 
   /////////////////////////////////////////////////
   // Convert string of pupilIds for db query //////
   /////////////////////////////////////////////////
   useEffect(() => {
-    
+
     const setLessonAndUserIds = async () => {
-        if(pupilIdArray){
-          let pupilIdsString = `[`;
-          pupilIdArray.forEach((item: any) => {
-            pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
-          });
-          pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
-          setPupilsIdsList(pupilIdsString);
+      if (pupilIdArray) {
+        let pupilIdsString = `[`;
+        pupilIdArray.forEach((item: any) => {
+          pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
+        });
+        pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
+        setPupilsIdsList(pupilIdsString);
       };
     }
-      setLessonAndUserIds();
+    setLessonAndUserIds();
   }, [pupilIdArray]);
 
 
@@ -171,8 +152,6 @@ const TotalDailyMiles = () => {
         sparklineData.push(mileCount);
       })
     }
-    console.log("sparklineData");
-    console.log(sparklineData)
     return sparklineData;
   }
 
@@ -235,8 +214,6 @@ const TotalDailyMiles = () => {
           lessonIdsString = lessonIdsString + '{lessonID: {eq: "' + item.id + '"}},';
         });
         lessonIdsString = lessonIdsString.slice(0, -1) + ']';
-        // console.log("lessonIdsString");
-        // console.log(lessonIdsString);
         setLessonIdsState(lessonIdsString);
       }
     }
@@ -252,18 +229,13 @@ const TotalDailyMiles = () => {
     // then update the state for that query
     // console.log(pupilsIdsList);
     const pupilLessonAttendanceQuery = async () => {
-
       if (lessonIdsState.length > 0 && pupilsIdsList) {
-        // console.log("about to query");
-        // console.log(pupilsIdsList);
         let newQuery = `query MyQuery {listAttendances(filter:{ or: ${lessonIdsState} and: {  or: ${pupilsIdsList} }},limit:1000000) 
           {items {id createdAt lessonID pupilID Pupil {
             firstName id lastName 
           } Lesson { 
             title 
         }}}}`;
-        // console.log("new query");
-        // console.log(newQuery);
         setGetDailyMileAttendanceQuery(newQuery);
       }
     }
@@ -286,44 +258,24 @@ const TotalDailyMiles = () => {
         const result2 = await API.graphql(graphqlOperation(getDailyMileAttendanceQuery));
         let data = result2.data?.listAttendances.items;
         data.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-
-        // console.log("results");
-        // console.log(data);
-        // now fiter by date
         if (dateRangeState) {
           let filteredData = data.filter(
             x => dateRangeState.includes(splitDate(x.createdAt))
           );
-          // console.log("and filtered results..........");
-        
-          // console.log(filteredData);
-          // console.log("the dates");
-          // console.log(dateRangeState);
           setFilteredDataState(filteredData);
-
-
           // to compute the total daily miles - need to get the lesson id then each pupil that attended that lesson
-          console.log("kpi filtered data ");
-          console.log(filteredData.length);
-          console.log("kpi pupilIdArray ");
-          console.log(pupilIdArray.length)
-          let datasize = 10;
-          if(filteredData.length===0){
-            datasize=1;
-          }  else {
-            datasize=filteredData.length;
-          }
-          if (dailyMileTotAveswitchState === 'total') {
-            // console.log("total" + filteredData.length);
-            setDailyMileCount(datasize);
-            // setDailyMileCount(0);
+          let datasize = 0;
+          if (filteredData.length === 0) {
+            datasize = 0;
+            setDailyMileCount("0");
           } else {
-            // console.log("average" + parseFloat((datasize / pupilIdArray.length).toPrecision(2)));
-            // // const uniqueIds = [...Array.from(new Set(users.map(item => item.id)))];
-            let val = parseFloat((datasize / pupilIdArray.length).toPrecision(2));
-            console.log(val)
-            //parseFloat((filteredData.length / pupilIdArray.length).toPrecision(2))
-            setDailyMileCount("val");
+            datasize = filteredData.length;
+            if (dailyMileTotAveswitchState === 'total') {
+              setDailyMileCount(datasize);
+            } else {
+              let val = parseFloat((datasize / pupilIdArray.length).toPrecision(2));
+              setDailyMileCount(val);
+            }
           }
         }
       }
@@ -382,7 +334,7 @@ const TotalDailyMiles = () => {
                       </>
                     </Stack>
                   </Grid>
-                  
+
                 </Grid>
               </Grid>
               <Grid item sx={{ mb: 0.75 }}>
@@ -440,7 +392,7 @@ const TotalDailyMiles = () => {
                   </Grid>
                   <Grid item xs={6}>
 
-                    <> 
+                    <>
                       <Grid item xs={12}>
 
                         {sparkLineDataState ? <DailyMileChart trace={sparkLineDataState} /> :
