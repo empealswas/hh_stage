@@ -25,7 +25,8 @@ export default function defineAbilityFor(user: User | null) {
         can('visit', 'reports');
         can('visit', 'houses');
         can('visit', 'organizations');
-
+        can('read', 'wearables');
+        can('visit', 'wearables');
 
     } else if (user instanceof  Teacher) {
         can('visit', 'lessons');
@@ -33,13 +34,16 @@ export default function defineAbilityFor(user: User | null) {
         can('visit', 'dashboard');
         can('visit', 'wearables');
         can('read', 'attendance');
-        can('read', 'teacherDashboard')
+        can('read', 'wearables')
 
     } else if (user instanceof Parent) {
         can('visit', 'dashboard')
         can('visit', 'parent');
     } else if (user instanceof Principal) {
+        can('read', 'wearables')
         can('visit', 'dashboard')
+        can('visit', 'wearables');
+
     }else if (user instanceof Organization) {
         can('manage', 'pupilList')
     }

@@ -40,7 +40,7 @@ const teacherQuery = `query MyQuery($id: ID = "") {
     }
   }`
 
-const DashboardOfTeacher = () => {
+const WearablesDashboard = () => {
 
     const user = useContext(UserContext);
 
@@ -252,4 +252,4 @@ const DashboardOfTeacher = () => {
     );
 };
 
-export default DashboardOfTeacher;
+export default WearablesDashboard;

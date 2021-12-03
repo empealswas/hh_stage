@@ -3,7 +3,7 @@ import {Container, Typography} from "@mui/material";
 import {Box} from "@material-ui/core";
 import Page from "../../Page";
 import DashboardSettings from "../app/DashboardSettings";
-import DashboardOfTeacher from "../app/DashboardOfTeacher";
+import WearablesDashboard from "../app/WearablesDashboard";
 import {Can} from "../../../utils/Ability";
 import {Outlet} from "react-router-dom";
 
@@ -15,9 +15,9 @@ const Wearables = () => {
                 <Box sx={{pb: 5}}>
                     <Typography variant="h4">Wearables</Typography>
                 </Box>
-                <Can I={'read'} a={'teacherDashboard'}>
-                    <DashboardOfTeacher/>
-                </Can>
+                {/*<Can I={'read'} a={'wearables'}>*/}
+                    <WearablesDashboard/>
+                {/*</Can>*/}
                 <DashboardSettings/>
             </Container>
         </Page>

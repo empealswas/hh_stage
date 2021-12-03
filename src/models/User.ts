@@ -9,22 +9,28 @@ export class User {
         this._email = email
     }
 
-    public async getCredentials(){}
+    public async getCredentials() {
+    }
 
-    public getFirstAndLastName(){
+    public getFirstAndLastName() {
         return {
             firstName: this.firstName,
             lastName: this.lastName
         }
     }
+
     get email(): string {
         return this._email;
     }
 
-    getRole(){
+    getRole() {
         return 'Teacher';
     }
+
+    async getPupilsIds() {
+    };
 }
+
 
 ///////////// if there is a pupil role... standardised way to get id, and username
   // const getPupilsIdQuery =`query MyQuery ($id: ID = "") {
