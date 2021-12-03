@@ -58,7 +58,7 @@ function TotalAverageSwitch({totAveChanger, switchVal}) {
     // store the current value of the 
 
     const handleAlignment = (event, newAlignment) => {
-        if (switchVal !== null) {
+        if (newAlignment !== null) {
             totAveChanger(newAlignment);
         }
     };
