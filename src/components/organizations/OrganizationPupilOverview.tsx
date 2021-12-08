@@ -7,7 +7,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import {getOrganization} from "../../graphql/queries";
 import { Organization } from '../../API';
 
-const OrganizationOverview = () => {
+const OrganizationPupilOverview = () => {
 
     const {id} = useParams();
     const [organization, setOrganization] = useState<Organization | null>(null);
@@ -27,11 +27,8 @@ const OrganizationOverview = () => {
             {organization &&
             <Typography variant={'h1'} textAlign={'center'}>{organization.name}</Typography>
             }
-            <Can I={'manage'} this={'pupilList'}>
-                <OrganizationPupilsList/>
-            </Can>
         </Container>
     );
 };
 
-export default OrganizationOverview;
+export default OrganizationPupilOverview;

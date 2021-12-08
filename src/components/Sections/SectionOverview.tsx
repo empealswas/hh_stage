@@ -81,12 +81,12 @@ const SectionOverview = () => {
         <Container>
             {section && <HeaderOptions title={sectionId ? section?.name ?? "Sections" : "Sections"}
                                        editingForm={
-                                           <Can I={'update'} a={'curriculum'}>
+                                           <Can I={'update'} a={'section'}>
                                                <EditSectionModal updateObject={section}/>
                                            </Can>
                                        }
                                        deletionModal={
-                                           <Can I={'delete'} a={'curriculum'}>
+                                           <Can I={'delete'} a={'section'}>
                                                <DeletionModal title={'Do you want to delete this Year Group?'}
                                                               onDelete={async () => {
                                                                   const result: any = await deleteSectionAsync();
@@ -103,7 +103,7 @@ const SectionOverview = () => {
                     <BreadcrumbsHeader/>
                     }
                 </Typography>
-                <Can I={'create'} a={'curriculum'}>
+                <Can I={'create'} a={'section'}>
                     <AddSectionModal/>
                     {sectionId &&
                     <AddLessonModalSection/>
@@ -115,9 +115,15 @@ const SectionOverview = () => {
             <SectionGrid/>
             <Box height={50}/>
             <Divider sx={{height: 3}}/>
-            <Typography variant={'h3'} textAlign={'center'}>Lessons</Typography>
             <Box height={50}/>
-            <LessonsGridSection/>
+            {sectionId &&
+                <>
+            <Typography variant={'h3'} textAlign={'center'}>Lessons</Typography>
+                    <Box height={50}/>
+
+                    <LessonsGridSection/>
+                </>
+            }
         </Container>
     );
 };

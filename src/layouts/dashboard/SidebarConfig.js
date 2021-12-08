@@ -16,10 +16,11 @@ import FestivalIcon from '@mui/icons-material/Festival';
 import homeGroup from '@iconify/icons-mdi/home-group';
 import runFast from '@iconify/icons-mdi/run-fast';
 import domainIcon from '@iconify/icons-mdi/domain';
+import {UserContext} from "../../App";
+import {useContext} from "react";
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
-
 const sidebarConfig = [
 /*  ,
   {
@@ -60,6 +61,15 @@ const sidebarConfig = [
   {
     title: 'organizations',
     path: '/dashboard/organizations',
+    icon: getIcon(domainIcon)
+  },  {
+    title: 'Organizations Search',
+    path: '/dashboard/organizationsList',
+    icon: getIcon(domainIcon)
+  },
+  {
+    title: 'Organization Manage',
+    path: `/dashboard/organizationManage`,
     icon: getIcon(domainIcon)
   },
   {

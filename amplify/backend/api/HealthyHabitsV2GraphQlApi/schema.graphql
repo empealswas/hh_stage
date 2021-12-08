@@ -1,52 +1,50 @@
-type File
-@model
-@key(name: "byLesson", fields: ["lessonID"])
-{
+type File @model @auth(rules: [{allow: private}]) {
     id: ID!
     key: String
     region: String
     bucket: String
-    lessonID: ID
+    lessonID: ID @index(name: "byLesson")
 }
 
-type Section @model
-@key(name: "bySection", fields:["parentID"])
-@key(name: "byFile", fields:["imagePreviewID"])
-{
+type Section @model @auth(rules: [{allow: private}]) {
     id: ID!
     name: String
-    parentID: ID
-    ParentSection: Section @connection(fields: ["parentID"])
-    Lessons: [Lesson] @connection(keyName: "bySection", fields: ["id"])
-    imagePreviewID: ID
-    ImagePreview: File @connection(fields: ["imagePreviewID"])
+    parentID: ID @index(name: "bySection")
+    organizationID: ID @index(name: "byOrganization")
+    ParentSection: Section @hasOne(fields: ["parentID"])
+    OrganizationOwner: Organization @belongsTo(fields: ["organizationID"])
+    Lessons: [Lesson] @hasMany(indexName: "bySection", fields: ["id"])
+    imagePreviewID: ID @index(name: "byFile")
+    ImagePreview: File @hasOne(fields: ["imagePreviewID"])
+    SectionOptions: SectionOptions @hasOne
+
 }
 
-type Lesson @model
-@key(name: "bySection", fields: ["sectionID"])
-{
+type Lesson @model @auth(rules: [{allow: private}]) {
     id: ID!
     title: String
     description: String
-    sectionID: ID
-    Section: Section @connection(fields: ["sectionID"])
-    LessonsRecords: [PELessonRecord] @connection(keyName: "byLesson", fields: ["id"])
-    terms: [TermLesson] @connection(keyName: "byLesson", fields: ["id"])
-    Attendances: [Attendance] @connection(keyName: "byLesson", fields: ["id"])
-    Files: [File] @connection(keyName: "byLesson", fields: ["id"])
-    LessonTeacher: [LessonTeacher] @connection(keyName: "byLesson", fields: ["id"])
+    sectionID: ID @index(name: "bySection")
+    Section: Section @belongsTo(fields: ["sectionID"])
+    LessonsRecords: [PELessonRecord] @hasMany(indexName: "byLesson", fields: ["id"])
+    terms: [TermLesson] @hasMany(indexName: "byLesson", fields: ["id"])
+    Attendances: [Attendance] @hasMany(indexName: "byLesson", fields: ["id"])
+    Files: [File] @hasMany(indexName: "byLesson", fields: ["id"])
+    LessonTeacher: [LessonTeacher] @hasMany(indexName: "byLesson", fields: ["id"])
+}
+type SectionOptions @model @auth(rules: [{allow: private}]){
+    id: ID!
+    Section: Section @belongsTo
+    Activities: [String],
+    Durations: [Int],
+    DeliveredBy: [String],
 }
 
-type PELessonRecord @model
-@key(name: "byTeacher", fields: ["teacherID"])
-@key(name: "byLesson", fields: ["lessonID"])
-@auth(rules: [{ allow: public, provider: iam },
-    { allow: public, provider: apiKey },{allow: private}])
-{
+type PELessonRecord @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
-    teacherID: ID
-    Teacher: Teacher @connection(fields:["teacherID"])
-    Attendances: [Attendance] @connection(keyName: "byPELessonRecord", fields: ["id"])
+    teacherID: ID @index(name: "byTeacher")
+    Teacher: Teacher @hasOne(fields: ["teacherID"])
+    Attendances: [Attendance] @hasMany(indexName: "byPELessonRecord", fields: ["id"])
     date: AWSDate
     deliveredBy: String
     duration: Int
@@ -54,264 +52,234 @@ type PELessonRecord @model
     rating: Int
     notes: String
     classroomID: ID
-    Classroom: Classroom @connection(fields:["classroomID"])
-    lessonID: ID
-    Lesson: Lesson @connection(fields: ["lessonID"])
+    Classroom: Classroom @hasOne(fields: ["classroomID"])
+    lessonID: ID @index(name: "byLesson")
+    Lesson: Lesson @belongsTo(fields: ["lessonID"])
 }
 
-type SchoolHouse @model
-{
+type SchoolHouse @model @auth(rules: [{allow: private}]) {
     id: ID!
     name: String
-    Pupils: [Pupil] @connection(keyName: "bySchoolHouse", fields: ["id"])
+    Pupils: [Pupil] @hasMany(indexName: "bySchoolHouse", fields: ["id"])
 }
-type ClassroomLesson @model
-@key(name: "byClassroom", fields: ["classroomID"])
-@key(name: "byLesson", fields: ["lessonID"]){
+
+type ClassroomLesson @model @auth(rules: [{allow: private}]) {
     id: ID!
-    classroomID: ID
-    lessonID: ID
-    Classroom: Classroom @connection(fields: ["classroomID"])
-    Lesson: Lesson @connection(fields: ["lessonID"])
+    classroomID: ID @index(name: "byClassroom")
+    lessonID: ID @index(name: "byLesson")
+    Classroom: Classroom @hasOne(fields: ["classroomID"])
+    Lesson: Lesson @hasOne(fields: ["lessonID"])
     completed: Boolean
 }
-type Classroom @model
-@key(name: "bySchool", fields: ["schoolID"])
-@key(name: "byCurriculum", fields: ["yearGroupID"])
-{
+
+type Classroom @model @auth(rules: [{allow: private}]) {
     id: ID!
     name: String
-    teachers: [TeacherClassroom] @connection(keyName: "byClassroom", fields: ["id"])
-    pupils: [PupilClassroom] @connection(keyName: "byClassroom", fields: ["id"])
-    schoolID: ID
-    school: School @connection(fields: ["schoolID"])
-    yearGroupID: ID
-    yearGroup: Curriculum @connection(fields: ["yearGroupID"])
+    teachers: [TeacherClassroom] @hasMany(indexName: "byClassroom", fields: ["id"])
+    pupils: [PupilClassroom] @hasMany(indexName: "byClassroom", fields: ["id"])
+    schoolID: ID @index(name: "bySchool")
+    school: School @belongsTo(fields: ["schoolID"])
+    Organization: Organization @belongsTo
+    yearGroupID: ID @index(name: "byCurriculum")
+    yearGroup: Curriculum @hasOne(fields: ["yearGroupID"])
 }
 
-
-type TeacherClassroom @model(queries: null) @key(name: "byTeacher", fields: ["teacherID", "classroomID"]) @key(name: "byClassroom", fields: ["classroomID", "teacherID"]) {
+type TeacherClassroom @model(queries: null) @auth(rules: [{allow: private}]) {
     id: ID!
-    teacherID: ID!
-    classroomID: ID!
-    teacher: Teacher! @connection(fields: ["teacherID"])
-    classroom: Classroom! @connection(fields: ["classroomID"])
-}
-type PupilClassroom @model(queries: null) @key(name: "byPupil", fields: ["pupilID", "classroomID"]) @key(name: "byClassroom", fields: ["classroomID", "pupilID"]) {
-    id: ID!
-    pupilID: ID!
-    classroomID: ID!
-    pupil: Pupil! @connection(fields: ["pupilID"])
-    classroom: Classroom! @connection(fields: ["classroomID"])
+    teacherID: ID! @index(name: "byTeacher", sortKeyFields: ["classroomID"])
+    classroomID: ID! @index(name: "byClassroom", sortKeyFields: ["teacherID"])
+    teacher: Teacher! @belongsTo(fields: ["teacherID"])
+    classroom: Classroom! @belongsTo(fields: ["classroomID"])
 }
 
-type PupilOrganizationRequest
-@key(name: "byPupil", fields: ["pupilID", "organizationID"]) @key(name: "byOrganization", fields: ["organizationID", "pupilID"])
-@model{
+type PupilClassroom @model(queries: null) @auth(rules: [{allow: private}]) {
     id: ID!
-    pupilID: ID!
-    organizationID: ID!
-    pupil: Pupil! @connection(fields: ["pupilID"])
-    organization: Organization! @connection(fields: ["organizationID"])
+    pupilID: ID! @index(name: "byPupil", sortKeyFields: ["classroomID"])
+    classroomID: ID! @index(name: "byClassroom", sortKeyFields: ["pupilID"])
+    pupil: Pupil! @belongsTo(fields: ["pupilID"])
+    classroom: Classroom! @belongsTo(fields: ["classroomID"])
 }
 
-type PupilOrganizationAccepted
-@key(name: "byPupil", fields: ["pupilID", "organizationID"]) @key(name: "byOrganization", fields: ["organizationID", "pupilID"])
-@model{
+type PupilOrganizationRequest @model @auth(rules: [{allow: private}]) {
     id: ID!
-    pupilID: ID!
-    organizationID: ID!
-    pupil: Pupil! @connection(fields: ["pupilID"])
-    organization: Organization! @connection(fields: ["organizationID"])
+    pupilID: ID! @index(name: "byPupil", sortKeyFields: ["organizationID"])
+    organizationID: ID! @index(name: "byOrganization", sortKeyFields: ["pupilID"])
+    pupil: Pupil! @belongsTo(fields: ["pupilID"])
+    organization: Organization! @belongsTo(fields: ["organizationID"])
 }
 
-type School @model {
+type PupilOrganizationAccepted @model @auth(rules: [{allow: private}]) {
+    id: ID!
+    pupilID: ID! @index(name: "byPupil", sortKeyFields: ["organizationID"])
+    organizationID: ID! @index(name: "byOrganization", sortKeyFields: ["pupilID"])
+    pupil: Pupil! @belongsTo(fields: ["pupilID"])
+    organization: Organization! @belongsTo(fields: ["organizationID"])
+}
+
+type School @model @auth(rules: [{allow: private}]) {
     id: ID!
     name: String
     country: String
     region: String
     principal: String
-
-    Teachers: [Teacher] @connection(keyName: "bySchool", fields: ["id"])
-    Principals: [Principal] @connection(keyName: "bySchool", fields: ["id"])
-    Pupils: [Pupil] @connection(keyName: "bySchool", fields: ["id"])
-    classrooms: [Classroom] @connection(keyName: "bySchool", fields: ["id"])
+    Teachers: [Teacher] @hasMany(indexName: "bySchool", fields: ["id"])
+    Principals: [Principal] @hasMany(indexName: "bySchool", fields: ["id"])
+    Pupils: [Pupil] @hasMany(indexName: "bySchool", fields: ["id"])
+    classrooms: [Classroom] @hasMany(indexName: "bySchool", fields: ["id"])
 }
 
-type Organization @model
-@auth(rules: [{ allow: public, provider: iam },
-    { allow: public, provider: apiKey },{allow: private}])
-{
+type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
     name: String
-    Principals: [Principal] @connection(keyName: "byOrganization", fields: ["id"])
-    WaitingForAcceptPupils: [PupilOrganizationRequest] @connection(keyName: "byOrganization", fields: ["id"])
-    AcceptedPupils: [PupilOrganizationAccepted] @connection(keyName: "byOrganization", fields: ["id"])
+    Principals: [Principal] @hasMany(indexName: "byOrganization", fields: ["id"])
+    WaitingForAcceptPupils: [PupilOrganizationRequest] @hasMany(indexName: "byOrganization", fields: ["id"])
+    AcceptedPupils: [PupilOrganizationAccepted] @hasMany(indexName: "byOrganization", fields: ["id"])
+    Sections: [Section] @hasMany(indexName: "byOrganization", fields: ["id"])
+    Teachers: [Teacher] @manyToMany(relationName: "TeacherOrganziation")
+    Classrooms: [Classroom] @hasMany
+
     type: String
 }
 
-
-type Attendance @model
-@key(name: "byPupil", fields: ["pupilID"])
-@key(name: "byLesson", fields: ["lessonID"])
-@key(name: "byPELessonRecord", fields: ["lessonRecordID"]){
+type Attendance @model @auth(rules: [{allow: private}]) {
     id: ID!
     present: Boolean
     wasRewarded: Boolean
-    pupilID: ID
-    lessonID: ID
-    Pupil: Pupil @connection(fields: ["pupilID"])
-    Lesson: Lesson @connection(fields: ["lessonID"])
-    lessonRecord: PELessonRecord @connection(fields: ["lessonRecordID"])
-    lessonRecordID: ID
+    pupilID: ID @index(name: "byPupil")
+    lessonID: ID @index(name: "byLesson")
+    Pupil: Pupil @belongsTo(fields: ["pupilID"])
+    Lesson: Lesson @belongsTo(fields: ["lessonID"])
+    lessonRecord: PELessonRecord @belongsTo(fields: ["lessonRecordID"])
+    lessonRecordID: ID @index(name: "byPELessonRecord")
 }
 
-type LessonTeacher @model
-@key(name: "byTeacher", fields: ["teacherID"])
-@key(name: "byLesson", fields: ["lessonID"]){
+type LessonTeacher @model @auth(rules: [{allow: private}]) {
     id: ID!
-    teacherID: ID
-    lessonID: ID
-    Teacher: Teacher @connection(fields: ["teacherID"])
-    Lesson: Lesson @connection(fields: ["lessonID"])
+    teacherID: ID @index(name: "byTeacher")
+    lessonID: ID @index(name: "byLesson")
+    Teacher: Teacher @belongsTo(fields: ["teacherID"])
+    Lesson: Lesson @belongsTo(fields: ["lessonID"])
     score: Int
 }
 
-
-
-type Term @model  {
+type Term @model @auth(rules: [{allow: private}]) {
     id: ID!
     nam: String
     startDate: AWSDate
     finishDate: AWSDate
-    subjects: [SubjectTerm] @connection(keyName: "byTerm", fields: ["id"])
-    TermLessons: [TermLesson] @connection(keyName: "byTerm", fields: ["id"])
+    subjects: [SubjectTerm] @hasMany(indexName: "byTerm", fields: ["id"])
+    TermLessons: [TermLesson] @hasMany(indexName: "byTerm", fields: ["id"])
 }
 
-type Subject @model  {
+type Subject @model @auth(rules: [{allow: private}]) {
     id: ID!
     name: String
-    SubjectTerms: [SubjectTerm] @connection(keyName: "bySubject", fields: ["id"])
-    curriculums: [CurriculumSubject] @connection(keyName: "bySubject", fields: ["id"])
+    SubjectTerms: [SubjectTerm] @hasMany(indexName: "bySubject", fields: ["id"])
+    curriculums: [CurriculumSubject] @hasMany(indexName: "bySubject", fields: ["id"])
 }
 
-type Curriculum @model  {
+type Curriculum @model @auth(rules: [{allow: private}]) {
     id: ID!
     name: String
-    subjects: [CurriculumSubject] @connection(keyName: "byCurriculum", fields: ["id"])
+    subjects: [CurriculumSubject] @hasMany(indexName: "byCurriculum", fields: ["id"])
 }
 
-type Parent @model  {
+type Parent @model @auth(rules: [{allow: private}]) {
     id: ID!
     firstName: String
     lastName: String
     email: AWSEmail
-    children: [PupilParent] @connection(keyName: "byParent", fields: ["id"])
-    InterventionFeedback: [ParentInterventionFeedback] @connection(keyName: "byParent", fields: ["id"])
-
+    children: [PupilParent] @hasMany(indexName: "byParent", fields: ["id"])
+    InterventionFeedback: [ParentInterventionFeedback] @hasMany(indexName: "byParent", fields: ["id"])
 }
 
-type PupilParent @model(queries: null)
-@key(name: "byPupil", fields: ["pupilID", "parentID"])
-@key(name: "byParent", fields: ["parentID", "pupilID"]) {
+type PupilParent @model(queries: null) @auth(rules: [{allow: private}]) {
     id: ID!
-    pupilID: ID!
-    parentID: ID!
-    Parent: Parent! @connection(fields: ["parentID"])
-    Pupil: Pupil! @connection(fields: ["pupilID"])
+    pupilID: ID! @index(name: "byPupil", sortKeyFields: ["parentID"])
+    parentID: ID! @index(name: "byParent", sortKeyFields: ["pupilID"])
+    Parent: Parent! @belongsTo(fields: ["parentID"])
+    Pupil: Pupil! @belongsTo(fields: ["pupilID"])
 }
-type Principal @model
-@key(name: "bySchool", fields: ["schoolID"])
-@key(name: "byOrganization", fields: ["organizationID"])
-{
+
+type Principal @model @auth(rules: [{allow: private}]) {
     id: ID!
     firstName: String
     lastName: String
     email: AWSEmail
-    schoolID: ID
-    School: School @connection(fields: ["schoolID"])
-    organizationID: ID
-    Organization: Organization @connection(fields: ["organizationID"])
+    schoolID: ID @index(name: "bySchool")
+    School: School @belongsTo(fields: ["schoolID"])
+    organizationID: ID @index(name: "byOrganization")
+    Organization: Organization @belongsTo(fields: ["organizationID"])
 }
 
-type Teacher @model  @key(name: "bySchool", fields: ["schoolID"]) {
+type Teacher @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
     firstName: String
     lastName: String
     email: AWSEmail
-    schoolID: ID
-    classrooms: [TeacherClassroom] @connection(keyName: "byTeacher", fields: ["id"])
-    LessonTeacher: [LessonTeacher] @connection(keyName: "byTeacher", fields: ["id"])
-    School: School @connection(fields: ["schoolID"])
+    schoolID: ID @index(name: "bySchool")
+    classrooms: [TeacherClassroom] @hasMany(indexName: "byTeacher", fields: ["id"])
+    LessonTeacher: [LessonTeacher] @hasMany(indexName: "byTeacher", fields: ["id"])
+    Organizations: [Organization] @manyToMany(relationName: "TeacherOrganziation")
+    School: School @belongsTo(fields: ["schoolID"])
 }
 
-type Pupil @model
-@key(name: "bySchool", fields: ["schoolID"])
-@key(name: "bySchoolHouse", fields:["schoolHouseID"])
-@auth(rules: [{ allow: public, provider: iam },
-    { allow: public, provider: apiKey },{allow: private}])
-{
+type Pupil @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
     firstName: String
     lastName: String
-    Attendances: [Attendance] @connection(keyName: "byPupil", fields: ["id"])
-    classrooms: [PupilClassroom] @connection(keyName: "byPupil", fields: ["id"])
-    Organizations: [PupilOrganizationAccepted] @connection(keyName: "byPupil", fields: ["id"])
-    OrganizationsRequests: [PupilOrganizationRequest] @connection(keyName: "byPupil", fields: ["id"])
-    schoolID: ID
-    schoolHouseID: ID
-    schoolHouse: SchoolHouse @connection(fields: ["schoolHouseID"])
-    school: School @connection(fields: ["schoolID"])
-    parents: [PupilParent] @connection(keyName: "byPupil", fields: ["id"])
-    Interventions: [Intervention] @connection(keyName: "byPupil", fields: ["id"])
+    Attendances: [Attendance] @hasMany(indexName: "byPupil", fields: ["id"])
+    classrooms: [PupilClassroom] @hasMany(indexName: "byPupil", fields: ["id"])
+    Organizations: [PupilOrganizationAccepted] @hasMany(indexName: "byPupil", fields: ["id"])
+    OrganizationsRequests: [PupilOrganizationRequest] @hasMany(indexName: "byPupil", fields: ["id"])
+    schoolID: ID @index(name: "bySchool")
+    schoolHouseID: ID @index(name: "bySchoolHouse")
+    schoolHouse: SchoolHouse @belongsTo(fields: ["schoolHouseID"])
+    school: School @belongsTo(fields: ["schoolID"])
+    parents: [PupilParent] @hasMany(indexName: "byPupil", fields: ["id"])
+    Interventions: [Intervention] @hasMany(indexName: "byPupil", fields: ["id"])
 }
 
-type Intervention @model @searchable
-@key(name: "byPupil", fields: ["pupilID"])
-@auth(rules: [{ allow: public, provider: iam }, { allow: public, provider: apiKey },{allow: private}]) {
+type Intervention @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
-    pupilID: ID!
-    Pupil: Pupil @connection(fields: ["pupilID"])
+    pupilID: ID! @index(name: "byPupil")
+    Pupil: Pupil @belongsTo(fields: ["pupilID"])
     message: String
-    InterventionFeedback: [ParentInterventionFeedback] @connection(keyName: "byIntervention", fields: ["id"])
+    viewed: Boolean
+    InterventionFeedback: [ParentInterventionFeedback] @hasMany(indexName: "byIntervention", fields: ["id"])
     createdAt: AWSDateTime!
-
 }
-type ParentInterventionFeedback
-@model
-@key(name: "byParent", fields: ["parentID", "interventionID"])
-@key(name: "byIntervention", fields: ["interventionID", "parentID"])
-@auth(rules: [{ allow: public, provider: iam }, { allow: public, provider: apiKey },{allow: private}])
-{
+
+type ParentInterventionFeedback @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
-    parentID: ID!
-    interventionID: ID!
-    Parent: Parent! @connection(fields: ["parentID"])
-    Intervention: Intervention! @connection(fields: ["interventionID"])
+    parentID: ID! @index(name: "byParent", sortKeyFields: ["interventionID"])
+    interventionID: ID! @index(name: "byIntervention", sortKeyFields: ["parentID"])
+    Parent: Parent! @belongsTo(fields: ["parentID"])
+    Intervention: Intervention! @belongsTo(fields: ["interventionID"])
     comment: String
     rating: Int
 }
 
-type SubjectTerm @model(queries: null) @key(name: "bySubject", fields: ["subjectID", "termID"]) @key(name: "byTerm", fields: ["termID", "subjectID"]) {
+type SubjectTerm @model(queries: null) @auth(rules: [{allow: private}]) {
     id: ID!
-    subjectID: ID!
-    termID: ID!
-    subject: Subject! @connection(fields: ["subjectID"])
-    term: Term! @connection(fields: ["termID"])
+    subjectID: ID! @index(name: "bySubject", sortKeyFields: ["termID"])
+    termID: ID! @index(name: "byTerm", sortKeyFields: ["subjectID"])
+    subject: Subject! @belongsTo(fields: ["subjectID"])
+    term: Term! @belongsTo(fields: ["termID"])
 }
 
-type TermLesson @model(queries: null) @key(name: "byTerm", fields: ["termID", "lessonID"]) @key(name: "byLesson", fields: ["lessonID", "termID"])  {
+type TermLesson @model(queries: null) @auth(rules: [{allow: private}]) {
     id: ID!
-    termID: ID!
-    lessonID: ID!
-    term: Term! @connection(fields: ["termID"])
-    lesson: Lesson! @connection(fields: ["lessonID"])
+    termID: ID! @index(name: "byTerm", sortKeyFields: ["lessonID"])
+    lessonID: ID! @index(name: "byLesson", sortKeyFields: ["termID"])
+    term: Term! @belongsTo(fields: ["termID"])
+    lesson: Lesson! @belongsTo(fields: ["lessonID"])
 }
 
-type CurriculumSubject @model(queries: null) @key(name: "byCurriculum", fields: ["curriculumID", "subjectID"]) @key(name: "bySubject", fields: ["subjectID", "curriculumID"])  {
+type CurriculumSubject @model(queries: null) @auth(rules: [{allow: private}]) {
     id: ID!
-    curriculumID: ID!
-    subjectID: ID!
-    curriculum: Curriculum! @connection(fields: ["curriculumID"])
-    subject: Subject! @connection(fields: ["subjectID"])
+    curriculumID: ID! @index(name: "byCurriculum", sortKeyFields: ["subjectID"])
+    subjectID: ID! @index(name: "bySubject", sortKeyFields: ["curriculumID"])
+    curriculum: Curriculum! @belongsTo(fields: ["curriculumID"])
+    subject: Subject! @belongsTo(fields: ["subjectID"])
 }

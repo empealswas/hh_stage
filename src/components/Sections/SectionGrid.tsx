@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {API, graphqlOperation} from "aws-amplify";
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -14,11 +14,13 @@ import {Link as RouterLink, useParams} from "react-router-dom";
 import {listSections} from '../../graphql/queries';
 import {onCreateSection, onDeleteSection, onUpdateSection} from "../../graphql/subscriptions";
 import {Container} from '@mui/material';
-import {AmplifyEmailField} from "@aws-amplify/ui-react";
 import ActivityCard from "../Lesson/pe/ActivityCard";
+import {UserContext} from "../../App";
+import {Organization} from "../../models/Organization";
 
 const SectionGrid = () => {
-    const {sectionId} = useParams();
+    const {sectionId, organizationId} = useParams();
+
     const updateItems = (prevData: any, data: any) => {
         let newData = {...prevData};
         console.log('prevData', prevData)
@@ -38,6 +40,7 @@ const SectionGrid = () => {
       id
       name
       parentID
+      organizationID
       ImagePreview {
         id
         bucket
@@ -73,8 +76,9 @@ const SectionGrid = () => {
             return (
                 <>
                     {
-                        [0, 1, 2, 3, 4, 5].map((value) => (
-                            <CardSkeleton key={value}/>
+                        [0, 1, 2, 3, 4, 5].map((value) => (<Grid key={value} item lg={4} md={4} sm={6} xs={12}>
+                                <CardSkeleton key={value}/>
+                            </Grid>
                         ))
                     }
                 </>
@@ -84,7 +88,13 @@ const SectionGrid = () => {
         if (sectionId) {
             sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === sectionId);
         } else {
-            sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === null);
+            console.log(sectionsToDisplay)
+            if (organizationId) {
+                sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === null && subject.organizationID === organizationId);
+            } else {
+                sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === null && subject.organizationID === null);
+            }
+            console.log(sectionsToDisplay)
         }
         if (sectionsToDisplay.length === 0) {
             return <Container style={{textAlign: 'center'}}>
@@ -97,7 +107,9 @@ const SectionGrid = () => {
             <>
                 {sectionsToDisplay?.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0).map((value: Section, index: number) => (
                     <Grid key={index} item lg={4} md={4} sm={6} xs={12}>
-                        <ActivityCard linkTo={value.id} imagePath={value.ImagePreview?.key} title={value.name ?? ''}/>
+                        <ActivityCard linkTo={sectionId ? `section/${value.id}` : `section/${value.id}`}
+                                      imagePath={value?.ImagePreview?.key} title={value.name ?? ''}/>
+
                     </Grid>
                 ))}
             </>

@@ -17,6 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import {TransitionProps} from "@material-ui/core/transitions";
 import Slide from "@material-ui/core/Slide";
 import AddingDialog from "../../utils/AddingDialog";
+import {CreateClassroomInput} from "../../API";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement },
@@ -25,15 +26,21 @@ const Transition = React.forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 export default function AddClassroomModal() {
-    const {id} = useParams();
+    const {id, organizationId} = useParams();
     const [name, setName] = useState('');
 
 
     async function addClassroom() {
-        const input = {
+        const input: CreateClassroomInput = {
             name: name,
-            schoolID: id
         }
+        if (id) {
+            input.schoolID = id;
+        }
+        if (organizationId) {
+            // input.
+        }
+
         await API.graphql(graphqlOperation(createClassroom, {input}));
     }
 

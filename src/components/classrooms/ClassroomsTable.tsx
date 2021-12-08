@@ -26,9 +26,25 @@ query MyQuery($id: ID = "") {
   }
 }
 `
+const orgQuery =`query MyQuery($id: ID = "") {
+  getOrganization(id: $id) {
+    classrooms {
+      items {
+        id
+        name
+      }
+    }
+  }
+}`
 const CurriculaGrid = () => {
-    const {id} = useParams();
+    const {id, organizationId} = useParams();
     const navigate = useNavigate();
+    let classroomQuery: string = '';
+    if (id) {
+        classroomQuery = query;
+    } else if (organizationId) {
+        classroomQuery = orgQuery;
+    }
     return (
         <Grid container
               direction="row"
@@ -38,7 +54,7 @@ const CurriculaGrid = () => {
             <Grid item xs={12}>
                 <Grid container justifyContent="flex-start" spacing={2}>
                     <Connect
-                        query={graphqlOperation(query, {id: id})}
+                        query={graphqlOperation(classroomQuery, {id: id})}
                         subscription={graphqlOperation(onCreateClassroom)}
                         onSubscriptionMsg={(prevData, data) => {
                             console.log(prevData)

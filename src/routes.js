@@ -39,8 +39,12 @@ import {Navigate, useRoutes} from 'react-router-dom';
 import {Outlet} from 'react-router-dom';
 import ChildOverview from "./components/parent/ChildOverview";
 import ChildOverviewMenu from "./components/parent/ChildOverviewMenu";
-import OrganizationChildrenView from "./components/organizations/OrganizationChildrenView";
-import OrganizationOverview from "./components/organizations/OrganizationOverview";
+import OrganizationManage from "./components/organizations/OrganizationManage";
+import OrganizationAdminOverview from "./components/organizations/OrganizationAdminOverview";
+import PupilsAcceptList from "./components/organizations/PupilsAcceptList";
+import {UserContext} from "./App";
+import {useContext} from "react";
+import OrganizationsOverview from "./components/parent/childTabs/OrganizationsOverview";
 
 export function PreLoginRouter(){
     return useRoutes([
@@ -62,6 +66,7 @@ export function PreLoginRouter(){
 }
 
 export default function Router() {
+    const user = useContext(UserContext);
     return useRoutes([
 
         {
@@ -70,8 +75,33 @@ export default function Router() {
             children: [
                 {element: <Navigate to="/dashboard/app" replace/>},
                 {path: 'organization', element: <Outlet/>, children: [
-                        {path: ':id', element: <OrganizationOverview/>}
+
+                        {path: ':organizationId', element: <OrganizationAdminOverview/>, children: [
+                                {path: 'section', element: <SectionOverview/>,
+                                    children: [{
+                                        path: ':sectionId', element: <SectionOverview/>
+                                    },
+                                    ]
+                                },
+
+                            ]},
+                        {
+                            path: 'lessons', element: <LessonOverview/>, children: [
+                                {path: ':lessonId', element: <LessonOverview/>}
+                            ]
+                        },
                     ]},
+                {path: 'organizationsList', element: <OrganizationsOverview/>},
+                {path: 'organizationManage', element: <Navigate to={`/dashboard/organizationManagement/${user.email}`} replace/>, children: [
+                    ] },
+                {path: 'organizationManagement', element: <Outlet/>, children: [
+                        {path: ':organizationId', element: <Outlet/>, children: [
+                                {path: '/dashboard/organizationManagement/:organizationId', element: <OrganizationManage/>},
+                                {path: '/dashboard/organizationManagement/:organizationId/classrooms', element: <ClassroomOverview/>, children: [
+                                        {path: ':classroomId', element: <ClassroomPageNew/>}
+                                    ]}
+                            ]}
+                    ] },
                 {path: 'schools', element: <SchoolOutlet/>, children: [
                         {path: '/dashboard/schools', element: <Schools/>},
                         {path: ':id', element: <SchoolOutlet/>, children: [
@@ -104,7 +134,7 @@ export default function Router() {
                 {path: 'parent', element: <ParentSection/>},
 
                 {
-                    path: 'lessons', element: <LessonOutlet/>, children: [
+                    path: 'lessons', element: <LessonOverview/>, children: [
                         {path: ':lessonId', element: <LessonOverview/>}
                     ]
                 },

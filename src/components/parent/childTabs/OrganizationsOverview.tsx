@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import {Organization} from "../../../API";
@@ -16,6 +16,8 @@ import {
 } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom';
 import {CardMembership} from "@mui/icons-material";
+import {Teacher} from "../../../models/Teacher";
+import {UserContext} from "../../../App";
 
 const organizationsQuery = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
@@ -30,17 +32,38 @@ const organizationsQuery = `query MyQuery($id: ID = "") {
     }
   }
 }`
+const teacherOrganizationsQuery = `query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+    Organizations {
+      items {
+        id
+        organization {
+          name
+          type
+          id
+        }
+      }
+    }
+  }
+}
+`;
 const OrganizationsOverview = () => {
     const {pupilId} = useParams();
     const [organizations, setOrganizations] = useState<Organization[] | null>(null);
     const [filter, setFilter] = React.useState<string | null>('');
+    const user = useContext(UserContext);
     useEffect(() => {
         const getOrganizations = async () => {
             setOrganizations(null)
-            const result: any = await API.graphql(graphqlOperation(organizationsQuery, {id: pupilId}));
-            let map = result.data.getPupil?.Organizations.items.map((item: any) => item.organization);
+            if (pupilId) {
+                const result: any = await API.graphql(graphqlOperation(organizationsQuery, {id: pupilId}));
+                let map = result.data.getPupil?.Organizations.items.map((item: any) => item.organization);
+                setOrganizations(map);
+            } else if (user instanceof Teacher) {
+                const result: any = await API.graphql(graphqlOperation(teacherOrganizationsQuery, {id: user.email}));
+                setOrganizations(result.data.getTeacher?.Organizations.items.map((item: any) => item.organization))
+            }
 
-            setOrganizations(map);
         }
         getOrganizations()
         return () => {
@@ -51,8 +74,8 @@ const OrganizationsOverview = () => {
         if (!organizations) {
             return (
                 <>
-                    {[0,1,2,3, 4].map(index=>
-                        <Grid item height={300} width={250   } xs={12} sm={6} md={4} lg={3} key={index}>
+                    {[0, 1, 2, 3, 4].map(index =>
+                        <Grid item height={300} width={250} xs={12} sm={6} md={4} lg={3} key={index}>
                             <CardSkeleton/>
                         </Grid>
                     )}
@@ -66,8 +89,8 @@ const OrganizationsOverview = () => {
             <>
 
                 {organizations.filter(value => filter ? value.name === filter : true).map(organization =>
-                    <Grid item xs={12} sm={6} md={4} lg={3} >
-                        <Link component={RouterLink} to={`../../organization/${organization.id}`} underline={'none'}>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <Link component={RouterLink} to={`/dashboard/organization/${organization.id}`} replace underline={'none'}>
                             <Card>
                                 <CardActionArea>
                                     <CardHeader title={organization.name} subheader={organization.type}/>
@@ -87,12 +110,12 @@ const OrganizationsOverview = () => {
         );
     }
     return (
-            <>
+        <>
             <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={organizations?.map(value => value.name) ?? []}
-                sx={{ mb: 2, maxWidth: 300}}
+                sx={{mb: 2, maxWidth: 300}}
                 value={filter}
                 // @ts-ignore
                 onChange={(event: any, newValue: string | null) => {

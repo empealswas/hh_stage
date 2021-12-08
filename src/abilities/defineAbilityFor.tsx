@@ -16,25 +16,29 @@ export default function defineAbilityFor(user: User | null) {
     if (user instanceof Admin) {
         can('visit', 'schools');
         can('visit', 'lessons');
-        can(['create','update', 'delete','view'], 'curriculum');
-        can(['create','update', 'delete','view'], 'term');
-        can(['create','update', 'delete','view'], 'subject');
-        can(['create','update', 'delete','view'], 'lesson');
-        can(['create','update', 'delete','view'], 'file');
+        can(['create', 'update', 'delete', 'view'], 'curriculum');
+        can(['create', 'update', 'delete', 'view'], 'term');
+        can(['create', 'update', 'delete', 'view'], 'subject');
+        can(['create', 'update', 'delete', 'view'], 'lesson');
+        can(['create', 'update', 'delete', 'view'], 'file');
         can('visit', 'dashboard')
         can('visit', 'reports');
         can('visit', 'houses');
         can('visit', 'organizations');
         can('read', 'wearables');
         can('visit', 'wearables');
+        can(['create', 'update', 'delete', 'view'], 'section');
 
-    } else if (user instanceof  Teacher) {
+
+    } else if (user instanceof Teacher) {
         can('visit', 'lessons');
         can('visit', 'reports');
         can('visit', 'dashboard');
+        can('visit', 'Organizations Search');
         can('visit', 'wearables');
         can('read', 'attendance');
-        can('read', 'wearables')
+        can('read', 'wearables');
+
 
     } else if (user instanceof Parent) {
         can('visit', 'dashboard')
@@ -44,8 +48,15 @@ export default function defineAbilityFor(user: User | null) {
         can('visit', 'dashboard')
         can('visit', 'wearables');
 
-    }else if (user instanceof Organization) {
-        can('manage', 'pupilList')
+    } else if (user instanceof Organization) {
+        can('manage', 'pupilList');
+        can('visit', 'Organization Manage');
+        can('visit', 'dashboard')
+
+        can(['create', 'update', 'delete', 'view'], 'lesson');
+        can(['create', 'update', 'delete', 'view'], 'file');
+        can(['create', 'update', 'delete', 'view'], 'section');
+
     }
 
     return build();

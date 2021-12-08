@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify"; //Auth, Storage
 import Typography from "@material-ui/core/Typography";
@@ -25,6 +25,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import LoadingListItem from "../../../utils/LoadingListItem";
+import {UserContext} from "../../../App";
+import {Teacher} from "../../../models/Teacher";
+import OrganizationsOverview from "../../parent/childTabs/OrganizationsOverview";
 
 const LessonOverview = () => {
     const {lessonId} = useParams();
@@ -94,9 +97,9 @@ const LessonOverview = () => {
 
     const navigate = useNavigate();
 
-
     return (
         <div>
+
             {lesson ?
                 <>
                     <Box sx={{textAlign: 'center', marginBottom: 5}}>

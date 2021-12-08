@@ -19,27 +19,34 @@ import {useSnackbar} from "notistack";
 
 
 const query = `query MyQuery($id: ID = "", $classroomId: ID = "", $teacherId: ID = "") {
-  getLesson(id: $id) {
-    LessonsRecords(filter: {classroomID: {eq: $classroomId}, and: {teacherID: {eq: $teacherId}}}) {
-      items {
-        id
-        duration
-        deliveredBy
-        date
-        classroomID
-        activity
-        rating
-        notes
-      }
+    getLesson(id: $id) {
+        LessonsRecords(filter: {classroomID: {eq: $classroomId}, and: {teacherID: {eq: $teacherId}}}) {
+            items {
+                id
+                duration
+                deliveredBy
+                date
+                classroomID
+                activity
+                rating
+                notes
+            }
+        }
+        Section {
+            SectionOptions {
+                Activities
+                DeliveredBy
+                Durations
+            }
+        }
     }
-  }
 }
 `
 
 const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }) => {
     const user = useContext(UserContext);
-        const {lessonId, selectedClassroom} = {...props};
-        const snackbar = useSnackbar();
+    const {lessonId, selectedClassroom} = {...props};
+    const snackbar = useSnackbar();
 
     const [lessonRecord, setLessonRecord] = useState<PELessonRecord | null>(null);
     useEffect(() => {

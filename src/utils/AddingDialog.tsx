@@ -27,6 +27,7 @@ import Slide from "@material-ui/core/Slide";
 import ProgressButton from "../components/Buttons/ProgressButton";
 import {ButtonTypeMap, ExtendButtonBase, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import {useFormikContext} from "formik";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement },
@@ -48,6 +49,7 @@ export default function AddingDialog(props: AddingDialogProps) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const formik = useFormikContext();
     const handleOpen = () => {
         setLoading(false);
         setSuccess(false);
@@ -104,7 +106,7 @@ export default function AddingDialog(props: AddingDialogProps) {
                         mb: 3
                     }}>
                         <FormControl sx={{minWidth: ('calc(200px + 10vw)')}}>
-                            <Stack direction='column' spacing={3} title={'123'}>
+                            <Stack direction='column' spacing={3} >
                                 {props.children}
                             </Stack>
                         </FormControl>
@@ -117,7 +119,7 @@ export default function AddingDialog(props: AddingDialogProps) {
                                     loading={loading}
                                     error={error}
                                     onClickWhenSuccess={handleClose}
-                                    disabled={loading}/>
+                                    disabled={loading || (!formik?.isValid ?? false)}/>
                 </DialogActions>
             </Dialog>
         </>

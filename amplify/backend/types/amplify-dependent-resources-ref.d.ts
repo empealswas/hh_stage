@@ -13,6 +13,7 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "api": {
         "HealthyHabitsV2GraphQlApi": {
+            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         },

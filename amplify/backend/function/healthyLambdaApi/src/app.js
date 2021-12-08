@@ -100,6 +100,30 @@ app.post('/api/addTeacher', (req, res) => {
         }
     });
 })
+app.post('/api/addTeacherOrganization', (req, res) => {
+    const event = {
+        body: {
+            ...req.body,
+            type: 'TEACHER'
+        }
+    }
+    console.log('event' + event)
+    return lambda.invoke({
+        FunctionName: 'addUserToOrganizationHH',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(event) // pass params
+    }, function (error, data) {
+        if (error) {
+            res.json({error: error, url: req.url})
+        }
+        if (data.Payload) {
+            res.json({success: 'teacher added', url: req.url})
+        }
+    });
+})
+
+
+
 app.post('/api/confirmOrganization', (req, res) => {
     const event = {
         body: {

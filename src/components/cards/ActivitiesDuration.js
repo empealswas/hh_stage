@@ -236,7 +236,8 @@ useEffect(() => {
           listPELessonRecords(filter:{ or: ${peLessonsString} },limit:1000000) {
             items { id activity duration date }
           }
-        }`
+        }
+        `
               const results = await API.graphql(graphqlOperation(query));
               if (results.data?.listPELessonRecords) {
                   setAttendedLessonData(results.data?.listPELessonRecords.items);

@@ -99,7 +99,7 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
                 <DialogContent>
                     <Card>
                         <CardContent>
-                        <AttendanceSheetTable/>
+                            <AttendanceSheetTable/>
                         </CardContent>
                     </Card>
                     <DialogContent>

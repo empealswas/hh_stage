@@ -1,4 +1,4 @@
-import {AddParentRequest, AddTeacherRequest} from "./DTO/AddTeacherRequest";
+import {AddParentRequest, AddTeacherOrganizationRequest, AddTeacherRequest} from "./DTO/AddTeacherRequest";
 import {API} from "aws-amplify";
 import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
 
@@ -7,6 +7,15 @@ const apiName = 'HealthyHabitsV2API'
 export async function addTeacherApi(params: AddTeacherRequest) {
 
     const result = await API.post(apiName, '/api/addTeacher', {
+        body: {
+            ...params
+        }
+    });
+    console.log(result);
+    console.log('Added');
+}
+export async function addTeacherForOrganizationApi(params: AddTeacherOrganizationRequest) {
+    const result = await API.post(apiName, '/api/addTeacherOrganization', {
         body: {
             ...params
         }

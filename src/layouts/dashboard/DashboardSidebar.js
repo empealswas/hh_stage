@@ -13,6 +13,7 @@ import {MHidden} from '../../components/@material-extend';
 import sidebarConfig from './SidebarConfig';
 import account from '../../_mocks_/account';
 import {UserContext} from "../../App";
+import {Organization} from "../../models/Organization";
 
 // ----------------------------------------------------------------------
 
@@ -43,14 +44,13 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({isOpenSidebar, onCloseSidebar}) {
     const {pathname} = useLocation();
 
+    const user = useContext(UserContext);
     useEffect(() => {
         if (isOpenSidebar) {
             onCloseSidebar();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
-    const user = useContext(UserContext);
-
     const renderContent = (
         <Scrollbar
             sx={{
@@ -61,9 +61,14 @@ export default function DashboardSidebar({isOpenSidebar, onCloseSidebar}) {
             <Box sx={{px: 2.5, py: 3}}>
                 <Container>
                     <Link to={'/'} underline={'none'} component={RouterLink}>
-                        <Typography variant={'h4'}>
+                        <Typography textAlign={'center'} variant={'h4'}>
                             Healthy Habits
                         </Typography>
+                        {(user instanceof Organization) &&
+                        <Typography textAlign={'center'} variant={'h5'} color={'secondary'}>
+                            {user.firstName}
+                        </Typography>
+                        }
                     </Link>
                 </Container>
                 {/*<Box component={RouterLink} to={'/'} underline='none' sx={{display: 'inline-flex',}}>*/}

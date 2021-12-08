@@ -8,6 +8,7 @@ import AddingDialog from "../../utils/AddingDialog";
 import FilesUploadDropzone from "../FilesUploading/FilesUploadDropzone";
 import UploadingFilesList from "../FilesUploading/UploadingFilesList";
 import awsConfig from "../../aws-exports";
+import LessonOptionComponent from "../Lesson/LessonContent/LessonOptionComponent";
 
 
 export default function AddLessonModalSection() {

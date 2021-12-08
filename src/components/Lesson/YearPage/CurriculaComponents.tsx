@@ -15,6 +15,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Link from "@material-ui/core/Link";
 import {Teacher} from "../../../models/Teacher";
+import OrganizationsOverview from "../../parent/childTabs/OrganizationsOverview";
 
 
 const CurriculaComponents = () => {

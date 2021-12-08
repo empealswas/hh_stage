@@ -185,7 +185,9 @@ const AttendanceSheetTable = (props: {}) => {
         fetchClassrooms().then((result: any) => {
             const classrooms = result.data.getTeacher.classrooms.items.map((item: any) => item.classroom);
             setClassroomsOfTeacher(classrooms)
-            setSelectedClassroomData(classrooms[0])
+            if (classrooms.length > 0) {
+                setSelectedClassroomData(classrooms[0]);
+            }
         })
     }
     const fetchPupils = async (classroomId: string) => {
@@ -194,7 +196,7 @@ const AttendanceSheetTable = (props: {}) => {
     const getAttendance = async (data: any) => {
         return await data.data.getClassroom.pupils.items?.map(async (item: any) => {
             const pupil: any = item.pupil;
-            if(!pupil){
+            if (!pupil) {
                 return;
             }
             const noPreviousRecordsOfAttendanceInThisLesson = pupil.Attendances?.items?.length === 0;
@@ -307,15 +309,19 @@ const AttendanceSheetTable = (props: {}) => {
     return (
         <>
             {classroomData &&
-            <Button color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}} onClick={async () => {
-                const result: any = await API.graphql(graphqlOperation(updateClassroomLesson, {input: {
-                        id: classroomData.id,
-                        completed: !classroomData.completed
-                    }}))
-                setClassroomData(result.data.updateClassroomLesson);
+            <Button color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}}
+                    onClick={async () => {
+                        const result: any = await API.graphql(graphqlOperation(updateClassroomLesson, {
+                            input: {
+                                id: classroomData.id,
+                                completed: !classroomData.completed
+                            }
+                        }))
+                        setClassroomData(result.data.updateClassroomLesson);
 
-            }
-            } variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</Button>
+                    }
+                    }
+                    variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</Button>
             }
             {(selectedClassroom && lessonId) &&
             <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}/>

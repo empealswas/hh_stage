@@ -29,6 +29,7 @@ import FilesUploadDropzone from "../../FilesUploading/FilesUploadDropzone";
 import UploadingFilesList from "../../FilesUploading/UploadingFilesList";
 import awsConfig from "../../../aws-exports";
 import AddingDialog from "../../../utils/AddingDialog";
+import LessonOptionComponent from "./LessonOptionComponent";
 
 export default function AddLessonModal() {
     const {id} = useParams();
