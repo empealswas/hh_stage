@@ -238,6 +238,7 @@ export const getPELessonRecord = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       lessonID
       Lesson {
@@ -321,6 +322,7 @@ export const getClassroomLesson = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       Lesson {
         id
@@ -380,6 +382,13 @@ export const getClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
       yearGroupID
       yearGroup {
         id
@@ -389,6 +398,7 @@ export const getClassroom = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      organizationClassroomsId
     }
   }
 `;
@@ -406,6 +416,7 @@ export const listClassrooms = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       nextToken
     }
@@ -572,6 +583,9 @@ export const getOrganization = /* GraphQL */ `
         nextToken
       }
       Teachers {
+        nextToken
+      }
+      Classrooms {
         nextToken
       }
       type

@@ -1,5 +1,5 @@
-import React from 'react';
-import {graphqlOperation} from "aws-amplify";
+import React, {useEffect, useState} from 'react';
+import {API, graphqlOperation} from "aws-amplify";
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,7 +10,8 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Connect} from 'aws-amplify-react'
 import {IConnectState} from "aws-amplify-react/lib/API/GraphQL/Connect";
 import {Classroom} from "../../API";
-import {onCreateClassroom} from "../../graphql/subscriptions";
+import {onCreateClassroom, onUpdateSection} from "../../graphql/subscriptions";
+import {Container} from "@mui/material";
 
 const Link = require("react-router-dom").Link;
 
@@ -26,12 +27,12 @@ query MyQuery($id: ID = "") {
   }
 }
 `
-const orgQuery =`query MyQuery($id: ID = "") {
+const orgQuery = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    classrooms {
+    Classrooms {
       items {
-        id
         name
+        id
       }
     }
   }
@@ -39,80 +40,91 @@ const orgQuery =`query MyQuery($id: ID = "") {
 const CurriculaGrid = () => {
     const {id, organizationId} = useParams();
     const navigate = useNavigate();
-    let classroomQuery: string = '';
-    if (id) {
-        classroomQuery = query;
-    } else if (organizationId) {
-        classroomQuery = orgQuery;
+
+    useEffect(() => {
+
+        const getClassrooms = async () => {
+            if (id) {
+                const result: any = await API.graphql(graphqlOperation(query, {id: id}));
+                setClassrooms(result.data.getSchool.classrooms.items);
+            } else if (organizationId) {
+                const result: any = await API.graphql(graphqlOperation(orgQuery, {id: organizationId}));
+                setClassrooms(result.data.getOrganization.Classrooms.items);
+            }
+        }
+
+        getClassrooms()
+        const createSubscription: any = API.graphql(graphqlOperation(onCreateClassroom));
+        const updateSubscription = createSubscription.subscribe({
+            next: (postData: any) => {
+                console.log('Sub', postData);
+                let classroom = postData.value.data.onCreateClassroom;
+                if (id && classroom.schoolID !== id) {
+                    return
+                } else if (organizationId && classroom.organizationClassroomsId !== organizationId) {
+                    return;
+                }
+                getClassrooms();
+            }
+        })
+        return () => {
+            updateSubscription.unsubscribe();
+        };
+    }, []);
+
+    const [classrooms, setClassrooms] = useState<Classroom [] | null>(null);
+    const ClassroomsGird = () => {
+        if (!classrooms) {
+            return (<>
+                    {[0, 1, 2].map((value, index) => (
+                        <Grid key={index} item xs={12} sm={6} md={3}>
+                            <Card>
+
+                                <CardContent style={{width: '100%', height: '100%'}}>
+                                    <Typography variant={'h3'}>
+                                        <Skeleton animation={'pulse'} variant={'text'}/>
+                                    </Typography>
+                                    <Typography variant={'h4'}>
+                                        <Skeleton animation={'pulse'} variant={'text'}/>
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>))}
+                </>
+            );
+        }
+        if (classrooms.length === 0) {
+            return <Container>
+                <Typography variant={'h2'} textAlign={'center'} >No Classrooms</Typography>
+            </Container>
+        }
+        return (<>
+            {classrooms.map((value: Classroom, index: number) => (
+                <Grid key={index} item xs={12} sm={6} md={3}>
+                    <Card>
+                        <CardActionArea onClick={() => {
+                            navigate(`${value.id}`);
+                        }
+                        }
+                                        style={{height: 'auto', textAlign: 'center'}}>
+                            <CardContent style={{width: '100%', height: '100%'}}>
+                                <Typography style={{width: '100%', height: '100%'}} gutterBottom
+                                            variant="h5" component="h2">
+                                    {value.name}
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+                </Grid>
+            ))}
+        </>);
     }
     return (
-        <Grid container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start" spacing={2}
-        >
-            <Grid item xs={12}>
-                <Grid container justifyContent="flex-start" spacing={2}>
-                    <Connect
-                        query={graphqlOperation(classroomQuery, {id: id})}
-                        subscription={graphqlOperation(onCreateClassroom)}
-                        onSubscriptionMsg={(prevData, data) => {
-                            console.log(prevData)
-                            let prevCurricula = {...prevData};
-                            prevCurricula.getSchool.classrooms.items = [
-                                data.onCreateClassroom,
-                                ...prevData.getSchool.classrooms.items
-                            ];
-                            return prevCurricula;
-                        }}
-                    >
-                        {({data, loading, errors}: IConnectState) => {
-                            if (errors.lenght > 0) {
-                                console.error(errors)
-                            }
-                            if (loading) {
-                                return [0, 1, 2].map((value, index) => (
-                                    <Grid key={index} item xs={12} sm={6} md={3}>
-                                        <Card>
-
-                                            <CardContent style={{width: '100%', height: '100%'}}>
-                                                <Typography variant={'h3'}>
-                                                    <Skeleton animation={'pulse'} variant={'text'}/>
-                                                </Typography>
-                                                <Typography variant={'h4'}>
-                                                    <Skeleton animation={'pulse'} variant={'text'}/>
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                ))
-                            }
-                            console.log(data)
-                            return data.getSchool.classrooms.items.map((value: Classroom, index: number) => (
-                                <Grid key={index} item  xs={12} sm={6} md={3}>
-                                    <Card>
-                                        <CardActionArea onClick={() => {
-                                            navigate(`${value.id}`);
-                                        }
-                                        }
-                                                        style={{height: 'auto', textAlign: 'center'}}>
-                                            <CardContent style={{width: '100%', height: '100%'}}>
-                                                <Typography style={{width: '100%', height: '100%'}} gutterBottom
-                                                            variant="h5" component="h2">
-                                                    {value.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                            ));
-
-                        }}
-                    </Connect>
-                </Grid>
-            </Grid>
+        <Grid container spacing={2}>
+            <ClassroomsGird/>
         </Grid>
-    );
+    )
+
 };
 
 export default CurriculaGrid;

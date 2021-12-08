@@ -9,6 +9,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import {createSection, createSectionOptions, updateSection} from "../../graphql/mutations";
 import {CreateOrganizationInput, CreateSectionInput, CreateSectionOptionsInput, Section} from "../../API";
 import LessonOptionComponent from "../Lesson/LessonContent/LessonOptionComponent";
+import {values} from "lodash";
 
 const AddSectionModal = () => {
     const RegisterSchema = Yup.object().shape({
@@ -38,10 +39,24 @@ const AddSectionModal = () => {
         validationSchema: RegisterSchema,
         isInitialValid: false,
         onSubmit: async () => {
+
+            let activities = getFieldProps('activities').value;
+            activities = [...activities.filter((value: { chosenAsDefault: any; }) => value.chosenAsDefault),
+                ...activities.filter((value: { chosenAsDefault: any; }) => !value.chosenAsDefault)
+            ];            
+            let durations = getFieldProps('periods').value;
+            durations = [...durations.filter((value: { chosenAsDefault: any; }) => value.chosenAsDefault),
+                ...durations.filter((value: { chosenAsDefault: any; }) => !value.chosenAsDefault)
+            ];            
+            let deliveredBy = getFieldProps('deliveredBy').value;
+            deliveredBy = [...deliveredBy.filter((value: { chosenAsDefault: any; }) => value.chosenAsDefault),
+                ...deliveredBy.filter((value: { chosenAsDefault: any; }) => !value.chosenAsDefault)
+            ];
+            console.log(deliveredBy)
             const sectionInput: CreateSectionOptionsInput = {
-                Activities: getFieldProps('activities').value.map((value: any) => value.label),
-                Durations: getFieldProps('periods').value.map((value: any) => value.label),
-                DeliveredBy: getFieldProps('deliveredBy').value.map((value: any) => value.label)
+                Activities: activities.map((value: any) => value.label),
+                Durations: durations.map((value: any) => value.label),
+                DeliveredBy: deliveredBy.map((value: any) => value.label)
             }
             console.log('Section Input', sectionInput);
             const createResult: any = await API.graphql(graphqlOperation(createSectionOptions, {
@@ -69,7 +84,7 @@ const AddSectionModal = () => {
             <AddingDialog title={"Adding new Section"}
                           buttonName={'Add Section'}
                           onSubmit={async () => {
-                              handleSubmit();
+                              await formik.submitForm();
                           }}>
                 <TextField
                     fullWidth

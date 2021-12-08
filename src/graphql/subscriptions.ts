@@ -408,6 +408,7 @@ export const onCreatePELessonRecord = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       lessonID
       Lesson {
@@ -454,6 +455,7 @@ export const onUpdatePELessonRecord = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       lessonID
       Lesson {
@@ -500,6 +502,7 @@ export const onDeletePELessonRecord = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       lessonID
       Lesson {
@@ -567,6 +570,7 @@ export const onCreateClassroomLesson = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       Lesson {
         id
@@ -595,6 +599,7 @@ export const onUpdateClassroomLesson = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       Lesson {
         id
@@ -623,6 +628,7 @@ export const onDeleteClassroomLesson = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       Lesson {
         id
@@ -659,6 +665,13 @@ export const onCreateClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
       yearGroupID
       yearGroup {
         id
@@ -668,6 +681,7 @@ export const onCreateClassroom = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      organizationClassroomsId
     }
   }
 `;
@@ -692,6 +706,13 @@ export const onUpdateClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
       yearGroupID
       yearGroup {
         id
@@ -701,6 +722,7 @@ export const onUpdateClassroom = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      organizationClassroomsId
     }
   }
 `;
@@ -725,6 +747,13 @@ export const onDeleteClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      Organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
       yearGroupID
       yearGroup {
         id
@@ -734,6 +763,7 @@ export const onDeleteClassroom = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      organizationClassroomsId
     }
   }
 `;
@@ -759,6 +789,7 @@ export const onCreateTeacherClassroom = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt
@@ -787,6 +818,7 @@ export const onUpdateTeacherClassroom = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt
@@ -815,6 +847,7 @@ export const onDeleteTeacherClassroom = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt
@@ -843,6 +876,7 @@ export const onCreatePupilClassroom = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt
@@ -871,6 +905,7 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt
@@ -899,6 +934,7 @@ export const onDeletePupilClassroom = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt
@@ -1162,6 +1198,9 @@ export const onCreateOrganization = /* GraphQL */ `
       Teachers {
         nextToken
       }
+      Classrooms {
+        nextToken
+      }
       type
       createdAt
       updatedAt
@@ -1188,6 +1227,9 @@ export const onUpdateOrganization = /* GraphQL */ `
       Teachers {
         nextToken
       }
+      Classrooms {
+        nextToken
+      }
       type
       createdAt
       updatedAt
@@ -1212,6 +1254,9 @@ export const onDeleteOrganization = /* GraphQL */ `
         nextToken
       }
       Teachers {
+        nextToken
+      }
+      Classrooms {
         nextToken
       }
       type

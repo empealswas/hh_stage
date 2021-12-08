@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {API, graphqlOperation} from "aws-amplify";
 import {UserContext} from "../../App";
 import {createPELessonRecord} from "../../graphql/mutations";
-import {Classroom, PELessonRecord} from "../../API";
+import {Classroom, CreatePELessonRecordInput, PELessonRecord, SectionOptions} from "../../API";
 import {FormControl, InputLabel, MenuItem, Rating, Select, Typography} from "@mui/material";
 import {Button, Stack, TextField} from "@material-ui/core";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -49,6 +49,7 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }
     const snackbar = useSnackbar();
 
     const [lessonRecord, setLessonRecord] = useState<PELessonRecord | null>(null);
+    const [sectionOption, setSectionOption] = useState<SectionOptions | null>(null);
     useEffect(() => {
         const getData = async () => {
             const result: any = await API.graphql(graphqlOperation(query, {
@@ -57,22 +58,54 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }
                 teacherId: user?.email
             }));
             let records = result.data.getLesson?.LessonsRecords.items;
-            if (records?.length === 0) {
-                const result: any = await API.graphql(graphqlOperation(createPELessonRecord, {
-                    input: {
+            const section: SectionOptions | null = result.data.getLesson?.Section?.SectionOptions;
+            if (section) {
+                if (records?.length === 0) {
+                    const input: CreatePELessonRecordInput = {
                         classroomID: selectedClassroom.id,
                         teacherID: user?.email,
                         lessonID: lessonId,
-                        activity: 'Daily Mile',
-                        date: format(new Date(), 'yyyy-MM-dd'),
+                        date: format(new Date(), 'yyyy-MM-dd')
                     }
-                }));
-                snackbar.enqueueSnackbar("Daily Mile Record Created", {variant: 'success'})
-                console.log('Created Lesson Result', result);
-                setLessonRecord(result.data.createPELessonRecord);
+                    if (section.Durations) {
+                        input.duration = section?.Durations[0];
+                    }
+                    if (section.Activities) {
+                        input.activity = section?.Activities[0];
+                    }
+                    if (section.DeliveredBy) {
+                        input.deliveredBy = section.DeliveredBy[0];
+                    }
+
+                    const result: any = await API.graphql(graphqlOperation(createPELessonRecord, {
+                        input
+                    }));
+                    snackbar.enqueueSnackbar(`${input.activity} Record Created`, {variant: 'success'});
+                    console.log('Created Lesson Result', result);
+                    setLessonRecord(result.data.createPELessonRecord);
+                } else {
+                    setLessonRecord(records[0]);
+                }
             } else {
-                setLessonRecord(records[0]);
+                // before section options added, needs to be kept for daily mile to be working.
+                if (records?.length === 0) {
+                    const result: any = await API.graphql(graphqlOperation(createPELessonRecord, {
+                        input: {
+                            classroomID: selectedClassroom.id,
+                            teacherID: user?.email,
+                            lessonID: lessonId,
+                            activity: 'Daily Mile',
+                            date: format(new Date(), 'yyyy-MM-dd'),
+                        }
+                    }));
+                    snackbar.enqueueSnackbar("Daily Mile Record Created", {variant: 'success'});
+                    console.log('Created Lesson Result', result);
+                    setLessonRecord(result.data.createPELessonRecord);
+                } else {
+                    setLessonRecord(records[0]);
+                }
             }
+            setSectionOption(section);
         }
         getData();
 
@@ -81,8 +114,8 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom }
 
     return (
         <>
-            {lessonRecord ?
-                <LessonDetailsForm lessonRecord={lessonRecord}/>
+            {lessonRecord  ?
+                <LessonDetailsForm lessonRecord={lessonRecord} sectionOption={sectionOption}/>
                 : <Typography>Loading</Typography>}
         </>
     );

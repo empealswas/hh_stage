@@ -18,6 +18,10 @@ import {TransitionProps} from "@material-ui/core/transitions";
 import Slide from "@material-ui/core/Slide";
 import AddingDialog from "../../utils/AddingDialog";
 import {CreateClassroomInput} from "../../API";
+import * as Yup from "yup";
+import {FormikProvider, useFormik} from "formik";
+import {AddTeacherOrganizationRequest} from "../../apiFunctions/DTO/AddTeacherRequest";
+import {addTeacherForOrganizationApi} from "../../apiFunctions/apiFunctions";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement },
@@ -27,29 +31,46 @@ const Transition = React.forwardRef(function Transition(
 });
 export default function AddClassroomModal() {
     const {id, organizationId} = useParams();
-    const [name, setName] = useState('');
+    const RegisterSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(2, 'Too Short!')
+            .max(100, 'Too Long!')
+            .required('First name is required'),
+
+
+    });
+    const formik = useFormik({
+        initialValues: {
+            name: ''
+        },
+        validationSchema: RegisterSchema,
+        isInitialValid: false,
+        onSubmit: async () => {
+            await addClassroom();
+        }
+    });
 
 
     async function addClassroom() {
         const input: CreateClassroomInput = {
-            name: name,
+            name: formik.getFieldProps('name').value,
         }
         if (id) {
             input.schoolID = id;
         }
         if (organizationId) {
-            // input.
+            input.organizationClassroomsId = organizationId;
         }
-
         await API.graphql(graphqlOperation(createClassroom, {input}));
     }
 
     return (
-        <AddingDialog title={'Adding new Classroom'} buttonName={'Add Classroom'} onSubmit={addClassroom}>
-            <TextField value={name} onChange={(event) => {
-                setName(event.target.value)
-            }} label={'Name of Classroom'}/>
-        </AddingDialog>
+        <FormikProvider value={formik}>
+            <AddingDialog title={'Adding new Classroom'} buttonName={'Add Classroom'} onSubmit={addClassroom}>
+                <TextField {...formik.getFieldProps('name')} error={Boolean(formik.touched.name && formik.errors.name)}
+                           helperText={formik.touched.name && formik.errors.name}label={'Name of Classroom'}/>
+            </AddingDialog>
+        </FormikProvider>
 
     );
 }

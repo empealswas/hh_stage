@@ -147,7 +147,7 @@ function SettingsPanel(props: GridToolbarContainerProps) {
 const AttendanceSheetTable = (props: {}) => {
     const teacher = useContext(UserContext);
     const {lessonId} = useParams();
-    //
+
     const [classroomsOfTeacher, setClassroomsOfTeacher] = useState<null | Classroom[]>(null);
     const [selectedClassroom, setSelectedClassroom] = useState<Classroom | null>(null);
     const [pupils, setPupils] = useState<null | AttendanceOfPupil[]>(null);

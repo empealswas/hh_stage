@@ -119,7 +119,7 @@ export default function AddingDialog(props: AddingDialogProps) {
                                     loading={loading}
                                     error={error}
                                     onClickWhenSuccess={handleClose}
-                                    disabled={loading || (!formik?.isValid ?? false)}/>
+                                    disabled={loading || ( formik ? !formik?.isValid : false)}/>
                 </DialogActions>
             </Dialog>
         </>

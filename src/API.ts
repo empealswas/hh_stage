@@ -145,6 +145,7 @@ export type Organization = {
   AcceptedPupils?: ModelPupilOrganizationAcceptedConnection | null,
   Sections?: ModelSectionConnection | null,
   Teachers?: ModelTeacherOrganziationConnection | null,
+  Classrooms?: ModelClassroomConnection | null,
   type?: string | null,
   createdAt: string,
   updatedAt: string,
@@ -231,10 +232,12 @@ export type Classroom = {
   pupils?: ModelPupilClassroomConnection | null,
   schoolID?: string | null,
   school?: School | null,
+  Organization?: Organization | null,
   yearGroupID?: string | null,
   yearGroup?: Curriculum | null,
   createdAt: string,
   updatedAt: string,
+  organizationClassroomsId?: string | null,
 };
 
 export type ModelPupilClassroomConnection = {
@@ -803,6 +806,7 @@ export type CreateClassroomInput = {
   name?: string | null,
   schoolID?: string | null,
   yearGroupID?: string | null,
+  organizationClassroomsId?: string | null,
 };
 
 export type ModelClassroomConditionInput = {
@@ -812,6 +816,7 @@ export type ModelClassroomConditionInput = {
   and?: Array< ModelClassroomConditionInput | null > | null,
   or?: Array< ModelClassroomConditionInput | null > | null,
   not?: ModelClassroomConditionInput | null,
+  organizationClassroomsId?: ModelIDInput | null,
 };
 
 export type UpdateClassroomInput = {
@@ -819,6 +824,7 @@ export type UpdateClassroomInput = {
   name?: string | null,
   schoolID?: string | null,
   yearGroupID?: string | null,
+  organizationClassroomsId?: string | null,
 };
 
 export type DeleteClassroomInput = {
@@ -1508,6 +1514,7 @@ export type ModelClassroomFilterInput = {
   and?: Array< ModelClassroomFilterInput | null > | null,
   or?: Array< ModelClassroomFilterInput | null > | null,
   not?: ModelClassroomFilterInput | null,
+  organizationClassroomsId?: ModelIDInput | null,
 };
 
 export type ModelPupilOrganizationRequestFilterInput = {
@@ -2217,6 +2224,7 @@ export type CreatePELessonRecordMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     lessonID?: string | null,
     Lesson?:  {
@@ -2272,6 +2280,7 @@ export type UpdatePELessonRecordMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     lessonID?: string | null,
     Lesson?:  {
@@ -2327,6 +2336,7 @@ export type DeletePELessonRecordMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     lessonID?: string | null,
     Lesson?:  {
@@ -2419,6 +2429,7 @@ export type CreateClassroomLessonMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -2454,6 +2465,7 @@ export type UpdateClassroomLessonMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -2489,6 +2501,7 @@ export type DeleteClassroomLessonMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -2534,6 +2547,14 @@ export type CreateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -2544,6 +2565,7 @@ export type CreateClassroomMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -2576,6 +2598,14 @@ export type UpdateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -2586,6 +2616,7 @@ export type UpdateClassroomMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -2618,6 +2649,14 @@ export type DeleteClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -2628,6 +2667,7 @@ export type DeleteClassroomMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -2660,6 +2700,7 @@ export type CreateTeacherClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2695,6 +2736,7 @@ export type UpdateTeacherClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2730,6 +2772,7 @@ export type DeleteTeacherClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2765,6 +2808,7 @@ export type CreatePupilClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2800,6 +2844,7 @@ export type UpdatePupilClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2835,6 +2880,7 @@ export type DeletePupilClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -3177,6 +3223,10 @@ export type CreateOrganizationMutation = {
       __typename: "ModelTeacherOrganziationConnection",
       nextToken?: string | null,
     } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -3213,6 +3263,10 @@ export type UpdateOrganizationMutation = {
       __typename: "ModelTeacherOrganziationConnection",
       nextToken?: string | null,
     } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -3247,6 +3301,10 @@ export type DeleteOrganizationMutation = {
     } | null,
     Teachers?:  {
       __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -5185,6 +5243,7 @@ export type GetPELessonRecordQuery = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     lessonID?: string | null,
     Lesson?:  {
@@ -5285,6 +5344,7 @@ export type GetClassroomLessonQuery = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -5351,6 +5411,14 @@ export type GetClassroomQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -5361,6 +5429,7 @@ export type GetClassroomQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -5381,6 +5450,7 @@ export type ListClassroomsQuery = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } >,
     nextToken?: string | null,
   } | null,
@@ -5577,6 +5647,10 @@ export type GetOrganizationQuery = {
     } | null,
     Teachers?:  {
       __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -6723,6 +6797,7 @@ export type OnCreatePELessonRecordSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     lessonID?: string | null,
     Lesson?:  {
@@ -6773,6 +6848,7 @@ export type OnUpdatePELessonRecordSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     lessonID?: string | null,
     Lesson?:  {
@@ -6823,6 +6899,7 @@ export type OnDeletePELessonRecordSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     lessonID?: string | null,
     Lesson?:  {
@@ -6895,6 +6972,7 @@ export type OnCreateClassroomLessonSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -6925,6 +7003,7 @@ export type OnUpdateClassroomLessonSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -6955,6 +7034,7 @@ export type OnDeleteClassroomLessonSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -6995,6 +7075,14 @@ export type OnCreateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -7005,6 +7093,7 @@ export type OnCreateClassroomSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -7032,6 +7121,14 @@ export type OnUpdateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -7042,6 +7139,7 @@ export type OnUpdateClassroomSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -7069,6 +7167,14 @@ export type OnDeleteClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -7079,6 +7185,7 @@ export type OnDeleteClassroomSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -7106,6 +7213,7 @@ export type OnCreateTeacherClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -7136,6 +7244,7 @@ export type OnUpdateTeacherClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -7166,6 +7275,7 @@ export type OnDeleteTeacherClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -7196,6 +7306,7 @@ export type OnCreatePupilClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -7226,6 +7337,7 @@ export type OnUpdatePupilClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -7256,6 +7368,7 @@ export type OnDeletePupilClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -7548,6 +7661,10 @@ export type OnCreateOrganizationSubscription = {
       __typename: "ModelTeacherOrganziationConnection",
       nextToken?: string | null,
     } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -7579,6 +7696,10 @@ export type OnUpdateOrganizationSubscription = {
       __typename: "ModelTeacherOrganziationConnection",
       nextToken?: string | null,
     } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -7608,6 +7729,10 @@ export type OnDeleteOrganizationSubscription = {
     } | null,
     Teachers?:  {
       __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
