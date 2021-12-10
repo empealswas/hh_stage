@@ -242,12 +242,12 @@ type Pupil @model @auth(rules: [{allow: public, provider: iam}, {allow: public, 
 
 type Intervention @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
-    pupilID: ID! @index(name: "byPupil")
+    pupilID: ID! @index(name: "byPupil",  sortKeyFields: ["createdAt"], queryField: "interventionByPupilByDate")
     Pupil: Pupil @belongsTo(fields: ["pupilID"])
     message: String
     viewed: Boolean
     InterventionFeedback: [ParentInterventionFeedback] @hasMany(indexName: "byIntervention", fields: ["id"])
-    createdAt: AWSDateTime!
+    createdAt: AWSDateTime! @index(name: "byDate")
 }
 
 type ParentInterventionFeedback @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {

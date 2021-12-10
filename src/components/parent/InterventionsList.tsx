@@ -11,17 +11,18 @@ import InterventionMenu from "./interventions/InterventionMenu";
 import {compareAsc, compareDesc, parseISO} from "date-fns";
 import {UserContext} from "../../App";
 
-const query = `query MyQuery($parentId: ID = "", $id: ID = "a0c357a3-b4e2-475b-9796-dff2b7e97dd2") {
+
+const getFirstInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = ASC) {
   getPupil(id: $id) {
-    Interventions(sortDirection: ASC, limit: 10) {
+    Interventions(sortDirection: $sortDirection, limit: 5) {
       items {
-        id
         message
         createdAt
-        InterventionFeedback(parentID: {eq: $parentId}) {
+        InterventionFeedback {
           items {
-            id
             comment
+            createdAt
+            id
             rating
           }
         }
@@ -29,45 +30,28 @@ const query = `query MyQuery($parentId: ID = "", $id: ID = "a0c357a3-b4e2-475b-9
       nextToken
     }
   }
-}`
-
-
-const getFirstInterventions = `query MyQuery($pupilId: ID = "", $parentId: ID = "", $direction: SearchableSortDirection = desc) {
-  searchInterventions(filter: {pupilID: {eq: $pupilId}}, limit: 5, sort: {direction: $direction, field: createdAt}) {
-    nextToken
-    total
-    items {
-      id
-      message
-      createdAt
-      InterventionFeedback(parentID: {eq: $parentId}) {
-        items {
-          id
-          comment
-          rating
+}
+`
+const getNextInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = ASC, $nextToken: String = "") {
+  getPupil(id: $id) {
+    Interventions(sortDirection: $sortDirection, limit: 10, nextToken: $nextToken) {
+      items {
+        message
+        createdAt
+        InterventionFeedback {
+          items {
+            comment
+            createdAt
+            id
+            rating
+          }
         }
       }
+      nextToken
     }
   }
-}`
-const getNextInterventions = `query MyQuery($pupilId: ID = "", $parentId: ID = "", $nextToken: String = "", $direction: SearchableSortDirection = desc) {
-  searchInterventions(filter: {pupilID: {eq: $pupilId}}, limit: 10, sort: {direction: $direction, field: createdAt}, nextToken: $nextToken) {
-    nextToken
-    total
-    items {
-      id
-      message
-      createdAt
-      InterventionFeedback(parentID: {eq: $parentId}) {
-        items {
-          id
-          comment
-          rating
-        }
-      }
-    }
-  }
-}`
+}
+`
 const InterventionsList = (props: { pupil: Pupil }) => {
     const [interventions, setInterventions] = useState<Intervention[] | null>(null);
     const [loading, setLoading] = useState(false);
@@ -77,18 +61,17 @@ const InterventionsList = (props: { pupil: Pupil }) => {
 
     const loadInterventions = async () => {
         const result: any = await API.graphql(graphqlOperation(getNextInterventions, {
-            pupilId: props.pupil.id,
-            parentId: parent?.email,
+            id: props.pupil.id,
             nextToken: nextToken,
-            direction: sortFilter === 'newest' ? 'desc' : 'asc'
+            sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
         }));
-        nextToken = result.data.searchInterventions.nextToken;
+        nextToken = result.data.getPupil.Interventions.nextToken;
         console.log(nextToken)
         setInterventions(prevState => {
             if (prevState) {
-                return [...prevState, ...result.data.searchInterventions.items];
+                return [...prevState, ...result.data.getPupil.Interventions.items];
             } else {
-                return result.data.searchInterventions.items
+                return result.data.getPupil.Interventions.items
             }
         });
     }
@@ -96,12 +79,11 @@ const InterventionsList = (props: { pupil: Pupil }) => {
         const getInterventions = async () => {
             setInterventions(null)
             const result: any = await API.graphql(graphqlOperation(getFirstInterventions, {
-                pupilId: props.pupil.id,
-                parentId: parent?.email,
-                direction: sortFilter === 'newest' ? 'desc' : 'asc'
+                id: props.pupil.id,
+                sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
             }));
-            nextToken = result.data.searchInterventions.nextToken;
-            setInterventions(result.data.searchInterventions.items);
+            nextToken = result.data.getPupil.Interventions.nextToken;
+            setInterventions(result.data.getPupil.Interventions.items);
             console.log(nextToken);
             // console.log(result.data.getPupil.Interventions.items)
         }

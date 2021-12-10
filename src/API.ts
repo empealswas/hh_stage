@@ -1694,6 +1694,22 @@ export type ModelInterventionFilterInput = {
   not?: ModelInterventionFilterInput | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelParentInterventionFeedbackFilterInput = {
   id?: ModelIDInput | null,
   parentID?: ModelIDInput | null,
@@ -6226,6 +6242,31 @@ export type ListInterventionsQueryVariables = {
 
 export type ListInterventionsQuery = {
   listInterventions?:  {
+    __typename: "ModelInterventionConnection",
+    items:  Array< {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      viewed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+    } >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type InterventionByPupilByDateQueryVariables = {
+  pupilID?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelInterventionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type InterventionByPupilByDateQuery = {
+  interventionByPupilByDate?:  {
     __typename: "ModelInterventionConnection",
     items:  Array< {
       __typename: "Intervention",

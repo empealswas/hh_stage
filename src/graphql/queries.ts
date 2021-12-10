@@ -1074,6 +1074,35 @@ export const listInterventions = /* GraphQL */ `
     }
   }
 `;
+export const interventionByPupilByDate = /* GraphQL */ `
+  query InterventionByPupilByDate(
+    $pupilID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelInterventionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    interventionByPupilByDate(
+      pupilID: $pupilID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        pupilID
+        message
+        viewed
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getParentInterventionFeedback = /* GraphQL */ `
   query GetParentInterventionFeedback($id: ID!) {
     getParentInterventionFeedback(id: $id) {
