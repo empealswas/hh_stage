@@ -1,25 +1,25 @@
 import * as React from 'react';
-import {useContext, useEffect, useState} from 'react';
-import {SchoolManagementContext} from "./SchoolManagement";
-import {API, graphqlOperation} from "aws-amplify";
-import {Pupil, SchoolHouse} from "../../API";
-import {Container, IconButton, Stack, Tooltip} from "@material-ui/core";
+import { useContext, useEffect, useState } from 'react';
+import { SchoolManagementContext } from "./SchoolManagement";
+import { API, graphqlOperation } from "aws-amplify";
+import { Pupil, SchoolHouse } from "../../API";
+import { Container, IconButton, Stack, Tooltip, Button } from "@material-ui/core";
 import CachedIcon from '@material-ui/icons/Cached';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import WatchIcon from '@mui/icons-material/Watch';
 import FaceIcon from '@material-ui/icons/Face';
 // @ts-ignore
-import {DataGrid, GridColDef, GridValueGetterParams} from '@material-ui/data-grid';
-import {onCreatePupil} from "../../graphql/subscriptions";
-import {Link} from "react-router-dom";
-import {RenderHouseCell, renderHouseEdit} from "./PupilsTableRenders";
-import {listSchoolHouses} from "../../graphql/queries";
-import {updateAttendance, updatePupil} from "../../graphql/mutations";
+import { DataGrid, GridColDef, GridValueGetterParams } from '@material-ui/data-grid';
+import { onCreatePupil } from "../../graphql/subscriptions";
+import { Link } from "react-router-dom";
+import { RenderHouseCell, renderHouseEdit } from "./PupilsTableRenders";
+import { listSchoolHouses } from "../../graphql/queries";
+import { updateAttendance, updatePupil } from "../../graphql/mutations";
 
 
 export default function PupilsTable() {
     const columns: GridColDef[] = [
-        {field: 'id', headerName: 'ID'},
+        { field: 'id', headerName: 'ID' },
         {
             field: 'firstName',
             headerName: 'First name',
@@ -60,19 +60,19 @@ export default function PupilsTable() {
                     <Stack direction={'row'}>
                         <Tooltip title={'Personal Page'}>
                             <IconButton color={'success'} component={Link} to={`/dashboard/pupils/${params.id}`}>
-                                <FaceIcon/>
+                                <FaceIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title={'Manage Account'}>
                             <IconButton color={'info'} component={Link} to={'#'}>
-                                <EditRoundedIcon/>
+                                <EditRoundedIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title={'Connect To Garmin'}>
                             <IconButton color={'primary'} onClick={() => {
                                 window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${params.id}/${params.getValue(params.id, 'firstName')}${params.getValue(params.id, 'lastName')}`, '_blank')
                             }}>
-                                <WatchIcon/>
+                                <WatchIcon />
                             </IconButton>
                         </Tooltip>
                     </Stack>
@@ -101,7 +101,7 @@ export default function PupilsTable() {
   }
 }
 
-`, {id: school?.id},));
+`, { id: school?.id }));
     }
 
     function loadPupils() {
@@ -143,7 +143,7 @@ export default function PupilsTable() {
     return (
         <div>
 
-            <div style={{width: '100%', display: 'flex'}}>
+            <div style={{ width: '100%', display: 'flex' }}>
                 <DataGrid
                     onCellEditCommit={(params, event, details) => {
                         const pupil = pupils?.find(pupil => pupil.id === params.id) as Pupil;
@@ -157,11 +157,11 @@ export default function PupilsTable() {
                         console.log(res)
                     }}
                     rows={pupils?.map((pupil, index) => {
-                            return {
-                                house: pupil.schoolHouseID,
-                                ...pupil
-                            }
+                        return {
+                            house: pupil.schoolHouseID,
+                            ...pupil
                         }
+                    }
                     ) ?? []}
 
                     columns={columns}
@@ -170,8 +170,10 @@ export default function PupilsTable() {
                     autoHeight={true}
                 />
             </div>
+
+            <Button variant="outlined" color="secondary"></Button>
             <IconButton onClick={loadPupils}>
-                <CachedIcon/>
+                <CachedIcon />
             </IconButton>
         </div>
     );

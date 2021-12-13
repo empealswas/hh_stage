@@ -29,6 +29,7 @@ const InterventionMenu = (props: { intervention: Intervention }) => {
     };
     const sendFeedback = async () => {
         setLoading(true);
+        console.log(intervention)
         await API.graphql(graphqlOperation(createParentInterventionFeedback, {
             input: {
                 interventionID: intervention.id,

@@ -37,59 +37,54 @@ export default function DashboardApp() {
                 <Box sx={{pb: 5}}>
                     <Typography variant="h4">Welcome back, {user.firstName}</Typography>
                 </Box>
-                {/*{user instanceof Organization ?*/}
-                {/*    <OrganizationAdminOverview/>*/}
-                {/*    :*/}
-                {/*    <Grid container spacing={5}>*/}
-                {/*        <Grid item xs={12} sm={6} md={4} lg={4}>*/}
+                <Grid container spacing={5}>
+                    <Grid item xs={12} sm={6} md={4} lg={4}>
 
-                {/*            /!* <TotalActivities/> *!/*/}
-                {/*            <ActivitiesTotal/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={12} sm={6} md={4} lg={4}>*/}
-                {/*            <TotalDailyMiles/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={12} sm={6} md={4} lg={4}>*/}
-                {/*            <ActivitiesDuration/>*/}
-                {/*            /!* <TimeCompletedCard /> *!/*/}
-                {/*        </Grid>*/}
-                {/*        /!*<Grid item xs={12} md={6} lg={6}>*!/*/}
-                {/*        /!*    <AverageStepsChart/>*!/*/}
-                {/*        /!*</Grid>*!/*/}
-                {/*        /!*<Grid item xs={12} md={6} lg={6}>*!/*/}
-                {/*        /!*    <AverageSleepChart/>*!/*/}
-                {/*        /!*</Grid>*!/*/}
-                {/*        <Grid item xs={12} md={6} lg={6}>*/}
-                {/*            <TopActivitiesPieChart/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={12} md={6} lg={6}>*/}
-                {/*            <ActivityGoalChart goalTime={10000}/>*/}
-                {/*        </Grid>*/}
-                {/*        /!*<Can I={'read'} a={'teacherDashboard'}>*!/*/}
-                {/*        /!*    <Grid item xs={12}>*!/*/}
-                {/*        /!*        <DashboardOfTeacher/>*!/*/}
-                {/*        /!*    </Grid>*!/*/}
-                {/*        /!*</Can>*!/*/}
-                {/*        /!*<Grid item xs={12} md={12} lg={12}>*!/*/}
-                {/*        /!*    <ActivityLineChart/>*!/*/}
-                {/*        /!*</Grid>*!/*/}
-                {/*        /!*<Grid item xs={12} md={12} lg={12}>*!/*/}
-                {/*        /!*    <HeatMap/>*!/*/}
-                {/*        /!*</Grid>*!/*/}
-                {/*        <Grid item xs={12} md={6} lg={6}>*/}
-                {/*            <TopPupilsByRewardBarChart/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={12} md={6} lg={6}>*/}
-                {/*            <TopPupilsByPhysicalActivities/>*/}
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={12} md={12} lg={12}>*/}
-                {/*            <SchoolHousesPage/>*/}
-                {/*        </Grid>*/}
-                {/*        /!*<DashboardSettings/>*!/*/}
+                        {/* <TotalActivities/> */}
+                        <ActivitiesTotal/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={4}>
+                        <TotalDailyMiles/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={4}>
+                        <ActivitiesDuration/>
+                        {/* <TimeCompletedCard /> */}
+                    </Grid>
+                    {/*<Grid item xs={12} md={6} lg={6}>*/}
+                    {/*    <AverageStepsChart/>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={12} md={6} lg={6}>*/}
+                    {/*    <AverageSleepChart/>*/}
+                    {/*</Grid>*/}
+                    <Grid item xs={12} md={6} lg={6}>
+                        <TopActivitiesPieChart/>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <ActivityGoalChart goalTime={10000}/>
+                    </Grid>
+                    {/*<Can I={'read'} a={'teacherDashboard'}>*/}
+                    {/*    <Grid item xs={12}>*/}
+                    {/*        <DashboardOfTeacher/>*/}
+                    {/*    </Grid>*/}
+                    {/*</Can>*/}
+                    {/*<Grid item xs={12} md={12} lg={12}>*/}
+                    {/*    <ActivityLineChart/>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item xs={12} md={12} lg={12}>*/}
+                    {/*    <HeatMap/>*/}
+                    {/*</Grid>*/}
+                    <Grid item xs={12} md={6} lg={6}>
+                        <TopPupilsByRewardBarChart/>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={6}>
+                        <TopPupilsByPhysicalActivities/>
+                    </Grid>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <SchoolHousesPage/>
+                    </Grid>
+                    {/*<DashboardSettings/>*/}
 
-                {/*    </Grid>*/}
-                {/*}*/}
-
+                </Grid>
             </Container>
         </Page>
     );

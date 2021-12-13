@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, CardMedia, Container} from "@material-ui/core";
+import {Card, CardMedia, Container, Tooltip} from "@material-ui/core";
 import {Avatar, Button, CardActions, IconButton, Stack, Typography} from "@mui/material";
 import ChildTabs from "./tabs";
 import {Classroom, Pupil} from "../../API";
@@ -94,15 +94,18 @@ const ChildOverviewMenu = () => {
                             <Typography variant={'h5'}>
                                 {pupil.firstName} {pupil.lastName}
                             </Typography>
+                            <Tooltip title={pupil.classrooms?.items?.map((item: any) => item.classroom).map((classroom: Classroom) =>
+                                     `${classroom.name}\n`
+                            ) ?? ''}>
+                            <Typography variant={'subtitle2'} noWrap maxWidth="200px">
                             {pupil.classrooms?.items?.map((item: any) => item.classroom).map((classroom: Classroom) =>
-                                <Typography variant={'subtitle2'}>
-                                    {classroom.name}
-                                </Typography>)
-                            }
+                                     `${classroom.name} | `
+                            )}
+                                </Typography>
+                            </Tooltip>
                         </div>
                     </Stack>
-                    <MHidden width="lgDown">
-                        <Stack direction={'row'} height={40} spacing={2}>
+                        <Stack direction={{xs: 'column', sm: 'row'}} height={40} spacing={2}>
                             <Button startIcon={<WatchIcon/>} variant={'contained'} onClick={() => {
                                 window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${pupil.id}/${pupil.firstName}${pupil.lastName}`, '_blank')
                             }}>
@@ -121,7 +124,6 @@ const ChildOverviewMenu = () => {
                                 })
                             }}>Change Cover Photo</Button>
                         </Stack>
-                    </MHidden>
 
 
 

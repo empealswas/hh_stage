@@ -1,21 +1,21 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Intervention, Pupil} from "../../API";
-import {API, graphqlOperation} from "aws-amplify";
-import {onCreateIntervention} from "../../graphql/subscriptions";
-import {Button, Card, CardActions, CardContent, CardHeader, Container, Grid, Stack, Typography} from "@mui/material";
-import CardSkeleton from "../skeletons/CardSkeleton";
-import {ProductFilterSidebar, ProductSort} from "../_dashboard/products";
 import FilterListIcon from '@mui/icons-material/FilterList';
-import {Rating} from "@mui/lab";
+import { Button, Card, CardActions, CardContent, CardHeader, Container, Grid, Stack, Typography } from "@mui/material";
+import { API, graphqlOperation } from "aws-amplify";
+import { parseISO } from "date-fns";
+import React, { useContext, useEffect, useState } from 'react';
+import { Intervention, Pupil } from "../../API";
+import { UserContext } from "../../App";
+import { onCreateIntervention } from "../../graphql/subscriptions";
+import CardSkeleton from "../skeletons/CardSkeleton";
+import { ProductSort } from "../_dashboard/products";
 import InterventionMenu from "./interventions/InterventionMenu";
-import {compareAsc, compareDesc, parseISO} from "date-fns";
-import {UserContext} from "../../App";
 
 
 const getFirstInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = ASC) {
   getPupil(id: $id) {
     Interventions(sortDirection: $sortDirection, limit: 5) {
       items {
+        id
         message
         createdAt
         InterventionFeedback {
@@ -57,16 +57,17 @@ const InterventionsList = (props: { pupil: Pupil }) => {
     const [loading, setLoading] = useState(false);
     const [sortFilter, setSortFilter] = useState('newest');
     const parent = useContext(UserContext);
-    let nextToken: string = '';
+    let nextToken = ''
 
+    
     const loadInterventions = async () => {
+        setLoading(true)
         const result: any = await API.graphql(graphqlOperation(getNextInterventions, {
             id: props.pupil.id,
             nextToken: nextToken,
             sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
         }));
-        nextToken = result.data.getPupil.Interventions.nextToken;
-        console.log(nextToken)
+        nextToken = result.data.getPupil.Interventions.nextToken
         setInterventions(prevState => {
             if (prevState) {
                 return [...prevState, ...result.data.getPupil.Interventions.items];
@@ -74,6 +75,8 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                 return result.data.getPupil.Interventions.items
             }
         });
+        setLoading(false)
+
     }
     useEffect(() => {
         const getInterventions = async () => {
@@ -83,6 +86,7 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                 sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
             }));
             nextToken = result.data.getPupil.Interventions.nextToken;
+
             setInterventions(result.data.getPupil.Interventions.items);
             console.log(nextToken);
             // console.log(result.data.getPupil.Interventions.items)
@@ -126,33 +130,35 @@ const InterventionsList = (props: { pupil: Pupil }) => {
     function handleScroll() {
         // console.log('schrollHeight', document.documentElement.scrollHeight);
         // console.log('scrollTop', document.documentElement.scrollTop);
-        var isAtBottom = document.documentElement.scrollHeight  - document.documentElement.scrollTop <= document.documentElement.clientHeight;
-
+        var isAtBottom = document.documentElement.scrollHeight - 10 - document.documentElement.scrollTop <= document.documentElement.clientHeight;
+        console.log(isAtBottom)
         if (isAtBottom && nextToken && !loading) {
             console.log('loading')
+            console.log(nextToken)
+        
             setLoading(true);
             loadInterventions().then(res => setLoading(false));
         }
 
     }
 
-/*    if (!interventions) {
-        return (
-            <CardSkeleton/>
-        )
-    }
-    if (interventions.length === 0) {
-        return (
-            <Typography variant={'h6'} textAlign={'center'}>Here will be displayed achievements and highlights of your
-                child school
-                life.</Typography>);
-    }*/
+    /*    if (!interventions) {
+            return (
+                <CardSkeleton/>
+            )
+        }
+        if (interventions.length === 0) {
+            return (
+                <Typography variant={'h6'} textAlign={'center'}>Here will be displayed achievements and highlights of your
+                    child school
+                    life.</Typography>);
+        }*/
     const Interventios = () => {
         if (!interventions) {
             return (
                 <>
-                    <CardSkeleton/>
-                    <CardSkeleton/>
+                    <CardSkeleton />
+                    <CardSkeleton />
                 </>
             );
         }
@@ -168,12 +174,12 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                     return (
                         <Card>
                             <CardHeader title={'Intervention'}
-                                        subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`}/>
+                                subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`} />
                             <CardContent>
                                 <Typography variant={'body1'}>{value.message}</Typography>
                             </CardContent>
-                            <CardActions style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                <InterventionMenu intervention={value}/>
+                            <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <InterventionMenu intervention={value} />
                             </CardActions>
                         </Card>
                     );
@@ -191,8 +197,8 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                         <Card>
                             <CardContent>
                                 <Stack direction={'column'} spacing={2}>
-                                    <ProductSort setSortFilter={setSortFilter} sortFilter={sortFilter}/>
-                                    <Button endIcon={<FilterListIcon/>} color={'inherit'}>Filter</Button>
+                                    <ProductSort setSortFilter={setSortFilter} sortFilter={sortFilter} />
+                                    <Button endIcon={<FilterListIcon />} color={'inherit'}>Filter</Button>
                                 </Stack>
                                 {/*<ProductFilterSidebar/>*/}
                             </CardContent>
@@ -200,19 +206,12 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                     </Grid>
                     <Grid item xs={12} sm={8} md={8} lg={8}>
                         <Stack direction={'column'} spacing={3}>
-                            {/*.sort((a, b) => {
-                                if (sortFilter === 'newest') {
-                                    return compareDesc(parseISO(a.createdAt), parseISO(b.createdAt));
-                                } else {
-                                    return compareAsc(parseISO(a.createdAt), parseISO(b.createdAt));
-                                }
-                            })*/}
-                            <Interventios/>
+                            <Interventios />
                             {loading &&
-                            <>
-                                <CardSkeleton/>
-                                <CardSkeleton/>
-                            </>
+                                <>
+                                    <CardSkeleton />
+                                    <CardSkeleton />
+                                </>
                             }
                         </Stack>
                     </Grid>
