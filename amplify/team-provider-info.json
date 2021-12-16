@@ -35,7 +35,7 @@
         },
         "RemoveSections": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/RemoveSections-786a365a714376543650-build.zip"
+          "s3Key": "amplify-builds/RemoveSections-2f646d504d3158727267-build.zip"
         }
       },
       "auth": {
