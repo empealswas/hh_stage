@@ -60,7 +60,7 @@ export function PreLoginRouter() {
                 {path: '*', element: <Navigate to="/login"/>}
             ]
         },
-        {path: '*', element: <Navigate to="/404" replace/>}
+        {path: '*', element: <Navigate to="/login" replace/>}
 
     ]);
 }
@@ -68,7 +68,7 @@ export function PreLoginRouter() {
 export default function Router() {
     const user = useContext(UserContext);
     return useRoutes([
-
+            {path: '*', element: <Navigate to="/dashboard/app" replace/>},
             {
                 path: '/dashboard',
                 element: <DashboardLayout/>,
@@ -117,9 +117,7 @@ export default function Router() {
                                     {
                                         path: '/dashboard/organizationManagement/:organizationId/classrooms',
                                         element: <ClassroomOverview/>,
-                                        children: [
-
-                                        ]
+                                        children: []
                                     }
                                 ]
                             }
@@ -217,12 +215,7 @@ export default function Router() {
                     {path: 'blog', element: <Blog/>},
                 ]
             },
-            {
-                path: '/',
-                element: <LogoOnlyLayout/>,
-            },
 
-            {path: '*', element: <Navigate to="/dashboard/app" replace/>}
         ]
     );
 }

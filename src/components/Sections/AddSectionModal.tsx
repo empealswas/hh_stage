@@ -9,7 +9,6 @@ import {API, graphqlOperation} from "aws-amplify";
 import {createSection, createSectionOptions, updateSection} from "../../graphql/mutations";
 import {CreateOrganizationInput, CreateSectionInput, CreateSectionOptionsInput, Section} from "../../API";
 import LessonOptionComponent from "../Lesson/LessonContent/LessonOptionComponent";
-import {values} from "lodash";
 
 const AddSectionModal = () => {
     const RegisterSchema = Yup.object().shape({
@@ -96,7 +95,7 @@ const AddSectionModal = () => {
                 />
                 <LessonOptionComponent name={'Activity Type'} actionName={'Add Activity'} entityName={'activities'}
                                        info={'Define the types of activities for this section. Then choose the default option. If you specify only one type of activity,it will automatically create all lessons within this section to be that type.'}/>
-                <LessonOptionComponent name={'Period'} actionName={'Add period (in minutes)'} entityName={'periods'}
+                <LessonOptionComponent name={'Period'} actionName={'Add period (in minutes)'} entityName={'periods'} type={'number'}
                                        info={'Provide time periods possible for these types of lessons, leave only one for it to be predetermined'}/>
                 <LessonOptionComponent name={'Delivered By'} actionName={'Add Delivered By Type'}
                                        entityName={'deliveredBy'}

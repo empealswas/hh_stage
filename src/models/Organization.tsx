@@ -11,6 +11,10 @@ export class Organization extends User {
         this.lastName = organization.name;
     }
 
+    getPupilsIds(): Promise<any> {
+        return Promise.resolve(undefined);
+    }
+
     getRole(): string {
         return 'Organization'
     }

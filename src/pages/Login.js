@@ -9,13 +9,19 @@ import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
 import AuthSocial from '../components/authentication/AuthSocial';
+import {useEffect, useState} from "react";
+import {Hub} from "aws-amplify";
+import {Authenticator, Button, View} from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import '../global.css'
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex'
-  }
+  },
+
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
@@ -66,14 +72,13 @@ export default function Login() {
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
           </Stack>
-          <LoginForm />
-          {/*<AuthSocial />*/}
-
-
+          <Authenticator >
+            <Typography>223</Typography>
+          </Authenticator>
           <MHidden width="xsDown">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>
               Don’t have an account?&nbsp;
-              <Link variant="subtitle2" component={RouterLink} to="register">
+              <Link variant="subtitle2" component={RouterLink} to="../register">
                 Get started
               </Link>
             </Typography>

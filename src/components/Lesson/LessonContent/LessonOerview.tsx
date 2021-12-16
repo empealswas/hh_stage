@@ -35,6 +35,7 @@ const LessonOverview = () => {
     const [droppedFiles, setDroppedFiles] = useState<File []>([]);
     const [snackBarOpen, setSnackBarOpen] = useState(true);
     const [filesToUpload, setFilesToUpload] = useState<File []>([]);
+
     // const snackbar = useSnackbar();
 
     async function fetchLesson() {
@@ -129,7 +130,7 @@ const LessonOverview = () => {
                     <Can I={'create'} a={'file'}>
                         <FilesUploadDropzoneWithChildren dropzone={{
                             onDrop: onDrop,
-                            accept: ['image/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']
+                            accept: ['image/*','video/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']
                         }}/>
                     </Can>
                     <Container>

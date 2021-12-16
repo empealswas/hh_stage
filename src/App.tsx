@@ -17,9 +17,10 @@ import defineAbilityFor from "./abilities/defineAbilityFor";
 import {SnackbarProvider} from "notistack";
 
 import {createUser} from "./models/createUser";
-import {styled} from "@material-ui/core/styles";
 import Router, {PreLoginRouter} from "./routes";
-import {Authenticator} from "@aws-amplify/ui-react";
+import LinearProgressBottom from "./utils/LinearProgressBottom";
+import {useNavigate} from "react-router-dom";
+import {int} from "aws-sdk/clients/datapipeline";
 
 Amplify.configure(config)
 Amplify.register(Auth);
@@ -29,27 +30,17 @@ export const UserContext = createContext<User | null>(null);
 
 function App() {
     const [user, setUser] = useState<User | null>(null);
-    const [authState, setAuthState] = useState<AuthState>();
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
     useEffect(() => {
-        // return onAuthUIStateChange((nextAuthState, authData) => {
-        //     setAuthState(nextAuthState);
-        //     console.log('authData', authData)
-        //     if (authData) {
-        //         setUser(new User(authData));
-        //     }else{
-        //         setUser(null)
-        //     }
-        // });
         Hub.listen('auth', ({payload: {event, data}}) => {
+            console.log(event);
             switch (event) {
                 case 'signIn':
+                    assignUser();
+                    break;
                 case 'cognitoHostedUI':
-                    getUser().then(userData => {
-                        const initiatedUser = createUser(userData);
-                        initiatedUser.getCredentials().then(res => {
-                            setUser(initiatedUser);
-                        })
-                    });
+                    assignUser();
                     break;
                 case 'signOut':
                     setUser(null);
@@ -60,47 +51,55 @@ function App() {
                     break;
             }
         });
-        getUser().then(userData => {
-            if (!userData) {
-                setUser(null);
-            } else {
-                const initiatedUser = createUser(userData);
-                initiatedUser.getCredentials().then(res => {
-                    setUser(initiatedUser);
-                })
-            }
-        });
+        assignUser();
 
     }, []);
 
 
-    function getUser() {
-        return Auth.currentAuthenticatedUser()
-            .then(userData => {
-                console.log(userData)
-                return userData
-            })
-            .catch(() => console.log('Not signed in'));
+    async function assignUser() {
+        try {
+            const fetchedUser = await getUser();
+            if (!fetchedUser) {
+                setUser(null);
+            } else if (fetchedUser) {
+                const initiatedUser = createUser(fetchedUser);
+                console.log(initiatedUser)
+
+                const result = await initiatedUser?.getCredentials().then(value => {
+                    console.log(initiatedUser)
+                    setUser(initiatedUser)
+                })
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
     }
 
 
+    async function getUser() {
+        return await Auth.currentAuthenticatedUser();
+    }
+
+    if (loading) {
+        return (<LinearProgressBottom/>);
+    }
     return (
-
-        <ThemeConfig>
-            <SnackbarProvider maxSnack={3}>
-                {user ?
-                    <UserContext.Provider value={user}>
-                        <AbilityContext.Provider value={defineAbilityFor(user)}>
-                            <ScrollToTop/>
-                            <Router/>
-                        </AbilityContext.Provider>
-                    </UserContext.Provider>
-                    :
-                    <PreLoginRouter/>
-
-                }
-            </SnackbarProvider>
-        </ThemeConfig>
+                <ThemeConfig>
+                    <SnackbarProvider maxSnack={3}>
+                        {user ?
+                            <UserContext.Provider value={user}>
+                                <AbilityContext.Provider value={defineAbilityFor(user)}>
+                                    <ScrollToTop/>
+                                    <Router/>
+                                </AbilityContext.Provider>
+                            </UserContext.Provider>
+                            :
+                            <PreLoginRouter/>
+                        }
+                    </SnackbarProvider>
+                </ThemeConfig>
 
     );
 }

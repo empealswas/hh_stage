@@ -100,6 +100,7 @@ const ActivitiesTotal = () => {
 useEffect(() => {
   const getPupilIds = async() => {
       let x = await user.getPupilsIds();
+      console.log(x);
       setPupilIdArray(x);
   }
   getPupilIds();
@@ -125,7 +126,7 @@ useEffect(() => {
       const setLessonAndUserIds = async () => {
           if (pupilIdArray) {
               let pupilIdsString = `[`;
-              pupilIdArray.forEach((item: any) => {
+              pupilIdArray.forEach((item) => {
                   pupilIdsString = pupilIdsString + `{pupilID: {eq: "` + item.id + `"}}, `;
               });
               pupilIdsString = pupilIdsString.slice(0, -2) + `]`;
@@ -231,7 +232,7 @@ useEffect(() => {
           if (totalAttendanceData) {
               let peLessonsString = `[`;
 
-              totalAttendanceData.forEach((item: any) => {
+              totalAttendanceData.forEach((item) => {
                   peLessonsString = peLessonsString + `{id: {eq: "` + item.lessonRecordID + `"}}, `;
               });
               peLessonsString = peLessonsString.slice(0, -2) + `]`;

@@ -35,13 +35,12 @@ const getPupilsIdQuery =
 `
 
 export class Teacher extends User {
-    pupilsIds: null | any[] = null;
 
     async getCredentials(): Promise<void> {
         const result: any = await API.graphql(graphqlOperation(getTeacher, {id: this._email}));
         const teacher: any = result.data.getTeacher;
-        this.firstName = teacher.firstName;
-        this.lastName = teacher.lastName;
+        this.firstName = result.data.getTeacher.firstName;
+        this.lastName = result.data.getTeacher.lastName;
     }
     async getClassrooms(): Promise<Classroom[]>{
         const result: any = await API.graphql(graphqlOperation(getClassroomsQuery, {id: this._email}));

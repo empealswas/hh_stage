@@ -23,6 +23,7 @@ type LessonOptionProps = {
     actionName: string,
     entityName: string,
     info: string,
+    type?: 'number'
 }
 
 
@@ -62,7 +63,7 @@ const ChipsArray = (props: LessonOptionProps) => {
             return;
         }
         let activityFormatted = activity.trim();
-        activityFormatted = activityFormatted.charAt(0).toUpperCase() + activityFormatted.slice(1)
+        activityFormatted = activityFormatted.charAt(0).toUpperCase() + activityFormatted.slice(1).toLowerCase()
         if (values.filter((value: any) => value.label === activityFormatted).length > 0) {
             return;
         }
@@ -123,7 +124,7 @@ const ChipsArray = (props: LessonOptionProps) => {
 
                     <Stack direction={{xs: 'column', sm: 'row'}} spacing={{xs: 2, sm: 0}}
                            justifyContent={{xs: 'center', sm: 'space-between'}}>
-                        <TextField onKeyPress={event => {
+                        <TextField type={props.type ?? "text"} onKeyPress={event => {
                             if (event.key === 'Enter') {
                                 addActivity()
                             }

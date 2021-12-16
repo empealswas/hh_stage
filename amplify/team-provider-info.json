@@ -32,6 +32,10 @@
         "ConfirmOrganization": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
           "s3Key": "amplify-builds/ConfirmOrganization-6138374c542f48526f2b-build.zip"
+        },
+        "RemoveSections": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/RemoveSections-786a365a714376543650-build.zip"
         }
       },
       "auth": {

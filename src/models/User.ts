@@ -1,16 +1,16 @@
 
-export class User {
+export abstract class User {
 
     firstName?: string;
     lastName?: string;
     protected _email: string;
+    pupilsIds: null | any[] = null;
 
     public constructor(email: string) {
         this._email = email
     }
 
-    public async getCredentials() {
-    }
+    abstract getCredentials(): Promise<void>;
 
     public getFirstAndLastName() {
         return {
@@ -27,9 +27,10 @@ export class User {
         return 'Teacher';
     }
 
-    async getPupilsIds() {
-    };
+    abstract getPupilsIds(): Promise<any>
+
 }
+
 
 
 ///////////// if there is a pupil role... standardised way to get id, and username

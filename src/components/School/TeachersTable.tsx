@@ -191,9 +191,10 @@ export default function TeachersTable() {
                     autoHeight
                 />
             </div>
-            <Button startIcon={<CachedIcon/>} onClick={() => {
-                loadTeachers();
-            }}/>
+
+            <IconButton onClick={loadTeachers}>
+                <CachedIcon />
+            </IconButton>
         </div>
     );
 }

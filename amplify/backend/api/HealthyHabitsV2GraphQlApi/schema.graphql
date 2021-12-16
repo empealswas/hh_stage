@@ -6,7 +6,7 @@ type File @model @auth(rules: [{allow: private}]) {
     lessonID: ID @index(name: "byLesson")
 }
 
-type Section @model @auth(rules: [{allow: private}]) {
+type Section @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
     name: String
     parentID: ID @index(name: "bySection")

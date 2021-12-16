@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {Form, FormikProvider, useFormik} from 'formik';
 import {Icon} from '@iconify/react';
@@ -16,7 +16,6 @@ import {Auth} from "aws-amplify";
 export default function LoginForm() {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-
     const LoginSchema = Yup.object().shape({
         email: Yup.string().email('Email must be a valid email address').required('Email is required'),
         password: Yup.string().required('Password is required')
@@ -35,6 +34,7 @@ export default function LoginForm() {
             setLoading(true)
             Auth.signIn(username, password).then(r => {
                 console.log(r);
+
                 setLoading(false);
                 navigate('/dashboard', {replace: true});
             }).catch(reason => {

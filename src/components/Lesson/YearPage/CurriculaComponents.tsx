@@ -8,7 +8,7 @@ import CurriculumModal from "./CurriculumModal";
 import {UserContext} from "../../../App";
 import TeacherCurriculaGrid from "./TeacherCurriculaGrid";
 import ActivityCard from "../pe/ActivityCard";
-import {Box, Card, CardHeader, CardMedia, Grid} from "@mui/material";
+import {Box, Card, CardHeader, CardMedia, Container, Grid} from "@mui/material";
 import AddSectionModal from "../../Sections/AddSectionModal";
 import SectionGrid from "../../Sections/SectionGrid";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -16,42 +16,29 @@ import CardContent from "@material-ui/core/CardContent";
 import Link from "@material-ui/core/Link";
 import {Teacher} from "../../../models/Teacher";
 import OrganizationsOverview from "../../parent/childTabs/OrganizationsOverview";
+import SectionOverview from "../../Sections/SectionOverview";
 
 
 const CurriculaComponents = () => {
     const user = useContext(UserContext);
     return (
-        <>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                <Typography variant="h4" gutterBottom>
-                    Year Groups
-                </Typography>
-                <Can I={'create'} a={'curriculum'}>
-                    <CurriculumModal/>
-                </Can>
-            </Stack>
-            {(user instanceof Teacher) ?
-                <TeacherCurriculaGrid/>
-                :
-                <CurriculaGrid/>
-            }
+        <Container>
+            {/*<Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>*/}
+            {/*    <Typography variant="h4" gutterBottom>*/}
+            {/*        Year Groups*/}
+            {/*    </Typography>*/}
+            {/*    <Can I={'create'} a={'curriculum'}>*/}
+            {/*        <CurriculumModal/>*/}
+            {/*    </Can>*/}
+            {/*</Stack>*/}
+            {/*{(user instanceof Teacher) ?*/}
+            {/*    <TeacherCurriculaGrid/>*/}
+            {/*    :*/}
+            {/*    <CurriculaGrid/>*/}
+            {/*}*/}
+            <SectionOverview/>
             <Box height={20}/>
-            <Grid container justifyContent="center">
-                <Grid item xs={12} sm={6} m={4} lg={4}>
-                    <Link component={RouterLink} to={'../section/2d93de97-d7bc-41a9-84d4-29e6b691f8f3'} underline={'none'}>
-                        <Card>
-                            <CardActionArea>
-                                <CardHeader style={{textAlign: 'center'}} title={'Sections'}/>
-                                <CardMedia
-                                    component={'img'}
-                                    height="194"
-                                    image={'/static/images/dailymile.png'}
-                                    alt="Activity image"
-                                />
-                            </CardActionArea>
-                        </Card>
-                    </Link>
-                </Grid>
+            <Grid container justifyContent="center" alignItems={'center'}>
                 <Grid item xs={12} sm={6} m={4} lg={4}>
                     <Card>
                         <Link component={RouterLink} to={'pe'} underline={'none'} color={'text.primary'}>
@@ -70,12 +57,8 @@ const CurriculaComponents = () => {
                         {/*</CardActions>*/}
                     </Card>
                 </Grid>
-
             </Grid>
-            <Box height={50}>
-
-            </Box>
-        </>
+        </Container>
     );
 };
 

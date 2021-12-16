@@ -71,7 +71,7 @@ const SectionOverview = () => {
         allSections?.filter(section => section.id === sectionId);
         return (
             <Breadcrumbs aria-label="breadcrumb">
-                {links.reverse().map(section => <Link component={RouterLink} underline={'hover'} color={'secondary'} to={`${section.id}`}>
+                {links.reverse().map(section => <Link component={RouterLink} underline={'hover'} color={'secondary'} to={`section/${section.id}`}>
                     {section.name}
                 </Link>)}
             </Breadcrumbs>
@@ -97,7 +97,7 @@ const SectionOverview = () => {
                                        }
             />}
 
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Stack direction={{xs: 'column', sm: "row"}} alignItems="center" justifyContent={{xs: 'start', sm: "space-between"}} spacing={{xs: 2, sm: 0}} mb={5}>
                 <Typography variant="h4" gutterBottom>
                     {allSections &&
                     <BreadcrumbsHeader/>

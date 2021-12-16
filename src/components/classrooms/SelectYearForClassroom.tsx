@@ -51,14 +51,19 @@ const SelectYearForClassroom = () => {
         fetchYearGroups()
     }, []);
     const handleChange = (event: SelectChangeEvent) => {
-        const yearPageId = event.target.value;
+        let yearPageId: string | null = event.target.value;
+        if (!yearPageId) {
+            yearPageId = null;
+        }
         API.graphql(graphqlOperation(updateClassroom, {
             input: {
                 id: classroomId,
                 yearGroupID: yearPageId
             }
-        }))
+        }));
+        if (yearPageId) {
         setCurriculumOfClassroom(yearPageId);
+        }
     };
     if (!curricula) {
         return <></>
@@ -74,6 +79,9 @@ const SelectYearForClassroom = () => {
                 label="Year Group"
                 onChange={handleChange}
             >
+                <MenuItem value={''}>
+                    <em>None</em>
+                </MenuItem>
                 {curricula.map(curriculum => (
                     <MenuItem value={curriculum.id} key={curriculum.id}>{curriculum.name}</MenuItem>
                 ))}

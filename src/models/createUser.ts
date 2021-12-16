@@ -2,10 +2,10 @@ import {Admin} from "./Admin";
 import {Teacher} from "./Teacher";
 import {Principal} from "./Principal";
 import {Parent} from "./Parent";
-import {User} from "./User";
 import {Organization} from "./Organization";
+import {User} from "./User";
 
-export function createUser(userData: any) {
+export function createUser(userData: any): User | null {
     const userRoles = userData.signInUserSession.accessToken.payload['cognito:groups'];
     if (userRoles.includes('Admins')) {
         return new Admin(userData.attributes.email);
@@ -18,6 +18,5 @@ export function createUser(userData: any) {
     }else if (userRoles.includes('Organizations')) {
         return new Organization(userData.attributes.email);
     }
-    return new User(userData.attributes.email);
-
+    return null;
 }

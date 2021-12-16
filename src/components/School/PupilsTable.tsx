@@ -171,7 +171,6 @@ export default function PupilsTable() {
                 />
             </div>
 
-            <Button variant="outlined" color="secondary"></Button>
             <IconButton onClick={loadPupils}>
                 <CachedIcon />
             </IconButton>

@@ -118,7 +118,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                         disabled={sectionOption.DeliveredBy?.length === 1}
                         error={Boolean(errors.deliveredBy)}
                     >
-                        {sectionOption.DeliveredBy?.filter(value => !!value).map((value: any) => <MenuItem
+                        {sectionOption.DeliveredBy?.filter(value => !!value).sort((a: any, b: any) => a.localeCompare(b)).map((value: any) => <MenuItem
                             value={value}>{value}</MenuItem>)}
                     </Select>
                 </FormControl>
@@ -132,7 +132,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                             {...getFieldProps('activity')}
                             error={Boolean(errors.activity)}
                         >
-                            {sectionOption.Activities?.filter(value => !!value).map((value: any) => <MenuItem
+                            {sectionOption.Activities?.filter(value => !!value).sort((a: any, b: any) => a.localeCompare(b)).map((value: any) => <MenuItem
                                 value={value}>{value}</MenuItem>)}
                         </Select>
                     </FormControl>
@@ -147,7 +147,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
 
                             error={Boolean(errors.duration)}
                         >
-                            {sectionOption.Durations?.filter(value => !!value).map((value: any) => <MenuItem
+                            {sectionOption.Durations?.filter(value => !!value).sort((a: any, b: any) => a - b).map((value: any) => <MenuItem
                                 value={value}>{value}</MenuItem>)}
                         </Select>
                     </FormControl>

@@ -9,7 +9,7 @@ import {
     CardActionArea,
     CardContent,
     CardHeader,
-    CardMedia,
+    CardMedia, Container,
     Grid,
     Link, Stack, TextField,
     Typography
@@ -83,7 +83,9 @@ const OrganizationsOverview = () => {
             )
         }
         if (organizations.length == 0) {
-            return <Typography textAlign={'center'}>No clubs added yet</Typography>
+            return <Container>
+                <Typography variant={'h3'} textAlign={'center'}>No clubs added yet</Typography>
+            </Container>
         }
         return (
             <>
