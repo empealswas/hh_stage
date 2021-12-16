@@ -23,7 +23,6 @@ const CurriculumOverview = () => {
     const fetchName = async () => {
         const result: any = await API.graphql(graphqlOperation(getCurriculum, {id: id}));
         console.log(result.data)
-        setName(result.data.getCurriculum.name);
         return result.data.getCurriculum.name;
 
     }

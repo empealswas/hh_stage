@@ -107,7 +107,7 @@ const SectionGrid = () => {
             <>
                 {sectionsToDisplay?.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0).map((value: Section, index: number) => (
                     <Grid key={index} item lg={4} md={4} sm={6} xs={12}>
-                        <ActivityCard linkTo={sectionId ? `section/${value.id}` : `section/${value.id}`}
+                        <ActivityCard linkTo={organizationId ? `section/${value.id}` : sectionId? `${value.id}` : `section/${value.id}` }
                                       imagePath={value?.ImagePreview?.key} title={value.name ?? ''}/>
 
                     </Grid>

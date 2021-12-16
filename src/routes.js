@@ -78,11 +78,11 @@ export default function Router() {
                         path: 'organization', element: <Outlet/>, children: [
 
                             {
-                                path: ':organizationId', element: <OrganizationAdminOverview/>, children: [
+                                path: '/dashboard/organization/:organizationId', element: <OrganizationAdminOverview/>, children: [
                                     {
                                         path: 'section', element: <SectionOverview/>,
                                         children: [{
-                                            path: ':sectionId', element: <SectionOverview/>
+                                            path: '/dashboard/organization/:organizationId/section/:sectionId', element: <SectionOverview/>
                                         },
                                         ]
                                     },
@@ -164,15 +164,15 @@ export default function Router() {
                     {
                         path: 'curricula', element: <Lessons/>, children: [
                             {path: '/dashboard/curricula', element: <CurriculaComponents/>},
-                            {path: 'pe', element: <PEForm/>},
-                            {path: ':id', element: <CurriculumOverview/>},
                             {
                                 path: 'section', element: <SectionOverview/>,
                                 children: [{
-                                    path: ':sectionId', element: <SectionOverview/>
+                                    path: '/dashboard/curricula/section/:sectionId', element: <SectionOverview/>
                                 },
                                 ]
                             },
+                            {path: 'pe', element: <PEForm/>},
+                            {path: ':id', element: <CurriculumOverview/>},
                             {
                                 path: 'subjects', element: <SubjectOutlet/>, children: [
                                     {path: ':id', element: <TermElements/>},
