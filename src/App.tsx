@@ -63,8 +63,7 @@ function App() {
                 setUser(null);
             } else if (fetchedUser) {
                 const initiatedUser = createUser(fetchedUser);
-                console.log(initiatedUser)
-
+                setUser(initiatedUser);
                 const result = await initiatedUser?.getCredentials().then(value => {
                     console.log(initiatedUser)
                     setUser(initiatedUser)

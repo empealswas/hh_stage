@@ -78,11 +78,14 @@ export default function Router() {
                         path: 'organization', element: <Outlet/>, children: [
 
                             {
-                                path: '/dashboard/organization/:organizationId', element: <OrganizationAdminOverview/>, children: [
+                                path: '/dashboard/organization/:organizationId',
+                                element: <OrganizationAdminOverview/>,
+                                children: [
                                     {
                                         path: 'section', element: <SectionOverview/>,
                                         children: [{
-                                            path: '/dashboard/organization/:organizationId/section/:sectionId', element: <SectionOverview/>
+                                            path: '/dashboard/organization/:organizationId/section/:sectionId',
+                                            element: <SectionOverview/>
                                         },
                                         ]
                                     },
@@ -168,7 +171,13 @@ export default function Router() {
                                 path: 'section', element: <SectionOverview/>,
                                 children: [{
                                     path: '/dashboard/curricula/section/:sectionId', element: <SectionOverview/>
-                                },
+                                    },
+                                ]
+
+                            },
+                            {
+                                path: 'lessons', element: <LessonOverview/>, children: [
+                                    {path: ':lessonId', element: <LessonOverview/>}
                                 ]
                             },
                             {path: 'pe', element: <PEForm/>},
