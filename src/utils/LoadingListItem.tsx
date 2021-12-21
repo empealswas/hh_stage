@@ -9,6 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {CircularProgress, ListItemAvatar} from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {formatBytes} from "./formatNumber";
 
 type LoadingListItemProps = {
     file: File,
@@ -58,7 +59,7 @@ export default function LoadingListItem(props: LoadingListItemProps) {
                                       value={((progress?.loaded ?? 0) / (progress?.total ?? 1) * 100)}/>
                 }
             </ListItemIcon>
-            <ListItemText primary={file.name} secondary={`${progress?.loaded} of ${progress?.total}`}/>
+            <ListItemText primary={file.name} secondary={progress?.loaded ? `${formatBytes(progress?.loaded)} of ${formatBytes(progress?.total)}` : 'Starting Uploading'}/>
         </ListItemButton>
     </ListItem>);
 }

@@ -77,7 +77,7 @@ const SectionGrid = () => {
                 <>
                     {
                         [0, 1, 2, 3, 4, 5].map((value) => (<Grid key={value} item lg={4} md={4} sm={6} xs={12}>
-                                <CardSkeleton key={value}/>
+                                <CardSkeleton height={'250px'} key={value}/>
                             </Grid>
                         ))
                     }

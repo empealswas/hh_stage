@@ -140,6 +140,7 @@ const LessonOverview = () => {
                     </Container>
                     <Snackbar
                         anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+
                         open={snackBarOpen}
                     >
                         <Accordion hidden={filesToUpload.length === 0} defaultExpanded={true}>

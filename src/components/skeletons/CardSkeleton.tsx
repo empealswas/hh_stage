@@ -5,9 +5,9 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Skeleton from "@material-ui/lab/Skeleton";
 
-const CardSkeleton = () => {
+const CardSkeleton = (props: {height?: string}) => {
     return (
-            <Card sx={{height: '100%'}}>
+            <Card sx={{height: props.height ?? "100%"}}>
                 <CardContent>
                     <Typography variant={'h5'}>
                         <Skeleton animation={'pulse'} variant={'text'}/>

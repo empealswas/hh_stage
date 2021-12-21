@@ -32,9 +32,8 @@ export default function defineAbilityFor(user: User | null) {
 
     } else if (user instanceof Teacher) {
         can('visit', 'lessons');
-        can('visit', 'reports');
         can('visit', 'dashboard');
-        can('visit', 'Organizations Search');
+        // can('visit', 'Organizations Search');
         can('visit', 'wearables');
         can('read', 'attendance');
         can('read', 'wearables');

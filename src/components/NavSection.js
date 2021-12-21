@@ -12,6 +12,8 @@ import {API, graphqlOperation} from "aws-amplify";
 import {UserContext} from "../App";
 import humanMaleChild from '@iconify/icons-mdi/human-male-child';
 import {Parent} from "../models/Parent";
+import {Teacher} from "../models/Teacher";
+import domainIcon from '@iconify/icons-mdi/domain';
 
 // ----------------------------------------------------------------------
 
@@ -198,12 +200,22 @@ const query = `query MyQuery($id: ID = "") {
   }
 }
 `
+const teacherQuery = `query MyQuery($id: ID = "") {
+  getTeacher(id: $id) {
+   Organizations {
+      items {
+        id
+      }
+    }
+  }
+}`
 export default function NavSection({navConfig, ...other}) {
     const {pathname} = useLocation();
     const user = useContext(UserContext);
-    const [additionalLinks, setAdditionalLinks] = useState(null);
+    const [additionalLinks, setAdditionalLinks] = useState([]);
     console.log(pathname)
     const match = (path) => (path ? !!matchPath({path, end: false}, pathname) : false);
+
     useEffect(() => {
         const getPupils = async () => {
             const result = await API.graphql(graphqlOperation(query, {id: user.email}));
@@ -214,11 +226,27 @@ export default function NavSection({navConfig, ...other}) {
                     icon: <Icon icon={humanMaleChild} width={22} height={22}/>
                 }
             });
-            setAdditionalLinks(links);
+            setAdditionalLinks(prevState => [...prevState, links]);
         }
-        if(user instanceof Parent){
+        const getOrganizations = async () => {
+            const result = await API.graphql(graphqlOperation(teacherQuery, {id: user.email}));
+            console.log('REsult', result)
+            if (result.data.getTeacher.Organizations.items.length > 0) {
+                setAdditionalLinks(prevState => [...prevState, {
+                    title: "Organizations",
+                    path: '/dashboard/organizationsList',
+                    icon: <Icon icon={domainIcon} width={22} height={22}/>
+                },
+                ])
+            }
+        }
+        if (user instanceof Parent) {
             getPupils();
         }
+        if (user instanceof Teacher) {
+            getOrganizations();
+        }
+
         return () => {
 
         };

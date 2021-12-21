@@ -19,15 +19,9 @@ const getClassroomsQuery = `query MyQuery($id: ID = "") {
 const getPupilsIdQuery = 
 `query MyQuery($id: ID = "") {
   getTeacher(id: $id) {
-    classrooms {
+   Organizations {
       items {
-        classroom {
-          pupils {
-            items {
-              pupil {id firstName lastName}
-            }
-          }
-        }
+        id
       }
     }
   }
@@ -35,7 +29,6 @@ const getPupilsIdQuery =
 `
 
 export class Teacher extends User {
-
     async getCredentials(): Promise<void> {
         const result: any = await API.graphql(graphqlOperation(getTeacher, {id: this._email}));
         const teacher: any = result.data.getTeacher;
