@@ -14,6 +14,10 @@ import account from '../../_mocks_/account';
 import {Amplify, Auth, Hub} from "aws-amplify";
 
 import {UserContext} from "../../App";
+import {useDispatch, useSelector} from "react-redux";
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import {SET_SHOW_STEPS, TOGGLE_THEME} from "../../store/actions";
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +44,7 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
-
+    const dispatch = useDispatch();
     const handleOpen = () => {
         setOpen(true);
     };
@@ -49,6 +53,7 @@ export default function AccountPopover() {
     };
 
     const user = useContext(UserContext);
+    const theme = useSelector((state) => state.customization.theme);
 
     return (
         <>
@@ -113,6 +118,23 @@ export default function AccountPopover() {
                         {option.label}
                     </MenuItem>
                 ))}
+                <MenuItem
+                    onClick={() => {
+                        dispatch({type: TOGGLE_THEME});
+                    }}
+                    sx={{typography: 'body2', py: 1, px: 2.5}}
+                >
+                    {theme === 'dark' ? <Brightness7Icon sx={{
+                        mr: 2,
+                        width: 24,
+                        height: 24
+                    }}/> : <Brightness4Icon sx={{
+                        mr: 2,
+                        width: 24,
+                        height: 24
+                    }}/>}
+                    { theme.charAt(0).toUpperCase() + theme.slice(1)} mode
+                </MenuItem>
 
                 <Box sx={{p: 2, pt: 1.5}}>
 

@@ -9,6 +9,7 @@ import { onCreateIntervention } from "../../graphql/subscriptions";
 import CardSkeleton from "../skeletons/CardSkeleton";
 import { ProductSort } from "../_dashboard/products";
 import InterventionMenu from "./interventions/InterventionMenu";
+import {useTheme} from "@mui/material/styles";
 
 
 const getFirstInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = ASC) {
@@ -58,6 +59,9 @@ const InterventionsList = (props: { pupil: Pupil }) => {
     const [sortFilter, setSortFilter] = useState('newest');
     const parent = useContext(UserContext);
     let nextToken = ''
+
+    const theme = useTheme();
+    console.log(theme);
 
     
     const loadInterventions = async () => {
@@ -168,11 +172,12 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                     child school
                     life.</Typography>);
         }
+
         return (
             <>
                 {interventions?.map(value => {
                     return (
-                        <Card>
+                        <Card >
                             <CardHeader title={'Intervention'}
                                 subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`} />
                             <CardContent>

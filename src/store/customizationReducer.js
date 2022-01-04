@@ -11,6 +11,8 @@ export const initialState = {
     showSleep: false,
     showSedentary: false,
     showActivity: false,
+    theme: 'light',
+
 }
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -55,9 +57,19 @@ const customizationReducer = (state = initialState, action) => {
                 showActivity: action.showActivity
             };
         case actionTypes.SET_PERIOD:
-            return{
+            return {
                 ...state,
                 period: action.period
+            }
+        case actionTypes.TOGGLE_THEME:
+            return {
+                ...state,
+                theme: state.theme === 'light' ? 'dark' : 'light',
+            };
+        case actionTypes.SET_THEME:
+            return {
+                ...state,
+                theme: action.theme,
             }
         default:
             return state;

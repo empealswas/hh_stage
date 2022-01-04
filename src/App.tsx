@@ -21,6 +21,8 @@ import Router, {PreLoginRouter} from "./routes";
 import LinearProgressBottom from "./utils/LinearProgressBottom";
 import {useNavigate} from "react-router-dom";
 import {int} from "aws-sdk/clients/datapipeline";
+import {Card} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
 Amplify.configure(config)
 Amplify.register(Auth);

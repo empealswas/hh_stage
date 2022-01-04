@@ -219,14 +219,17 @@ export default function NavSection({navConfig, ...other}) {
     useEffect(() => {
         const getPupils = async () => {
             const result = await API.graphql(graphqlOperation(query, {id: user.email}));
+            console.log(result);
             const links = result.data.getParent.children.items.map(item => item.Pupil).map(pupil => {
                 return {
                     title: `${pupil.firstName} ${pupil.lastName}`,
-                    path: `pupils/${pupil.id}`,
+                    path: 'pupils/' +pupil.id ?? '',
                     icon: <Icon icon={humanMaleChild} width={22} height={22}/>
                 }
             });
-            setAdditionalLinks(prevState => [...prevState, links]);
+            if (links.length > 0) {
+            setAdditionalLinks(links);
+            }
         }
         const getOrganizations = async () => {
             const result = await API.graphql(graphqlOperation(teacherQuery, {id: user.email}));

@@ -11,7 +11,9 @@ export default function Card(theme) {
           borderRadius: theme.shape.borderRadiusMd,
           position: 'relative',
           zIndex: 0, // Fix Safari overflow: hidden with border radius
+          backgroundColor: theme.palette.background.paper
         }
+
       }
     },
     MuiCardHeader: {

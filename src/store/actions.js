@@ -10,3 +10,5 @@ export const SET_SHOW_SLEEP = '@customization/SET_SHOW_SLEEP';
 export const SET_SHOW_SEDENTARY = '@customization/SET_SHOW_SEDENTARY';
 export const SET_SHOW_ACTIVITY = '@customization/SET_SHOW_ACTIVITY';
 export const SET_PERIOD = '@customization/SET_PERIOD';
+export const TOGGLE_THEME = '@customization/SET_THEME'
+export const SET_THEME = '@customization/SET_THEME'

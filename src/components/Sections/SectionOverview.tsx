@@ -71,7 +71,7 @@ const SectionOverview = () => {
         allSections?.filter(section => section.id === sectionId);
         return (
             <Breadcrumbs aria-label="breadcrumb">
-                {links.reverse().map(section => <Link component={RouterLink} underline={'hover'} color={'secondary'} to={`section/${section.id}`}>
+                {links.reverse().map(section => <Link component={RouterLink} underline={'hover'} color={'secondary'} to={`${section.id}`}>
                     {section.name}
                 </Link>)}
             </Breadcrumbs>
