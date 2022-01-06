@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "api": {
+      "HealthyHabitsV2GraphQlApi": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ],
+      "HealthyHabitsV2API": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ExternalLayer",
+      "arn": "arn:aws:lambda:eu-west-2:397429649444:layer:graphQLTools:3"
+    }
+  ]
+}

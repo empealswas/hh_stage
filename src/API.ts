@@ -153,7 +153,7 @@ export type Organization = {
 
 export type ModelPrincipalConnection = {
   __typename: "ModelPrincipalConnection",
-  items:  Array<Principal >,
+  items:  Array<Principal | null >,
   nextToken?: string | null,
 };
 
@@ -188,7 +188,7 @@ export type School = {
 
 export type ModelTeacherConnection = {
   __typename: "ModelTeacherConnection",
-  items:  Array<Teacher >,
+  items:  Array<Teacher | null >,
   nextToken?: string | null,
 };
 
@@ -209,7 +209,7 @@ export type Teacher = {
 
 export type ModelTeacherClassroomConnection = {
   __typename: "ModelTeacherClassroomConnection",
-  items:  Array<TeacherClassroom >,
+  items:  Array<TeacherClassroom | null >,
   nextToken?: string | null,
 };
 
@@ -242,7 +242,7 @@ export type Classroom = {
 
 export type ModelPupilClassroomConnection = {
   __typename: "ModelPupilClassroomConnection",
-  items:  Array<PupilClassroom >,
+  items:  Array<PupilClassroom | null >,
   nextToken?: string | null,
 };
 
@@ -262,6 +262,8 @@ export type Pupil = {
   id: string,
   firstName?: string | null,
   lastName?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
   Attendances?: ModelAttendanceConnection | null,
   classrooms?: ModelPupilClassroomConnection | null,
   Organizations?: ModelPupilOrganizationAcceptedConnection | null,
@@ -278,7 +280,7 @@ export type Pupil = {
 
 export type ModelAttendanceConnection = {
   __typename: "ModelAttendanceConnection",
-  items:  Array<Attendance >,
+  items:  Array<Attendance | null >,
   nextToken?: string | null,
 };
 
@@ -315,7 +317,7 @@ export type Lesson = {
 
 export type ModelPELessonRecordConnection = {
   __typename: "ModelPELessonRecordConnection",
-  items:  Array<PELessonRecord >,
+  items:  Array<PELessonRecord | null >,
   nextToken?: string | null,
 };
 
@@ -341,7 +343,7 @@ export type PELessonRecord = {
 
 export type ModelTermLessonConnection = {
   __typename: "ModelTermLessonConnection",
-  items:  Array<TermLesson >,
+  items:  Array<TermLesson | null >,
   nextToken?: string | null,
 };
 
@@ -370,7 +372,7 @@ export type Term = {
 
 export type ModelSubjectTermConnection = {
   __typename: "ModelSubjectTermConnection",
-  items:  Array<SubjectTerm >,
+  items:  Array<SubjectTerm | null >,
   nextToken?: string | null,
 };
 
@@ -397,7 +399,7 @@ export type Subject = {
 
 export type ModelCurriculumSubjectConnection = {
   __typename: "ModelCurriculumSubjectConnection",
-  items:  Array<CurriculumSubject >,
+  items:  Array<CurriculumSubject | null >,
   nextToken?: string | null,
 };
 
@@ -423,13 +425,13 @@ export type Curriculum = {
 
 export type ModelFileConnection = {
   __typename: "ModelFileConnection",
-  items:  Array<File >,
+  items:  Array<File | null >,
   nextToken?: string | null,
 };
 
 export type ModelLessonTeacherConnection = {
   __typename: "ModelLessonTeacherConnection",
-  items:  Array<LessonTeacher >,
+  items:  Array<LessonTeacher | null >,
   nextToken?: string | null,
 };
 
@@ -447,7 +449,7 @@ export type LessonTeacher = {
 
 export type ModelPupilOrganizationAcceptedConnection = {
   __typename: "ModelPupilOrganizationAcceptedConnection",
-  items:  Array<PupilOrganizationAccepted >,
+  items:  Array<PupilOrganizationAccepted | null >,
   nextToken?: string | null,
 };
 
@@ -464,7 +466,7 @@ export type PupilOrganizationAccepted = {
 
 export type ModelPupilOrganizationRequestConnection = {
   __typename: "ModelPupilOrganizationRequestConnection",
-  items:  Array<PupilOrganizationRequest >,
+  items:  Array<PupilOrganizationRequest | null >,
   nextToken?: string | null,
 };
 
@@ -490,13 +492,13 @@ export type SchoolHouse = {
 
 export type ModelPupilConnection = {
   __typename: "ModelPupilConnection",
-  items:  Array<Pupil >,
+  items:  Array<Pupil | null >,
   nextToken?: string | null,
 };
 
 export type ModelPupilParentConnection = {
   __typename: "ModelPupilParentConnection",
-  items:  Array<PupilParent >,
+  items:  Array<PupilParent | null >,
   nextToken?: string | null,
 };
 
@@ -525,7 +527,7 @@ export type Parent = {
 
 export type ModelParentInterventionFeedbackConnection = {
   __typename: "ModelParentInterventionFeedbackConnection",
-  items:  Array<ParentInterventionFeedback >,
+  items:  Array<ParentInterventionFeedback | null >,
   nextToken?: string | null,
 };
 
@@ -556,13 +558,13 @@ export type Intervention = {
 
 export type ModelInterventionConnection = {
   __typename: "ModelInterventionConnection",
-  items:  Array<Intervention >,
+  items:  Array<Intervention | null >,
   nextToken?: string | null,
 };
 
 export type ModelTeacherOrganziationConnection = {
   __typename: "ModelTeacherOrganziationConnection",
-  items:  Array<TeacherOrganziation >,
+  items:  Array<TeacherOrganziation | null >,
   nextToken?: string | null,
 };
 
@@ -579,19 +581,19 @@ export type TeacherOrganziation = {
 
 export type ModelClassroomConnection = {
   __typename: "ModelClassroomConnection",
-  items:  Array<Classroom >,
+  items:  Array<Classroom | null >,
   nextToken?: string | null,
 };
 
 export type ModelSectionConnection = {
   __typename: "ModelSectionConnection",
-  items:  Array<Section >,
+  items:  Array<Section | null >,
   nextToken?: string | null,
 };
 
 export type ModelLessonConnection = {
   __typename: "ModelLessonConnection",
-  items:  Array<Lesson >,
+  items:  Array<Lesson | null >,
   nextToken?: string | null,
 };
 
@@ -1228,6 +1230,8 @@ export type CreatePupilInput = {
   id?: string | null,
   firstName?: string | null,
   lastName?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
   schoolID?: string | null,
   schoolHouseID?: string | null,
 };
@@ -1235,6 +1239,8 @@ export type CreatePupilInput = {
 export type ModelPupilConditionInput = {
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
+  terraId?: ModelStringInput | null,
+  provider?: ModelStringInput | null,
   schoolID?: ModelIDInput | null,
   schoolHouseID?: ModelIDInput | null,
   and?: Array< ModelPupilConditionInput | null > | null,
@@ -1246,6 +1252,8 @@ export type UpdatePupilInput = {
   id: string,
   firstName?: string | null,
   lastName?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
   schoolID?: string | null,
   schoolHouseID?: string | null,
 };
@@ -1456,7 +1464,7 @@ export type ModelSectionOptionsFilterInput = {
 
 export type ModelSectionOptionsConnection = {
   __typename: "ModelSectionOptionsConnection",
-  items:  Array<SectionOptions >,
+  items:  Array<SectionOptions | null >,
   nextToken?: string | null,
 };
 
@@ -1486,7 +1494,7 @@ export type ModelSchoolHouseFilterInput = {
 
 export type ModelSchoolHouseConnection = {
   __typename: "ModelSchoolHouseConnection",
-  items:  Array<SchoolHouse >,
+  items:  Array<SchoolHouse | null >,
   nextToken?: string | null,
 };
 
@@ -1502,7 +1510,7 @@ export type ModelClassroomLessonFilterInput = {
 
 export type ModelClassroomLessonConnection = {
   __typename: "ModelClassroomLessonConnection",
-  items:  Array<ClassroomLesson >,
+  items:  Array<ClassroomLesson | null >,
   nextToken?: string | null,
 };
 
@@ -1548,7 +1556,7 @@ export type ModelSchoolFilterInput = {
 
 export type ModelSchoolConnection = {
   __typename: "ModelSchoolConnection",
-  items:  Array<School >,
+  items:  Array<School | null >,
   nextToken?: string | null,
 };
 
@@ -1563,7 +1571,7 @@ export type ModelOrganizationFilterInput = {
 
 export type ModelOrganizationConnection = {
   __typename: "ModelOrganizationConnection",
-  items:  Array<Organization >,
+  items:  Array<Organization | null >,
   nextToken?: string | null,
 };
 
@@ -1601,7 +1609,7 @@ export type ModelTermFilterInput = {
 
 export type ModelTermConnection = {
   __typename: "ModelTermConnection",
-  items:  Array<Term >,
+  items:  Array<Term | null >,
   nextToken?: string | null,
 };
 
@@ -1615,7 +1623,7 @@ export type ModelSubjectFilterInput = {
 
 export type ModelSubjectConnection = {
   __typename: "ModelSubjectConnection",
-  items:  Array<Subject >,
+  items:  Array<Subject | null >,
   nextToken?: string | null,
 };
 
@@ -1629,7 +1637,7 @@ export type ModelCurriculumFilterInput = {
 
 export type ModelCurriculumConnection = {
   __typename: "ModelCurriculumConnection",
-  items:  Array<Curriculum >,
+  items:  Array<Curriculum | null >,
   nextToken?: string | null,
 };
 
@@ -1645,7 +1653,7 @@ export type ModelParentFilterInput = {
 
 export type ModelParentConnection = {
   __typename: "ModelParentConnection",
-  items:  Array<Parent >,
+  items:  Array<Parent | null >,
   nextToken?: string | null,
 };
 
@@ -1676,6 +1684,8 @@ export type ModelPupilFilterInput = {
   id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
+  terraId?: ModelStringInput | null,
+  provider?: ModelStringInput | null,
   schoolID?: ModelIDInput | null,
   schoolHouseID?: ModelIDInput | null,
   and?: Array< ModelPupilFilterInput | null > | null,
@@ -2811,6 +2821,8 @@ export type CreatePupilClassroomMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -2847,6 +2859,8 @@ export type UpdatePupilClassroomMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -2883,6 +2897,8 @@ export type DeletePupilClassroomMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -2919,6 +2935,8 @@ export type CreatePupilOrganizationRequestMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -2953,6 +2971,8 @@ export type UpdatePupilOrganizationRequestMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -2987,6 +3007,8 @@ export type DeletePupilOrganizationRequestMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3021,6 +3043,8 @@ export type CreatePupilOrganizationAcceptedMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3055,6 +3079,8 @@ export type UpdatePupilOrganizationAcceptedMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3089,6 +3115,8 @@ export type DeletePupilOrganizationAcceptedMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3347,6 +3375,8 @@ export type CreateAttendanceMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3400,6 +3430,8 @@ export type UpdateAttendanceMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3453,6 +3485,8 @@ export type DeleteAttendanceMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3897,6 +3931,8 @@ export type CreatePupilParentMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3932,6 +3968,8 @@ export type UpdatePupilParentMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -3967,6 +4005,8 @@ export type DeletePupilParentMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -4219,6 +4259,8 @@ export type CreatePupilMutation = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -4278,6 +4320,8 @@ export type UpdatePupilMutation = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -4337,6 +4381,8 @@ export type DeletePupilMutation = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -4400,6 +4446,8 @@ export type CreateInterventionMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -4431,6 +4479,8 @@ export type UpdateInterventionMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -4462,6 +4512,8 @@ export type DeleteInterventionMutation = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -5011,7 +5063,7 @@ export type ListFilesQuery = {
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5096,7 +5148,7 @@ export type ListSectionsQuery = {
       createdAt: string,
       updatedAt: string,
       sectionSectionOptionsId?: string | null,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5165,7 +5217,7 @@ export type ListLessonsQuery = {
       sectionID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5216,7 +5268,7 @@ export type ListSectionOptionsQuery = {
       createdAt: string,
       updatedAt: string,
       sectionOptionsSectionId?: string | null,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5299,7 +5351,7 @@ export type ListPELessonRecordsQuery = {
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5337,7 +5389,7 @@ export type ListSchoolHousesQuery = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5394,7 +5446,7 @@ export type ListClassroomLessonsQuery = {
       completed?: boolean | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5467,7 +5519,7 @@ export type ListClassroomsQuery = {
       createdAt: string,
       updatedAt: string,
       organizationClassroomsId?: string | null,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5487,6 +5539,8 @@ export type GetPupilOrganizationRequestQuery = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -5521,7 +5575,7 @@ export type ListPupilOrganizationRequestsQuery = {
       organizationID: string,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5541,6 +5595,8 @@ export type GetPupilOrganizationAcceptedQuery = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -5575,7 +5631,7 @@ export type ListPupilOrganizationAcceptedsQuery = {
       organizationID: string,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5631,7 +5687,7 @@ export type ListSchoolsQuery = {
       principal?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5691,7 +5747,7 @@ export type ListOrganizationsQuery = {
       type?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5713,6 +5769,8 @@ export type GetAttendanceQuery = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -5767,7 +5825,7 @@ export type ListAttendancesQuery = {
       lessonRecordID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5824,7 +5882,7 @@ export type ListLessonTeachersQuery = {
       score?: number | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5870,7 +5928,7 @@ export type ListTermsQuery = {
       finishDate?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5912,7 +5970,7 @@ export type ListSubjectsQuery = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5950,7 +6008,7 @@ export type ListCurriculaQuery = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5996,7 +6054,7 @@ export type ListParentsQuery = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -6056,7 +6114,7 @@ export type ListPrincipalsQuery = {
       organizationID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -6118,7 +6176,7 @@ export type ListTeachersQuery = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -6133,6 +6191,8 @@ export type GetPupilQuery = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -6195,11 +6255,13 @@ export type ListPupilsQuery = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -6218,6 +6280,8 @@ export type GetInterventionQuery = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -6251,7 +6315,7 @@ export type ListInterventionsQuery = {
       viewed?: boolean | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -6276,7 +6340,7 @@ export type InterventionByPupilByDateQuery = {
       viewed?: boolean | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -6334,7 +6398,7 @@ export type ListParentInterventionFeedbacksQuery = {
       rating?: number | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -6388,7 +6452,7 @@ export type ListTeacherOrganziationsQuery = {
       teacherID: string,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -7334,6 +7398,8 @@ export type OnCreatePupilClassroomSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7365,6 +7431,8 @@ export type OnUpdatePupilClassroomSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7396,6 +7464,8 @@ export type OnDeletePupilClassroomSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7427,6 +7497,8 @@ export type OnCreatePupilOrganizationRequestSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7456,6 +7528,8 @@ export type OnUpdatePupilOrganizationRequestSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7485,6 +7559,8 @@ export type OnDeletePupilOrganizationRequestSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7514,6 +7590,8 @@ export type OnCreatePupilOrganizationAcceptedSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7543,6 +7621,8 @@ export type OnUpdatePupilOrganizationAcceptedSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7572,6 +7652,8 @@ export type OnDeletePupilOrganizationAcceptedSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7795,6 +7877,8 @@ export type OnCreateAttendanceSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7843,6 +7927,8 @@ export type OnUpdateAttendanceSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -7891,6 +7977,8 @@ export type OnDeleteAttendanceSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -8255,6 +8343,8 @@ export type OnCreatePupilParentSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -8285,6 +8375,8 @@ export type OnUpdatePupilParentSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -8315,6 +8407,8 @@ export type OnDeletePupilParentSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -8532,6 +8626,8 @@ export type OnCreatePupilSubscription = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -8586,6 +8682,8 @@ export type OnUpdatePupilSubscription = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -8640,6 +8738,8 @@ export type OnDeletePupilSubscription = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -8698,6 +8798,8 @@ export type OnCreateInterventionSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -8724,6 +8826,8 @@ export type OnUpdateInterventionSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
@@ -8750,6 +8854,8 @@ export type OnDeleteInterventionSubscription = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,

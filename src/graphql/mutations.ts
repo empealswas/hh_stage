@@ -948,6 +948,8 @@ export const createPupilClassroom = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -980,6 +982,8 @@ export const updatePupilClassroom = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1012,6 +1016,8 @@ export const deletePupilClassroom = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1044,6 +1050,8 @@ export const createPupilOrganizationRequest = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1074,6 +1082,8 @@ export const updatePupilOrganizationRequest = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1104,6 +1114,8 @@ export const deletePupilOrganizationRequest = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1134,6 +1146,8 @@ export const createPupilOrganizationAccepted = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1164,6 +1178,8 @@ export const updatePupilOrganizationAccepted = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1194,6 +1210,8 @@ export const deletePupilOrganizationAccepted = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1406,6 +1424,8 @@ export const createAttendance = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1454,6 +1474,8 @@ export const updateAttendance = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1502,6 +1524,8 @@ export const deleteAttendance = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1883,6 +1907,8 @@ export const createPupilParent = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1914,6 +1940,8 @@ export const updatePupilParent = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1945,6 +1973,8 @@ export const deletePupilParent = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -2165,6 +2195,8 @@ export const createPupil = /* GraphQL */ `
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -2214,6 +2246,8 @@ export const updatePupil = /* GraphQL */ `
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -2263,6 +2297,8 @@ export const deletePupil = /* GraphQL */ `
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -2315,6 +2351,8 @@ export const createIntervention = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -2342,6 +2380,8 @@ export const updateIntervention = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -2369,6 +2409,8 @@ export const deleteIntervention = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt

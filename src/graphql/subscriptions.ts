@@ -864,6 +864,8 @@ export const onCreatePupilClassroom = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -893,6 +895,8 @@ export const onUpdatePupilClassroom = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -922,6 +926,8 @@ export const onDeletePupilClassroom = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -951,6 +957,8 @@ export const onCreatePupilOrganizationRequest = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -978,6 +986,8 @@ export const onUpdatePupilOrganizationRequest = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1005,6 +1015,8 @@ export const onDeletePupilOrganizationRequest = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1032,6 +1044,8 @@ export const onCreatePupilOrganizationAccepted = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1059,6 +1073,8 @@ export const onUpdatePupilOrganizationAccepted = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1086,6 +1102,8 @@ export const onDeletePupilOrganizationAccepted = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1277,6 +1295,8 @@ export const onCreateAttendance = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1322,6 +1342,8 @@ export const onUpdateAttendance = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1367,6 +1389,8 @@ export const onDeleteAttendance = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1700,6 +1724,8 @@ export const onCreatePupilParent = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1728,6 +1754,8 @@ export const onUpdatePupilParent = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1756,6 +1784,8 @@ export const onDeletePupilParent = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1955,6 +1985,8 @@ export const onCreatePupil = /* GraphQL */ `
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -2001,6 +2033,8 @@ export const onUpdatePupil = /* GraphQL */ `
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -2047,6 +2081,8 @@ export const onDeletePupil = /* GraphQL */ `
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -2096,6 +2132,8 @@ export const onCreateIntervention = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -2120,6 +2158,8 @@ export const onUpdateIntervention = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -2144,6 +2184,8 @@ export const onDeleteIntervention = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt

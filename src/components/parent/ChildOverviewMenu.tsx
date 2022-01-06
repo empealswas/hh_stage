@@ -9,10 +9,13 @@ import {API, graphqlOperation} from "aws-amplify";
 import LinearProgressBottom from "../../utils/LinearProgressBottom";
 import OrganizationsSearch from "./OrganizationsSearch";
 import {MHidden} from "../@material-extend";
-
+import ConnectToWearableDeviceButton from './ConnectToWearableDeviceButton';
+import {useSelector} from "react-redux";
 const query = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
     firstName
+    terraId
+    provider
           id
           lastName
           parents {
@@ -49,6 +52,8 @@ const ChildOverviewMenu = () => {
     const [pupil, setPupil] = useState<Pupil | null>(null);
     const [numberOfAvatar, setNumberOfAvatar] = useState(0);
     const [numberOfCover, setNumberOfCover] = useState(1);
+    const mode = useSelector((state: any) => state.customization.theme);
+
     useEffect(() => {
         const getPupil = async () => {
             const result: any = await API.graphql(graphqlOperation(query, {id: pupilId}));
@@ -67,8 +72,9 @@ const ChildOverviewMenu = () => {
             <LinearProgressBottom/>
         );
     }
+
     return (
-        <Card>
+        <Card style={{backgroundColor: mode === `dark` ? "#323232": 'white'}}>
             <CardMedia
                 component="img"
                 image={`/static/mock-images/pupilsPageCover/${numberOfCover}.jpg`}
@@ -106,11 +112,8 @@ const ChildOverviewMenu = () => {
                         </div>
                     </Stack>
                         <Stack direction={{xs: 'column', sm: 'row'}} height={40} spacing={2}>
-                            <Button startIcon={<WatchIcon/>} variant={'contained'} onClick={() => {
-                                window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${pupil.id}/${pupil.firstName}${pupil.lastName}`, '_blank')
-                            }}>
-                                Connect To Garmin
-                            </Button>
+                            <ConnectToWearableDeviceButton  pupil={pupil}/>
+
                             <OrganizationsSearch/>
                             <Button variant={'outlined'} color={'secondary'} onClick={() => {
                                 setNumberOfAvatar(prevState => prevState + 1)

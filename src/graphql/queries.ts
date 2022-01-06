@@ -432,6 +432,8 @@ export const getPupilOrganizationRequest = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -481,6 +483,8 @@ export const getPupilOrganizationAccepted = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -624,6 +628,8 @@ export const getAttendance = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -971,6 +977,8 @@ export const getPupil = /* GraphQL */ `
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -1022,6 +1030,8 @@ export const listPupils = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -1040,6 +1050,8 @@ export const getIntervention = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt

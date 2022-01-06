@@ -3,7 +3,7 @@ import {Card, CardMedia, Container} from "@material-ui/core";
 import {Avatar, Button, CardActions, IconButton, Stack, Typography} from "@mui/material";
 import ChildTabs from "./tabs";
 import {Classroom, Pupil} from "../../API";
-import WatchIcon from '@mui/icons-material/Watch';
+import ConnectToWearableDeviceButton from "./ConnectToWearableDeviceButton";
 
 
 const ChildOverview = (props: { pupil: Pupil }) => {
@@ -46,11 +46,6 @@ const ChildOverview = (props: { pupil: Pupil }) => {
                             </div>
                         </Stack>
                         <Stack direction={'row'} height={40} spacing={2}>
-                            <Button startIcon={<WatchIcon/>} variant={'contained'} onClick={() => {
-                                window.open(`https://garmin.healthyhabits.link/auth/requestTokenForString/${pupil.id}/${pupil.firstName}${pupil.lastName}`, '_blank')
-                            }}>
-                                Connect To Garmin
-                            </Button>
                             <Button variant={'outlined'} color={'secondary'} onClick={() => {
                                 setNumberOfAvatar(prevState => prevState + 1)
                             }}>Change Avatar</Button>

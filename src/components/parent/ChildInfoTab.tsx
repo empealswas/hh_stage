@@ -79,6 +79,8 @@ const ChildInfoTab = (props: { pupil: Pupil }) => {
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent>
                             <Typography paragraph>ID: {pupil.id}</Typography>
+                            <Typography paragraph>Wearable Id: {pupil.terraId}</Typography>
+                            <Typography paragraph>Provider: {pupil.provider}</Typography>
                         </CardContent>
                     </Collapse>
                 </Card>

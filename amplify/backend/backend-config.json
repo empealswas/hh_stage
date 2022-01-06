@@ -184,12 +184,37 @@
           ]
         }
       ]
+    },
+    "updateTerraId": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2GraphQlApi",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "HealthyHabitsV2API",
+          "attributes": [
+            "ApiName",
+            "ApiId"
+          ]
+        }
+      ]
     }
   },
   "storage": {
     "HealthyHabitsV2": {
       "service": "S3",
-      "providerPlugin": "awscloudformation"
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

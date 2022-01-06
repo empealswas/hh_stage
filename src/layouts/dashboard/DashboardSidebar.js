@@ -31,7 +31,7 @@ const AccountStyle = styled('div')(({theme}) => ({
     alignItems: 'center',
     padding: theme.spacing(2, 2.5),
     borderRadius: theme.shape.borderRadiusSm,
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: theme.palette.background.paper,
 }));
 
 // ----------------------------------------------------------------------
