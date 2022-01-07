@@ -14,6 +14,7 @@ import InterventionsList from "./InterventionsList";
 import ChildInfoTab from "./ChildInfoTab";
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import OrganizationsOverview from "./childTabs/OrganizationsOverview";
+import ChildActivitiesSummary from "./ChildActivitiesSummary";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -71,16 +72,17 @@ export default function ChildTabs(props: {pupil: Pupil}) {
                 <InterventionsList pupil={pupil}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Container maxWidth="xl">
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={6} lg={8}>
-                            <StepsChart pupilId={pupil.id}/>
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={4}>
-                            <PupilActivitiesChart/>
-                        </Grid>
-                    </Grid>
-                </Container>
+                <ChildActivitiesSummary pupil={pupil}/>
+                {/*<Container maxWidth="xl">*/}
+                {/*    <Grid container spacing={3}>*/}
+                {/*        <Grid item xs={12} md={6} lg={8}>*/}
+                {/*            <StepsChart pupilId={pupil.id}/>*/}
+                {/*        </Grid>*/}
+                {/*        <Grid item xs={12} md={6} lg={4}>*/}
+                {/*            <PupilActivitiesChart/>*/}
+                {/*        </Grid>*/}
+                {/*    </Grid>*/}
+                {/*</Container>*/}
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <ChildInfoTab pupil={pupil}/>

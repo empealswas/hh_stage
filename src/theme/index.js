@@ -33,18 +33,21 @@ export default function ThemeConfig({children}) {
     }
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const dispatch = useDispatch();
+    console.log(prefersDarkMode)
 
     const customization = useSelector((state) => state.customization);
+
+    const theme = useMemo(() => {
+        return createTheme(themeOptions(customization.theme))
+    }, [customization.theme]);
+
     useMemo(
         () => {
-            console.log(prefersDarkMode)
+            console.log('Mode', prefersDarkMode ? 'DARK' : 'LIGHT')
             dispatch({type: SET_THEME, theme: prefersDarkMode ? 'dark' : 'light'});
         },
         [prefersDarkMode],
     );
-    const theme = useMemo(() => {
-        return createTheme(themeOptions(customization.theme))
-    }, [customization.theme]);
     theme.components = componentsOverride(theme);
     return (
         <StyledEngineProvider injectFirst>
