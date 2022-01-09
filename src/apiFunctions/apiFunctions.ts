@@ -1,7 +1,7 @@
 import {AddParentRequest, AddTeacherOrganizationRequest, AddTeacherRequest} from "./DTO/AddTeacherRequest";
 import {API} from "aws-amplify";
 import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
-
+import {PupilActivityRequest} from "./DTO/PupilActivityRequest";
 const apiName = 'HealthyHabitsV2API'
 
 export async function addTeacherApi(params: AddTeacherRequest) {
@@ -13,6 +13,27 @@ export async function addTeacherApi(params: AddTeacherRequest) {
     });
     console.log(result);
     console.log('Added');
+}
+export async function getPupilActivity(params: PupilActivityRequest) {
+    console.log(params);
+    const result = await API.post(apiName, '/api/getActivity', {
+       body: {
+           ...params,
+           chuj: 123
+       }
+    });
+    console.log(result)
+    return result;
+}
+export async function getPupilWearableDeviceStatus(terraId: string){
+    const result = await API.get(apiName, '/api/userInfo', {
+        queryStringParameters: {  // OPTIONAL
+            user_id: terraId
+        },
+    });
+    console.log(result);
+    return result;
+
 }
 export async function addTeacherForOrganizationApi(params: AddTeacherOrganizationRequest) {
     const result = await API.post(apiName, '/api/addTeacherOrganization', {

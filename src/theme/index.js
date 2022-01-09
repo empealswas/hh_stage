@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {useEffect, useMemo} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 // material
 import {CssBaseline} from '@material-ui/core';
 import {ThemeProvider, createTheme, StyledEngineProvider} from '@material-ui/core/styles';
@@ -13,7 +13,7 @@ import shadows, {customShadows} from './shadows';
 import {useDispatch, useSelector} from "react-redux";
 import {getParent} from "../graphql/queries";
 import {SET_THEME} from "../store/actions";
-import {useMediaQuery} from "@mui/material";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +22,7 @@ ThemeConfig.propTypes = {
 };
 
 export default function ThemeConfig({children}) {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const themeOptions = (mode) => {
         return {
             palette: getPalette(mode),
@@ -31,23 +32,26 @@ export default function ThemeConfig({children}) {
             customShadows
         }
     }
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const customization = useSelector(state => state.customization);
     const dispatch = useDispatch();
-    console.log(prefersDarkMode)
-
-    const customization = useSelector((state) => state.customization);
-
-    const theme = useMemo(() => {
-        return createTheme(themeOptions(customization.theme))
-    }, [customization.theme]);
 
     useMemo(
         () => {
             console.log('Mode', prefersDarkMode ? 'DARK' : 'LIGHT')
-            dispatch({type: SET_THEME, theme: prefersDarkMode ? 'dark' : 'light'});
+             dispatch({type: SET_THEME, theme: prefersDarkMode ? 'dark' : 'light'});
         },
         [prefersDarkMode],
     );
+
+    function createThemeWithThemeOptions() {
+        return createTheme(themeOptions(customization.theme))
+    }
+
+    const theme = useMemo(() => {
+        console.log(customization.theme)
+        return createThemeWithThemeOptions();
+    }, [customization.theme, customization, createThemeWithThemeOptions]);
+
     theme.components = componentsOverride(theme);
     return (
         <StyledEngineProvider injectFirst>

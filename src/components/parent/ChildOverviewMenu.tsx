@@ -111,7 +111,7 @@ const ChildOverviewMenu = () => {
                             </Tooltip>
                         </div>
                     </Stack>
-                        <Stack direction={{xs: 'column', sm: 'row'}} height={40} spacing={2}>
+                        <Stack direction={{xs: 'column', sm: 'row'}} spacing={2}>
                             <ConnectToWearableDeviceButton  pupil={pupil}/>
 
                             <OrganizationsSearch/>

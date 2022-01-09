@@ -1,49 +1,25 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from "@mui/material/Typography";
 import {Pupil} from "../../API";
 import axios from "axios";
+import {getPupilActivity, getPupilWearableDeviceStatus} from "../../apiFunctions/apiFunctions";
+import {PupilActivityRequest} from "../../apiFunctions/DTO/PupilActivityRequest";
 
 const ChildActivitiesSummary = (props: {pupil: Pupil}) => {
     const {pupil} = {...props};
-
+    const [data, setData] = useState<any>(null);
     useEffect(() => {
-/*        var myHeaders = new Headers();
-        myHeaders.append("dev-id", "healthcare-analytics-aT9uvuscoO");
-        myHeaders.append("x-api-key", "EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc");
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Access-Control-Allow-Origin", "*")
-
-
-        var requestOptions: any = {
-            method: 'GET',
-            mode: 'cors',
-            headers: myHeaders,
-            redirect: 'follow',
-        };
-
-        fetch("https://api.tryterra.co/v2/activity?user_id=2fa09d7c-634e-4e97-943a-c0c0f01f9db5&start_date=2022-01-02", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));*/
-
-        var config: any = {
-            method: 'get',
-            url: 'https://api.tryterra.co/v2/activity/?user_id=d559b851-d1f3-495b-bc70-e23975f0eccc&start_date=2022-01-02&to_webhook=false',
-            headers: {
-                'dev-id': 'healthcare-analytics-aT9uvuscoO',
-                'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc'
+        const getActivity = async () => {
+            const input: PupilActivityRequest = {
+                terraId: String(pupil.terraId),
+                start_date: '2022-01-02',
             }
-        };
+            const result = await getPupilActivity(input);
+            setData(result.data);
 
-        axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        }
 
-
+        getActivity();
         return () => {
 
         };

@@ -48,8 +48,8 @@ const AttendanceSheetModal = () => {
 
 
     return (
-        <div>
-            <Button variant={'outlined'} color={'primary'} onClick={handleOpen}>
+        <>
+            <Button variant={'outlined'} size={'medium'} color={'primary'} onClick={handleOpen}>
                 Organizations
             </Button>
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -67,7 +67,7 @@ const AttendanceSheetModal = () => {
                     </DialogContent>
                 </DialogContent>
             </Dialog>
-        </div>
+        </>
     );
 }
 export default AttendanceSheetModal;
