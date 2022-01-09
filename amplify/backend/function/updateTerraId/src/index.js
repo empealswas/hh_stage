@@ -17,7 +17,6 @@ exports.handler = async (event) => {
     if(body.type === 'auth' && body.status === 'success'){
         await updateTerraId(body.reference_id, body.user.user_id, body.user.provider)
     }
-    // TODO implement
     const response = {
         statusCode: 200,
         //  Uncomment below to enable CORS requests

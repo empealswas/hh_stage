@@ -39,7 +39,7 @@
         },
         "updateTerraId": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/updateTerraId-4f4830666c3271546176-build.zip"
+          "s3Key": "amplify-builds/updateTerraId-6172694872746b6b4d56-build.zip"
         }
       },
       "auth": {
