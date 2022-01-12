@@ -26,7 +26,7 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
             end_date: format(new Date(), 'yyyy-MM-dd')
         }
         const result = await getPupilActivity(input);
-        setData(result.data);
+        setData(result?.data);
 
     }
     const getSleepData = async () => {
@@ -37,7 +37,7 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
             end_date: format(new Date(), 'yyyy-MM-dd')
         }
         const result = await getSleepDataAsync(input);
-        setSleepData(result.data);
+        setSleepData(result?.data);
     }
 
     useEffect(() => {
@@ -53,6 +53,7 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
     return (
         <TerraDataContext.Provider value={data}>
             <SleepDataContext.Provider value={sleepData}>
+
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={8}>
                             <StepsChart pupilId={pupil.id}/>

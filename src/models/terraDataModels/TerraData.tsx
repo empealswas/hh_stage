@@ -16,6 +16,10 @@ type Daily = {
     distance_data: {
         steps: number,
         distance_meters: number,
+    },
+    active_durations_data: {
+        inactivity_seconds: number,
+        activity_seconds: number,
     }
 }
 type Sleep = {
