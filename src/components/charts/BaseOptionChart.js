@@ -108,7 +108,17 @@ export default function BaseOptionChart() {
         },
       },
       zoom: { enabled: false },
-      // animations: { enabled: false },
+      animations: {  enabled: true,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+          enabled: true,
+          delay: 150
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 350
+        } },
       foreColor: theme.palette.text.disabled,
       fontFamily: theme.typography.fontFamily
     },
@@ -171,6 +181,7 @@ export default function BaseOptionChart() {
 
     // Tooltip
     tooltip: {
+      theme: 'dark',
       x: {
         show: false
       }

@@ -12,9 +12,10 @@ import {LoadingButton} from '@material-ui/lab';
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import {Alert} from "@mui/material";
-import {Auth} from "aws-amplify";
+import {Amplify, Auth} from "aws-amplify";
 
 // ----------------------------------------------------------------------
+Amplify.register(Auth);
 
 export default function RegisterForm() {
     const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function RegisterForm() {
                 setError(error.message);
             }).finally(() => {
                 setLoading(false);
-                navigate('../dashboard', {replace: true});
+                // navigate('../dashboard', {replace: true});
             })
 
         }

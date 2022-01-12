@@ -63,9 +63,9 @@ export default function PupilActivitiesChart() {
 
     return (
         <Card>
-            <CardHeader title="Activities" />
+            <CardHeader title="Activities" subheader={"In development (dummy data)"} />
             <ChartWrapperStyle dir="ltr">
-                <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+                <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={300} />
             </ChartWrapperStyle>
         </Card>
     );

@@ -15,7 +15,7 @@ const ConnectToWearableDeviceButton = (props: { pupil: Pupil }) => {
     function followRegistrationLink () {
         const data = JSON.stringify({
             "reference_id": props.pupil.id,
-            "providers": "SUUNTO,FITBIT,OURA, GOOGLE, GARMIN",
+            "providers": "FITBIT, GOOGLE, GARMIN, APPLE, OURA, SUUNTO",
             "auth_success_redirect_url": window.location.href,
             "auth_failure_redirect_url": window.location.href,
             "language": "EN",

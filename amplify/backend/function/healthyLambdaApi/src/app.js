@@ -102,7 +102,7 @@ app.post('/api/getActivity',  function (req, res) {
 
     var config = {
         method: 'get',
-        url: `https://api.tryterra.co/v2/activity?user_id=${terraId}&start_date=${start_date}&to_webhook=false`,
+        url: `https://api.tryterra.co/v2/daily?user_id=${terraId}&start_date=${start_date}&end_date=${end_date}&to_webhook=false`,
         headers: {
             'dev-id': 'healthcare-analytics-aT9uvuscoO',
             'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
@@ -118,14 +118,30 @@ app.post('/api/getActivity',  function (req, res) {
             console.log(error);
             res.json({data: null});
         });
-    /*     try {
-            const response = await axios(config)
-            console.log(response);
-            res.json({ data: response.data });
-        } catch (error) {
+});
+app.post('/api/getSleep',  function (req, res) {
+    console.log(req);
+    console.log(req.body);
+    const { terraId, start_date, end_date } = { ...req.body }
+
+    var config = {
+        method: 'get',
+        url: `https://api.tryterra.co/v2/sleep?user_id=${terraId}&start_date=${start_date}&end_date=${end_date}&to_webhook=false`,
+        headers: {
+            'dev-id': 'healthcare-analytics-aT9uvuscoO',
+            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
+            'Content-Type': 'application/json'
+        },
+    };
+    axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            res.json({data: response.data});
+        })
+        .catch(function (error) {
             console.log(error);
-            res.json({ data: null });
-        } */
+            res.json({data: null});
+        });
 });
 
 app.get('/api/getAverage', async function (req, res) {

@@ -19,8 +19,17 @@ export async function getPupilActivity(params: PupilActivityRequest) {
     const result = await API.post(apiName, '/api/getActivity', {
        body: {
            ...params,
-           chuj: 123
        }
+    });
+    console.log(result)
+    return result;
+}
+
+export async function getSleepDataAsync(params: PupilActivityRequest) {
+    const result = await API.post(apiName, '/api/getSleep', {
+        body: {
+            ...params,
+        }
     });
     console.log(result)
     return result;
