@@ -35,7 +35,7 @@ const SectionGrid = () => {
         const getSectionsAsync = async () => {
             setSections(null);
             const result: any = await API.graphql(graphqlOperation(`query MyQuery {
-  listSections {
+  listSections(limit: 100000) {
     items {
       id
       name

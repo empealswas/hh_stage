@@ -50,10 +50,8 @@ export default function PupilActivitiesChart() {
     console.log('Yesterday', yesterdayData);
     const chartOptions: any = merge(BaseOptionChart(), {
         colors: [
-            theme.palette.warning.main,
-            theme.palette.error.main,
             theme.palette.primary.main,
-            theme.palette.info.main,
+            theme.palette.grey["600"],
         ],
         labels: ['Active time', 'Inactive time'],
         stroke: {colors: [theme.palette.background.paper]},
