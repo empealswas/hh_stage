@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 // material
 import {CssBaseline} from '@material-ui/core';
 import {ThemeProvider, createTheme, StyledEngineProvider} from '@material-ui/core/styles';
@@ -23,6 +23,10 @@ ThemeConfig.propTypes = {
 
 export default function ThemeConfig({children}) {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    const customization = useSelector(state => state.customization);
+    const dispatch = useDispatch();
+    const firstUpdate = useRef(true);
     const themeOptions = (mode) => {
         return {
             palette: getPalette(mode),
@@ -32,25 +36,27 @@ export default function ThemeConfig({children}) {
             customShadows
         }
     }
-    const customization = useSelector(state => state.customization);
-    const dispatch = useDispatch();
 
-    useMemo(
+     useMemo(
         () => {
             console.log('Mode', prefersDarkMode ? 'DARK' : 'LIGHT')
-             dispatch({type: SET_THEME, theme: prefersDarkMode ? 'dark' : 'light'});
+            dispatch({type: SET_THEME, theme: prefersDarkMode ? 'dark' : 'light'});
+
         },
         [prefersDarkMode],
     );
 
-    function createThemeWithThemeOptions() {
-        return createTheme(themeOptions(customization.theme))
+    function createThemeWithThemeOptions(theme) {
+        return createTheme(themeOptions(theme))
     }
 
     const theme = useMemo(() => {
-        console.log(customization.theme)
-        return createThemeWithThemeOptions();
-    }, [customization.theme, customization, createThemeWithThemeOptions]);
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+            dispatch({type: SET_THEME, theme: prefersDarkMode ? "dark" : 'light'})
+        }
+        return createThemeWithThemeOptions(customization.theme);
+    }, [customization.theme]);
 
     theme.components = componentsOverride(theme);
     return (

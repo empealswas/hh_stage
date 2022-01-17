@@ -14,6 +14,15 @@ export async function addTeacherApi(params: AddTeacherRequest) {
     console.log(result);
     console.log('Added');
 }
+
+export async function subscribeToNotifications(subscription: any) {
+        return await API.post(apiName, '/subscribe', {
+            body: JSON.stringify(subscription),
+            headers: {
+                'content-type': 'application/json',
+            }
+        })
+}
 export async function getPupilActivity(params: PupilActivityRequest) {
     console.log(params);
     const result = await API.post(apiName, '/api/getActivity', {

@@ -80,7 +80,7 @@ export default function BaseOptionChart() {
     chart: {
       toolbar: {
         autoSelected: 'pan',
-        show: true,
+        show: false,
         tools: {
           download: true,
           selection: true,

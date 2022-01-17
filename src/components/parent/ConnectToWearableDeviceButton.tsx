@@ -9,6 +9,7 @@ const ConnectToWearableDeviceButton = (props: { pupil: Pupil }) => {
     const [loading, setLoading] = useState(true);
     const [authenticationState, setAuthenticationState] = useState<'CHECKING_AUTHENTICATION'| 'NOT_AUTHENTICATED' | 'AUTHENTICATED'>('CHECKING_AUTHENTICATION');
     const {pupil} = {...props};
+    const [color, setColor] = useState('primary');
     const [authenticated, setAuthenticated] = useState<null | boolean>(null);
 
 
@@ -78,7 +79,7 @@ const ConnectToWearableDeviceButton = (props: { pupil: Pupil }) => {
     }
 
     return (
-        <LoadingButton loading={loading} variant={ authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'} startIcon={<WatchIcon/>}
+        <LoadingButton  loading={loading} variant={ authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'} startIcon={<WatchIcon/>}
                        onClick={generateRegistrationLink}>{authenticationState === 'AUTHENTICATED' ? 'Connected' : 'Connect to Wearable'}</LoadingButton>
     );
 };

@@ -7,7 +7,12 @@ import {ApexOptions} from "apexcharts";
 import {useContext, useEffect, useState} from "react";
 import TotalGrowthBarChartSkeleton from "../reports/charts/TotalGrowthBarChartSkeleton";
 import {TerraDataContext} from "../parent/ChildActivitiesSummary";
-import {format, parseISO} from "date-fns";
+import {format, parseISO, subDays} from "date-fns";
+import {API, graphqlOperation} from "aws-amplify";
+import {Pupil} from "../../API";
+import axios from "axios";
+import {fShortenNumber} from "../../utils/formatNumber";
+import {useTheme} from "@mui/material/styles";
 //
 
 // ----------------------------------------------------------------------
@@ -21,21 +26,76 @@ const CHART_DATA = [
         data: [6000, 5400, 11000, 8000, 5000, 10000, 1500]
     },
 ];
-
+const childQuery = `query MyQuery {
+  listPupils(limit: 100000) {
+    items {
+      terraId
+    }
+  }
+}`;
 export default function StepsChart(props: { pupilId: string }) {
-    // const [chartData, setChartData] = useState<{ name: string, type: string, data: number[]; } | null>(null);
-        const terraData = useContext(TerraDataContext);
+    const terraData = useContext(TerraDataContext);
+    let basedOptions = BaseOptionChart();
+    const theme = useTheme();
+
+    const [averageData, setAverageData] = useState<any>(null);
+    useEffect(() => {
+        const getAverage = async () =>{
+            const result: any = await API.graphql(graphqlOperation(childQuery));
+            const terraIds = result.data.listPupils?.items.filter((item: Pupil) => !!item.terraId).map((item: Pupil) => item.terraId);
+            var data = JSON.stringify({
+                "idList": terraIds,
+                "grouping": "group",
+                "category": "daily",
+                "subtype": "steps",
+                "period": "day",
+                "startDate":  format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                "endDate": format(new Date(), 'yyyy-MM-dd'),
+                "returnType": "average"
+            });
+            var config: any = {
+                method: 'post',
+                url: 'https://terra.healthyhabits.link/api/data/get-data',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data : data
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log('Average', JSON.stringify(response.data));
+                    setAverageData(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        getAverage();
+        return () => {
+
+        };
+    }, []);
 
 
-    if (!terraData || terraData.status !== 'success') {
+    if (!terraData || !averageData) {
         return (<TotalGrowthBarChartSkeleton/>);
     }
-    const chartOptions: any = merge(BaseOptionChart(), {
-        stroke: { width: [5]},
+    const chartOptions: any = merge(basedOptions, {
+        stroke: { width: [5, 3]},
+        colors: [theme.palette.success.light, theme.palette.warning.light],
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
-        labels: terraData.data.map(value =>
-            `${format(parseISO(value.metadata.start_time), "eee do")} `
-        ),
+        labels: terraData?.data?.map(value =>
+            `${format(parseISO(value.metadata.start_time), "eee do")}`
+        ) ?? averageData?.data?.map((value:any) =>
+                `${format(parseISO(value.date), "eee do")} `),
+        yaxis: {
+            labels: {
+                formatter: function (value: any) {
+                    return fShortenNumber(value);
+                }
+            },
+        },
         tooltip: {
             theme: 'dark',
             shared: true,
@@ -54,8 +114,8 @@ export default function StepsChart(props: { pupilId: string }) {
         <Card>
             <CardHeader title="Steps" subheader={format(new Date(), 'MMMM')}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
-                <ReactApexChart type="line" series={[{data: terraData.data.map(value => value.distance_data.steps),name: 'Number of Steps',
-                    type: 'line'}, ]} options={chartOptions} height={364}/>
+                <ReactApexChart type="line" series={[{data: terraData?.data?.map(value => value.distance_data.steps) ?? [],name: 'Number of Steps',
+                    type: 'line'}, {data: averageData?.map((item: any) => item.value) ?? [], name: 'Average', type: 'line'}]} options={chartOptions} height={364}/>
             </Box>
         </Card>
     );

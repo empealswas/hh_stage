@@ -9,7 +9,7 @@ See the License for the specific language governing permissions and limitations 
 //TEST
 const aws = require('aws-sdk')
 const axios = require('axios');
-
+const webpush = require('web-push');
 const lambda = new aws.Lambda({
     region: 'eu-west-2'
 })
@@ -20,7 +20,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
 const { response } = require('express');
-
+webpush.setVapidDetails('mailto:hlib@healthcareinsafehands.com', process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY);
 // declare a new express app
 var app = express()
 app.use(bodyParser.json())
@@ -34,9 +34,14 @@ app.use(function (req, res, next) {
 });
 
 
-/**********************
- * Example get method *
- **********************/
+app.post('/subscribe', (req, res) =>{
+    const subscription = req.body;
+    res.status(201).json({});
+    const payload = JSON.stringify({
+        title: 'Push Test',
+    })
+    webpush.sendNotification(subscription, payload).catch(err => console.error(err));
+});
 
 app.get('/api', function (req, res) {
     // Add your code here

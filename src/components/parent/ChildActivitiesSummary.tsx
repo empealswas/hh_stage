@@ -34,7 +34,7 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
         const input: PupilActivityRequest = {
             terraId: String(pupil.terraId),
             start_date: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
-            end_date: format(new Date(), 'yyyy-MM-dd')
+            end_date: format(subDays(new Date(), 1), 'yyyy-MM-dd')
         }
         const result = await getSleepDataAsync(input);
         setSleepData(result?.data);

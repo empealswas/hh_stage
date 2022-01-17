@@ -11,6 +11,7 @@ import OrganizationsSearch from "./OrganizationsSearch";
 import {MHidden} from "../@material-extend";
 import ConnectToWearableDeviceButton from './ConnectToWearableDeviceButton';
 import {useSelector} from "react-redux";
+import {motion, useAnimation} from "framer-motion"
 const query = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
     firstName
@@ -54,14 +55,16 @@ const ChildOverviewMenu = () => {
     const [numberOfCover, setNumberOfCover] = useState(1);
     const mode = useSelector((state: any) => state.customization.theme);
 
+    const controls = useAnimation();
     useEffect(() => {
         const getPupil = async () => {
             const result: any = await API.graphql(graphqlOperation(query, {id: pupilId}));
             setPupil(result.data.getPupil);
         }
         getPupil();
+ 
         return () => {
-
+            controls.stop();
         };
     }, [pupilId]);
 
@@ -74,6 +77,8 @@ const ChildOverviewMenu = () => {
     }
 
     return (
+        <motion.div  >
+
         <Card style={{backgroundColor: mode === `dark` ? "#323232": 'white'}}>
             <CardMedia
                 component="img"
@@ -138,6 +143,8 @@ const ChildOverviewMenu = () => {
             </CardActions>
 
         </Card>
+        </motion.div>
+
     );
 };
 
