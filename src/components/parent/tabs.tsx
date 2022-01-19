@@ -15,6 +15,7 @@ import ChildInfoTab from "./ChildInfoTab";
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import OrganizationsOverview from "./childTabs/OrganizationsOverview";
 import ChildActivitiesSummary from "./ChildActivitiesSummary";
+import SuggestedOrganizationsOverview from "./childTabs/SuggestedOrganizationsOverview";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -62,24 +63,25 @@ export default function ChildTabs(props: {pupil: Pupil}) {
                       scrollButtons="auto"
                       aria-label="scrollable auto tabs example"
                         centered={true}>
-                    <Tab icon={<FeedIcon/>} label="Feed" {...a11yProps(0)} />
                     <Tab icon={<BarChartIcon/>} label="Statistics" {...a11yProps(1)} />
+                    <Tab icon={<FeedIcon/>} label="Feed" {...a11yProps(0)} />
                     <Tab icon={<InfoIcon/>} label="Info" {...a11yProps(2)} />
                     <Tab icon={<CorporateFareIcon/>} label="Clubs" {...a11yProps(3)}/>
                 </Tabs>
             </Box>
-            <TabPanel  value={value} index={0}>
-                <InterventionsList pupil={pupil}/>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={value} index={0}>
                 <ChildActivitiesSummary pupil={pupil}/>
 
+            </TabPanel>
+            <TabPanel  value={value} index={1}>
+                <InterventionsList pupil={pupil}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <ChildInfoTab pupil={pupil}/>
             </TabPanel>
             <TabPanel value={value} index={3} >
                 <OrganizationsOverview/>
+                <SuggestedOrganizationsOverview/>
             </TabPanel>
         </Box>
     );

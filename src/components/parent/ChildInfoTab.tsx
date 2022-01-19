@@ -18,8 +18,10 @@ import {Parent, Pupil} from "../../API";
 import {useEffect, useState} from "react";
 import CardSkeleton from "../skeletons/CardSkeleton";
 import {API, graphqlOperation} from "aws-amplify";
-import {Button} from "@mui/material";
+import {Button, Stack, Tooltip} from "@mui/material";
 import * as serviceWorker from '../../serviceWorker';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import TaskIcon from '@mui/icons-material/Task';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -35,6 +37,27 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
         duration: theme.transitions.duration.shortest,
     }),
 }));
+const CopyToClipboard = (props: { text: string }) => {
+    const [textCopied, setTextCopied] = useState(false);
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text);
+        setTextCopied(true);
+    }
+
+    useEffect(() => {
+        return () => {
+
+        };
+    }, []);
+
+    return <Tooltip title={textCopied ? 'Copied!' : 'Copy to clipboard'}>
+        <IconButton onClick={() => {
+            copyToClipboard(props.text);
+        }}>
+            {textCopied ? <TaskIcon/> : <ContentCopyIcon/>}
+        </IconButton>
+    </Tooltip>;
+}
 const ChildInfoTab = (props: { pupil: Pupil }) => {
     const {pupil} = {...props};
 
@@ -50,6 +73,8 @@ const ChildInfoTab = (props: { pupil: Pupil }) => {
         // }
         // getPupil();
     }, [])
+
+
     return (
         <div>
             {pupil ?
@@ -58,7 +83,7 @@ const ChildInfoTab = (props: { pupil: Pupil }) => {
                         <Typography paragraph>
                             Hello! My name is {pupil.firstName} {pupil.lastName}
                         </Typography>
-                        <Typography >
+                        <Typography>
                             My parents are:
                         </Typography>
                         {pupil.parents?.items?.map((item: any) => item.Parent).map((parent: Parent) =>
@@ -66,7 +91,8 @@ const ChildInfoTab = (props: { pupil: Pupil }) => {
                                 {parent.firstName} {parent.lastName} ({parent.id})
                             </Typography>)
                         }
-                        <Typography>I go to {pupil.school?.name}. I am the part of the {pupil.schoolHouse?.name} house</Typography>
+                        <Typography>I go to {pupil.school?.name}. I am the part of
+                            the {pupil.schoolHouse?.name} house</Typography>
                     </CardContent>
                     <CardActions disableSpacing>
                         <ExpandMore
@@ -80,10 +106,20 @@ const ChildInfoTab = (props: { pupil: Pupil }) => {
                     </CardActions>
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent>
-                            <Typography paragraph>ID: {pupil.id}</Typography>
-                            <Typography paragraph>Wearable Id: {pupil.terraId}</Typography>
-                            <Typography paragraph>Provider: {pupil.provider}</Typography>
-{/*                        <Button onClick={()=>{
+                            <Stack direction={'row'}>
+                                <Typography>ID: {pupil.id}</Typography>
+                                <CopyToClipboard text={pupil.id}/>
+                            </Stack>
+                            <Stack direction={'row'}>
+                                <Typography paragraph>Wearable Id: {pupil.terraId}</Typography>
+
+                                <CopyToClipboard text={String(pupil.terraId)}/>
+                            </Stack>
+                            <Stack direction={'row'}>
+                                <Typography paragraph>Provider: {pupil.provider}</Typography>
+                                <CopyToClipboard text={String(pupil.provider)}/>
+                            </Stack>
+                            {/*                        <Button onClick={()=>{
 
                             // if (window.Notification) {
                             //     Notification.requestPermission((status) => {

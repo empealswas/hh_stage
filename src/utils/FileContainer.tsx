@@ -4,7 +4,7 @@ import {Box, CardActions, CardMedia, IconButton, Skeleton, Typography} from "@ma
 import {Player} from 'video-react';
 // Import the styles
 import '@react-pdf-viewer/core/lib/styles/index.css';
-import {CardActionArea, CardHeader, Menu} from "@mui/material";
+import {CardActionArea, CardHeader, Link, Menu} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,6 +21,8 @@ import {File} from "../API";
 import {deleteFile} from "../graphql/mutations";
 import {useSnackbar} from "notistack";
 import {Can} from "./Ability";
+import {Download, DownloadOutlined} from "@mui/icons-material";
+import axios from "axios";
 
 const FileContainer = (props: { linkToFile: string, fileExtension: string, fileName: string, file: File }) => {
     const {linkToFile, fileExtension, fileName, file} = {...props}
@@ -127,6 +129,31 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                                     <OpenInNewOutlinedIcon/>
                                 </ListItemIcon>
                                 <ListItemText>Open in new tab</ListItemText>
+                            </MenuItem>
+
+{/*                            component={Link} rel="noreferrer" href={linkToFile} download={true} target={'_self'}*/}
+                            <MenuItem onClick={async ()=>{
+                                axios({
+                                    url: linkToFile,
+                                    method: 'GET',
+                                    responseType: 'blob'
+                                })
+                                    .then((response) => {
+                                        const url = window.URL
+                                            .createObjectURL(new Blob([response.data]));
+                                        const link = document.createElement('a');
+                                        link.href = url;
+                                        link.setAttribute('download', file.key);
+                                        document.body.appendChild(link);
+                                        link.click();
+                                        document.body.removeChild(link);
+                                    })
+                            }}>
+                                <ListItemIcon>
+                                    <DownloadOutlined/>
+                                </ListItemIcon>
+                                <ListItemText>Download</ListItemText>
+
                             </MenuItem>
                         </MenuList>
                     </Menu>

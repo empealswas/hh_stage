@@ -12,6 +12,9 @@ import {MHidden} from "../@material-extend";
 import ConnectToWearableDeviceButton from './ConnectToWearableDeviceButton';
 import {useSelector} from "react-redux";
 import {motion, useAnimation} from "framer-motion"
+import CustomizedMenus from "./ChildOptionsMenu";
+import Box from "@mui/material/Box";
+
 const query = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
     firstName
@@ -62,7 +65,7 @@ const ChildOverviewMenu = () => {
             setPupil(result.data.getPupil);
         }
         getPupil();
- 
+
         return () => {
             controls.stop();
         };
@@ -77,72 +80,70 @@ const ChildOverviewMenu = () => {
     }
 
     return (
-        <motion.div  >
+        <motion.div>
 
-        <Card style={{backgroundColor: mode === `dark` ? "#323232": 'white'}}>
-            <CardMedia
-                component="img"
-                image={`/static/mock-images/pupilsPageCover/${numberOfCover}.jpg`}
-                alt="Paella dish"
-                style={{
-                    width: '100%',
-                    height: 'calc(80px + 10vw)',
-                    textAlign: 'center'
-                }}
-            />
-            <Container maxWidth={false}>
+            <Card style={{backgroundColor: mode === `dark` ? "#323232" : 'white'}}>
+                <CardMedia
+                    component="img"
+                    image={`/static/mock-images/pupilsPageCover/${numberOfCover}.jpg`}
+                    alt="Paella dish"
+                    style={{
+                        width: '100%',
+                        height: 'calc(80px + 10vw)',
+                        textAlign: 'center'
+                    }}
+                />
+                <Container maxWidth={false}>
 
-                <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={{xs: 'center', sm: 'space-between'}}
-                       alignItems={'center'}>
-                    <Stack direction={{xs: 'column', sm: 'row'}} spacing={{xs: 0, sm: 2}}>
-                        <Avatar sx={{
-                            width: 'calc(80px + 5vw)',
-                            height: 'calc(80px + 5vw)',
-                            border: '3px solid white',
-                            margin: '-60px auto 0'
-                        }} src={`/static/mock-images/avatars/avatar_${numberOfAvatar}.jpg`}/>
-                        <div>
-                            <Typography variant={'h5'}>
-                                {pupil.firstName} {pupil.lastName}
-                            </Typography>
-                            <Tooltip title={pupil.classrooms?.items?.map((item: any) => item.classroom).map((classroom: Classroom) =>
-                                     `${classroom.name}\n`
-                            ) ?? ''}>
-                            <Typography variant={'subtitle2'} noWrap maxWidth="200px">
-                            {pupil.classrooms?.items?.map((item: any) => item.classroom).map((classroom: Classroom) =>
-                                     `${classroom.name} | `
-                            )}
+                    <Stack direction={{xs: 'column', sm: 'row'}} justifyContent={{xs: 'center', sm: 'space-between'}}
+                           alignItems={'center'}>
+                        <Stack direction={{xs: 'column', sm: 'row'}} spacing={{xs: 0, sm: 2}}>
+                            <Avatar sx={{
+                                width: 'calc(80px + 5vw)',
+                                height: 'calc(80px + 5vw)',
+                                border: '3px solid white',
+                                margin: '-60px auto 0'
+                            }} src={`/static/mock-images/avatars/avatar_${numberOfAvatar}.jpg`}/>
+                            <div>
+                                <Typography variant={'h5'}>
+                                    {pupil.firstName} {pupil.lastName}
                                 </Typography>
-                            </Tooltip>
-                        </div>
-                    </Stack>
-                        <Stack direction={{xs: 'column', sm: 'row'}} spacing={2}>
-                            <ConnectToWearableDeviceButton  pupil={pupil}/>
-
-                            <OrganizationsSearch/>
-                            <Button variant={'outlined'} color={'secondary'} onClick={() => {
+                                <Tooltip
+                                    title={pupil.classrooms?.items?.map((item: any) => item.classroom).map((classroom: Classroom) =>
+                                        `${classroom.name}\n`
+                                    ) ?? ''}>
+                                    <Typography variant={'subtitle2'} noWrap maxWidth="200px">
+                                        {pupil.classrooms?.items?.map((item: any) => item.classroom).map((classroom: Classroom) =>
+                                            `${classroom.name} | `
+                                        )}
+                                    </Typography>
+                                </Tooltip>
+                            </div>
+                        </Stack>
+                        <Box height={20}></Box>
+                        <Stack direction={'row'} spacing={2}>
+                            <ConnectToWearableDeviceButton pupil={pupil}/>
+                            <CustomizedMenus changeAvatar={() => {
                                 setNumberOfAvatar(prevState => prevState + 1)
-                            }}>Change Avatar</Button>
-                            <Button variant={'contained'} color={'secondary'} onClick={() => {
+                            }} changeBackground={() => {
                                 setNumberOfCover(prevState => {
                                     if (prevState === 4) {
                                         return 1;
                                     }
                                     return prevState + 1;
                                 })
-                            }}>Change Cover Photo</Button>
+                            }}/>
                         </Stack>
 
 
+                    </Stack>
 
-                </Stack>
+                </Container>
+                <CardActions>
+                    <ChildTabs pupil={pupil}/>
+                </CardActions>
 
-            </Container>
-            <CardActions>
-                <ChildTabs pupil={pupil}/>
-            </CardActions>
-
-        </Card>
+            </Card>
         </motion.div>
 
     );

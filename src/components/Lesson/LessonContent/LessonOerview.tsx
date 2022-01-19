@@ -130,7 +130,7 @@ const LessonOverview = () => {
                     <Can I={'create'} a={'file'}>
                         <FilesUploadDropzoneWithChildren dropzone={{
                             onDrop: onDrop,
-                            accept: ['image/*','video/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']
+                            accept: ['image/*','video/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4','.csv', '.doc', '.docx', '.xlsx', 'application/*', '.*']
                         }}/>
                     </Can>
                     <Container>

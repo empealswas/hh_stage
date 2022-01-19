@@ -46,19 +46,6 @@ const FilesViewer = (props: FilesListProps) => {
                     </Grid>
                 ))}
             </Grid>
-            {/*<List>*/}
-            {/*    {props.files.map((value: File | null, index: number) => {*/}
-            {/*            if (value) {*/}
-            {/*                return <FileItem file={value} index={index}/>;*/}
-            {/*            }*/}
-            {/*        }*/}
-            {/*    )}*/}
-            {/*</List>*/}
-            {/*{urlToVideo &&*/}
-            {/*<Player*/}
-            {/*    playsInline*/}
-            {/*    src={urlToVideo}*/}
-            {/*/>*/}
 
         </>
     );

@@ -40,7 +40,7 @@ export default function SleepChart() {
     const theme = useTheme();
     const [averageData, setAverageData] = useState<any>(null);
     useEffect(() => {
-        const getAverage = async () =>{
+        const getAverage = async () => {
             const result: any = await API.graphql(graphqlOperation(childQuery));
             const terraIds = result.data.listPupils?.items.filter((item: Pupil) => !!item.terraId).map((item: Pupil) => item.terraId);
             var data = JSON.stringify({
@@ -49,7 +49,7 @@ export default function SleepChart() {
                 "category": "sleep",
                 "subtype": "durationTotal",
                 "period": "day",
-                "startDate":  format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                "startDate": format(subDays(new Date(), 7), 'yyyy-MM-dd'),
                 "endDate": format(subDays(new Date(), 0), 'yyyy-MM-dd'),
                 "returnType": "average"
             });
@@ -59,7 +59,7 @@ export default function SleepChart() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                data : data
+                data: data
             };
 
             axios(config)
@@ -80,8 +80,8 @@ export default function SleepChart() {
         return (<TotalGrowthBarChartSkeleton/>);
     }
     console.log(sleepData)
-   const chartOptions: any = merge(baseOptions, {
-        chart: {
+    const chartOptions: any = merge(baseOptions, {
+            chart: {
                 id: 'bar-chart',
                 stacked: true,
                 toolbar: {
@@ -89,12 +89,12 @@ export default function SleepChart() {
                 },
             },
             colors: ['#2897ff', '#00579f', theme.palette.warning.light],
-       dataLabels: {
-           enabled: false
-       },
-       stroke: {
-           width: [1, 1, 2]
-       },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: [1, 1, 2]
+            },
 
             responsive: [
                 {
@@ -114,36 +114,36 @@ export default function SleepChart() {
                     columnWidth: '50%'
                 }
             },
-        yaxis: {
-            labels: {
-                formatter: function (value: any) {
-                    return fShortenNumber(value) + " hrs";
-                }
+            yaxis: {
+                labels: {
+                    formatter: function (value: any) {
+                        return fShortenNumber(value) + " hrs";
+                    }
+                },
             },
-        },
             xaxis: {
                 type: 'category',
                 categories: sleepData.data.map(value => {
                         if (!value.metadata?.start_time) {
                             return 'Null'
                         }
-                    return `${format(parseISO(value.metadata.start_time), "eee do")}`;
-                }
+                        return `${format(parseISO(value.metadata.start_time), "eee do")}`;
+                    }
                 )
             },
-        tooltip: {
-            theme: 'dark',
-            shared: true,
-            intersect: false,
-            y: {
-                formatter: (y: any) => {
-                    if (typeof y !== 'undefined') {
-                        return `${y?.toFixed(0) ?? 'none'} hrs`;
+            tooltip: {
+                theme: 'dark',
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: (y: any) => {
+                        if (typeof y !== 'undefined') {
+                            return `${y?.toFixed(1) ?? 'none'} hrs`;
+                        }
+                        return y;
                     }
-                    return y;
                 }
-            }
-        },
+            },
             legend: {
                 show: true,
                 fontSize: '14px',
@@ -166,9 +166,6 @@ export default function SleepChart() {
             fill: {
                 type: 'solid'
             },
-            dataLabels: {
-                enabled: false
-            },
             grid: {
                 show: true
             }
@@ -182,16 +179,16 @@ export default function SleepChart() {
                     {
                         name: 'Light sleep',
                         type: 'column',
-                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_light_sleep_state / 60 / 60).toFixed(0)),
+                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_light_sleep_state / 60.0 / 60.0)),
                     },
                     {
                         name: 'Deep sleep',
                         type: 'column',
-                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_deep_sleep_state/60/60).toFixed(0)),
+                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_deep_sleep_state / 60.0 / 60.0)),
                     },
                     {
                         name: 'Average Sleep',
-                        data: averageData.map((item: any) => item.value/60/60),
+                        data: averageData.map((item: any) => item.value / 60 / 60),
                         type: 'line'
                     }
 

@@ -10,14 +10,17 @@ import {
     CardContent,
     CardHeader,
     CardMedia, Container,
-    Grid,
+    Grid, IconButton,
     Link, Stack, TextField,
     Typography
 } from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom';
-import {CardMembership} from "@mui/icons-material";
+import {CardMembership, HdrPlus} from "@mui/icons-material";
 import {Teacher} from "../../../models/Teacher";
 import {UserContext} from "../../../App";
+import OrganizationsSearch from "../OrganizationsSearch";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import { Box } from '@material-ui/core';
 
 const organizationsQuery = `query MyQuery($id: ID = "") {
   getPupil(id: $id) {
@@ -113,6 +116,8 @@ const OrganizationsOverview = () => {
     }
     return (
         <>
+            <Typography variant={'h3'}>Your organizations</Typography>
+            <Box height={20}></Box>
             <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -125,6 +130,7 @@ const OrganizationsOverview = () => {
                 }}
                 renderInput={(params) => <TextField {...params} label="Search..."/>}
             />
+            <OrganizationsSearch/>
             <Grid container spacing={3}
                   justifyContent="flex-start"
                   alignItems="flex-start"

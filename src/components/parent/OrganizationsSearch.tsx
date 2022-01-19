@@ -49,8 +49,8 @@ const AttendanceSheetModal = () => {
 
     return (
         <>
-            <Button variant={'outlined'} size={'medium'} color={'primary'} onClick={handleOpen}>
-                Organizations
+            <Button variant={'text'} color={'primary'} size={'large'} onClick={handleOpen}>
+                See all
             </Button>
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
                 <Toolbar>
