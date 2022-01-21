@@ -38,8 +38,7 @@ const awsmobile = {
         }
     ],
     "aws_user_files_s3_bucket": "healthy-habits-v2-content205646-dev",
-    "aws_user_files_s3_bucket_region": "eu-west-2",
-    "aws_cognito_login_mechanisms": []
+    "aws_user_files_s3_bucket_region": "eu-west-2"
 };
 
 

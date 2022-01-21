@@ -4,6 +4,8 @@ import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
 import {PupilActivityRequest} from "./DTO/PupilActivityRequest";
 const apiName = 'HealthyHabitsV2API'
 
+
+
 export async function addTeacherApi(params: AddTeacherRequest) {
 
     const result = await API.post(apiName, '/api/addTeacher', {
@@ -14,15 +16,16 @@ export async function addTeacherApi(params: AddTeacherRequest) {
     console.log(result);
     console.log('Added');
 }
-
-export async function subscribeToNotifications(subscription: any) {
-        return await API.post(apiName, '/subscribe', {
-            body: JSON.stringify(subscription),
-            headers: {
-                'content-type': 'application/json',
-            }
-        })
+export async function subscribeToNotifications(subscription: any): Promise<any> {
+    return Promise.resolve(await API.post(apiName, '/subscribe', {
+        body: JSON.stringify(subscription),
+        headers: {
+            'content-type': 'application/json',
+        }
+    }));
 }
+
+
 export async function getPupilActivity(params: PupilActivityRequest) {
     console.log(params);
     const result = await API.post(apiName, '/api/getActivity', {
@@ -100,7 +103,7 @@ export async function confirmOrganization(params: ConfirmOrganizationParams){
 
 
 export async function getAverage(){
-    return await API.get(apiName, '/api/getAverage', {});
+    return Promise.resolve(await API.get(apiName, '/api/getAverage', {}));
 }
 
 export async function resendCodeToTeacher(params: ResendTeacherInvitation) {
@@ -110,6 +113,7 @@ export async function resendCodeToTeacher(params: ResendTeacherInvitation) {
         }
     });
 }
+
 
 export async function genUrlOfThumbnailOfFile(fileName: string){
 

@@ -12,7 +12,7 @@ export class Admin extends User {
 
     async getPupilsIds(): Promise<any> {
         if (!this.pupilsIds) {
-        const result: any = await API.graphql(graphqlOperation(listPupils, {limit: 100000}));
+            const result: any = await API.graphql(graphqlOperation(listPupils, {limit: 100000}));
             this.pupilsIds = result.data.listPupils.items.map((pupil: Pupil) => pupil.id);
         }
         return this.pupilsIds;
