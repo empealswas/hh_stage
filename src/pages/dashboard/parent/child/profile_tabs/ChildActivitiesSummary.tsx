@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import {format, subDays} from "date-fns";
-import {Button, Container, Grid} from "@mui/material";
+import {Box, Button, Container, Grid} from "@mui/material";
 import {Pupil} from "../../../../../API";
 import {SleepData, TerraData} from "../../../../../models/terraDataModels/TerraData";
 import {PupilActivityRequest} from "../../../../../apiFunctions/DTO/PupilActivityRequest";
@@ -54,7 +54,8 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
     return (
         <TerraDataContext.Provider value={data}>
             <SleepDataContext.Provider value={sleepData}>
-                    <ConnectToWearableDeviceButton pupil={pupil}/>
+                <ConnectToWearableDeviceButton pupil={pupil}/>
+                <Box height={5}></Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={12} lg={8}>
                         <StepsChart pupilId={pupil.id}/>

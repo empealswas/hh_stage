@@ -29,6 +29,7 @@ import {useParams} from "react-router-dom";
 import ChildProfileDetails from "./profile_tabs/Profile/ChildProfileDetails";
 import ChildProfileCover from "./ChildProfileCover";
 import ConnectToWearableDeviceButton from "./wearable/ConnectToWearableDeviceButton";
+import OrganizationsGrid from "../../organization/OrganizationsGrid";
 
 // ----------------------------------------------------------------------
 
@@ -90,7 +91,7 @@ export default function UserProfile() {
   const { user } = useAuth();
   const {pupilId} = useParams();
 
-  const [currentTab, setCurrentTab] = useState('activity');
+  const [currentTab, setCurrentTab] = useState('clubs');
   const [pupil, setPupil] = useState<Pupil | null>(null);
   const handleChangeTab = (newValue: string) => {
     setCurrentTab(newValue);
@@ -106,6 +107,13 @@ export default function UserProfile() {
 
   const PROFILE_TABS = [
     {
+      value: 'clubs',
+      icon: <Iconify icon={'ic:round-corporate-fare'} width={20} height={20} />,
+      component: (
+          <OrganizationsGrid/>
+      ),
+    },
+    {
       value: 'activity',
       icon: <Iconify icon={'eva:activity-fill'} width={20} height={20} />,
       component: pupil ? <ChildActivitiesSummary pupil={pupil}/> : <></>,
@@ -115,13 +123,7 @@ export default function UserProfile() {
       icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
       component: pupil ? <ChildProfileDetails child={pupil}/> : <></>,
     },
-    {
-      value: 'clubs',
-      icon: <Iconify icon={'ic:round-corporate-fare'} width={20} height={20} />,
-      component: (
-        <></>
-      ),
-    },
+
   ];
 
   return (

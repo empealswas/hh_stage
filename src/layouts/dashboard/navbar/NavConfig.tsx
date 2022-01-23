@@ -28,7 +28,7 @@ export const ICONS = {
 const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
-/*  {
+  {
     subheader: 'general',
     items: [
       { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
@@ -41,7 +41,7 @@ const navConfig = [
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
-  {
+  /*{
     subheader: 'management',
     items: [
       // MANAGEMENT : USER
@@ -86,7 +86,7 @@ const navConfig = [
         ],
       },
     ],
-  },*/
+  },
 
   // APP
   // ----------------------------------------------------------------------
@@ -111,7 +111,7 @@ const navConfig = [
         icon: ICONS.kanban,
       },
     ],
-  },
+  },*/
 ];
 
 export default navConfig;

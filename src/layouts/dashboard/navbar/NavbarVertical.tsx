@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Stack, Drawer } from '@mui/material';
+import {Box, Stack, Drawer, Typography} from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
@@ -74,6 +74,9 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }: Props)
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Logo />
+            { !isCollapse &&
+            <Typography variant={'h5'} color={theme.palette.primary.main}>Healthy Habits</Typography>
+            }
 
           {isDesktop && !isCollapse && (
             <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />

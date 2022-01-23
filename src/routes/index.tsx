@@ -1,5 +1,5 @@
-import { Suspense, lazy, ElementType } from 'react';
-import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+import {Suspense, lazy, ElementType} from 'react';
+import {Navigate, useRoutes, useLocation} from 'react-router-dom';
 // guards
 import useAuth from '../hooks/useAuth';
 // layouts
@@ -11,161 +11,171 @@ import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
 // import RoleBasedGuard from '../guards/RoleBasedGuard';
 // config
-import { PATH_AFTER_LOGIN } from '../config';
+import {PATH_AFTER_LOGIN} from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
+import SectionOverview from "../components/section/SectionOverview";
+import LessonOerview from "../components/section/lesson/LessonOerview";
 
 // ----------------------------------------------------------------------
 
 const Loadable = (Component: ElementType) => (props: any) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { pathname } = useLocation();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const {pathname} = useLocation();
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { isAuthenticated } = useAuth();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const {isAuthenticated} = useAuth();
 
-  const isDashboard = pathname.includes('/dashboard') && isAuthenticated;
+    const isDashboard = pathname.includes('/dashboard') && isAuthenticated;
 
-  return (
-    <Suspense fallback={<LoadingScreen isDashboard={isDashboard} />}>
-      <Component {...props} />
-    </Suspense>
-  );
+    return (
+        <Suspense fallback={<LoadingScreen isDashboard={isDashboard}/>}>
+            <Component {...props} />
+        </Suspense>
+    );
 };
 
 export default function Router() {
-  return useRoutes([
-    {
-      path: 'auth',
-      children: [
+    return useRoutes([
         {
-          path: 'login',
-          element: (
-            <GuestGuard>
-              <Login />
-            </GuestGuard>
-          ),
+            path: 'auth',
+            children: [
+                {
+                    path: 'login',
+                    element: (
+                        <GuestGuard>
+                            <Login/>
+                        </GuestGuard>
+                    ),
+                },
+                {
+                    path: 'register',
+                    element: (
+                        <GuestGuard>
+                            <Register/>
+                        </GuestGuard>
+                    ),
+                },
+                {path: 'login-unprotected', element: <Login/>},
+                {path: 'register-unprotected', element: <Register/>},
+                {path: 'reset-password', element: <ResetPassword/>},
+                {path: 'verify', element: <VerifyCode/>},
+            ],
         },
-        {
-          path: 'register',
-          element: (
-            <GuestGuard>
-              <Register />
-            </GuestGuard>
-          ),
-        },
-        { path: 'login-unprotected', element: <Login /> },
-        { path: 'register-unprotected', element: <Register /> },
-        { path: 'reset-password', element: <ResetPassword /> },
-        { path: 'verify', element: <VerifyCode /> },
-      ],
-    },
 
-    // Dashboard Routes
-    {
-      path: 'dashboard',
-      element: (
-        <AuthGuard>
-          <DashboardLayout />
-        </AuthGuard>
-      ),
-      children: [
-        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-        { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
-        { path: 'analytics', element: <GeneralAnalytics /> },
-        { path: 'banking', element: <GeneralBanking /> },
-        { path: 'booking', element: <GeneralBooking /> },
+        // Dashboard Routes
+        {
+            path: 'dashboard',
+            element: (
+                <AuthGuard>
+                    <DashboardLayout/>
+                </AuthGuard>
+            ),
+            children: [
+                {element: <Navigate to={PATH_AFTER_LOGIN} replace/>, index: true},
+                {path: 'app', element: <GeneralApp/>},
+                {path: 'ecommerce', element: <GeneralEcommerce/>},
+                {path: 'analytics', element: <GeneralAnalytics/>},
+                {path: 'banking', element: <GeneralBanking/>},
+                {path: 'booking', element: <GeneralBooking/>},
 
-        {
-          path: 'e-commerce',
-          children: [
-            { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
-            { path: 'invoice', element: <EcommerceInvoice /> },
-          ],
+                {
+                    path: 'e-commerce',
+                    children: [
+                        {element: <Navigate to="/dashboard/e-commerce/shop" replace/>, index: true},
+                        {path: 'shop', element: <EcommerceShop/>},
+                        {path: 'product/:name', element: <EcommerceProductDetails/>},
+                        {path: 'list', element: <EcommerceProductList/>},
+                        {path: 'product/new', element: <EcommerceProductCreate/>},
+                        {path: 'product/:name/edit', element: <EcommerceProductCreate/>},
+                        {path: 'checkout', element: <EcommerceCheckout/>},
+                        {path: 'invoice', element: <EcommerceInvoice/>},
+                    ],
+                },
+                {
+                    path: 'user',
+                    children: [
+                        {element: <Navigate to="/dashboard/user/profile" replace/>, index: true},
+                        {path: 'profile', element: <UserProfile/>},
+                        {path: 'cards', element: <UserCards/>},
+                        {path: 'list', element: <UserList/>},
+                        {path: 'new', element: <UserCreate/>},
+                        {path: ':name/edit', element: <UserCreate/>},
+                        {path: 'account', element: <UserAccount/>},
+                    ],
+                },
+                {
+                    path: 'child',
+                    children: [
+                        {path: ':pupilId', element: <ChildProfile/>},
+                    ],
+                },
+                {
+                    path: 'organization',
+                    children: [
+                        {path: ':organizationId', element: <SectionOverview/>},
+                        {path: ':organizationId/section/:sectionId', element: <SectionOverview/>},
+                        {path: ':organizationId/section/:sectionId/lesson/:lessonId', element: <LessonOerview/>}
+                    ],
+                },
+                {
+                    path: 'blog',
+                    children: [
+                        {element: <Navigate to="/dashboard/blog/posts" replace/>, index: true},
+                        {path: 'posts', element: <BlogPosts/>},
+                        {path: 'post/:title', element: <BlogPost/>},
+                        {path: 'new-post', element: <BlogNewPost/>},
+                    ],
+                },
+                {
+                    path: 'mail',
+                    children: [
+                        {element: <Navigate to="/dashboard/mail/all" replace/>, index: true},
+                        {path: 'label/:customLabel', element: <Mail/>},
+                        {path: 'label/:customLabel/:mailId', element: <Mail/>},
+                        {path: ':systemLabel', element: <Mail/>},
+                        {path: ':systemLabel/:mailId', element: <Mail/>},
+                    ],
+                },
+                {
+                    path: 'chat',
+                    children: [
+                        {element: <Chat/>, index: true},
+                        {path: 'new', element: <Chat/>},
+                        {path: ':conversationKey', element: <Chat/>},
+                    ],
+                },
+                {path: 'calendar', element: <Calendar/>},
+                {path: 'kanban', element: <Kanban/>},
+            ],
         },
-        {
-          path: 'user',
-          children: [
-            { element: <Navigate to="/dashboard/user/profile" replace />, index: true },
-            { path: 'profile', element: <UserProfile /> },
-            { path: 'cards', element: <UserCards /> },
-            { path: 'list', element: <UserList /> },
-            { path: 'new', element: <UserCreate /> },
-            { path: ':name/edit', element: <UserCreate /> },
-            { path: 'account', element: <UserAccount /> },
-          ],
-        },
-        {
-          path: 'child',
-          children: [
-            {path: ':pupilId', element: <ChildProfile/> },
-          ],
-        },
-        {
-          path: 'blog',
-          children: [
-            { element: <Navigate to="/dashboard/blog/posts" replace />, index: true },
-            { path: 'posts', element: <BlogPosts /> },
-            { path: 'post/:title', element: <BlogPost /> },
-            { path: 'new-post', element: <BlogNewPost /> },
-          ],
-        },
-        {
-          path: 'mail',
-          children: [
-            { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
-            { path: 'label/:customLabel', element: <Mail /> },
-            { path: 'label/:customLabel/:mailId', element: <Mail /> },
-            { path: ':systemLabel', element: <Mail /> },
-            { path: ':systemLabel/:mailId', element: <Mail /> },
-          ],
-        },
-        {
-          path: 'chat',
-          children: [
-            { element: <Chat />, index: true },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> },
-          ],
-        },
-        { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> },
-      ],
-    },
 
-    // Main Routes
-    {
-      path: '*',
-      element: <LogoOnlyLayout />,
-      children: [
-        { path: 'coming-soon', element: <ComingSoon /> },
-        { path: 'maintenance', element: <Maintenance /> },
-        { path: 'pricing', element: <Pricing /> },
-        { path: 'payment', element: <Payment /> },
-        { path: '500', element: <Page500 /> },
-        { path: '404', element: <NotFound /> },
-        { path: '*', element: <Navigate to="/404" replace /> },
-      ],
-    },
-    {
-      path: '/',
-      element: <Navigate to={'dashboard'} />,
-      children: [
-        { element: <HomePage />, index: true },
-        { path: 'about-us', element: <About /> },
-        { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> },
-      ],
-    },
-    { path: '*', element: <Navigate to="/404" replace /> },
-  ]);
+        // Main Routes
+        {
+            path: '*',
+            element: <LogoOnlyLayout/>,
+            children: [
+                {path: 'coming-soon', element: <ComingSoon/>},
+                {path: 'maintenance', element: <Maintenance/>},
+                {path: 'pricing', element: <Pricing/>},
+                {path: 'payment', element: <Payment/>},
+                {path: '500', element: <Page500/>},
+                {path: '404', element: <NotFound/>},
+                {path: '*', element: <Navigate to="/404" replace/>},
+            ],
+        },
+        {
+            path: '/',
+            element: <Navigate to={'dashboard'}/>,
+            children: [
+                {element: <HomePage/>, index: true},
+                {path: 'about-us', element: <About/>},
+                {path: 'contact-us', element: <Contact/>},
+                {path: 'faqs', element: <Faqs/>},
+            ],
+        },
+        {path: '*', element: <Navigate to="/404" replace/>},
+    ]);
 }
 
 // IMPORT COMPONENTS
@@ -183,13 +193,13 @@ const GeneralBanking = Loadable(lazy(() => import('../pages/dashboard/GeneralBan
 const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBooking')));
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
 const EcommerceProductDetails = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductDetails'))
+    lazy(() => import('../pages/dashboard/EcommerceProductDetails'))
 );
 const EcommerceProductList = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductList'))
+    lazy(() => import('../pages/dashboard/EcommerceProductList'))
 );
 const EcommerceProductCreate = Loadable(
-  lazy(() => import('../pages/dashboard/EcommerceProductCreate'))
+    lazy(() => import('../pages/dashboard/EcommerceProductCreate'))
 );
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/EcommerceInvoice')));
