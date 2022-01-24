@@ -101,7 +101,6 @@ type PostContentProps = {
 export function OrganizationContent({name, type, discover, id}: PostContentProps) {
     const isDesktop = useResponsive('up', 'md');
 
-    const linkTo = `${PATH_DASHBOARD.blog.root}/post/${paramCase(name)}`;
 
     /*    const POST_INFO = [
             {number: comment, icon: 'eva:message-circle-fill'},
@@ -134,7 +133,7 @@ export function OrganizationContent({name, type, discover, id}: PostContentProps
                 </TextMaxLine>
                 :
 
-                <Link to={linkTo} color="inherit" component={RouterLink}>
+                <Link color={'inherit'} component={RouterLink} to={`/dashboard/organization/${id}`} replace>
                     <TextMaxLine
                         variant={'h5'}
                         line={2}

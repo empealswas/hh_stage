@@ -39,6 +39,7 @@ const LessonOverview = () => {
   getLesson(id: $id) {
     Files {
       items {
+        createdAt
         key
         id
         region

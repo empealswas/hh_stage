@@ -5,52 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/public/static/HHT logo RGB.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/static/image_placeholder.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/abilities/Ability.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/abilities/defineAbilityFor.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dialog/AddingDialog.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/files-utilities/FileContainer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/files-utilities/FileWidget.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/files-utilities/FilesViewer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/files-utilities/filenameExtractor.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/ActivityCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/AddLessonModalSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/AddSectionModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/DeletionModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/EditSectionModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/SectionHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/EditDialog.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonEditForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonItemsGrid.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOptionComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonRating.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonsGridSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/CustomLoadingOverlay.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetails.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetailsForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/Reward.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/skeleton/CardSkeleton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationJoinButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Logo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Logo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/LogoOnlyLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/LogoOnlyLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/abilities/defineAbilityFor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/abilities/defineAbilityFor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/files-utilities/FileContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/files-utilities/FileContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavbarVertical.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavbarVertical.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildProfile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +57,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="C:\Projects\Work\Healthy-Habits-Content\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -130,7 +92,11 @@
       <updated>1642781940164</updated>
       <workItem from="1642781946390" duration="2974000" />
       <workItem from="1642855995536" duration="24160000" />
-      <workItem from="1642954858797" duration="14012000" />
+      <workItem from="1642954858797" duration="14659000" />
+      <workItem from="1643018506455" duration="210000" />
+      <workItem from="1643019128944" duration="68000" />
+      <workItem from="1643019582935" duration="2991000" />
+      <workItem from="1643024563155" duration="500000" />
     </task>
     <servers />
   </component>
@@ -159,7 +125,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/section/lesson/LessonsGridSection.tsx</url>
           <line>23</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

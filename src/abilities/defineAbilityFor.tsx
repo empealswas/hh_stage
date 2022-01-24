@@ -41,8 +41,10 @@ export default function defineAbilityFor(user: User | null) {
 
     } else if (user instanceof Parent) {
         //todo remove
-        can(['create', 'update', 'delete', 'view'], 'section');
-        can(['create', 'update', 'delete', 'view'], 'lesson');
+        can(['view'], 'section');
+        can(['view'], 'lesson');
+        can(['view'], 'file');
+
 
         can('visit', 'dashboard')
         can('visit', 'parent');

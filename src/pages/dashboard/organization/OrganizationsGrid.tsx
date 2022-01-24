@@ -121,7 +121,7 @@ const OrganizationsGrid = () => {
             return (
                 <>
                     {[0, 1, 2, 3, 4].map(index =>
-                        <Grid item height={500} width={300} xs={12} sm={6} md={4} lg={4} key={index}>
+                        <Grid item height={400} width={300} xs={12} sm={6} md={4} lg={4} key={index}>
                             <CardSkeleton/>
                         </Grid>
                     )}

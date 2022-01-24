@@ -13,43 +13,125 @@ import {genUrlOfThumbnailOfFile} from "../../apiFunctions/apiFunctions";
 import {deleteFile} from "../../graphql/mutations";
 import Iconify from "../Iconify";
 import {Can} from "../../abilities/Ability";
+import {Link as RouterLink} from 'react-router-dom';
 import {
-    Box,
+    Box, Card,
     CardActionArea,
-    CardActions,
+    CardActions, CardContent,
     CardHeader,
-    CardMedia,
-    IconButton,
+    CardMedia, Divider,
+    IconButton, Link,
     Menu,
     Skeleton,
     Typography
 } from '@mui/material';
+import MenuPopover from "../MenuPopover";
+import Image from "../Image";
+import {fDate} from "../../utils/formatTime";
+import {styled} from "@mui/material/styles";
+import cssStyles from "../../utils/cssStyles";
 
-const FileContainer = (props: { linkToFile: string, fileExtension: string, fileName: string, file: File }) => {
+type Props = {
+    linkToFile: string
+    fileExtension: string
+    fileName: string
+    file: File
+}
+const CaptionStyle = styled(CardContent)(({theme}) => ({
+    ...cssStyles().bgBlur({blur: 2, color: theme.palette.grey[900]}),
+    bottom: 0,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'space-between',
+    color: theme.palette.common.white,
+}));
+const FileContainer = (props: Props) => {
     const {linkToFile, fileExtension, fileName, file} = {...props}
-    const [linkToPreview, setLinkToPreview] = useState(null);
+    const [linkToPreview, setLinkToPreview] = useState<string | null>(null);
     useEffect(() => {
         genUrlOfThumbnailOfFile(fileName + '.jpg').then(res => {
-            setLinkToPreview(res.url);
+
+            if (res.url) {
+                setLinkToPreview(res.url);
+            } else {
+                setLinkToPreview('/static/image_placeholder.png')
+            }
+        }).catch(reason => {
+            console.log(reason);
+            setLinkToPreview('/static/image_placeholder.png')
+
         })
     }, []);
 
 
-    const [contextMenu, setContextMenu] = React.useState<{
-        mouseX: number;
-        mouseY: number;
-    } | null>(null);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+    return (
+
+        <>
+            <Image
+                alt="file thumbnail"
+                ratio="1/1"
+                src={linkToPreview ?? '/static/image_placeholder.png'}
+            />
+            <CaptionStyle>
+                <Link color={'inherit'} onClick={()=>{
+                    window.open(linkToFile, '_blank')
+                }} >
+                    <Typography variant="subtitle1">{fileName}</Typography>
+                <Typography variant="body2" sx={{opacity: 0.72}}>
+                    {file.createdAt}
+                </Typography>
+                </Link>
+                <MoreMenuButton setLinkToPreview={setLinkToPreview} {...props} />
+
+            </CaptionStyle>
+        </>
+    )
+};
+
+interface MoreButtonProps extends Props {
+    setLinkToPreview: any,
+}
+
+function MoreMenuButton({linkToFile, fileExtension, fileName, file, setLinkToPreview}: MoreButtonProps) {
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+
+    const [open, setOpen] = useState<HTMLElement | null>(null);
+
+    const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setOpen(event.currentTarget);
     };
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const handleClose = () => {
-        setAnchorEl(null);
+        setOpen(null);
     };
 
+    const ICON = {
+        mr: 2,
+        width: 20,
+        height: 20,
+    };
+    const downloadFile = async () => {
+        axios({
+            url: linkToFile,
+            method: 'GET',
+            responseType: 'blob'
+        })
+            .then((response) => {
+                const url = window.URL
+                    .createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', String(file?.key));
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+    }
+    const openInNewTab = () => {
+        window.open(linkToFile, '_blank')
+    }
     const removeFile = () => {
         if (file?.key) {
             setLinkToPreview(null);
@@ -60,123 +142,48 @@ const FileContainer = (props: { linkToFile: string, fileExtension: string, fileN
                 enqueueSnackbar('File removed: ' + fileName, {variant: 'success'})
             });
         }
-
-        // deleteFileById(file.id).then(result => {
-        //     console.log('File deleted')
-        // }).catch(error => {
-        //     console.error(error);
-        // })
     }
 
-    const handleContextMenu = (event: React.MouseEvent) => {
-        event.preventDefault();
-        setContextMenu(
-            contextMenu === null
-                ? {
-                    mouseX: event.clientX - 2,
-                    mouseY: event.clientY - 4,
-                }
-                :
-                null,
-        );
-    };
-
-
     return (
-        < >
+        <>
+            <IconButton size="large" color={'inherit'} onClick={handleOpen}>
+                <Iconify icon={'eva:more-vertical-fill'} width={23} height={23}/>
+            </IconButton>
 
-            <CardActions>
-                <>
-                    <IconButton onContextMenu={handleContextMenu} aria-label="settings" id="basic-button"
-                                aria-controls="basic-menu"
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick}>
-                        <Iconify icon={'eva:more-vertical-fill'} sx={{fontSize: 25}}/>
-                    </IconButton>
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                        }}
-                    >
-                        <MenuList>
-                            <Can I={'delete'} this={'file'}>
-                                <MenuItem onClick={removeFile}>
-                                    <ListItemIcon>
-                                        <Iconify icon={'mdi:delete-outline'} sx={{fontSize: 25}}/>
-                                    </ListItemIcon>
-                                    <ListItemText>Remove</ListItemText>
-                                </MenuItem>
-                            </Can>
-                            <MenuItem onClick={() => {
-                                window.open(linkToFile, '_blank')
-                            }
-                            }>
-                                <ListItemIcon>
-                                    <Iconify icon={'mdi:open-in-new'} sx={{fontSize: 25}}/>
+            <MenuPopover
+                open={Boolean(open)}
+                anchorEl={open}
+                onClose={handleClose}
+                anchorOrigin={{vertical: 'top', horizontal: 'left'}}
+                transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                arrow="right-top"
+                sx={{
+                    mt: -0.5,
+                    width: 160,
+                    '& .MuiMenuItem-root': {px: 1, typography: 'body2', borderRadius: 0.75},
+                }}
+            >
+                <MenuItem onClick={downloadFile}>
+                    <Iconify icon={'eva:download-fill'} sx={{...ICON}}/>
+                    Download
+                </MenuItem>
 
-                                </ListItemIcon>
-                                <ListItemText>Open in new tab</ListItemText>
-                            </MenuItem>
+                <MenuItem onClick={openInNewTab}>
+                    <Iconify icon={'mdi:open-in-new'} sx={{...ICON}}/>
+                    New Tab
+                </MenuItem>
 
-{/*                            component={Link} rel="noreferrer" href={linkToFile} download={true} target={'_self'}*/}
-                            <MenuItem onClick={async ()=>{
-                                axios({
-                                    url: linkToFile,
-                                    method: 'GET',
-                                    responseType: 'blob'
-                                })
-                                    .then((response) => {
-                                        const url = window.URL
-                                            .createObjectURL(new Blob([response.data]));
-                                        const link = document.createElement('a');
-                                        link.href = url;
-                                        link.setAttribute('download', String(file?.key));
-                                        document.body.appendChild(link);
-                                        link.click();
-                                        document.body.removeChild(link);
-                                    })
-                            }}>
-                                <ListItemIcon>
-                                    <Iconify icon={'mdi:download-outline'} sx={{fontSize: 25}}/>
+                <Can I={'delete'} a={'file'}>
+                    <Divider sx={{borderStyle: 'dashed'}}/>
 
-                                </ListItemIcon>
-                                <ListItemText>Download</ListItemText>
-
-                            </MenuItem>
-                        </MenuList>
-                    </Menu>
-
-                </>
-            </CardActions>
-            <CardActionArea onClick={() => {
-                window.open(linkToFile, '_blank')
-            }}>
-                {linkToPreview ?
-                    <CardMedia
-                        style={{
-                            maxWidth: '100%',
-                            height: '200px'
-                        }}
-                        component="img"
-                        image={linkToPreview ?? '/static/image_placeholder.png'}
-                        alt="Thumbnail not found"
-                    />
-                    :
-                    <Skeleton variant={'rectangular'} height={200} width={"100%"}/>
-                }
-            </CardActionArea>
-            <CardHeader
-                style={{paddingTop: 0}}
-                title={<Typography display={'flex'} variant={"subtitle1"}>{fileName}</Typography>}
-            />
+                    <MenuItem sx={{color: 'error.main'}} onClick={removeFile}>
+                        <Iconify icon={'eva:trash-2-outline'} sx={{...ICON}}/>
+                        Delete
+                    </MenuItem>
+                </Can>
+            </MenuPopover>
         </>
-    )
-};
-
+    );
+}
 
 export default FileContainer;
