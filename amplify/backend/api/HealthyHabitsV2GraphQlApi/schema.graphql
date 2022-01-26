@@ -142,7 +142,7 @@ type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: p
 }
 
 type Attendance @model @auth(rules: [{allow: private}]) {
-    id: ID!
+    id: ID! @index(name: "byLessonRecord",  sortKeyFields: ["lessonRecordID"], queryField: "attendanceByLessonRecordID")
     present: Boolean
     wasRewarded: Boolean
     pupilID: ID @index(name: "byPupil")
