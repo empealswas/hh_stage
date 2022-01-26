@@ -1484,6 +1484,22 @@ export type ModelPELessonRecordFilterInput = {
   not?: ModelPELessonRecordFilterInput | null,
 };
 
+export type ModelIDKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelSchoolHouseFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -1713,12 +1729,6 @@ export type ModelStringKeyConditionInput = {
   between?: Array< string | null > | null,
   beginsWith?: string | null,
 };
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
 
 export type ModelParentInterventionFeedbackFilterInput = {
   id?: ModelIDInput | null,
@@ -5356,6 +5366,37 @@ export type ListPELessonRecordsQuery = {
   } | null,
 };
 
+export type LessonRecordByNameQueryVariables = {
+  date?: string | null,
+  id?: ModelIDKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelPELessonRecordFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type LessonRecordByNameQuery = {
+  lessonRecordByName?:  {
+    __typename: "ModelPELessonRecordConnection",
+    items:  Array< {
+      __typename: "PELessonRecord",
+      id: string,
+      teacherID?: string | null,
+      date?: string | null,
+      deliveredBy?: string | null,
+      duration?: number | null,
+      activity?: string | null,
+      rating?: number | null,
+      notes?: string | null,
+      classroomID?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetSchoolHouseQueryVariables = {
   id: string,
 };
@@ -5814,6 +5855,33 @@ export type ListAttendancesQueryVariables = {
 
 export type ListAttendancesQuery = {
   listAttendances?:  {
+    __typename: "ModelAttendanceConnection",
+    items:  Array< {
+      __typename: "Attendance",
+      id: string,
+      present?: boolean | null,
+      wasRewarded?: boolean | null,
+      pupilID?: string | null,
+      lessonID?: string | null,
+      lessonRecordID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type AttendanceByLessonRecordIDQueryVariables = {
+  id?: string | null,
+  lessonRecordID?: ModelIDKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelAttendanceFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type AttendanceByLessonRecordIDQuery = {
+  attendanceByLessonRecordID?:  {
     __typename: "ModelAttendanceConnection",
     items:  Array< {
       __typename: "Attendance",

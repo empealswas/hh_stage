@@ -1,13 +1,17 @@
 import {merge} from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {format, formatISO, parseISO, subDays} from "date-fns";
 import {TerraDataContext} from "./ChildActivitiesSummary";
 import {BaseOptionChart} from "../../../../../components/chart";
 import {Card, CardHeader, Skeleton} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import ActivtityChartSkeleton from "../../../../../components/skeleton/ActivtityChartSkeleton";
+import {API, graphqlOperation} from "aws-amplify";
+import {useParams} from "react-router-dom";
+import {Attendance, PELessonRecord} from "../../../../../API";
+import {fPercent} from "../../../../../utils/formatNumber";
 // utils
 //
 
@@ -15,7 +19,6 @@ import ActivtityChartSkeleton from "../../../../../components/skeleton/Activtity
 
 const CHART_HEIGHT = 372;
 const LEGEND_HEIGHT = 72;
-
 
 
 // ----------------------------------------------------------------------
@@ -36,29 +39,97 @@ const ChartWrapperStyle = styled('div')(({theme}) => ({
         top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`
     }
 }));
-export default function PupilActivitiesChart() {
-    const activityData = useContext(TerraDataContext);
-    if (!activityData || activityData.status !== 'success') {
-        return (<ActivtityChartSkeleton />);
-
-
+const activityQuery = `query MyQuery($id: ID = "") {
+  getPupil(id: $id) {
+    Attendances(limit: 10000, filter: {present: {eq: true}}) {
+      items {
+        lessonRecord {
+          activity
+          duration
+        }
+      }
     }
-    console.log('ISO', subDays(new Date(), 1).toISOString())
-    const yesterdayData = activityData.data
-        .find(value => format(parseISO(value.metadata.start_time), 'yyyy/MM/dd') === format(subDays(new Date(), 1), 'yyyy/MM/dd'));
+  }
+}
+`
+export default function PupilActivitiesChart() {
+    const {pupilId} = useParams();
+    // const [activities, setActivities] = useState<{name: string, durationInMinutes: number}[] | null>(null);
+    const [data, setData] = useState<{names: string[], series: number[]}| null>(null);
+    useEffect(() => {
+        const fetchData = async () => {
+            setData(null);
 
-    console.log('Yesterday', yesterdayData);
+            const result: any = await API.graphql(graphqlOperation(activityQuery, {id: pupilId}))
+            const lessonRecords: PELessonRecord[] = result.data.getPupil.Attendances.items.map((item: Attendance) => item.lessonRecord).filter((item: PELessonRecord) => !!item);
+            const activities = lessonRecords.reduce((acc: any, value: any) => {
+                if (!value) {
+                    return acc;
+                }
+                if (!acc[value.activity]) {
+                    acc[value.activity] = 0;
+                }
+
+                acc[value.activity] += value.duration;
+
+                return acc;
+            }, {});
+            let all: number = 0;
+            const chartData = [];
+            const names = [];
+            // console.log(activities)
+            for (let key in activities) {
+                // console.log(key);
+                if (key !== null) {
+                    let value = activities[key];
+                    if (key === 'null') {
+                        names.push('Undefined');
+                    } else {
+
+                        names.push(`${key}`);
+                    }
+                    all += value;
+                }
+            }
+            for (let key in activities) {
+                if (key !== null) {
+                    let value = activities[key];
+                    chartData.push(value / all);
+                }
+            }
+            setData({
+                names: names,
+                series: chartData,
+            })
+
+        }
+        fetchData();
+        return () => {
+
+        };
+    }, [pupilId]);
+
+    if (!data) {
+        return (<ActivtityChartSkeleton/>);
+    }
+
+
     const chartOptions: any = merge(BaseOptionChart(), {
 
-        labels: ['Active time', 'Inactive time'],
+        labels: data.names,
         legend: {floating: true, horizontalAlign: 'center'},
         dataLabels: {enabled: true, dropShadow: {enabled: false}},
         tooltip: {
             fillSeriesColor: false,
             y: {
-                formatter: (seriesName: any) => (seriesName/60),
+                formatter: (seriesName: any) => fPercent(seriesName * 100),
                 title: {
-                    formatter: (seriesName: any) => `${seriesName} minutes`
+                    formatter: (seriesName: any) => {
+                        if (seriesName === 'null') {
+                            return 'Undefined';
+                        }
+                        return `${seriesName}`;
+                    }
                 }
             }
         },
@@ -69,9 +140,11 @@ export default function PupilActivitiesChart() {
 
     return (
         <Card>
-            <CardHeader title="Activities" subheader={"Yesterday"}/>
+            <CardHeader title="Activities" subheader={"All time activity"}/>
             <ChartWrapperStyle dir="ltr">
-                <ReactApexChart type="pie" series={[yesterdayData?.active_durations_data?.activity_seconds ?? 0, yesterdayData?.active_durations_data?.inactivity_seconds ?? 0]} options={chartOptions} height={300}/>
+                <ReactApexChart type="pie"
+                                series={data.series}
+                                options={chartOptions} height={300}/>
             </ChartWrapperStyle>
         </Card>
     );

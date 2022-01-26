@@ -279,6 +279,41 @@ export const listPELessonRecords = /* GraphQL */ `
     }
   }
 `;
+export const lessonRecordByName = /* GraphQL */ `
+  query LessonRecordByName(
+    $date: AWSDate
+    $id: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    lessonRecordByName(
+      date: $date
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getSchoolHouse = /* GraphQL */ `
   query GetSchoolHouse($id: ID!) {
     getSchoolHouse(id: $id) {
@@ -670,6 +705,37 @@ export const listAttendances = /* GraphQL */ `
     $nextToken: String
   ) {
     listAttendances(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        present
+        wasRewarded
+        pupilID
+        lessonID
+        lessonRecordID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const attendanceByLessonRecordID = /* GraphQL */ `
+  query AttendanceByLessonRecordID(
+    $id: ID
+    $lessonRecordID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelAttendanceFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    attendanceByLessonRecordID(
+      id: $id
+      lessonRecordID: $lessonRecordID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         present

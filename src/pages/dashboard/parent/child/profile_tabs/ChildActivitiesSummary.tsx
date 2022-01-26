@@ -11,6 +11,9 @@ import StepsChart from "./StepsChart";
 import PupilActivitiesChart from "./PupilActivitiesChart";
 import SleepChart from "./SleepChart";
 import ConnectToWearableDeviceButton from "../wearable/ConnectToWearableDeviceButton";
+import {AppWidgetSummary} from "../../../../../sections/@dashboard/general/app";
+import {useTheme} from "@mui/material/styles";
+import ActivityWidgets from "./activity/ActivityWidgets";
 
 export const TerraDataContext = React.createContext<TerraData | null>(null);
 export const SleepDataContext = React.createContext<SleepData | null>(null);
@@ -19,6 +22,7 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
     const {pupil} = {...props};
     const [data, setData] = useState<TerraData | null>(null);
     const [sleepData, setSleepData] = useState<SleepData | null>(null);
+    const theme = useTheme();
     const getActivity = async () => {
         setData(null);
         const input: PupilActivityRequest = {
@@ -57,6 +61,7 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
                 <ConnectToWearableDeviceButton pupil={pupil}/>
                 <Box height={5}></Box>
                 <Grid container spacing={3}>
+                    <ActivityWidgets/>
                     <Grid item xs={12} md={12} lg={8}>
                         <StepsChart pupilId={pupil.id}/>
                     </Grid>
