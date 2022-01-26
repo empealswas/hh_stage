@@ -59,7 +59,7 @@ export default function AnalyticsWebsiteVisits() {
   });
 
   return (
-    <Card>
+    <Card>o
       <CardHeader title="Website Visits" subheader="(+43%) than last year" />
       <Box sx={{ p: 3, pb: 1 }} dir="ltr">
         <ReactApexChart type="line" series={CHART_DATA} options={chartOptions} height={364} />

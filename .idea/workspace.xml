@@ -5,84 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsSleepChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsStepsChart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/.config/project-config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2API/cli-inputs.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/.migration-backup/schema.graphql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/cli-inputs.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/resolvers/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/stacks/CustomResources.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/transform.conf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/auth/healthyhabitsv24aea1e5f/cli-inputs.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/backend-config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/AddInterventionForPupil-cloudformation-template.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/amplify.state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/custom-policies.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/function-parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/src/event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/AddInterventionForPupil/src/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/ConfirmOrganization-cloudformation-template.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/amplify.state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/custom-policies.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/function-parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/src/event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/src/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/RemoveFileFromS3Bucket-cloudformation-template.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/amplify.state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/function-parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/src/event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveFileFromS3Bucket/src/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/RemoveSections-cloudformation-template.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/amplify.state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/custom-policies.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/function-parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/amplify.state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/function-parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/healthyLambdaApi-cloudformation-template.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/amplify.state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/custom-policies.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/function-parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/listOrganizationsToBeVerifiedHealthyHabits-cloudformation-template.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/src/event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/listOrganizationsToBeVerifiedHealthyHabits/src/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/amplify.state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/custom-policies.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/function-parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/parameters.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/updateTerraId-cloudformation-template.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/storage/HealthyHabitsV2/cli-inputs.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/tags.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/types/amplify-dependent-resources-ref.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/cli.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/team-provider-info.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/GeneralAnalytics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/GeneralAnalytics.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sections/@dashboard/general/analytics/AnalyticsWebsiteVisits.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/@dashboard/general/analytics/AnalyticsWebsiteVisits.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +51,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/analytics" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -142,11 +71,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\analytics" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\parent\child\profile_tabs\activity" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\files-utilities" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson\attendance" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\public\static" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson\attendance" />
@@ -170,7 +99,7 @@
       <workItem from="1643024563155" duration="529000" />
       <workItem from="1643111366067" duration="1572000" />
       <workItem from="1643113846381" duration="11785000" />
-      <workItem from="1643192392570" duration="11206000" />
+      <workItem from="1643192392570" duration="17411000" />
     </task>
     <servers />
   </component>

@@ -16,21 +16,32 @@ import {
   AnalyticsCurrentSubject,
   AnalyticsConversionRates,
 } from '../../sections/@dashboard/general/analytics';
+import useAuth from "../../hooks/useAuth";
+import AnalyticsStepsChart from "./analytics/AnalyticsStepsChart";
+import AnalyticsSleepChart from "./analytics/AnalyticsSleepChart";
 
 // ----------------------------------------------------------------------
 
 export default function GeneralAnalytics() {
   const { themeStretch } = useSettings();
+  const {user} = useAuth();
 
   return (
     <Page title="General: Analytics">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          Hi, {user?.firstName}, welcome back!
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} >
+            <AnalyticsStepsChart />
+          </Grid>
+          <Grid item xs={12} >
+            <AnalyticsSleepChart />
+          </Grid>
+
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AnalyticsWidgetSummary
               title="Weekly Sales"
               total={714000}
@@ -95,7 +106,7 @@ export default function GeneralAnalytics() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AnalyticsTasks />
-          </Grid>
+          </Grid>*/}
         </Grid>
       </Container>
     </Page>
