@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/amplify/.config/project-config.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2API/cli-inputs.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/.migration-backup/schema.graphql" beforeDir="false" />
@@ -169,7 +170,7 @@
       <workItem from="1643024563155" duration="529000" />
       <workItem from="1643111366067" duration="1572000" />
       <workItem from="1643113846381" duration="11785000" />
-      <workItem from="1643192392570" duration="6829000" />
+      <workItem from="1643192392570" duration="11206000" />
     </task>
     <servers />
   </component>
