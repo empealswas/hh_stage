@@ -187,7 +187,9 @@ function AuthProvider({ children }: AuthProviderProps) {
             // Handle this on login page for update password.
             resolve({ message: 'newPasswordRequired' });
           },
-        });
+        },
+
+        );
       }),
     [getSession]
   );
@@ -208,7 +210,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         password,
         [
           new CognitoUserAttribute({ Name: 'email', Value: email }),
-          new CognitoUserAttribute({ Name: 'name', Value: `${firstName} ${lastName}` }),
+          new CognitoUserAttribute({ Name: 'custom:firstName', Value: firstName }),
+          new CognitoUserAttribute({ Name: 'custom:lastName', Value: lastName }),
         ],
         [],
         async (err) => {
@@ -217,7 +220,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             return;
           }
           resolve(undefined);
-          window.location.href = PATH_AUTH.login;
+          window.location.href = `${PATH_AUTH.verify}/${email}`;
         }
       );
     });

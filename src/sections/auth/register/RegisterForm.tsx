@@ -29,6 +29,7 @@ export default function RegisterForm() {
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [errorText, setErrorText] = useState('');
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('First name required'),
@@ -59,12 +60,14 @@ export default function RegisterForm() {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
+      setErrorText('');
       await register(data.email, data.password, data.firstName, data.lastName);
     } catch (error) {
       console.error(error);
       reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);
+        setErrorText(error.message)
       }
     }
   };
@@ -72,7 +75,7 @@ export default function RegisterForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+        {!!errorText && <Alert severity="error">{errorText}</Alert>}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <RHFTextField name="firstName" label="First name" />

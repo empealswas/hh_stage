@@ -5,13 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsSleepChart.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsStepsChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/UnifiedUser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildrenList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/OrganizationsList.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contexts/AwsCognitoContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/contexts/AwsCognitoContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/mutations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/subscriptions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/header/AccountPopover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/header/AccountPopover.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavbarVertical.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavbarVertical.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Principal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Principal.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Teacher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Teacher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/createUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/createUser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/VerifyCode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/VerifyCode.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/GeneralAnalytics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/GeneralAnalytics.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sections/@dashboard/general/analytics/AnalyticsWebsiteVisits.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/@dashboard/general/analytics/AnalyticsWebsiteVisits.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/UserAccount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/UserAccount.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsSleepChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsSleepChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsStepsChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/analytics/AnalyticsStepsChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sections/auth/login/LoginForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/auth/login/LoginForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sections/auth/register/RegisterForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/auth/register/RegisterForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sections/auth/verify-code/VerifyCodeForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/auth/verify-code/VerifyCodeForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +44,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -51,7 +74,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/analytics" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/parent/child" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -71,11 +94,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\parent\child" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\analytics" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\parent\child\profile_tabs\activity" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\files-utilities" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson\attendance" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson\attendance" />
@@ -99,7 +122,11 @@
       <workItem from="1643024563155" duration="529000" />
       <workItem from="1643111366067" duration="1572000" />
       <workItem from="1643113846381" duration="11785000" />
-      <workItem from="1643192392570" duration="17411000" />
+      <workItem from="1643192392570" duration="17669000" />
+      <workItem from="1643369630101" duration="5709000" />
+      <workItem from="1643623949722" duration="5057000" />
+      <workItem from="1643722417579" duration="9221000" />
+      <workItem from="1643736958058" duration="8936000" />
     </task>
     <servers />
   </component>

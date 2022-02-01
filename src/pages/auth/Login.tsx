@@ -14,6 +14,11 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { LoginForm } from '../../sections/auth/login';
+import '@aws-amplify/ui-react/styles.css';
+import {AmplifyProvider, Authenticator, createTheme, defaultTheme} from '@aws-amplify/ui-react';
+import useSettings from "../../hooks/useSettings";
+import {Hub} from "aws-amplify";
+import {useEffect} from "react";
 
 // ----------------------------------------------------------------------
 
@@ -65,6 +70,41 @@ export default function Login() {
 
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
+  const theme = createTheme({
+    name: 'dark-mode-theme',
+    overrides: [
+      {
+        colorMode: 'dark',
+        tokens: {
+          colors: {
+            neutral: {
+              // flipping the neutral palette
+              10: defaultTheme.tokens.colors.neutral[100],
+              20: defaultTheme.tokens.colors.neutral[90],
+              40: defaultTheme.tokens.colors.neutral[80],
+              80: defaultTheme.tokens.colors.neutral[40],
+              90: defaultTheme.tokens.colors.neutral[20],
+              100: defaultTheme.tokens.colors.neutral[10],
+            },
+            black: {value: '#fff'},
+            white: {value: '#000'},
+          },
+        },
+      },
+    ],
+  });
+  const mode = useSettings().themeMode;
+  useEffect(() => {
+    Hub.listen('auth', ({payload: {event, data}}) => {
+      console.log(event);
+      switch (event) {
+        case 'signIn':
+          console.log('Logged');
+          break;
+      }
+    });
+
+  }, []);
 
   return (
     <Page title="Login">
@@ -98,7 +138,7 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Minimal
+                  Sign in to Healthy Habits
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
               </Box>
@@ -115,7 +155,9 @@ export default function Login() {
             </Stack>
 
             <LoginForm />
-
+{/*            <AmplifyProvider  theme={theme} colorMode={mode}>
+              <Authenticator />
+            </AmplifyProvider>*/}
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Don’t have an account?{' '}

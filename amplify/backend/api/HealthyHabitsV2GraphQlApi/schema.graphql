@@ -1,3 +1,38 @@
+#HealthyHabits V3
+type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    dependants: [Pupil] @manyToMany(relationName: "UserDependant")
+    organizations: [UserInOrganization] @hasMany
+}
+
+type UserInOrganization @model @auth(rules: [{allow: private}]) {
+    id: ID!
+    roles: [UserInOrganizationRole] @hasMany
+    user: User! @hasOne
+    organization: Organization! @hasOne
+}
+
+type UserInOrganizationRole @model  @auth(rules: [{allow: private}]) {
+    id: ID!
+    name: String!
+}
+type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
+    id: ID!
+    name: String
+    Principals: [Principal] @hasMany(indexName: "byOrganization", fields: ["id"])
+    WaitingForAcceptPupils: [PupilOrganizationRequest] @hasMany(indexName: "byOrganization", fields: ["id"])
+    AcceptedPupils: [PupilOrganizationAccepted] @hasMany(indexName: "byOrganization", fields: ["id"])
+    Sections: [Section] @hasMany(indexName: "byOrganization", fields: ["id"])
+    Teachers: [Teacher] @manyToMany(relationName: "TeacherOrganziation")
+    Classrooms: [Classroom] @hasMany
+    members: [UserInOrganization] @hasMany
+    type: String
+}
+####################
+
 type File @model @auth(rules: [{allow: private}]) {
     id: ID!
     key: String
@@ -48,7 +83,7 @@ type PELessonRecord @model @auth(rules: [{allow: public, provider: iam}, {allow:
     date: AWSDate @index(name: "byName", queryField: "lessonRecordByName", sortKeyFields: ["id"])
     deliveredBy: String
     duration: Int
-    activity: String
+    activity: String @index(name: "lessonByDate", queryField: "lessonByDate", sortKeyFields: ["date"])
     rating: Int
     notes: String
     classroomID: ID
@@ -128,18 +163,7 @@ type School @model @auth(rules: [{allow: private}]) {
     classrooms: [Classroom] @hasMany(indexName: "bySchool", fields: ["id"])
 }
 
-type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
-    id: ID!
-    name: String
-    Principals: [Principal] @hasMany(indexName: "byOrganization", fields: ["id"])
-    WaitingForAcceptPupils: [PupilOrganizationRequest] @hasMany(indexName: "byOrganization", fields: ["id"])
-    AcceptedPupils: [PupilOrganizationAccepted] @hasMany(indexName: "byOrganization", fields: ["id"])
-    Sections: [Section] @hasMany(indexName: "byOrganization", fields: ["id"])
-    Teachers: [Teacher] @manyToMany(relationName: "TeacherOrganziation")
-    Classrooms: [Classroom] @hasMany
 
-    type: String
-}
 
 type Attendance @model @auth(rules: [{allow: private}]) {
     id: ID! @index(name: "byLessonRecord",  sortKeyFields: ["lessonRecordID"], queryField: "attendanceByLessonRecordID")
@@ -240,6 +264,9 @@ type Pupil @model @auth(rules: [{allow: public, provider: iam}, {allow: public, 
     school: School @belongsTo(fields: ["schoolID"])
     parents: [PupilParent] @hasMany(indexName: "byPupil", fields: ["id"])
     Interventions: [Intervention] @hasMany(indexName: "byPupil", fields: ["id"])
+    #V3
+    supervisors: [User] @manyToMany(relationName: "UserDependant")
+
 }
 
 type Intervention @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {

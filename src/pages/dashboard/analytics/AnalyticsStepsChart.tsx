@@ -12,6 +12,7 @@ import axios from "axios";
 import {Teacher} from "../../../models/Teacher";
 import {Principal} from "../../../models/Principal";
 import {SkeletonProductItem} from "../../../components/skeleton";
+import {fShortenNumber} from "../../../utils/formatNumber";
 //
 
 // ----------------------------------------------------------------------
@@ -111,10 +112,38 @@ export default function AnalyticsStepsChart() {
                 setAverageData(dataToChart);
 
             } else if (user instanceof Principal) {
+                const results: any[] = [];
 
+                var data = JSON.stringify({
+                    "idList": (await user.getPupilsIds()).filter((item: any) => !!item.id).map((item: any)=> item.id),
+                    "grouping": "group",
+                    "category": "daily",
+                    "subtype": "steps",
+                    "period": "day",
+                    "startDate": format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                    "endDate": format(new Date(), 'yyyy-MM-dd'),
+                    "returnType": "average"
+                });
+                var config: any = {
+                    method: 'post',
+                    url: 'https://terra.healthyhabits.link/api/data/get-data',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: data
+                };
+                const result: any = await axios(config);
+                results.push({data: result.data} );
+            const dataToChart = results.map((value, index) => {
+                const steps = value.data?.map((item: any) => item.value ?? 0) ?? [];
+                return {
+                    name: 'Your school',
+                    type: 'area',
+                    data: steps,
+                }
+            })
+            setAverageData(dataToChart);
             }
-
-
         }
         getAverage();
         return () => {
@@ -139,6 +168,14 @@ export default function AnalyticsStepsChart() {
                 },
             },
         },
+        yaxis: {
+            labels: {
+                formatter: function (value: any) {
+                    return fShortenNumber(value);
+                }
+            },
+        },
+
     });
 
     return (

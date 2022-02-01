@@ -2,6 +2,181 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserInOrganization = /* GraphQL */ `
+  query GetUserInOrganization($id: ID!) {
+    getUserInOrganization(id: $id) {
+      id
+      roles {
+        nextToken
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOrganizationsId
+      organizationMembersId
+      userInOrganizationUserId
+      userInOrganizationOrganizationId
+    }
+  }
+`;
+export const listUserInOrganizations = /* GraphQL */ `
+  query ListUserInOrganizations(
+    $filter: ModelUserInOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserInOrganizations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserInOrganizationRole = /* GraphQL */ `
+  query GetUserInOrganizationRole($id: ID!) {
+    getUserInOrganizationRole(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+      userInOrganizationRolesId
+    }
+  }
+`;
+export const listUserInOrganizationRoles = /* GraphQL */ `
+  query ListUserInOrganizationRoles(
+    $filter: ModelUserInOrganizationRoleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserInOrganizationRoles(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        userInOrganizationRolesId
+      }
+      nextToken
+    }
+  }
+`;
+export const getOrganization = /* GraphQL */ `
+  query GetOrganization($id: ID!) {
+    getOrganization(id: $id) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listOrganizations = /* GraphQL */ `
+  query ListOrganizations(
+    $filter: ModelOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getFile = /* GraphQL */ `
   query GetFile($id: ID!) {
     getFile(id: $id) {
@@ -314,6 +489,41 @@ export const lessonRecordByName = /* GraphQL */ `
     }
   }
 `;
+export const lessonByDate = /* GraphQL */ `
+  query LessonByDate(
+    $activity: String
+    $date: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    lessonByDate(
+      activity: $activity
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getSchoolHouse = /* GraphQL */ `
   query GetSchoolHouse($id: ID!) {
     getSchoolHouse(id: $id) {
@@ -597,53 +807,6 @@ export const listSchools = /* GraphQL */ `
         country
         region
         principal
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getOrganization = /* GraphQL */ `
-  query GetOrganization($id: ID!) {
-    getOrganization(id: $id) {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      Sections {
-        nextToken
-      }
-      Teachers {
-        nextToken
-      }
-      Classrooms {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listOrganizations = /* GraphQL */ `
-  query ListOrganizations(
-    $filter: ModelOrganizationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        type
         createdAt
         updatedAt
       }
@@ -1080,6 +1243,9 @@ export const getPupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
+      supervisors {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -1227,6 +1393,54 @@ export const listParentInterventionFeedbacks = /* GraphQL */ `
         interventionID
         comment
         rating
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserDependant = /* GraphQL */ `
+  query GetUserDependant($id: ID!) {
+    getUserDependant(id: $id) {
+      id
+      userID
+      pupilID
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserDependants = /* GraphQL */ `
+  query ListUserDependants(
+    $filter: ModelUserDependantFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserDependants(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        pupilID
         createdAt
         updatedAt
       }

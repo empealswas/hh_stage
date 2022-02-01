@@ -20,6 +20,9 @@ import {
   AccountNotifications,
   AccountChangePassword,
 } from '../../sections/@dashboard/user/account';
+import UserList from "./UserList";
+import ChildrenList from "./parent/child/ChildrenList";
+import OrganizationsList from "./parent/child/OrganizationsList";
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +37,15 @@ export default function UserAccount() {
       icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
       component: <AccountGeneral />,
     },
-    {
+    {value: 'children',
+      icon: <Iconify icon={'ic:baseline-escalator-warning'} width={20} height={20} />,
+      component: <ChildrenList />,
+    },
+    {value: 'organizations',
+      icon: <Iconify icon={'codicon:organization'} width={20} height={20} />,
+      component: <OrganizationsList />,
+    },
+/*    {
       value: 'billing',
       icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
       component: (
@@ -54,7 +65,7 @@ export default function UserAccount() {
       value: 'social_links',
       icon: <Iconify icon={'eva:share-fill'} width={20} height={20} />,
       component: <AccountSocialLinks myProfile={_userAbout} />,
-    },
+    },*/
     {
       value: 'change_password',
       icon: <Iconify icon={'ic:round-vpn-key'} width={20} height={20} />,

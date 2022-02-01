@@ -9,7 +9,8 @@ const getPupilsIdQuery =`query MyQuery ($id: ID = "") {
         School {
             Pupils { 
                 items { 
-                    id 
+                    id
+                    terraId
                     firstName 
                     lastName 
                 }
@@ -19,7 +20,6 @@ const getPupilsIdQuery =`query MyQuery ($id: ID = "") {
 }
 `
 export class Principal extends User{
-	pupilsIds: null | any[] = null;
 
 	public override async getCredentials(): Promise<void> {
 		const result: any = await API.graphql(graphqlOperation(getPrincipal, {id: this._email}));
@@ -28,20 +28,21 @@ export class Principal extends User{
 		this.lastName = principal.lastName;
 	}
 
-	async getPupilsIds() {
+
+	async getPupilsIds(): Promise<any> {
 		if (!this.pupilsIds) {
 			const result: any = await API.graphql(graphqlOperation(getPupilsIdQuery, {id: this._email}));
 			let data: any[] = [];
 			if (result.data?.getPrincipal) {
 				result.data.getPrincipal.School.Pupils.items.forEach((item: any) => {
 					let name = item.firstName + " " + item.lastName;
-					data.push({id: item.id, name: name});
+					data.push({id: item.terraId, name: name});
 				})
 				this.pupilsIds=data;
 			}
 		}
 		return this.pupilsIds;
-  }
+	}
 
 	getRole(): string {
 			return 'Principal'

@@ -21,10 +21,10 @@ const MENU_OPTIONS = [
     label: 'Home',
     linkTo: '/',
   },
-  {
+/*  {
     label: 'Profile',
     linkTo: PATH_DASHBOARD.user.profile,
-  },
+  },*/
   {
     label: 'Settings',
     linkTo: PATH_DASHBOARD.user.account,

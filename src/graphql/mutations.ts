@@ -2,6 +2,318 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUserInOrganization = /* GraphQL */ `
+  mutation CreateUserInOrganization(
+    $input: CreateUserInOrganizationInput!
+    $condition: ModelUserInOrganizationConditionInput
+  ) {
+    createUserInOrganization(input: $input, condition: $condition) {
+      id
+      roles {
+        nextToken
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOrganizationsId
+      organizationMembersId
+      userInOrganizationUserId
+      userInOrganizationOrganizationId
+    }
+  }
+`;
+export const updateUserInOrganization = /* GraphQL */ `
+  mutation UpdateUserInOrganization(
+    $input: UpdateUserInOrganizationInput!
+    $condition: ModelUserInOrganizationConditionInput
+  ) {
+    updateUserInOrganization(input: $input, condition: $condition) {
+      id
+      roles {
+        nextToken
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOrganizationsId
+      organizationMembersId
+      userInOrganizationUserId
+      userInOrganizationOrganizationId
+    }
+  }
+`;
+export const deleteUserInOrganization = /* GraphQL */ `
+  mutation DeleteUserInOrganization(
+    $input: DeleteUserInOrganizationInput!
+    $condition: ModelUserInOrganizationConditionInput
+  ) {
+    deleteUserInOrganization(input: $input, condition: $condition) {
+      id
+      roles {
+        nextToken
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOrganizationsId
+      organizationMembersId
+      userInOrganizationUserId
+      userInOrganizationOrganizationId
+    }
+  }
+`;
+export const createUserInOrganizationRole = /* GraphQL */ `
+  mutation CreateUserInOrganizationRole(
+    $input: CreateUserInOrganizationRoleInput!
+    $condition: ModelUserInOrganizationRoleConditionInput
+  ) {
+    createUserInOrganizationRole(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      userInOrganizationRolesId
+    }
+  }
+`;
+export const updateUserInOrganizationRole = /* GraphQL */ `
+  mutation UpdateUserInOrganizationRole(
+    $input: UpdateUserInOrganizationRoleInput!
+    $condition: ModelUserInOrganizationRoleConditionInput
+  ) {
+    updateUserInOrganizationRole(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      userInOrganizationRolesId
+    }
+  }
+`;
+export const deleteUserInOrganizationRole = /* GraphQL */ `
+  mutation DeleteUserInOrganizationRole(
+    $input: DeleteUserInOrganizationRoleInput!
+    $condition: ModelUserInOrganizationRoleConditionInput
+  ) {
+    deleteUserInOrganizationRole(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      userInOrganizationRolesId
+    }
+  }
+`;
+export const createOrganization = /* GraphQL */ `
+  mutation CreateOrganization(
+    $input: CreateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    createOrganization(input: $input, condition: $condition) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateOrganization = /* GraphQL */ `
+  mutation UpdateOrganization(
+    $input: UpdateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    updateOrganization(input: $input, condition: $condition) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteOrganization = /* GraphQL */ `
+  mutation DeleteOrganization(
+    $input: DeleteOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    deleteOrganization(input: $input, condition: $condition) {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createFile = /* GraphQL */ `
   mutation CreateFile(
     $input: CreateFileInput!
@@ -1313,102 +1625,6 @@ export const deleteSchool = /* GraphQL */ `
     }
   }
 `;
-export const createOrganization = /* GraphQL */ `
-  mutation CreateOrganization(
-    $input: CreateOrganizationInput!
-    $condition: ModelOrganizationConditionInput
-  ) {
-    createOrganization(input: $input, condition: $condition) {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      Sections {
-        nextToken
-      }
-      Teachers {
-        nextToken
-      }
-      Classrooms {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateOrganization = /* GraphQL */ `
-  mutation UpdateOrganization(
-    $input: UpdateOrganizationInput!
-    $condition: ModelOrganizationConditionInput
-  ) {
-    updateOrganization(input: $input, condition: $condition) {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      Sections {
-        nextToken
-      }
-      Teachers {
-        nextToken
-      }
-      Classrooms {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteOrganization = /* GraphQL */ `
-  mutation DeleteOrganization(
-    $input: DeleteOrganizationInput!
-    $condition: ModelOrganizationConditionInput
-  ) {
-    deleteOrganization(input: $input, condition: $condition) {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      Sections {
-        nextToken
-      }
-      Teachers {
-        nextToken
-      }
-      Classrooms {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createAttendance = /* GraphQL */ `
   mutation CreateAttendance(
     $input: CreateAttendanceInput!
@@ -2232,6 +2448,9 @@ export const createPupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
+      supervisors {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -2283,6 +2502,9 @@ export const updatePupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
+      supervisors {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -2332,6 +2554,9 @@ export const deletePupil = /* GraphQL */ `
         nextToken
       }
       Interventions {
+        nextToken
+      }
+      supervisors {
         nextToken
       }
       createdAt
@@ -2766,6 +2991,105 @@ export const deleteCurriculumSubject = /* GraphQL */ `
       subject {
         id
         name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUserDependant = /* GraphQL */ `
+  mutation CreateUserDependant(
+    $input: CreateUserDependantInput!
+    $condition: ModelUserDependantConditionInput
+  ) {
+    createUserDependant(input: $input, condition: $condition) {
+      id
+      userID
+      pupilID
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUserDependant = /* GraphQL */ `
+  mutation UpdateUserDependant(
+    $input: UpdateUserDependantInput!
+    $condition: ModelUserDependantConditionInput
+  ) {
+    updateUserDependant(input: $input, condition: $condition) {
+      id
+      userID
+      pupilID
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUserDependant = /* GraphQL */ `
+  mutation DeleteUserDependant(
+    $input: DeleteUserDependantInput!
+    $condition: ModelUserDependantConditionInput
+  ) {
+    deleteUserDependant(input: $input, condition: $condition) {
+      id
+      userID
+      pupilID
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }

@@ -1,8 +1,7 @@
 import {User} from "./User";
 import {API, graphqlOperation} from "aws-amplify";
 import {getTeacher} from "../graphql/queries";
-import {Classroom} from "../API";
-import {Pupil} from ".";
+import {Classroom, Pupil} from "../API";
 
 const getClassroomsQuery = `query MyQuery($id: ID = "") {
   getTeacher(id: $id) {
@@ -20,13 +19,26 @@ const getClassroomsQuery = `query MyQuery($id: ID = "") {
 const getPupilsIdQuery =
     `query MyQuery($id: ID = "") {
   getTeacher(id: $id) {
-   Organizations {
+    classrooms {
       items {
-        id
+        classroom {
+          pupils {
+            items {
+              id
+              pupil {
+                firstName
+                lastName
+                id
+                terraId
+              }
+            }
+          }
+        }
       }
     }
   }
 }
+
 `
 
 export class Teacher extends User {
@@ -53,10 +65,16 @@ export class Teacher extends User {
                 })
                 this.pupilsIds = data;
             }
-            // this.pupilsIds = result.data.getTeacher.classrooms.items
-            //     .map((item: any) => item.classroom)
-            //     .flatMap((classroom: Classroom) => classroom.pupils.items)
-            //     .map((item: Pupil) => item.firstName);
+            this.pupilsIds = result.data.getTeacher.classrooms.items
+                .map((item: any) => item.classroom)
+                .flatMap((classroom: Classroom) => classroom?.pupils?.items)
+                .map((item: any) => item.pupil)
+                .map((item: Pupil) => {
+                    return {
+                        id: item.terraId,
+                        name: `${item.firstName} ${item.lastName}`
+                    }
+                })
         }
         return this.pupilsIds;
     }

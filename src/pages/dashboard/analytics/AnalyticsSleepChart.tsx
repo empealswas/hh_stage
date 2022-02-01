@@ -7,11 +7,12 @@ import useAuth from "../../../hooks/useAuth";
 import {useEffect, useState} from "react";
 import {API, graphqlOperation} from "aws-amplify";
 import {Classroom, Pupil} from "../../../API";
-import {format, parseISO, subDays} from "date-fns";
+import {addDays, format, parseISO, subDays} from "date-fns";
 import axios from "axios";
 import {Teacher} from "../../../models/Teacher";
 import {Principal} from "../../../models/Principal";
 import {SkeletonProductItem} from "../../../components/skeleton";
+import {fShortenNumber} from "../../../utils/formatNumber";
 //
 
 // ----------------------------------------------------------------------
@@ -57,7 +58,18 @@ const teacherQuery = `query MyQuery($id: ID = "") {
 export default function AnalyticsSleepChart() {
     const {user} = useAuth();
     const [averageData, setAverageData] = useState<any[]>([]);
-    const [labels, setLabels] = useState<[] | null>(null);
+    const labels = getDates(subDays(new Date(), 7), new Date());
+
+    function getDates(startDate: Date, stopDate: Date) {
+        var dateArray = [];
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            dateArray.push(new Date(currentDate));
+            currentDate = addDays(currentDate, 1);
+        }
+        return dateArray;
+    }
+
     let apexOptions = BaseOptionChart();
 
     useEffect(() => {
@@ -116,7 +128,7 @@ export default function AnalyticsSleepChart() {
         stroke: {width: [0, 2, 3]},
         plotOptions: {bar: {columnWidth: '14%'}},
         fill: {type: ['solid', 'gradient', 'solid']},
-        labels: labels?.map(value =>  format(parseISO(value), 'yyyy-MM-dd')),
+        labels: labels?.map(value =>  format(value, 'yyyy-MM-dd')),
         tooltip: {
             shared: true,
             intersect: false,
@@ -127,6 +139,13 @@ export default function AnalyticsSleepChart() {
                     }
                     return y;
                 },
+            },
+        },
+        yaxis: {
+            labels: {
+                formatter: function (value: any) {
+                    return fShortenNumber(value);
+                }
             },
         },
     });

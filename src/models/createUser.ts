@@ -4,6 +4,7 @@ import {Principal} from "./Principal";
 import {Parent} from "./Parent";
 import {Organization} from "./Organization";
 import {User} from "./User";
+import {UnifiedUser} from "./UnifiedUser";
 
 export function createUser(userData: any, attributes: any): User | null {
     const userRoles = userData.signInUserSession.accessToken.payload['cognito:groups'];
@@ -18,6 +19,9 @@ export function createUser(userData: any, attributes: any): User | null {
         return new Parent(attributes.email);
     }else if (userRoles.includes('Organizations')) {
         return new Organization(attributes.email);
+    } else if (userRoles.includes('Users')) {
+        return new UnifiedUser(attributes.email);
     }
+
     return null;
 }

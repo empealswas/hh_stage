@@ -2,6 +2,282 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUserInOrganization = /* GraphQL */ `
+  subscription OnCreateUserInOrganization {
+    onCreateUserInOrganization {
+      id
+      roles {
+        nextToken
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOrganizationsId
+      organizationMembersId
+      userInOrganizationUserId
+      userInOrganizationOrganizationId
+    }
+  }
+`;
+export const onUpdateUserInOrganization = /* GraphQL */ `
+  subscription OnUpdateUserInOrganization {
+    onUpdateUserInOrganization {
+      id
+      roles {
+        nextToken
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOrganizationsId
+      organizationMembersId
+      userInOrganizationUserId
+      userInOrganizationOrganizationId
+    }
+  }
+`;
+export const onDeleteUserInOrganization = /* GraphQL */ `
+  subscription OnDeleteUserInOrganization {
+    onDeleteUserInOrganization {
+      id
+      roles {
+        nextToken
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      organization {
+        id
+        name
+        type
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOrganizationsId
+      organizationMembersId
+      userInOrganizationUserId
+      userInOrganizationOrganizationId
+    }
+  }
+`;
+export const onCreateUserInOrganizationRole = /* GraphQL */ `
+  subscription OnCreateUserInOrganizationRole {
+    onCreateUserInOrganizationRole {
+      id
+      name
+      createdAt
+      updatedAt
+      userInOrganizationRolesId
+    }
+  }
+`;
+export const onUpdateUserInOrganizationRole = /* GraphQL */ `
+  subscription OnUpdateUserInOrganizationRole {
+    onUpdateUserInOrganizationRole {
+      id
+      name
+      createdAt
+      updatedAt
+      userInOrganizationRolesId
+    }
+  }
+`;
+export const onDeleteUserInOrganizationRole = /* GraphQL */ `
+  subscription OnDeleteUserInOrganizationRole {
+    onDeleteUserInOrganizationRole {
+      id
+      name
+      createdAt
+      updatedAt
+      userInOrganizationRolesId
+    }
+  }
+`;
+export const onCreateOrganization = /* GraphQL */ `
+  subscription OnCreateOrganization {
+    onCreateOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateOrganization = /* GraphQL */ `
+  subscription OnUpdateOrganization {
+    onUpdateOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteOrganization = /* GraphQL */ `
+  subscription OnDeleteOrganization {
+    onDeleteOrganization {
+      id
+      name
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      type
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateFile = /* GraphQL */ `
   subscription OnCreateFile {
     onCreateFile {
@@ -1196,93 +1472,6 @@ export const onDeleteSchool = /* GraphQL */ `
     }
   }
 `;
-export const onCreateOrganization = /* GraphQL */ `
-  subscription OnCreateOrganization {
-    onCreateOrganization {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      Sections {
-        nextToken
-      }
-      Teachers {
-        nextToken
-      }
-      Classrooms {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateOrganization = /* GraphQL */ `
-  subscription OnUpdateOrganization {
-    onUpdateOrganization {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      Sections {
-        nextToken
-      }
-      Teachers {
-        nextToken
-      }
-      Classrooms {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteOrganization = /* GraphQL */ `
-  subscription OnDeleteOrganization {
-    onDeleteOrganization {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      Sections {
-        nextToken
-      }
-      Teachers {
-        nextToken
-      }
-      Classrooms {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateAttendance = /* GraphQL */ `
   subscription OnCreateAttendance {
     onCreateAttendance {
@@ -2022,6 +2211,9 @@ export const onCreatePupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
+      supervisors {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -2070,6 +2262,9 @@ export const onUpdatePupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
+      supervisors {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -2116,6 +2311,9 @@ export const onDeletePupil = /* GraphQL */ `
         nextToken
       }
       Interventions {
+        nextToken
+      }
+      supervisors {
         nextToken
       }
       createdAt
@@ -2505,6 +2703,96 @@ export const onDeleteCurriculumSubject = /* GraphQL */ `
       subject {
         id
         name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUserDependant = /* GraphQL */ `
+  subscription OnCreateUserDependant {
+    onCreateUserDependant {
+      id
+      userID
+      pupilID
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUserDependant = /* GraphQL */ `
+  subscription OnUpdateUserDependant {
+    onUpdateUserDependant {
+      id
+      userID
+      pupilID
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUserDependant = /* GraphQL */ `
+  subscription OnDeleteUserDependant {
+    onDeleteUserDependant {
+      id
+      userID
+      pupilID
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
         createdAt
         updatedAt
       }
