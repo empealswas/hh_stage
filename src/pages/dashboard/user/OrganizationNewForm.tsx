@@ -3,38 +3,17 @@ import {useSnackbar} from 'notistack';
 import {useNavigate} from 'react-router-dom';
 import {useCallback, useEffect, useMemo} from 'react';
 // form
-import {useForm, Controller} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 // @mui
 import {styled} from '@mui/material/styles';
 import {LoadingButton} from '@mui/lab';
-import {
-    Card,
-    Chip,
-    Grid,
-    Stack,
-    TextField,
-    Typography,
-    Autocomplete,
-    InputAdornment,
-} from '@mui/material';
+import {Card, Grid, Stack, Typography,} from '@mui/material';
 // routes
-import {PATH_DASHBOARD} from '../../../routes/paths';
 // @types
-import {Product} from '../../../@types/product';
 // components
-import {
-    FormProvider,
-    RHFSwitch,
-    RHFSelect,
-    RHFEditor,
-    RHFTextField,
-    RHFRadioGroup,
-    RHFUploadMultiFile, RHFUploadSingleFile,
-} from '../../../components/hook-form';
+import {FormProvider, RHFSelect, RHFTextField, RHFUploadSingleFile,} from '../../../components/hook-form';
 import {CreateOrganizationInput, Organization} from "../../../API";
-import Markdown from "../../../components/Markdown";
-import {countries} from "../../../_mock";
 import {API, graphqlOperation, Storage} from "aws-amplify";
 import {createFile, createOrganization} from "../../../graphql/mutations";
 import useAuth from "../../../hooks/useAuth";
@@ -42,29 +21,7 @@ import awsConfig from "../../../aws-exports";
 
 // ----------------------------------------------------------------------
 
-const GENDER_OPTION = ['Men', 'Women', 'Kids'];
 
-const CATEGORY_OPTION = [
-    {group: 'Clothing', classify: ['Shirts', 'T-shirts', 'Jeans', 'Leather']},
-    {group: 'Tailored', classify: ['Suits', 'Blazers', 'Trousers', 'Waistcoats']},
-    {group: 'Accessories', classify: ['Shoes', 'Backpacks and bags', 'Bracelets', 'Face masks']},
-];
-
-const TAGS_OPTION = [
-    'Toy Story 3',
-    'Logan',
-    'Full Metal Jacket',
-    'Dangal',
-    'The Sting',
-    '2001: A Space Odyssey',
-    "Singin' in the Rain",
-    'Toy Story',
-    'Bicycle Thieves',
-    'The Kid',
-    'Inglourious Basterds',
-    'Snatch',
-    '3 Idiots',
-];
 
 const LabelStyle = styled(Typography)(({theme}) => ({
     ...theme.typography.subtitle2,

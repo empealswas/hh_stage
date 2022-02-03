@@ -1,9 +1,8 @@
 import {useEffect} from 'react';
 import {paramCase} from 'change-case';
-import {useParams, useLocation} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 // @mui
 import {Container} from '@mui/material';
-import ProductNewForm from "../../../sections/@dashboard/e-commerce/ProductNewForm";
 import useSettings from "../../../hooks/useSettings";
 import Page from "../../../components/Page";
 import {getProducts} from "../../../redux/slices/product";
@@ -20,21 +19,15 @@ import OrganizationNewForm from "./OrganizationNewForm";
 export default function CreateOrganization() {
     const {themeStretch} = useSettings();
 
-    const dispatch = useDispatch();
 
     const {pathname} = useLocation();
 
-    const {name = ''} = useParams();
 
-    const {products} = useSelector((state) => state.product);
 
     const isEdit = pathname.includes('edit');
 
-    const currentProduct = products.find((product) => paramCase(product.name) === name);
 
-    useEffect(() => {
-        dispatch(getProducts());
-    }, [dispatch]);
+
 
     return (
         <Page title="Organizations: Create a new organization">
