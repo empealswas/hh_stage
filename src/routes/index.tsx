@@ -14,12 +14,6 @@ import AuthGuard from '../guards/AuthGuard';
 import {PATH_AFTER_LOGIN} from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
-import SectionOverview from "../components/section/SectionOverview";
-import LessonOerview from "../components/section/lesson/LessonOerview";
-import CreateOrganization from "../pages/dashboard/user/CreateOrganization";
-import OrganizationsTable from "../pages/dashboard/user/OrganizationsTable";
-import OrganizationsGrid from "../pages/dashboard/user/OrganizationsGrid";
-import LessonNew from "../pages/dashboard/user/LessonNew";
 
 // ----------------------------------------------------------------------
 
@@ -106,7 +100,7 @@ export default function Router() {
                         {path: 'new', element: <UserCreate/>},
                         {path: ':name/edit', element: <UserCreate/>},
                         {path: 'account', element: <UserAccount/>},
-                        {path: 'account/organization/new', element: <CreateOrganization/> }
+                        {path: 'account/organization/new', element: <CreateOrganization/>}
                     ],
                 },
                 {
@@ -119,7 +113,7 @@ export default function Router() {
                     path: 'organization',
                     element: <Outlet/>,
                     children: [
-                        {path: '',element: <OrganizationsGrid/>},
+                        {path: '', element: <OrganizationsGrid/>},
                         {path: ':organizationId', element: <SectionOverview/>},
                         {path: ':organizationId/section/:sectionId', element: <SectionOverview/>},
                         {path: ':organizationId/section/:sectionId/lesson/new', element: <LessonNew/>},
@@ -235,3 +229,10 @@ const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+
+const SectionOverview = Loadable(lazy(() => import( "../components/section/SectionOverview")));
+const LessonOerview = Loadable(lazy(() => import( "../components/section/lesson/LessonOerview")));
+const CreateOrganization = Loadable(lazy(() => import( "../pages/dashboard/user/CreateOrganization")));
+const OrganizationsTable = Loadable(lazy(() => import( "../pages/dashboard/user/OrganizationsTable")));
+const OrganizationsGrid = Loadable(lazy(() => import( "../pages/dashboard/user/OrganizationsGrid")));
+const LessonNew = Loadable(lazy(() => import( "../pages/dashboard/user/LessonNew")));
