@@ -1,5 +1,5 @@
 import {Suspense, lazy, ElementType} from 'react';
-import {Navigate, useRoutes, useLocation} from 'react-router-dom';
+import {Navigate, useRoutes, useLocation, Outlet} from 'react-router-dom';
 // guards
 import useAuth from '../hooks/useAuth';
 // layouts
@@ -16,6 +16,10 @@ import {PATH_AFTER_LOGIN} from '../config';
 import LoadingScreen from '../components/LoadingScreen';
 import SectionOverview from "../components/section/SectionOverview";
 import LessonOerview from "../components/section/lesson/LessonOerview";
+import CreateOrganization from "../pages/dashboard/user/CreateOrganization";
+import OrganizationsTable from "../pages/dashboard/user/OrganizationsTable";
+import OrganizationsGrid from "../pages/dashboard/user/OrganizationsGrid";
+import LessonNew from "../pages/dashboard/user/LessonNew";
 
 // ----------------------------------------------------------------------
 
@@ -102,6 +106,7 @@ export default function Router() {
                         {path: 'new', element: <UserCreate/>},
                         {path: ':name/edit', element: <UserCreate/>},
                         {path: 'account', element: <UserAccount/>},
+                        {path: 'account/organization/new', element: <CreateOrganization/> }
                     ],
                 },
                 {
@@ -112,9 +117,12 @@ export default function Router() {
                 },
                 {
                     path: 'organization',
+                    element: <Outlet/>,
                     children: [
+                        {path: '',element: <OrganizationsGrid/>},
                         {path: ':organizationId', element: <SectionOverview/>},
                         {path: ':organizationId/section/:sectionId', element: <SectionOverview/>},
+                        {path: ':organizationId/section/:sectionId/lesson/new', element: <LessonNew/>},
                         {path: ':organizationId/section/:sectionId/lesson/:lessonId', element: <LessonOerview/>}
                     ],
                 },

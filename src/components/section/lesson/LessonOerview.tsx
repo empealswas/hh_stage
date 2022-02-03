@@ -23,6 +23,7 @@ import LessonEditForm from "./LessonEditForm";
 import LessonRating from "./LessonRating";
 import AttendanceSheetModal from "./attendance/AttendanceSheetModal";
 import FilesViewer from "../../files-utilities/FilesViewer";
+import Markdown from "../../Markdown";
 
 
 const LessonOverview = () => {
@@ -46,6 +47,7 @@ const LessonOverview = () => {
         bucket
       }
     }
+    id
     title
     description
   }
@@ -103,18 +105,19 @@ const LessonOverview = () => {
                     <Box sx={{textAlign: 'center', marginBottom: 5}}>
                         <Container>
                             <SectionHeader title={lesson.title ?? ''}
-                                           editingForm={<Can I={'update'} a={'lesson'}>
-                                               <LessonEditForm/>
-                                           </Can>}
-                                           deletionModal={<Can I={'delete'} a={'lesson'}><DeletionModal
+                                           editingForm={
+                                               <LessonEditForm lesson={lesson}/>
+                                           }
+                                           deletionModal={<DeletionModal
                                                title={'Delete Lesson'}
                                                onDelete={async () => {
                                                    await API.graphql(graphqlOperation(deleteLesson, {input: {id: lessonId}}));
                                                    navigate(-1);
                                                }
-                                               }/></Can>}/>
+                                               }/>}/>
                             <Typography variant={"h4"} style={{marginTop: '30px'}}>
-                                {lesson.description}
+                                {/*{lesson.description}*/}
+                                <Markdown  children={lesson.description || ''}/>
                             </Typography>
                             <Can I={'read'} an={'attendance'}>
                                 {lessonId && <>
@@ -132,8 +135,8 @@ const LessonOverview = () => {
                         }}/>*/}
                     </Can>
                     <Container>
-                                                {lesson.Files?.items &&
-                        <FilesViewer files={lesson.Files?.items}/>
+                        {lesson.Files?.items &&
+                            <FilesViewer files={lesson.Files?.items}/>
                         }
                     </Container>
                     <Snackbar

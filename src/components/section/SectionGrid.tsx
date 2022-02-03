@@ -9,6 +9,7 @@ import {Container, Grid, Typography} from '@mui/material';
 import {Organization} from "../../models/Organization";
 import CardSkeleton from "../skeleton/CardSkeleton";
 import ActivityCard from "./ActivityCard";
+import EmptyContent from "../EmptyContent";
 
 const SectionGrid = () => {
     const {sectionId, organizationId} = useParams();
@@ -90,9 +91,7 @@ const SectionGrid = () => {
         }
         if (sectionsToDisplay.length === 0) {
             return <Container style={{textAlign: 'center'}}>
-                <Typography>
-                    No Sections
-                </Typography>
+                <EmptyContent title={'No Sections'}/>
             </Container>
         }
         return (
@@ -111,7 +110,8 @@ const SectionGrid = () => {
         <Grid container
               direction="row"
               justifyContent="center"
-              alignItems="flex-start" spacing={3}
+              alignItems="flex-start"
+              spacing={3}
         >
 
             <Sections/>

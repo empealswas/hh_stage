@@ -33,6 +33,8 @@ import SvgIconStyle from '../../../components/SvgIconStyle';
 import _mock from "../../../_mock";
 import {Organization} from "../../../API";
 import OrganizationJoinButton from './OrganizationJoinButton';
+import {useEffect, useState} from "react";
+import {Storage} from "aws-amplify";
 
 // ----------------------------------------------------------------------
 
@@ -55,24 +57,48 @@ type Props = {
 
 export default function OrganizationCard({organization, discover, index}: Props) {
     const isDesktop = useResponsive('up', 'md');
+    const [linkToLogo, setLinkToLogo] = useState('');
+    useEffect(() => {
+        let keyOfObject = organization.logo?.key;
+        if (keyOfObject) {
+            const promise = Storage.get(keyOfObject, {expires: 10000}).then(result => {
+                setLinkToLogo(result);
+            })
+            return (() => {
+                promise.then(value => {
+                    return;
+                })
+            });
+        } else {
+            setLinkToLogo('/static/image_placeholder.png')
+        }
+
+        return () => {
 
 
-    let card = <Card sx={{border: 1, borderColor: 'background.neutral',}}>
-        <Box sx={{position: 'relative'}}>
+        };
+    }, []);
 
-            <Image alt="cover" src={_mock.image.cover(index ?? 0)}/>
-            <OrganizationContent
-                name={organization?.name ?? ''}
-                type={organization.type ?? ''}
-                discover={discover}
-                id={organization.id}
-            />
-        </Box>
-        {discover &&
+
+    let card = <Card  sx={{border: 1, borderColor: 'background.neutral', position: 'relative'}}>
+        {
+            linkToLogo ?
+                <Image alt="cover" ratio={'1/1'} src={linkToLogo}/>
+                :
+                <Image alt="gallery image"
+                       ratio={'1/1'}/>
+        }
+        <OrganizationContent
+            name={organization?.name ?? ''}
+            type={organization.type ?? ''}
+            discover={discover}
+            id={organization.id}
+        />
+        {/*        {discover &&
             <CardActions>
                 <OrganizationJoinButton organization={organization}/>
             </CardActions>
-        }
+        }*/}
     </Card>;
     if (discover) {
         return (<>

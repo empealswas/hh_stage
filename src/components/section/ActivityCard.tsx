@@ -57,7 +57,7 @@ export default function ActivityCard(props: ActivityCardProps) {
     const [linkToPreview, setLinkToPreview] = useState('');
     return (
         <Link component={RouterLink} to={linkTo}  underline={'none'} color={'text.primary'}>
-            <Card sx={{cursor: 'pointer', position: 'relative'}}>
+            <Card sx={{cursor: 'default', position: 'relative'}}>
                 {linkToPreview ?
                     <Image
                         alt="gallery image"

@@ -5,6 +5,8 @@ import {createFile, createLesson} from "../../graphql/mutations";
 import awsConfig from "../../aws-exports";
 import AddingDialog from '../dialog/AddingDialog';
 import {TextField, Typography} from "@mui/material";
+import {RHFEditor} from "../hook-form";
+import Editor from "../editor";
 
 
 export default function AddLessonModalSection() {
@@ -59,16 +61,11 @@ export default function AddLessonModalSection() {
             <TextField value={title} variant={'outlined'} onChange={(event) => {
                 setTitle(event.target.value)
             }} label={'Name of Lesson'}/>
-            <TextField aria-label="minimum height" rows={3}
-                       multiline
-                       label="Description of the lesson"
-                       value={description}
-                       onChange={event => setDescription(event.target.value)}/>
-            {/*<FilesUploadDropzone onDrop={onDrop}*/}
-            {/*                     accept={['image/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']}/>*/}
-            <Typography variant={"h5"}>
-                Files
-            </Typography>
+            <Editor   value={description} onChange={value => {
+                setDescription(value);
+            }}/>
+
+
             {/*<UploadingFilesList files={selectedFiles} setFiles={setSelectedFiles}/>*/}
         </AddingDialog>
     );

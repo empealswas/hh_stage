@@ -15,6 +15,9 @@ export const onCreateUser = /* GraphQL */ `
       organizations {
         nextToken
       }
+      ownedOrganizations {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -31,6 +34,9 @@ export const onUpdateUser = /* GraphQL */ `
         nextToken
       }
       organizations {
+        nextToken
+      }
+      ownedOrganizations {
         nextToken
       }
       createdAt
@@ -51,8 +57,89 @@ export const onDeleteUser = /* GraphQL */ `
       organizations {
         nextToken
       }
+      ownedOrganizations {
+        nextToken
+      }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const onCreateDependantGuardian = /* GraphQL */ `
+  subscription OnCreateDependantGuardian {
+    onCreateDependantGuardian {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
+    }
+  }
+`;
+export const onUpdateDependantGuardian = /* GraphQL */ `
+  subscription OnUpdateDependantGuardian {
+    onUpdateDependantGuardian {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
+    }
+  }
+`;
+export const onDeleteDependantGuardian = /* GraphQL */ `
+  subscription OnDeleteDependantGuardian {
+    onDeleteDependantGuardian {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
     }
   }
 `;
@@ -77,6 +164,8 @@ export const onCreateUserInOrganization = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -108,6 +197,8 @@ export const onUpdateUserInOrganization = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -139,6 +230,8 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -154,6 +247,15 @@ export const onCreateUserInOrganizationRole = /* GraphQL */ `
     onCreateUserInOrganizationRole {
       id
       name
+      userInOrganization {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
       createdAt
       updatedAt
       userInOrganizationRolesId
@@ -165,6 +267,15 @@ export const onUpdateUserInOrganizationRole = /* GraphQL */ `
     onUpdateUserInOrganizationRole {
       id
       name
+      userInOrganization {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
       createdAt
       updatedAt
       userInOrganizationRolesId
@@ -176,6 +287,15 @@ export const onDeleteUserInOrganizationRole = /* GraphQL */ `
     onDeleteUserInOrganizationRole {
       id
       name
+      userInOrganization {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
       createdAt
       updatedAt
       userInOrganizationRolesId
@@ -187,6 +307,14 @@ export const onCreateOrganization = /* GraphQL */ `
     onCreateOrganization {
       id
       name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
       Principals {
         nextToken
       }
@@ -209,8 +337,19 @@ export const onCreateOrganization = /* GraphQL */ `
         nextToken
       }
       type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
     }
   }
 `;
@@ -219,6 +358,14 @@ export const onUpdateOrganization = /* GraphQL */ `
     onUpdateOrganization {
       id
       name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
       Principals {
         nextToken
       }
@@ -241,8 +388,19 @@ export const onUpdateOrganization = /* GraphQL */ `
         nextToken
       }
       type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
     }
   }
 `;
@@ -251,6 +409,14 @@ export const onDeleteOrganization = /* GraphQL */ `
     onDeleteOrganization {
       id
       name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
       Principals {
         nextToken
       }
@@ -273,8 +439,19 @@ export const onDeleteOrganization = /* GraphQL */ `
         nextToken
       }
       type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
     }
   }
 `;
@@ -340,6 +517,8 @@ export const onCreateSection = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       Lessons {
         nextToken
@@ -392,6 +571,8 @@ export const onUpdateSection = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       Lessons {
         nextToken
@@ -444,6 +625,8 @@ export const onDeleteSection = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       Lessons {
         nextToken
@@ -947,6 +1130,8 @@ export const onCreateClassroom = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       yearGroupID
       yearGroup {
@@ -988,6 +1173,8 @@ export const onUpdateClassroom = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       yearGroupID
       yearGroup {
@@ -1029,6 +1216,8 @@ export const onDeleteClassroom = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       yearGroupID
       yearGroup {
@@ -1246,6 +1435,8 @@ export const onCreatePupilOrganizationRequest = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1275,6 +1466,8 @@ export const onUpdatePupilOrganizationRequest = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1304,6 +1497,8 @@ export const onDeletePupilOrganizationRequest = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1333,6 +1528,8 @@ export const onCreatePupilOrganizationAccepted = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1362,6 +1559,8 @@ export const onUpdatePupilOrganizationAccepted = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1391,6 +1590,8 @@ export const onDeletePupilOrganizationAccepted = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2009,6 +2210,8 @@ export const onCreatePrincipal = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2039,6 +2242,8 @@ export const onUpdatePrincipal = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2069,6 +2274,8 @@ export const onDeletePrincipal = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2211,9 +2418,6 @@ export const onCreatePupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
-      supervisors {
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -2262,9 +2466,6 @@ export const onUpdatePupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
-      supervisors {
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -2311,9 +2512,6 @@ export const onDeletePupil = /* GraphQL */ `
         nextToken
       }
       Interventions {
-        nextToken
-      }
-      supervisors {
         nextToken
       }
       createdAt
@@ -2711,96 +2909,6 @@ export const onDeleteCurriculumSubject = /* GraphQL */ `
     }
   }
 `;
-export const onCreateUserDependant = /* GraphQL */ `
-  subscription OnCreateUserDependant {
-    onCreateUserDependant {
-      id
-      userID
-      pupilID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      pupil {
-        id
-        firstName
-        lastName
-        terraId
-        provider
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateUserDependant = /* GraphQL */ `
-  subscription OnUpdateUserDependant {
-    onUpdateUserDependant {
-      id
-      userID
-      pupilID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      pupil {
-        id
-        firstName
-        lastName
-        terraId
-        provider
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteUserDependant = /* GraphQL */ `
-  subscription OnDeleteUserDependant {
-    onDeleteUserDependant {
-      id
-      userID
-      pupilID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      pupil {
-        id
-        firstName
-        lastName
-        terraId
-        provider
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateTeacherOrganziation = /* GraphQL */ `
   subscription OnCreateTeacherOrganziation {
     onCreateTeacherOrganziation {
@@ -2813,6 +2921,8 @@ export const onCreateTeacherOrganziation = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       teacher {
         id
@@ -2840,6 +2950,8 @@ export const onUpdateTeacherOrganziation = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       teacher {
         id
@@ -2867,6 +2979,8 @@ export const onDeleteTeacherOrganziation = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       teacher {
         id

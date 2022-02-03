@@ -15,6 +15,9 @@ export const getUser = /* GraphQL */ `
       organizations {
         nextToken
       }
+      ownedOrganizations {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -34,6 +37,53 @@ export const listUsers = /* GraphQL */ `
         email
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDependantGuardian = /* GraphQL */ `
+  query GetDependantGuardian($id: ID!) {
+    getDependantGuardian(id: $id) {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
+    }
+  }
+`;
+export const listDependantGuardians = /* GraphQL */ `
+  query ListDependantGuardians(
+    $filter: ModelDependantGuardianFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDependantGuardians(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        updatedAt
+        userDependantsId
       }
       nextToken
     }
@@ -60,6 +110,8 @@ export const getUserInOrganization = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -99,6 +151,15 @@ export const getUserInOrganizationRole = /* GraphQL */ `
     getUserInOrganizationRole(id: $id) {
       id
       name
+      userInOrganization {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
       createdAt
       updatedAt
       userInOrganizationRolesId
@@ -132,6 +193,14 @@ export const getOrganization = /* GraphQL */ `
     getOrganization(id: $id) {
       id
       name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
       Principals {
         nextToken
       }
@@ -154,8 +223,19 @@ export const getOrganization = /* GraphQL */ `
         nextToken
       }
       type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
     }
   }
 `;
@@ -172,6 +252,8 @@ export const listOrganizations = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       nextToken
     }
@@ -233,6 +315,8 @@ export const getSection = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       Lessons {
         nextToken
@@ -456,7 +540,7 @@ export const listPELessonRecords = /* GraphQL */ `
 `;
 export const lessonRecordByName = /* GraphQL */ `
   query LessonRecordByName(
-    $date: AWSDate
+    $date: AWSDate!
     $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPELessonRecordFilterInput
@@ -491,7 +575,7 @@ export const lessonRecordByName = /* GraphQL */ `
 `;
 export const lessonByDate = /* GraphQL */ `
   query LessonByDate(
-    $activity: String
+    $activity: String!
     $date: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPELessonRecordFilterInput
@@ -633,6 +717,8 @@ export const getClassroom = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       yearGroupID
       yearGroup {
@@ -690,6 +776,8 @@ export const getPupilOrganizationRequest = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -741,6 +829,8 @@ export const getPupilOrganizationAccepted = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -884,7 +974,7 @@ export const listAttendances = /* GraphQL */ `
 `;
 export const attendanceByLessonRecordID = /* GraphQL */ `
   query AttendanceByLessonRecordID(
-    $id: ID
+    $id: ID!
     $lessonRecordID: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelAttendanceFilterInput
@@ -1122,6 +1212,8 @@ export const getPrincipal = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1243,9 +1335,6 @@ export const getPupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
-      supervisors {
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -1320,7 +1409,7 @@ export const listInterventions = /* GraphQL */ `
 `;
 export const interventionByPupilByDate = /* GraphQL */ `
   query InterventionByPupilByDate(
-    $pupilID: ID
+    $pupilID: ID!
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelInterventionFilterInput
@@ -1400,54 +1489,6 @@ export const listParentInterventionFeedbacks = /* GraphQL */ `
     }
   }
 `;
-export const getUserDependant = /* GraphQL */ `
-  query GetUserDependant($id: ID!) {
-    getUserDependant(id: $id) {
-      id
-      userID
-      pupilID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      pupil {
-        id
-        firstName
-        lastName
-        terraId
-        provider
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUserDependants = /* GraphQL */ `
-  query ListUserDependants(
-    $filter: ModelUserDependantFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUserDependants(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        userID
-        pupilID
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getTeacherOrganziation = /* GraphQL */ `
   query GetTeacherOrganziation($id: ID!) {
     getTeacherOrganziation(id: $id) {
@@ -1460,6 +1501,8 @@ export const getTeacherOrganziation = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       teacher {
         id

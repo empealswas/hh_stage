@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 // @mui
-import {OutlinedInput, Stack} from '@mui/material';
+import {Alert, OutlinedInput, Stack} from '@mui/material';
 import {LoadingButton} from '@mui/lab';
 // routes
 import {PATH_DASHBOARD} from '../../../routes/paths';
@@ -30,6 +30,7 @@ export default function VerifyCodeForm() {
     const {enqueueSnackbar} = useSnackbar();
     const {email} = useParams()
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const VerifyCodeSchema = Yup.object().shape({
         code1: Yup.string().required('Code is required'),
         code2: Yup.string().required('Code is required'),
@@ -70,17 +71,20 @@ export default function VerifyCodeForm() {
 
     const onSubmit = async (data: FormValuesProps) => {
         try {
+            setError('');
             setLoading(true);
             const code = Object.values(data).join('');
             console.log('code:', code);
             await new Promise((resolve) => setTimeout(resolve, 500));
             await Auth.confirmSignUp(String(email), code);
-            setLoading(false);
             enqueueSnackbar('Verify success!');
 
             navigate(PATH_DASHBOARD.root, {replace: true});
         } catch (error) {
+            setError(error.message);
             console.error(error);
+        }finally {
+            setLoading(false);
         }
 
     };
@@ -153,7 +157,7 @@ export default function VerifyCodeForm() {
                     />
                 ))}
             </Stack>
-
+            {error && <Alert sx={{m: 3}} severity={"error"}>{error}</Alert>}
             <LoadingButton
                 fullWidth
                 size="large"

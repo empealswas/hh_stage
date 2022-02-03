@@ -18,6 +18,9 @@ export const createUser = /* GraphQL */ `
       organizations {
         nextToken
       }
+      ownedOrganizations {
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -37,6 +40,9 @@ export const updateUser = /* GraphQL */ `
         nextToken
       }
       organizations {
+        nextToken
+      }
+      ownedOrganizations {
         nextToken
       }
       createdAt
@@ -60,8 +66,98 @@ export const deleteUser = /* GraphQL */ `
       organizations {
         nextToken
       }
+      ownedOrganizations {
+        nextToken
+      }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createDependantGuardian = /* GraphQL */ `
+  mutation CreateDependantGuardian(
+    $input: CreateDependantGuardianInput!
+    $condition: ModelDependantGuardianConditionInput
+  ) {
+    createDependantGuardian(input: $input, condition: $condition) {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
+    }
+  }
+`;
+export const updateDependantGuardian = /* GraphQL */ `
+  mutation UpdateDependantGuardian(
+    $input: UpdateDependantGuardianInput!
+    $condition: ModelDependantGuardianConditionInput
+  ) {
+    updateDependantGuardian(input: $input, condition: $condition) {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
+    }
+  }
+`;
+export const deleteDependantGuardian = /* GraphQL */ `
+  mutation DeleteDependantGuardian(
+    $input: DeleteDependantGuardianInput!
+    $condition: ModelDependantGuardianConditionInput
+  ) {
+    deleteDependantGuardian(input: $input, condition: $condition) {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
     }
   }
 `;
@@ -89,6 +185,8 @@ export const createUserInOrganization = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -123,6 +221,8 @@ export const updateUserInOrganization = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -157,6 +257,8 @@ export const deleteUserInOrganization = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -175,6 +277,15 @@ export const createUserInOrganizationRole = /* GraphQL */ `
     createUserInOrganizationRole(input: $input, condition: $condition) {
       id
       name
+      userInOrganization {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
       createdAt
       updatedAt
       userInOrganizationRolesId
@@ -189,6 +300,15 @@ export const updateUserInOrganizationRole = /* GraphQL */ `
     updateUserInOrganizationRole(input: $input, condition: $condition) {
       id
       name
+      userInOrganization {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
       createdAt
       updatedAt
       userInOrganizationRolesId
@@ -203,6 +323,15 @@ export const deleteUserInOrganizationRole = /* GraphQL */ `
     deleteUserInOrganizationRole(input: $input, condition: $condition) {
       id
       name
+      userInOrganization {
+        id
+        createdAt
+        updatedAt
+        userOrganizationsId
+        organizationMembersId
+        userInOrganizationUserId
+        userInOrganizationOrganizationId
+      }
       createdAt
       updatedAt
       userInOrganizationRolesId
@@ -217,6 +346,14 @@ export const createOrganization = /* GraphQL */ `
     createOrganization(input: $input, condition: $condition) {
       id
       name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
       Principals {
         nextToken
       }
@@ -239,8 +376,19 @@ export const createOrganization = /* GraphQL */ `
         nextToken
       }
       type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
     }
   }
 `;
@@ -252,6 +400,14 @@ export const updateOrganization = /* GraphQL */ `
     updateOrganization(input: $input, condition: $condition) {
       id
       name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
       Principals {
         nextToken
       }
@@ -274,8 +430,19 @@ export const updateOrganization = /* GraphQL */ `
         nextToken
       }
       type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
     }
   }
 `;
@@ -287,6 +454,14 @@ export const deleteOrganization = /* GraphQL */ `
     deleteOrganization(input: $input, condition: $condition) {
       id
       name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
       Principals {
         nextToken
       }
@@ -309,8 +484,19 @@ export const deleteOrganization = /* GraphQL */ `
         nextToken
       }
       type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
     }
   }
 `;
@@ -388,6 +574,8 @@ export const createSection = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       Lessons {
         nextToken
@@ -443,6 +631,8 @@ export const updateSection = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       Lessons {
         nextToken
@@ -498,6 +688,8 @@ export const deleteSection = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       Lessons {
         nextToken
@@ -1049,6 +1241,8 @@ export const createClassroom = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       yearGroupID
       yearGroup {
@@ -1093,6 +1287,8 @@ export const updateClassroom = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       yearGroupID
       yearGroup {
@@ -1137,6 +1333,8 @@ export const deleteClassroom = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       yearGroupID
       yearGroup {
@@ -1375,6 +1573,8 @@ export const createPupilOrganizationRequest = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1407,6 +1607,8 @@ export const updatePupilOrganizationRequest = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1439,6 +1641,8 @@ export const deletePupilOrganizationRequest = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1471,6 +1675,8 @@ export const createPupilOrganizationAccepted = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1503,6 +1709,8 @@ export const updatePupilOrganizationAccepted = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -1535,6 +1743,8 @@ export const deletePupilOrganizationAccepted = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2228,6 +2438,8 @@ export const createPrincipal = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2261,6 +2473,8 @@ export const updatePrincipal = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2294,6 +2508,8 @@ export const deletePrincipal = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       createdAt
       updatedAt
@@ -2448,9 +2664,6 @@ export const createPupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
-      supervisors {
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -2502,9 +2715,6 @@ export const updatePupil = /* GraphQL */ `
       Interventions {
         nextToken
       }
-      supervisors {
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -2554,9 +2764,6 @@ export const deletePupil = /* GraphQL */ `
         nextToken
       }
       Interventions {
-        nextToken
-      }
-      supervisors {
         nextToken
       }
       createdAt
@@ -2999,105 +3206,6 @@ export const deleteCurriculumSubject = /* GraphQL */ `
     }
   }
 `;
-export const createUserDependant = /* GraphQL */ `
-  mutation CreateUserDependant(
-    $input: CreateUserDependantInput!
-    $condition: ModelUserDependantConditionInput
-  ) {
-    createUserDependant(input: $input, condition: $condition) {
-      id
-      userID
-      pupilID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      pupil {
-        id
-        firstName
-        lastName
-        terraId
-        provider
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateUserDependant = /* GraphQL */ `
-  mutation UpdateUserDependant(
-    $input: UpdateUserDependantInput!
-    $condition: ModelUserDependantConditionInput
-  ) {
-    updateUserDependant(input: $input, condition: $condition) {
-      id
-      userID
-      pupilID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      pupil {
-        id
-        firstName
-        lastName
-        terraId
-        provider
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUserDependant = /* GraphQL */ `
-  mutation DeleteUserDependant(
-    $input: DeleteUserDependantInput!
-    $condition: ModelUserDependantConditionInput
-  ) {
-    deleteUserDependant(input: $input, condition: $condition) {
-      id
-      userID
-      pupilID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      pupil {
-        id
-        firstName
-        lastName
-        terraId
-        provider
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createTeacherOrganziation = /* GraphQL */ `
   mutation CreateTeacherOrganziation(
     $input: CreateTeacherOrganziationInput!
@@ -3113,6 +3221,8 @@ export const createTeacherOrganziation = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       teacher {
         id
@@ -3143,6 +3253,8 @@ export const updateTeacherOrganziation = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       teacher {
         id
@@ -3173,6 +3285,8 @@ export const deleteTeacherOrganziation = /* GraphQL */ `
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
       teacher {
         id

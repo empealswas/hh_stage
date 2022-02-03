@@ -44,10 +44,8 @@ const navConfig = [
         items: [
             {
                 title: 'Your organizations',
-                path: PATH_DASHBOARD.general.app,
-                icon: <Iconify icon={'eos-icons:admin-outlined'} sx={{width: 20, height: 20}}/>, children:
-                    [{title: 'Clann Eireann Lurgan', path: PATH_DASHBOARD.general.app},
-                        {title: 'Local Gym', path: PATH_DASHBOARD.general.app}]
+                path: PATH_DASHBOARD.general.organization,
+                icon: <Iconify icon={'eos-icons:admin-outlined'} sx={{width: 20, height: 20}}/>
             },
         ],
     },

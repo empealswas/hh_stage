@@ -124,9 +124,6 @@ export default function MultiFilePreview({
           <Button color="inherit" size="small" onClick={onRemoveAll}>
             Remove all
           </Button>
-          <Button size="small" variant="contained">
-            Upload files
-          </Button>
         </Stack>
       )}
     </>

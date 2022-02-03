@@ -40,6 +40,7 @@ export const PATH_DASHBOARD = {
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
     booking: path(ROOTS_DASHBOARD, '/booking'),
+    organization: path(ROOTS_DASHBOARD, '/organization')
   },
   parent: {
     child: path(ROOTS_DASHBOARD, '/child'),
@@ -61,6 +62,7 @@ export const PATH_DASHBOARD = {
     cards: path(ROOTS_DASHBOARD, '/user/cards'),
     list: path(ROOTS_DASHBOARD, '/user/list'),
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
+    newOrganization: path(ROOTS_DASHBOARD, '/user/account/organization/new'),
     editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
     account: path(ROOTS_DASHBOARD, '/user/account'),
   },

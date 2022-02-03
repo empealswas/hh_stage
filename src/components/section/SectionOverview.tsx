@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Breadcrumbs, Container, Divider, Link, Stack, Typography} from "@mui/material";
+import {Box, Breadcrumbs, Button, Container, Divider, Link, Stack, Typography} from "@mui/material";
 import {Link as RouterLink, useNavigate, useParams} from "react-router-dom";
 import {Section} from "../../API";
 import {API, graphqlOperation} from "aws-amplify";
@@ -55,45 +55,45 @@ const SectionOverview = () => {
     }
     const snackbar = useSnackbar();
     const navigate = useNavigate();
-/*    const BreadcrumbsHeader = () => {
-        if (!allSections) {
-            return <></>;
-        }
-        const links: Section[] = [];
-        let parent: Section | undefined = allSections?.filter(section => section.id === sectionId)[0];
-        while (parent) {
-            const parents = allSections?.filter(section => section.id === parent?.parentID)[0];
-            if (parents) {
-                links.push(parents);
+    /*    const BreadcrumbsHeader = () => {
+            if (!allSections) {
+                return <></>;
             }
-        }
-        allSections?.filter(section => section.id === sectionId);
-        return (
-            <Breadcrumbs aria-label="breadcrumb">
-                {links.reverse().map(section => <Link key={section.id} component={RouterLink} underline={'hover'}
-                                                      color={'secondary'} to={`${section.id}`}>
-                    {section.name}
-                </Link>)}
-            </Breadcrumbs>
-        )
-    }*/
+            const links: Section[] = [];
+            let parent: Section | undefined = allSections?.filter(section => section.id === sectionId)[0];
+            while (parent) {
+                const parents = allSections?.filter(section => section.id === parent?.parentID)[0];
+                if (parents) {
+                    links.push(parents);
+                }
+            }
+            allSections?.filter(section => section.id === sectionId);
+            return (
+                <Breadcrumbs aria-label="breadcrumb">
+                    {links.reverse().map(section => <Link key={section.id} component={RouterLink} underline={'hover'}
+                                                          color={'secondary'} to={`${section.id}`}>
+                        {section.name}
+                    </Link>)}
+                </Breadcrumbs>
+            )
+        }*/
     return (
         <Container>
             {section && <SectionHeader title={sectionId ? section?.name ?? "Sections" : "Sections"}
                                        editingForm={
-                                           <Can I={'update'} a={'section'}>
-                                               <EditSectionModal updateObject={section}/>
-                                           </Can>
+                                           // <Can I={'update'} a={'section'}>
+                                           <EditSectionModal updateObject={section}/>
+                                           // </Can>
                                        }
                                        deletionModal={
-                                           <Can I={'delete'} a={'section'}>
-                                               <DeletionModal title={'Do you want to delete this Year Group?'}
-                                                              onDelete={async () => {
-                                                                  const result: any = await deleteSectionAsync();
-                                                                  snackbar.enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteSection.name}`, {variant: 'success'})
-                                                                  navigate(-1);
-                                                              }}/>
-                                           </Can>
+                                           // <Can I={'delete'} a={'section'}>
+                                           <DeletionModal title={'Do you want to delete this Year Group?'}
+                                                          onDelete={async () => {
+                                                              const result: any = await deleteSectionAsync();
+                                                              snackbar.enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteSection.name}`, {variant: 'success'})
+                                                              navigate(-1);
+                                                          }}/>
+                                           // </Can>
                                        }
             />}
 
@@ -102,24 +102,21 @@ const SectionOverview = () => {
                 <Typography variant="h4" gutterBottom>
 
                 </Typography>
-                <Can I={'create'} a={'section'}>
-                    <AddSectionModal/>
-                    {sectionId &&
-                        <AddLessonModalSection/>
-                    }
-                </Can>
+                {/*<Can I={'create'} a={'section'}>*/}
+                <AddSectionModal/>
+                {sectionId &&
+                    <Button component={RouterLink} to={'lesson/new'} variant={'contained'}>Add Lesson</Button>
+                }
+                {/*</Can>*/}
             </Stack>
-            <Typography variant={'h3'} textAlign={'center'}>Sections</Typography>
-            <Box height={50}/>
-            <SectionGrid/>
-            <Box height={50}/>
-            <Divider sx={{height: 3}}/>
-            <Box height={50}/>
-            {sectionId &&
-                <>
-                    <LessonsGridSection/>
-                </>
-            }
+            <Stack direction={'column'} spacing={3}>
+                <SectionGrid/>
+                {sectionId &&
+                    <>
+                        <LessonsGridSection/>
+                    </>
+                }
+            </Stack>
         </Container>
     );
 };

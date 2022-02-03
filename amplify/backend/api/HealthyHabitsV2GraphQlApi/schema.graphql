@@ -4,8 +4,14 @@ type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, p
     firstName: String
     lastName: String
     email: String
-    dependants: [Pupil] @manyToMany(relationName: "UserDependant")
+    dependants: [DependantGuardian] @hasMany
     organizations: [UserInOrganization] @hasMany
+    ownedOrganizations: [Organization] @hasMany
+}
+
+type DependantGuardian @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
+    guardian: User!
+    dependant: User!
 }
 
 type UserInOrganization @model @auth(rules: [{allow: private}]) {
@@ -18,10 +24,12 @@ type UserInOrganization @model @auth(rules: [{allow: private}]) {
 type UserInOrganizationRole @model  @auth(rules: [{allow: private}]) {
     id: ID!
     name: String!
+    userInOrganization: UserInOrganization! @belongsTo
 }
 type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
     name: String
+    owner: User! @belongsTo
     Principals: [Principal] @hasMany(indexName: "byOrganization", fields: ["id"])
     WaitingForAcceptPupils: [PupilOrganizationRequest] @hasMany(indexName: "byOrganization", fields: ["id"])
     AcceptedPupils: [PupilOrganizationAccepted] @hasMany(indexName: "byOrganization", fields: ["id"])
@@ -30,6 +38,7 @@ type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: p
     Classrooms: [Classroom] @hasMany
     members: [UserInOrganization] @hasMany
     type: String
+    logo: File @hasOne
 }
 ####################
 
@@ -264,8 +273,6 @@ type Pupil @model @auth(rules: [{allow: public, provider: iam}, {allow: public, 
     school: School @belongsTo(fields: ["schoolID"])
     parents: [PupilParent] @hasMany(indexName: "byPupil", fields: ["id"])
     Interventions: [Intervention] @hasMany(indexName: "byPupil", fields: ["id"])
-    #V3
-    supervisors: [User] @manyToMany(relationName: "UserDependant")
 
 }
 

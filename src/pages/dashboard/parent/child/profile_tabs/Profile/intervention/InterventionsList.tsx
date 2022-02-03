@@ -195,7 +195,7 @@ const InterventionsList = (props: { pupil: Pupil }) => {
 
     return (
         <div>
-            <Container>
+            <>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                         <Card>
@@ -220,7 +220,7 @@ const InterventionsList = (props: { pupil: Pupil }) => {
                         </Stack>
                     </Grid>
                 </Grid>
-            </Container>
+            </>
         </div>
     );
 };
