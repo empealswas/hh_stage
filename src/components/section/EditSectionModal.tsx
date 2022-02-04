@@ -10,6 +10,8 @@ import {Card, CardHeader, CardMedia, TextField} from '@mui/material';
 import awsConfig from "../../aws-exports";
 import {result} from "lodash";
 import AddingDialog from "../dialog/AddingDialog";
+import {UploadSingleFile} from "../upload";
+import {RHFUploadSingleFile} from "../hook-form";
 
 
 const EditSectionModal = (props: { updateObject: Section }) => {
@@ -99,8 +101,8 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                     error={Boolean(touched.name && errors.name)}
                     helperText={touched.name && errors.name}
                 />
-                {/*<FilesUploadDropzone onDrop={onDrop}*/}
-                {/*                     accept={['image/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4']}/>*/}
+                <UploadSingleFile file={selectedFile ? URL.createObjectURL(selectedFile) : null} onDrop={onDrop}
+                                     accept={['image/*']}/>
                 {linkToPreview &&
                 <Card>
                     <CardHeader title={'Uploaded Photo'}/>
@@ -112,7 +114,7 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                     />
                 </Card>
                 }
-                {selectedFile &&
+{/*                {selectedFile &&
                 <Card>
                     <CardHeader title={'Selected Photo'}/>
                     <CardMedia
@@ -122,7 +124,7 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                         alt="Activity image"
                     />
                 </Card>
-                }
+                }*/}
 
             </AddingDialog>
         </FormikProvider>

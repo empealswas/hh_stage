@@ -14,6 +14,7 @@ import AuthGuard from '../guards/AuthGuard';
 import {PATH_AFTER_LOGIN} from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
+import OrganizationManage from "../pages/dashboard/user/OrganizationManage";
 
 // ----------------------------------------------------------------------
 
@@ -115,6 +116,7 @@ export default function Router() {
                     children: [
                         {path: '', element: <OrganizationsGrid/>},
                         {path: ':organizationId', element: <SectionOverview/>},
+                        {path: ':organizationId/manage', element: <OrganizationManage/>},
                         {path: ':organizationId/section/:sectionId', element: <SectionOverview/>},
                         {path: ':organizationId/section/:sectionId/lesson/new', element: <LessonNew/>},
                         {path: ':organizationId/section/:sectionId/lesson/:lessonId', element: <LessonOerview/>}

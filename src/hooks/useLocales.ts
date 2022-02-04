@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 // @mui
-import { enUS, deDE, frFR } from '@mui/material/locale';
+import { enUS, deDE, frFR,  } from '@mui/material/locale';
 
 // ----------------------------------------------------------------------
 
@@ -10,6 +10,12 @@ const LANGS = [
     value: 'en',
     systemValue: enUS,
     icon: 'https://minimal-assets-api.vercel.app/assets/icons/ic_flag_en.svg',
+  },
+  {
+    label: 'Irish',
+    value: 'ga',
+    systemValue: enUS,
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Ireland.svg',
   },
   {
     label: 'German',

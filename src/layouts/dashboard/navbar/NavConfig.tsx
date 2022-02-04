@@ -49,18 +49,7 @@ const navConfig = [
             },
         ],
     },
-    {
-        subheader: 'Parent',
-        items: [
-            {
-                title: 'Children',
-                path: PATH_DASHBOARD.general.app,
-                icon: ICONS.user, children:
-                    [{title: 'Brendan Crossey', path: PATH_DASHBOARD.general.app},
-                        {title: 'Connor McAlinden', path: PATH_DASHBOARD.general.app}]
-            },
-        ],
-    },
+
 
 
 
