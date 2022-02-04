@@ -167,10 +167,8 @@ export const createUserInOrganization = /* GraphQL */ `
     $condition: ModelUserInOrganizationConditionInput
   ) {
     createUserInOrganization(input: $input, condition: $condition) {
-      id
-      roles {
-        nextToken
-      }
+      userID
+      organizationID
       user {
         id
         firstName
@@ -188,12 +186,12 @@ export const createUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      roles {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userOrganizationsId
-      organizationMembersId
-      userInOrganizationUserId
-      userInOrganizationOrganizationId
     }
   }
 `;
@@ -203,10 +201,8 @@ export const updateUserInOrganization = /* GraphQL */ `
     $condition: ModelUserInOrganizationConditionInput
   ) {
     updateUserInOrganization(input: $input, condition: $condition) {
-      id
-      roles {
-        nextToken
-      }
+      userID
+      organizationID
       user {
         id
         firstName
@@ -224,12 +220,12 @@ export const updateUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      roles {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userOrganizationsId
-      organizationMembersId
-      userInOrganizationUserId
-      userInOrganizationOrganizationId
     }
   }
 `;
@@ -239,10 +235,8 @@ export const deleteUserInOrganization = /* GraphQL */ `
     $condition: ModelUserInOrganizationConditionInput
   ) {
     deleteUserInOrganization(input: $input, condition: $condition) {
-      id
-      roles {
-        nextToken
-      }
+      userID
+      organizationID
       user {
         id
         firstName
@@ -260,81 +254,90 @@ export const deleteUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      roles {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userOrganizationsId
-      organizationMembersId
-      userInOrganizationUserId
-      userInOrganizationOrganizationId
     }
   }
 `;
-export const createUserInOrganizationRole = /* GraphQL */ `
-  mutation CreateUserInOrganizationRole(
-    $input: CreateUserInOrganizationRoleInput!
-    $condition: ModelUserInOrganizationRoleConditionInput
+export const createUserRole = /* GraphQL */ `
+  mutation CreateUserRole(
+    $input: CreateUserRoleInput!
+    $condition: ModelUserRoleConditionInput
   ) {
-    createUserInOrganizationRole(input: $input, condition: $condition) {
-      id
+    createUserRole(input: $input, condition: $condition) {
       name
-      userInOrganization {
+      organization {
         id
+        name
+        type
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      users {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userInOrganizationRolesId
+      organizationRolesId
     }
   }
 `;
-export const updateUserInOrganizationRole = /* GraphQL */ `
-  mutation UpdateUserInOrganizationRole(
-    $input: UpdateUserInOrganizationRoleInput!
-    $condition: ModelUserInOrganizationRoleConditionInput
+export const updateUserRole = /* GraphQL */ `
+  mutation UpdateUserRole(
+    $input: UpdateUserRoleInput!
+    $condition: ModelUserRoleConditionInput
   ) {
-    updateUserInOrganizationRole(input: $input, condition: $condition) {
-      id
+    updateUserRole(input: $input, condition: $condition) {
       name
-      userInOrganization {
+      organization {
         id
+        name
+        type
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      users {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userInOrganizationRolesId
+      organizationRolesId
     }
   }
 `;
-export const deleteUserInOrganizationRole = /* GraphQL */ `
-  mutation DeleteUserInOrganizationRole(
-    $input: DeleteUserInOrganizationRoleInput!
-    $condition: ModelUserInOrganizationRoleConditionInput
+export const deleteUserRole = /* GraphQL */ `
+  mutation DeleteUserRole(
+    $input: DeleteUserRoleInput!
+    $condition: ModelUserRoleConditionInput
   ) {
-    deleteUserInOrganizationRole(input: $input, condition: $condition) {
-      id
+    deleteUserRole(input: $input, condition: $condition) {
       name
-      userInOrganization {
+      organization {
         id
+        name
+        type
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      users {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userInOrganizationRolesId
+      organizationRolesId
     }
   }
 `;
@@ -373,6 +376,9 @@ export const createOrganization = /* GraphQL */ `
         nextToken
       }
       members {
+        nextToken
+      }
+      roles {
         nextToken
       }
       type
@@ -429,6 +435,9 @@ export const updateOrganization = /* GraphQL */ `
       members {
         nextToken
       }
+      roles {
+        nextToken
+      }
       type
       logo {
         id
@@ -481,6 +490,9 @@ export const deleteOrganization = /* GraphQL */ `
         nextToken
       }
       members {
+        nextToken
+      }
+      roles {
         nextToken
       }
       type
@@ -3200,6 +3212,90 @@ export const deleteCurriculumSubject = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createRolesOfUser = /* GraphQL */ `
+  mutation CreateRolesOfUser(
+    $input: CreateRolesOfUserInput!
+    $condition: ModelRolesOfUserConditionInput
+  ) {
+    createRolesOfUser(input: $input, condition: $condition) {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        name
+        id
+        createdAt
+        updatedAt
+        organizationRolesId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateRolesOfUser = /* GraphQL */ `
+  mutation UpdateRolesOfUser(
+    $input: UpdateRolesOfUserInput!
+    $condition: ModelRolesOfUserConditionInput
+  ) {
+    updateRolesOfUser(input: $input, condition: $condition) {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        name
+        id
+        createdAt
+        updatedAt
+        organizationRolesId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteRolesOfUser = /* GraphQL */ `
+  mutation DeleteRolesOfUser(
+    $input: DeleteRolesOfUserInput!
+    $condition: ModelRolesOfUserConditionInput
+  ) {
+    deleteRolesOfUser(input: $input, condition: $condition) {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        name
+        id
+        createdAt
+        updatedAt
+        organizationRolesId
       }
       createdAt
       updatedAt

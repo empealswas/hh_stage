@@ -146,10 +146,8 @@ export const onDeleteDependantGuardian = /* GraphQL */ `
 export const onCreateUserInOrganization = /* GraphQL */ `
   subscription OnCreateUserInOrganization {
     onCreateUserInOrganization {
-      id
-      roles {
-        nextToken
-      }
+      userID
+      organizationID
       user {
         id
         firstName
@@ -167,22 +165,20 @@ export const onCreateUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      roles {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userOrganizationsId
-      organizationMembersId
-      userInOrganizationUserId
-      userInOrganizationOrganizationId
     }
   }
 `;
 export const onUpdateUserInOrganization = /* GraphQL */ `
   subscription OnUpdateUserInOrganization {
     onUpdateUserInOrganization {
-      id
-      roles {
-        nextToken
-      }
+      userID
+      organizationID
       user {
         id
         firstName
@@ -200,22 +196,20 @@ export const onUpdateUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      roles {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userOrganizationsId
-      organizationMembersId
-      userInOrganizationUserId
-      userInOrganizationOrganizationId
     }
   }
 `;
 export const onDeleteUserInOrganization = /* GraphQL */ `
   subscription OnDeleteUserInOrganization {
     onDeleteUserInOrganization {
-      id
-      roles {
-        nextToken
-      }
+      userID
+      organizationID
       user {
         id
         firstName
@@ -233,72 +227,81 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      roles {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userOrganizationsId
-      organizationMembersId
-      userInOrganizationUserId
-      userInOrganizationOrganizationId
     }
   }
 `;
-export const onCreateUserInOrganizationRole = /* GraphQL */ `
-  subscription OnCreateUserInOrganizationRole {
-    onCreateUserInOrganizationRole {
-      id
+export const onCreateUserRole = /* GraphQL */ `
+  subscription OnCreateUserRole {
+    onCreateUserRole {
       name
-      userInOrganization {
+      organization {
         id
+        name
+        type
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      users {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userInOrganizationRolesId
+      organizationRolesId
     }
   }
 `;
-export const onUpdateUserInOrganizationRole = /* GraphQL */ `
-  subscription OnUpdateUserInOrganizationRole {
-    onUpdateUserInOrganizationRole {
-      id
+export const onUpdateUserRole = /* GraphQL */ `
+  subscription OnUpdateUserRole {
+    onUpdateUserRole {
       name
-      userInOrganization {
+      organization {
         id
+        name
+        type
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      users {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userInOrganizationRolesId
+      organizationRolesId
     }
   }
 `;
-export const onDeleteUserInOrganizationRole = /* GraphQL */ `
-  subscription OnDeleteUserInOrganizationRole {
-    onDeleteUserInOrganizationRole {
-      id
+export const onDeleteUserRole = /* GraphQL */ `
+  subscription OnDeleteUserRole {
+    onDeleteUserRole {
       name
-      userInOrganization {
+      organization {
         id
+        name
+        type
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      users {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userInOrganizationRolesId
+      organizationRolesId
     }
   }
 `;
@@ -334,6 +337,9 @@ export const onCreateOrganization = /* GraphQL */ `
         nextToken
       }
       members {
+        nextToken
+      }
+      roles {
         nextToken
       }
       type
@@ -387,6 +393,9 @@ export const onUpdateOrganization = /* GraphQL */ `
       members {
         nextToken
       }
+      roles {
+        nextToken
+      }
       type
       logo {
         id
@@ -436,6 +445,9 @@ export const onDeleteOrganization = /* GraphQL */ `
         nextToken
       }
       members {
+        nextToken
+      }
+      roles {
         nextToken
       }
       type
@@ -2903,6 +2915,81 @@ export const onDeleteCurriculumSubject = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateRolesOfUser = /* GraphQL */ `
+  subscription OnCreateRolesOfUser {
+    onCreateRolesOfUser {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        name
+        id
+        createdAt
+        updatedAt
+        organizationRolesId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateRolesOfUser = /* GraphQL */ `
+  subscription OnUpdateRolesOfUser {
+    onUpdateRolesOfUser {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        name
+        id
+        createdAt
+        updatedAt
+        organizationRolesId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteRolesOfUser = /* GraphQL */ `
+  subscription OnDeleteRolesOfUser {
+    onDeleteRolesOfUser {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        name
+        id
+        createdAt
+        updatedAt
+        organizationRolesId
       }
       createdAt
       updatedAt

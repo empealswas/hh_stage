@@ -95,32 +95,14 @@ export type ModelUserInOrganizationConnection = {
 
 export type UserInOrganization = {
   __typename: "UserInOrganization",
+  userID?: string | null,
+  organizationID?: string | null,
+  user?: User | null,
+  organization?: Organization | null,
+  roles?: ModelRolesOfUserConnection | null,
   id: string,
-  roles?: ModelUserInOrganizationRoleConnection | null,
-  user: User,
-  organization: Organization,
   createdAt: string,
   updatedAt: string,
-  userOrganizationsId?: string | null,
-  organizationMembersId?: string | null,
-  userInOrganizationUserId: string,
-  userInOrganizationOrganizationId: string,
-};
-
-export type ModelUserInOrganizationRoleConnection = {
-  __typename: "ModelUserInOrganizationRoleConnection",
-  items:  Array<UserInOrganizationRole | null >,
-  nextToken?: string | null,
-};
-
-export type UserInOrganizationRole = {
-  __typename: "UserInOrganizationRole",
-  id: string,
-  name: string,
-  userInOrganization: UserInOrganization,
-  createdAt: string,
-  updatedAt: string,
-  userInOrganizationRolesId?: string | null,
 };
 
 export type Organization = {
@@ -135,6 +117,7 @@ export type Organization = {
   Teachers?: ModelTeacherOrganziationConnection | null,
   Classrooms?: ModelClassroomConnection | null,
   members?: ModelUserInOrganizationConnection | null,
+  roles?: ModelUserRoleConnection | null,
   type?: string | null,
   logo?: File | null,
   createdAt: string,
@@ -629,6 +612,40 @@ export type ModelSectionConnection = {
   nextToken?: string | null,
 };
 
+export type ModelUserRoleConnection = {
+  __typename: "ModelUserRoleConnection",
+  items:  Array<UserRole | null >,
+  nextToken?: string | null,
+};
+
+export type UserRole = {
+  __typename: "UserRole",
+  name: string,
+  organization: Organization,
+  users?: ModelRolesOfUserConnection | null,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  organizationRolesId?: string | null,
+};
+
+export type ModelRolesOfUserConnection = {
+  __typename: "ModelRolesOfUserConnection",
+  items:  Array<RolesOfUser | null >,
+  nextToken?: string | null,
+};
+
+export type RolesOfUser = {
+  __typename: "RolesOfUser",
+  id: string,
+  userInOrganizationID: string,
+  userRoleID: string,
+  userInOrganization: UserInOrganization,
+  userRole: UserRole,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type ModelOrganizationConnection = {
   __typename: "ModelOrganizationConnection",
   items:  Array<Organization | null >,
@@ -684,56 +701,50 @@ export type DeleteDependantGuardianInput = {
 };
 
 export type CreateUserInOrganizationInput = {
+  userID?: string | null,
+  organizationID?: string | null,
   id?: string | null,
-  userOrganizationsId?: string | null,
-  organizationMembersId?: string | null,
-  userInOrganizationUserId: string,
-  userInOrganizationOrganizationId: string,
 };
 
 export type ModelUserInOrganizationConditionInput = {
+  userID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
   and?: Array< ModelUserInOrganizationConditionInput | null > | null,
   or?: Array< ModelUserInOrganizationConditionInput | null > | null,
   not?: ModelUserInOrganizationConditionInput | null,
-  userOrganizationsId?: ModelIDInput | null,
-  organizationMembersId?: ModelIDInput | null,
-  userInOrganizationUserId?: ModelIDInput | null,
-  userInOrganizationOrganizationId?: ModelIDInput | null,
 };
 
 export type UpdateUserInOrganizationInput = {
+  userID?: string | null,
+  organizationID?: string | null,
   id: string,
-  userOrganizationsId?: string | null,
-  organizationMembersId?: string | null,
-  userInOrganizationUserId?: string | null,
-  userInOrganizationOrganizationId?: string | null,
 };
 
 export type DeleteUserInOrganizationInput = {
   id: string,
 };
 
-export type CreateUserInOrganizationRoleInput = {
-  id?: string | null,
+export type CreateUserRoleInput = {
   name: string,
-  userInOrganizationRolesId?: string | null,
+  id?: string | null,
+  organizationRolesId?: string | null,
 };
 
-export type ModelUserInOrganizationRoleConditionInput = {
+export type ModelUserRoleConditionInput = {
   name?: ModelStringInput | null,
-  and?: Array< ModelUserInOrganizationRoleConditionInput | null > | null,
-  or?: Array< ModelUserInOrganizationRoleConditionInput | null > | null,
-  not?: ModelUserInOrganizationRoleConditionInput | null,
-  userInOrganizationRolesId?: ModelIDInput | null,
+  and?: Array< ModelUserRoleConditionInput | null > | null,
+  or?: Array< ModelUserRoleConditionInput | null > | null,
+  not?: ModelUserRoleConditionInput | null,
+  organizationRolesId?: ModelIDInput | null,
 };
 
-export type UpdateUserInOrganizationRoleInput = {
-  id: string,
+export type UpdateUserRoleInput = {
   name?: string | null,
-  userInOrganizationRolesId?: string | null,
+  id: string,
+  organizationRolesId?: string | null,
 };
 
-export type DeleteUserInOrganizationRoleInput = {
+export type DeleteUserRoleInput = {
   id: string,
 };
 
@@ -1578,6 +1589,30 @@ export type DeleteCurriculumSubjectInput = {
   id: string,
 };
 
+export type CreateRolesOfUserInput = {
+  id?: string | null,
+  userInOrganizationID: string,
+  userRoleID: string,
+};
+
+export type ModelRolesOfUserConditionInput = {
+  userInOrganizationID?: ModelIDInput | null,
+  userRoleID?: ModelIDInput | null,
+  and?: Array< ModelRolesOfUserConditionInput | null > | null,
+  or?: Array< ModelRolesOfUserConditionInput | null > | null,
+  not?: ModelRolesOfUserConditionInput | null,
+};
+
+export type UpdateRolesOfUserInput = {
+  id: string,
+  userInOrganizationID?: string | null,
+  userRoleID?: string | null,
+};
+
+export type DeleteRolesOfUserInput = {
+  id: string,
+};
+
 export type CreateTeacherOrganziationInput = {
   id?: string | null,
   organizationID: string,
@@ -1626,23 +1661,19 @@ export type ModelDependantGuardianFilterInput = {
 };
 
 export type ModelUserInOrganizationFilterInput = {
-  id?: ModelIDInput | null,
+  userID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
   and?: Array< ModelUserInOrganizationFilterInput | null > | null,
   or?: Array< ModelUserInOrganizationFilterInput | null > | null,
   not?: ModelUserInOrganizationFilterInput | null,
-  userOrganizationsId?: ModelIDInput | null,
-  organizationMembersId?: ModelIDInput | null,
-  userInOrganizationUserId?: ModelIDInput | null,
-  userInOrganizationOrganizationId?: ModelIDInput | null,
 };
 
-export type ModelUserInOrganizationRoleFilterInput = {
-  id?: ModelIDInput | null,
+export type ModelUserRoleFilterInput = {
   name?: ModelStringInput | null,
-  and?: Array< ModelUserInOrganizationRoleFilterInput | null > | null,
-  or?: Array< ModelUserInOrganizationRoleFilterInput | null > | null,
-  not?: ModelUserInOrganizationRoleFilterInput | null,
-  userInOrganizationRolesId?: ModelIDInput | null,
+  and?: Array< ModelUserRoleFilterInput | null > | null,
+  or?: Array< ModelUserRoleFilterInput | null > | null,
+  not?: ModelUserRoleFilterInput | null,
+  organizationRolesId?: ModelIDInput | null,
 };
 
 export type ModelOrganizationFilterInput = {
@@ -1964,6 +1995,15 @@ export type ModelParentInterventionFeedbackFilterInput = {
   not?: ModelParentInterventionFeedbackFilterInput | null,
 };
 
+export type ModelRolesOfUserFilterInput = {
+  id?: ModelIDInput | null,
+  userInOrganizationID?: ModelIDInput | null,
+  userRoleID?: ModelIDInput | null,
+  and?: Array< ModelRolesOfUserFilterInput | null > | null,
+  or?: Array< ModelRolesOfUserFilterInput | null > | null,
+  not?: ModelRolesOfUserFilterInput | null,
+};
+
 export type ModelTeacherOrganziationFilterInput = {
   id?: ModelIDInput | null,
   organizationID?: ModelIDInput | null,
@@ -2167,12 +2207,9 @@ export type CreateUserInOrganizationMutationVariables = {
 export type CreateUserInOrganizationMutation = {
   createUserInOrganization?:  {
     __typename: "UserInOrganization",
-    id: string,
-    roles?:  {
-      __typename: "ModelUserInOrganizationRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    user:  {
+    userID?: string | null,
+    organizationID?: string | null,
+    user?:  {
       __typename: "User",
       id: string,
       firstName?: string | null,
@@ -2180,8 +2217,8 @@ export type CreateUserInOrganizationMutation = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    },
-    organization:  {
+    } | null,
+    organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
@@ -2190,13 +2227,14 @@ export type CreateUserInOrganizationMutation = {
       updatedAt: string,
       userOwnedOrganizationsId?: string | null,
       organizationLogoId?: string | null,
-    },
+    } | null,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userOrganizationsId?: string | null,
-    organizationMembersId?: string | null,
-    userInOrganizationUserId: string,
-    userInOrganizationOrganizationId: string,
   } | null,
 };
 
@@ -2208,12 +2246,9 @@ export type UpdateUserInOrganizationMutationVariables = {
 export type UpdateUserInOrganizationMutation = {
   updateUserInOrganization?:  {
     __typename: "UserInOrganization",
-    id: string,
-    roles?:  {
-      __typename: "ModelUserInOrganizationRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    user:  {
+    userID?: string | null,
+    organizationID?: string | null,
+    user?:  {
       __typename: "User",
       id: string,
       firstName?: string | null,
@@ -2221,8 +2256,8 @@ export type UpdateUserInOrganizationMutation = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    },
-    organization:  {
+    } | null,
+    organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
@@ -2231,13 +2266,14 @@ export type UpdateUserInOrganizationMutation = {
       updatedAt: string,
       userOwnedOrganizationsId?: string | null,
       organizationLogoId?: string | null,
-    },
+    } | null,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userOrganizationsId?: string | null,
-    organizationMembersId?: string | null,
-    userInOrganizationUserId: string,
-    userInOrganizationOrganizationId: string,
   } | null,
 };
 
@@ -2249,12 +2285,9 @@ export type DeleteUserInOrganizationMutationVariables = {
 export type DeleteUserInOrganizationMutation = {
   deleteUserInOrganization?:  {
     __typename: "UserInOrganization",
-    id: string,
-    roles?:  {
-      __typename: "ModelUserInOrganizationRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    user:  {
+    userID?: string | null,
+    organizationID?: string | null,
+    user?:  {
       __typename: "User",
       id: string,
       firstName?: string | null,
@@ -2262,7 +2295,36 @@ export type DeleteUserInOrganizationMutation = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    },
+    } | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUserRoleMutationVariables = {
+  input: CreateUserRoleInput,
+  condition?: ModelUserRoleConditionInput | null,
+};
+
+export type CreateUserRoleMutation = {
+  createUserRole?:  {
+    __typename: "UserRole",
+    name: string,
     organization:  {
       __typename: "Organization",
       id: string,
@@ -2273,90 +2335,74 @@ export type DeleteUserInOrganizationMutation = {
       userOwnedOrganizationsId?: string | null,
       organizationLogoId?: string | null,
     },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userOrganizationsId?: string | null,
-    organizationMembersId?: string | null,
-    userInOrganizationUserId: string,
-    userInOrganizationOrganizationId: string,
+    organizationRolesId?: string | null,
   } | null,
 };
 
-export type CreateUserInOrganizationRoleMutationVariables = {
-  input: CreateUserInOrganizationRoleInput,
-  condition?: ModelUserInOrganizationRoleConditionInput | null,
+export type UpdateUserRoleMutationVariables = {
+  input: UpdateUserRoleInput,
+  condition?: ModelUserRoleConditionInput | null,
 };
 
-export type CreateUserInOrganizationRoleMutation = {
-  createUserInOrganizationRole?:  {
-    __typename: "UserInOrganizationRole",
-    id: string,
+export type UpdateUserRoleMutation = {
+  updateUserRole?:  {
+    __typename: "UserRole",
     name: string,
-    userInOrganization:  {
-      __typename: "UserInOrganization",
+    organization:  {
+      __typename: "Organization",
       id: string,
+      name?: string | null,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userInOrganizationRolesId?: string | null,
+    organizationRolesId?: string | null,
   } | null,
 };
 
-export type UpdateUserInOrganizationRoleMutationVariables = {
-  input: UpdateUserInOrganizationRoleInput,
-  condition?: ModelUserInOrganizationRoleConditionInput | null,
+export type DeleteUserRoleMutationVariables = {
+  input: DeleteUserRoleInput,
+  condition?: ModelUserRoleConditionInput | null,
 };
 
-export type UpdateUserInOrganizationRoleMutation = {
-  updateUserInOrganizationRole?:  {
-    __typename: "UserInOrganizationRole",
-    id: string,
+export type DeleteUserRoleMutation = {
+  deleteUserRole?:  {
+    __typename: "UserRole",
     name: string,
-    userInOrganization:  {
-      __typename: "UserInOrganization",
+    organization:  {
+      __typename: "Organization",
       id: string,
+      name?: string | null,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    userInOrganizationRolesId?: string | null,
-  } | null,
-};
-
-export type DeleteUserInOrganizationRoleMutationVariables = {
-  input: DeleteUserInOrganizationRoleInput,
-  condition?: ModelUserInOrganizationRoleConditionInput | null,
-};
-
-export type DeleteUserInOrganizationRoleMutation = {
-  deleteUserInOrganizationRole?:  {
-    __typename: "UserInOrganizationRole",
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
     id: string,
-    name: string,
-    userInOrganization:  {
-      __typename: "UserInOrganization",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
-    },
     createdAt: string,
     updatedAt: string,
-    userInOrganizationRolesId?: string | null,
+    organizationRolesId?: string | null,
   } | null,
 };
 
@@ -2405,6 +2451,10 @@ export type CreateOrganizationMutation = {
     } | null,
     members?:  {
       __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -2472,6 +2522,10 @@ export type UpdateOrganizationMutation = {
       __typename: "ModelUserInOrganizationConnection",
       nextToken?: string | null,
     } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     logo?:  {
       __typename: "File",
@@ -2535,6 +2589,10 @@ export type DeleteOrganizationMutation = {
     } | null,
     members?:  {
       __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -5651,6 +5709,102 @@ export type DeleteCurriculumSubjectMutation = {
   } | null,
 };
 
+export type CreateRolesOfUserMutationVariables = {
+  input: CreateRolesOfUserInput,
+  condition?: ModelRolesOfUserConditionInput | null,
+};
+
+export type CreateRolesOfUserMutation = {
+  createRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      name: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateRolesOfUserMutationVariables = {
+  input: UpdateRolesOfUserInput,
+  condition?: ModelRolesOfUserConditionInput | null,
+};
+
+export type UpdateRolesOfUserMutation = {
+  updateRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      name: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteRolesOfUserMutationVariables = {
+  input: DeleteRolesOfUserInput,
+  condition?: ModelRolesOfUserConditionInput | null,
+};
+
+export type DeleteRolesOfUserMutation = {
+  deleteRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      name: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateTeacherOrganziationMutationVariables = {
   input: CreateTeacherOrganziationInput,
   condition?: ModelTeacherOrganziationConditionInput | null,
@@ -5868,12 +6022,9 @@ export type GetUserInOrganizationQueryVariables = {
 export type GetUserInOrganizationQuery = {
   getUserInOrganization?:  {
     __typename: "UserInOrganization",
-    id: string,
-    roles?:  {
-      __typename: "ModelUserInOrganizationRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    user:  {
+    userID?: string | null,
+    organizationID?: string | null,
+    user?:  {
       __typename: "User",
       id: string,
       firstName?: string | null,
@@ -5881,8 +6032,8 @@ export type GetUserInOrganizationQuery = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    },
-    organization:  {
+    } | null,
+    organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
@@ -5891,13 +6042,14 @@ export type GetUserInOrganizationQuery = {
       updatedAt: string,
       userOwnedOrganizationsId?: string | null,
       organizationLogoId?: string | null,
-    },
+    } | null,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userOrganizationsId?: string | null,
-    organizationMembersId?: string | null,
-    userInOrganizationUserId: string,
-    userInOrganizationOrganizationId: string,
   } | null,
 };
 
@@ -5912,59 +6064,61 @@ export type ListUserInOrganizationsQuery = {
     __typename: "ModelUserInOrganizationConnection",
     items:  Array< {
       __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
       id: string,
       createdAt: string,
       updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
-export type GetUserInOrganizationRoleQueryVariables = {
+export type GetUserRoleQueryVariables = {
   id: string,
 };
 
-export type GetUserInOrganizationRoleQuery = {
-  getUserInOrganizationRole?:  {
-    __typename: "UserInOrganizationRole",
-    id: string,
+export type GetUserRoleQuery = {
+  getUserRole?:  {
+    __typename: "UserRole",
     name: string,
-    userInOrganization:  {
-      __typename: "UserInOrganization",
+    organization:  {
+      __typename: "Organization",
       id: string,
+      name?: string | null,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userInOrganizationRolesId?: string | null,
+    organizationRolesId?: string | null,
   } | null,
 };
 
-export type ListUserInOrganizationRolesQueryVariables = {
-  filter?: ModelUserInOrganizationRoleFilterInput | null,
+export type ListUserRolesQueryVariables = {
+  filter?: ModelUserRoleFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListUserInOrganizationRolesQuery = {
-  listUserInOrganizationRoles?:  {
-    __typename: "ModelUserInOrganizationRoleConnection",
+export type ListUserRolesQuery = {
+  listUserRoles?:  {
+    __typename: "ModelUserRoleConnection",
     items:  Array< {
-      __typename: "UserInOrganizationRole",
-      id: string,
+      __typename: "UserRole",
       name: string,
+      id: string,
       createdAt: string,
       updatedAt: string,
-      userInOrganizationRolesId?: string | null,
+      organizationRolesId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -6014,6 +6168,10 @@ export type GetOrganizationQuery = {
     } | null,
     members?:  {
       __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -7471,6 +7629,58 @@ export type ListParentInterventionFeedbacksQuery = {
   } | null,
 };
 
+export type GetRolesOfUserQueryVariables = {
+  id: string,
+};
+
+export type GetRolesOfUserQuery = {
+  getRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      name: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListRolesOfUsersQueryVariables = {
+  filter?: ModelRolesOfUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRolesOfUsersQuery = {
+  listRolesOfUsers?:  {
+    __typename: "ModelRolesOfUserConnection",
+    items:  Array< {
+      __typename: "RolesOfUser",
+      id: string,
+      userInOrganizationID: string,
+      userRoleID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetTeacherOrganziationQueryVariables = {
   id: string,
 };
@@ -7686,12 +7896,9 @@ export type OnDeleteDependantGuardianSubscription = {
 export type OnCreateUserInOrganizationSubscription = {
   onCreateUserInOrganization?:  {
     __typename: "UserInOrganization",
-    id: string,
-    roles?:  {
-      __typename: "ModelUserInOrganizationRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    user:  {
+    userID?: string | null,
+    organizationID?: string | null,
+    user?:  {
       __typename: "User",
       id: string,
       firstName?: string | null,
@@ -7699,8 +7906,8 @@ export type OnCreateUserInOrganizationSubscription = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    },
-    organization:  {
+    } | null,
+    organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
@@ -7709,25 +7916,23 @@ export type OnCreateUserInOrganizationSubscription = {
       updatedAt: string,
       userOwnedOrganizationsId?: string | null,
       organizationLogoId?: string | null,
-    },
+    } | null,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userOrganizationsId?: string | null,
-    organizationMembersId?: string | null,
-    userInOrganizationUserId: string,
-    userInOrganizationOrganizationId: string,
   } | null,
 };
 
 export type OnUpdateUserInOrganizationSubscription = {
   onUpdateUserInOrganization?:  {
     __typename: "UserInOrganization",
-    id: string,
-    roles?:  {
-      __typename: "ModelUserInOrganizationRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    user:  {
+    userID?: string | null,
+    organizationID?: string | null,
+    user?:  {
       __typename: "User",
       id: string,
       firstName?: string | null,
@@ -7735,8 +7940,8 @@ export type OnUpdateUserInOrganizationSubscription = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    },
-    organization:  {
+    } | null,
+    organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
@@ -7745,25 +7950,23 @@ export type OnUpdateUserInOrganizationSubscription = {
       updatedAt: string,
       userOwnedOrganizationsId?: string | null,
       organizationLogoId?: string | null,
-    },
+    } | null,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userOrganizationsId?: string | null,
-    organizationMembersId?: string | null,
-    userInOrganizationUserId: string,
-    userInOrganizationOrganizationId: string,
   } | null,
 };
 
 export type OnDeleteUserInOrganizationSubscription = {
   onDeleteUserInOrganization?:  {
     __typename: "UserInOrganization",
-    id: string,
-    roles?:  {
-      __typename: "ModelUserInOrganizationRoleConnection",
-      nextToken?: string | null,
-    } | null,
-    user:  {
+    userID?: string | null,
+    organizationID?: string | null,
+    user?:  {
       __typename: "User",
       id: string,
       firstName?: string | null,
@@ -7771,7 +7974,31 @@ export type OnDeleteUserInOrganizationSubscription = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    },
+    } | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserRoleSubscription = {
+  onCreateUserRole?:  {
+    __typename: "UserRole",
+    name: string,
     organization:  {
       __typename: "Organization",
       id: string,
@@ -7782,75 +8009,64 @@ export type OnDeleteUserInOrganizationSubscription = {
       userOwnedOrganizationsId?: string | null,
       organizationLogoId?: string | null,
     },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userOrganizationsId?: string | null,
-    organizationMembersId?: string | null,
-    userInOrganizationUserId: string,
-    userInOrganizationOrganizationId: string,
+    organizationRolesId?: string | null,
   } | null,
 };
 
-export type OnCreateUserInOrganizationRoleSubscription = {
-  onCreateUserInOrganizationRole?:  {
-    __typename: "UserInOrganizationRole",
-    id: string,
+export type OnUpdateUserRoleSubscription = {
+  onUpdateUserRole?:  {
+    __typename: "UserRole",
     name: string,
-    userInOrganization:  {
-      __typename: "UserInOrganization",
+    organization:  {
+      __typename: "Organization",
       id: string,
+      name?: string | null,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    userInOrganizationRolesId?: string | null,
+    organizationRolesId?: string | null,
   } | null,
 };
 
-export type OnUpdateUserInOrganizationRoleSubscription = {
-  onUpdateUserInOrganizationRole?:  {
-    __typename: "UserInOrganizationRole",
-    id: string,
+export type OnDeleteUserRoleSubscription = {
+  onDeleteUserRole?:  {
+    __typename: "UserRole",
     name: string,
-    userInOrganization:  {
-      __typename: "UserInOrganization",
+    organization:  {
+      __typename: "Organization",
       id: string,
+      name?: string | null,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    userInOrganizationRolesId?: string | null,
-  } | null,
-};
-
-export type OnDeleteUserInOrganizationRoleSubscription = {
-  onDeleteUserInOrganizationRole?:  {
-    __typename: "UserInOrganizationRole",
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
     id: string,
-    name: string,
-    userInOrganization:  {
-      __typename: "UserInOrganization",
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      userOrganizationsId?: string | null,
-      organizationMembersId?: string | null,
-      userInOrganizationUserId: string,
-      userInOrganizationOrganizationId: string,
-    },
     createdAt: string,
     updatedAt: string,
-    userInOrganizationRolesId?: string | null,
+    organizationRolesId?: string | null,
   } | null,
 };
 
@@ -7894,6 +8110,10 @@ export type OnCreateOrganizationSubscription = {
     } | null,
     members?:  {
       __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -7956,6 +8176,10 @@ export type OnUpdateOrganizationSubscription = {
       __typename: "ModelUserInOrganizationConnection",
       nextToken?: string | null,
     } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
     type?: string | null,
     logo?:  {
       __typename: "File",
@@ -8014,6 +8238,10 @@ export type OnDeleteOrganizationSubscription = {
     } | null,
     members?:  {
       __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
       nextToken?: string | null,
     } | null,
     type?: string | null,
@@ -10704,6 +10932,87 @@ export type OnDeleteCurriculumSubjectSubscription = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateRolesOfUserSubscription = {
+  onCreateRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      name: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateRolesOfUserSubscription = {
+  onUpdateRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      name: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteRolesOfUserSubscription = {
+  onDeleteRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      name: string,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
     },
     createdAt: string,
     updatedAt: string,

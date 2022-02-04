@@ -5,7 +5,7 @@ type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, p
     lastName: String
     email: String
     dependants: [DependantGuardian] @hasMany
-    organizations: [UserInOrganization] @hasMany
+    organizations: [UserInOrganization] @hasMany(indexName: "byUser", fields: ["id"])
     ownedOrganizations: [Organization] @hasMany
 }
 
@@ -15,16 +15,19 @@ type DependantGuardian @model @auth(rules: [{allow: public, provider: iam}, {all
 }
 
 type UserInOrganization @model @auth(rules: [{allow: private}]) {
-    id: ID!
-    roles: [UserInOrganizationRole] @hasMany
-    user: User! @hasOne
-    organization: Organization! @hasOne
+    userID: ID @index(name: "byUser")
+    organizationID: ID @index(name: "byOrganization")
+    user: User @belongsTo(fields: ["userID"])
+    organization: Organization @belongsTo(fields: ["organizationID"])
+    roles: [UserRole] @manyToMany(relationName:"RolesOfUser")
 }
 
-type UserInOrganizationRole @model  @auth(rules: [{allow: private}]) {
-    id: ID!
+
+type UserRole @model  @auth(rules: [{allow: private}]) {
     name: String!
-    userInOrganization: UserInOrganization! @belongsTo
+    organization: Organization! @belongsTo
+    users: [UserInOrganization] @manyToMany(relationName:"RolesOfUser")
+
 }
 type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
@@ -36,7 +39,8 @@ type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: p
     Sections: [Section] @hasMany(indexName: "byOrganization", fields: ["id"])
     Teachers: [Teacher] @manyToMany(relationName: "TeacherOrganziation")
     Classrooms: [Classroom] @hasMany
-    members: [UserInOrganization] @hasMany
+    members: [UserInOrganization] @hasMany(indexName: "byOrganization", fields: ["id"])
+    roles: [UserRole] @hasMany
     type: String
     logo: File @hasOne
 }
@@ -319,3 +323,4 @@ type CurriculumSubject @model(queries: null) @auth(rules: [{allow: private}]) {
     curriculum: Curriculum! @belongsTo(fields: ["curriculumID"])
     subject: Subject! @belongsTo(fields: ["subjectID"])
 }
+  

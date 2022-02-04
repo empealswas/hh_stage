@@ -9,6 +9,8 @@ import {Box, Container, Tab, Tabs} from "@mui/material";
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
 import {PATH_DASHBOARD} from "../../../routes/paths";
 import {capitalCase} from "change-case";
+import OrganizationMembers from "./OrganizationMembers";
+import RolesMenu from "./RolesMenu";
 
 const OrganizationManage = () => {
     const { themeStretch } = useSettings();
@@ -18,15 +20,20 @@ const OrganizationManage = () => {
     const ACCOUNT_TABS = [
         {
             value: 'general',
-            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            icon: <Iconify icon={'mdi:cog-box'} width={20} height={20} />,
             component: <AccountGeneral />,
         },
+        {
+            value: 'roles',
+            icon: <Iconify icon={'mdi:shield-crown-outline'} width={20} height={20} />,
+            component: <RolesMenu />,
+        },
         {value: 'members',
-            icon: <Iconify icon={'ic:baseline-escalator-warning'} width={20} height={20} />,
-            component: <ChildrenList />,
+            icon: <Iconify icon={'mdi:account-group'} width={20} height={20} />,
+            component: <OrganizationMembers />,
         },
         {value: 'participants',
-            icon: <Iconify icon={'codicon:organization'} width={20} height={20} />,
+            icon: <Iconify icon={'mdi:account-multiple'} width={20} height={20} />,
             component: <OrganizationsList />,
         },
 
@@ -34,14 +41,14 @@ const OrganizationManage = () => {
     ];
 
     return (
-        <Page title="User: Account Settings">
+        <Page title="Organization: Manage">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <HeaderBreadcrumbs
-                    heading="Account"
+                    heading="Organization"
                     links={[
                         { name: 'Dashboard', href: PATH_DASHBOARD.root },
                         { name: 'User', href: PATH_DASHBOARD.user.root },
-                        { name: 'Account Settings' },
+                        { name: 'Organization Manage' },
                     ]}
                 />
 

@@ -92,10 +92,8 @@ export const listDependantGuardians = /* GraphQL */ `
 export const getUserInOrganization = /* GraphQL */ `
   query GetUserInOrganization($id: ID!) {
     getUserInOrganization(id: $id) {
-      id
-      roles {
-        nextToken
-      }
+      userID
+      organizationID
       user {
         id
         firstName
@@ -113,12 +111,12 @@ export const getUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      roles {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userOrganizationsId
-      organizationMembersId
-      userInOrganizationUserId
-      userInOrganizationOrganizationId
     }
   }
 `;
@@ -134,55 +132,52 @@ export const listUserInOrganizations = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        userID
+        organizationID
         id
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
       }
       nextToken
     }
   }
 `;
-export const getUserInOrganizationRole = /* GraphQL */ `
-  query GetUserInOrganizationRole($id: ID!) {
-    getUserInOrganizationRole(id: $id) {
-      id
+export const getUserRole = /* GraphQL */ `
+  query GetUserRole($id: ID!) {
+    getUserRole(id: $id) {
       name
-      userInOrganization {
+      organization {
         id
+        name
+        type
         createdAt
         updatedAt
-        userOrganizationsId
-        organizationMembersId
-        userInOrganizationUserId
-        userInOrganizationOrganizationId
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      users {
+        nextToken
+      }
+      id
       createdAt
       updatedAt
-      userInOrganizationRolesId
+      organizationRolesId
     }
   }
 `;
-export const listUserInOrganizationRoles = /* GraphQL */ `
-  query ListUserInOrganizationRoles(
-    $filter: ModelUserInOrganizationRoleFilterInput
+export const listUserRoles = /* GraphQL */ `
+  query ListUserRoles(
+    $filter: ModelUserRoleFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listUserInOrganizationRoles(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+    listUserRoles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         name
+        id
         createdAt
         updatedAt
-        userInOrganizationRolesId
+        organizationRolesId
       }
       nextToken
     }
@@ -220,6 +215,9 @@ export const getOrganization = /* GraphQL */ `
         nextToken
       }
       members {
+        nextToken
+      }
+      roles {
         nextToken
       }
       type
@@ -1482,6 +1480,49 @@ export const listParentInterventionFeedbacks = /* GraphQL */ `
         interventionID
         comment
         rating
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getRolesOfUser = /* GraphQL */ `
+  query GetRolesOfUser($id: ID!) {
+    getRolesOfUser(id: $id) {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        name
+        id
+        createdAt
+        updatedAt
+        organizationRolesId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listRolesOfUsers = /* GraphQL */ `
+  query ListRolesOfUsers(
+    $filter: ModelRolesOfUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRolesOfUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userInOrganizationID
+        userRoleID
         createdAt
         updatedAt
       }

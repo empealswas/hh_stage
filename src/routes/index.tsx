@@ -14,7 +14,7 @@ import AuthGuard from '../guards/AuthGuard';
 import {PATH_AFTER_LOGIN} from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
-import OrganizationManage from "../pages/dashboard/user/OrganizationManage";
+import OrganizationManage from 'src/pages/dashboard/organization/OrganizationManage';
 
 // ----------------------------------------------------------------------
 
