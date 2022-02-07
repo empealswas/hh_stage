@@ -17,7 +17,7 @@ import Iconify from "../../../../components/Iconify";
 import {CloseIcon} from "../../../../theme/overrides/CustomIcons";
 import {RolePermissions} from "../../../../API";
 import {API, graphqlOperation} from "aws-amplify";
-import {createRolePermissions, updateRolePermissions} from "../../../../graphql/mutations";
+import {createRolePermissions, updateRolePermissions, updateUserRole} from "../../../../graphql/mutations";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
@@ -27,6 +27,8 @@ const getPermissionsQuery = `query MyQuery($id: ID = "") {
     permissions {
       id
       canAccessAttendanceSheet
+      canDeleteLessons
+      canRateLessons
     }
   }
 }`
@@ -56,8 +58,15 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                         rolePermissionsRoleId: roleId,
                     }
                 }));
-                console.log('Created', resultOfAddingPermissions.data.createRolePermissions);
-                setPermissions(resultOfAddingPermissions.data.createRolePermissions)
+                const permissions = resultOfAddingPermissions.data.createRolePermissions;
+                await API.graphql(graphqlOperation(updateUserRole, {
+                    input: {
+                        id: roleId,
+                        userRolePermissionsId: permissions.id,
+                    }
+                }))
+                console.log('Created', permissions);
+                setPermissions(permissions)
             } else {
                 console.log(result);
                 setPermissions(result.data.getUserRole.permissions);
@@ -126,11 +135,43 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                                                         }
                                                     }))
                                                     console.log(result)
-                                                    setPermissions(result.data.updateRolePermissions);
+                                                    setPermissions(result.data.updateRolePermissions)
                                                 }
                                                 }
                                                 defaultChecked={Boolean(permissions.canAccessAttendanceSheet)}/>}
                                                               label="Allow access attendance sheet of a lesson"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canDeleteLessons: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canDeleteLessons)}/>}
+                                                              label="Allow upload content in lessons"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canRateLessons: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canRateLessons)}/>}
+                                                              label="Allow rate lessons"/>
                                         </FormGroup>
                                         :
                                         <CircularProgress/>
