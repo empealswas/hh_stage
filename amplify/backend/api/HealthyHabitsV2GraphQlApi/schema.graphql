@@ -20,15 +20,24 @@ type UserInOrganization @model @auth(rules: [{allow: private}]) {
     user: User @belongsTo(fields: ["userID"])
     organization: Organization @belongsTo(fields: ["organizationID"])
     roles: [UserRole] @manyToMany(relationName:"RolesOfUser")
+    classrooms: [Classroom] @manyToMany(relationName: "UserInOrganizationInClassroom")
 }
 
 
 type UserRole @model  @auth(rules: [{allow: private}]) {
+    id: ID!
     name: String!
     organization: Organization! @belongsTo
     users: [UserInOrganization] @manyToMany(relationName:"RolesOfUser")
-
+    permissions: RolePermissions @hasOne
 }
+type RolePermissions @model @auth(rules: [{allow: private}]) {
+    role: UserRole @belongsTo
+    canAccessAttendanceSheet: Boolean @default(value: "false")
+    canRateLessons: Boolean @default(value: "false")
+    canDeleteLessons: Boolean @default(value: "false")
+}
+
 type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
     name: String
@@ -130,6 +139,7 @@ type Classroom @model @auth(rules: [{allow: private}]) {
     Organization: Organization @belongsTo
     yearGroupID: ID @index(name: "byCurriculum")
     yearGroup: Curriculum @hasOne(fields: ["yearGroupID"])
+    members: [UserInOrganization] @manyToMany(relationName: "UserInOrganizationInClassroom")
 }
 
 type TeacherClassroom @model(queries: null) @auth(rules: [{allow: private}]) {

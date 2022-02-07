@@ -189,6 +189,9 @@ export const createUserInOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      classrooms {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -221,6 +224,9 @@ export const updateUserInOrganization = /* GraphQL */ `
         organizationLogoId
       }
       roles {
+        nextToken
+      }
+      classrooms {
         nextToken
       }
       id
@@ -257,6 +263,9 @@ export const deleteUserInOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      classrooms {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -269,6 +278,7 @@ export const createUserRole = /* GraphQL */ `
     $condition: ModelUserRoleConditionInput
   ) {
     createUserRole(input: $input, condition: $condition) {
+      id
       name
       organization {
         id
@@ -282,10 +292,19 @@ export const createUserRole = /* GraphQL */ `
       users {
         nextToken
       }
-      id
+      permissions {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
       createdAt
       updatedAt
       organizationRolesId
+      userRolePermissionsId
     }
   }
 `;
@@ -295,6 +314,7 @@ export const updateUserRole = /* GraphQL */ `
     $condition: ModelUserRoleConditionInput
   ) {
     updateUserRole(input: $input, condition: $condition) {
+      id
       name
       organization {
         id
@@ -308,10 +328,19 @@ export const updateUserRole = /* GraphQL */ `
       users {
         nextToken
       }
-      id
+      permissions {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
       createdAt
       updatedAt
       organizationRolesId
+      userRolePermissionsId
     }
   }
 `;
@@ -321,6 +350,7 @@ export const deleteUserRole = /* GraphQL */ `
     $condition: ModelUserRoleConditionInput
   ) {
     deleteUserRole(input: $input, condition: $condition) {
+      id
       name
       organization {
         id
@@ -334,10 +364,91 @@ export const deleteUserRole = /* GraphQL */ `
       users {
         nextToken
       }
-      id
+      permissions {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
       createdAt
       updatedAt
       organizationRolesId
+      userRolePermissionsId
+    }
+  }
+`;
+export const createRolePermissions = /* GraphQL */ `
+  mutation CreateRolePermissions(
+    $input: CreateRolePermissionsInput!
+    $condition: ModelRolePermissionsConditionInput
+  ) {
+    createRolePermissions(input: $input, condition: $condition) {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canRateLessons
+      canDeleteLessons
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
+    }
+  }
+`;
+export const updateRolePermissions = /* GraphQL */ `
+  mutation UpdateRolePermissions(
+    $input: UpdateRolePermissionsInput!
+    $condition: ModelRolePermissionsConditionInput
+  ) {
+    updateRolePermissions(input: $input, condition: $condition) {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canRateLessons
+      canDeleteLessons
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
+    }
+  }
+`;
+export const deleteRolePermissions = /* GraphQL */ `
+  mutation DeleteRolePermissions(
+    $input: DeleteRolePermissionsInput!
+    $condition: ModelRolePermissionsConditionInput
+  ) {
+    deleteRolePermissions(input: $input, condition: $condition) {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canRateLessons
+      canDeleteLessons
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
     }
   }
 `;
@@ -1263,6 +1374,9 @@ export const createClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      members {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationClassroomsId
@@ -1309,6 +1423,9 @@ export const updateClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      members {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationClassroomsId
@@ -1354,6 +1471,9 @@ export const deleteClassroom = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      members {
+        nextToken
       }
       createdAt
       updatedAt
@@ -3235,11 +3355,12 @@ export const createRolesOfUser = /* GraphQL */ `
         updatedAt
       }
       userRole {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
       }
       createdAt
       updatedAt
@@ -3263,11 +3384,12 @@ export const updateRolesOfUser = /* GraphQL */ `
         updatedAt
       }
       userRole {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
       }
       createdAt
       updatedAt
@@ -3291,11 +3413,102 @@ export const deleteRolesOfUser = /* GraphQL */ `
         updatedAt
       }
       userRole {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUserInOrganizationInClassroom = /* GraphQL */ `
+  mutation CreateUserInOrganizationInClassroom(
+    $input: CreateUserInOrganizationInClassroomInput!
+    $condition: ModelUserInOrganizationInClassroomConditionInput
+  ) {
+    createUserInOrganizationInClassroom(input: $input, condition: $condition) {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUserInOrganizationInClassroom = /* GraphQL */ `
+  mutation UpdateUserInOrganizationInClassroom(
+    $input: UpdateUserInOrganizationInClassroomInput!
+    $condition: ModelUserInOrganizationInClassroomConditionInput
+  ) {
+    updateUserInOrganizationInClassroom(input: $input, condition: $condition) {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUserInOrganizationInClassroom = /* GraphQL */ `
+  mutation DeleteUserInOrganizationInClassroom(
+    $input: DeleteUserInOrganizationInClassroomInput!
+    $condition: ModelUserInOrganizationInClassroomConditionInput
+  ) {
+    deleteUserInOrganizationInClassroom(input: $input, condition: $condition) {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt

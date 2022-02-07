@@ -31,8 +31,8 @@ const AddSectionModal = () => {
                 key: -1,
                 label: '30',
                 chosenAsDefault: true
-            }, {key: -3, label: '45', chosenAsDefault: false}],
-            deliveredBy: [{key: -1, label: 'Teacher', chosenAsDefault: true}]
+            }, {key: -3, label: '45', chosenAsDefault: false}, {key: -4, label: '60', chosenAsDefault: false}],
+            deliveredBy: [{key: -1, label: 'Coach', chosenAsDefault: true}]
 
         },
         validationSchema: RegisterSchema,
@@ -42,11 +42,11 @@ const AddSectionModal = () => {
             let activities = getFieldProps('activities').value;
             activities = [...activities.filter((value: { chosenAsDefault: any; }) => value.chosenAsDefault),
                 ...activities.filter((value: { chosenAsDefault: any; }) => !value.chosenAsDefault)
-            ];            
+            ];
             let durations = getFieldProps('periods').value;
             durations = [...durations.filter((value: { chosenAsDefault: any; }) => value.chosenAsDefault),
                 ...durations.filter((value: { chosenAsDefault: any; }) => !value.chosenAsDefault)
-            ];            
+            ];
             let deliveredBy = getFieldProps('deliveredBy').value;
             deliveredBy = [...deliveredBy.filter((value: { chosenAsDefault: any; }) => value.chosenAsDefault),
                 ...deliveredBy.filter((value: { chosenAsDefault: any; }) => !value.chosenAsDefault)
@@ -95,7 +95,8 @@ const AddSectionModal = () => {
                 />
                 <LessonOptionComponent name={'Activity Type'} actionName={'Add Activity'} entityName={'activities'}
                                        info={'Define the types of activities for this section. Then choose the default option. If you specify only one type of activity,it will automatically create all lessons within this section to be that type.'}/>
-                <LessonOptionComponent name={'Period'} actionName={'Add period (in minutes)'} entityName={'periods'} type={'number'}
+                <LessonOptionComponent name={'Period'} actionName={'Add period (in minutes)'} entityName={'periods'}
+                                       type={'number'}
                                        info={'Provide time periods possible for these types of lessons, leave only one for it to be predetermined'}/>
                 <LessonOptionComponent name={'Delivered By'} actionName={'Add Delivered By Type'}
                                        entityName={'deliveredBy'}

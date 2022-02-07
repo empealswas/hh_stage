@@ -45,7 +45,7 @@ const LessonsGrid = () => {
         return () => {
             subscription.unsubscribe();
         };
-    }, []);
+    }, [sectionId]);
     if (!sectionId) {
         return <></>
     }

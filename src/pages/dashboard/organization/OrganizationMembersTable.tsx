@@ -60,7 +60,8 @@ export default function OrganizationMembersTable() {
     const [roles, setRoles] = useState<UserRole[] | null>(null);
 
     const columns: GridColDef[] = [
-        {field: 'id', flex: 1, headerName: 'Email'},
+        {field: 'id', flex: 0.2, headerName: 'Id', hide: true},
+        {field: 'email', flex: 1, headerName: 'Email'},
         {
             field: 'firstName',
             headerName: 'First Name',
@@ -125,6 +126,7 @@ export default function OrganizationMembersTable() {
                     rows={members?.map(value => {
                         return {
                             id: value?.id,
+                            email: value?.user?.id,
                             firstName: value.user?.firstName,
                             lastName: value.user?.lastName,
                             roles: value.roles?.items,

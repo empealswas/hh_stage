@@ -9,7 +9,7 @@ import {
     ListItem,
     ListItemText,
     Skeleton,
-    Stack, TextField,
+    Stack, TextField, Tooltip,
     Typography
 } from "@mui/material";
 import InviteMemberDialog from "./InviteMemberDialog";
@@ -21,6 +21,7 @@ import {UserRole} from "../../../API";
 import Iconify from "../../../components/Iconify";
 import {LoadingButton} from "@mui/lab";
 import {createUserRole, deleteUserRole} from "../../../graphql/mutations";
+import RoleChangePermissionsDialog from "./role/RoleChangePermissionsDialog";
 
 
 const getRolesQuery = `query MyQuery($id: ID = "") {
@@ -120,11 +121,16 @@ const RolesMenu = () => {
                                     <ListItem
                                         key={role.id}
                                         secondaryAction={
-                                            <IconButton onClick={() => {
-                                                deleteRole(role.id)
-                                            }} edge="end" aria-label="delete">
-                                                <Iconify icon={'mdi:delete'}/>
-                                            </IconButton>
+                                            <Stack direction={'row'} spacing={2}>
+                                                <RoleChangePermissionsDialog roleId={role.id} name={role.name}/>
+                                                <Tooltip title={'Delete role'}>
+                                                    <IconButton onClick={() => {
+                                                        deleteRole(role.id)
+                                                    }} edge="end" aria-label="delete">
+                                                        <Iconify icon={'mdi:delete'}/>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Stack>
                                         }
                                     >
                                         <ListItemText

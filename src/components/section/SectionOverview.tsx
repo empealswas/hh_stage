@@ -15,12 +15,14 @@ import DeletionModal from "./DeletionModal";
 import {Can} from "../../abilities/Ability";
 import SectionGrid from "./SectionGrid";
 import LessonsGridSection from "./lesson/LessonsGridSection";
+import Iconify from "../Iconify";
 
 
 const SectionOverview = () => {
     const {sectionId} = useParams();
     const [section, setSection] = useState<Section | null>(null);
     const [allSections, setAllSections] = useState<Section[] | null>(null);
+    const {organizationId} = useParams();
 
     useEffect(() => {
         const getSectionAsync = async () => {
@@ -104,8 +106,10 @@ const SectionOverview = () => {
                 </Typography>
                 {/*<Can I={'create'} a={'section'}>*/}
                 <AddSectionModal/>
-                {sectionId &&
+                {sectionId ?
                     <Button component={RouterLink} to={'lesson/new'} variant={'contained'}>Add Lesson</Button>
+                    :
+                    <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'} variant={'contained'}>Manage</Button>
                 }
                 {/*</Can>*/}
             </Stack>

@@ -11,17 +11,21 @@ import {PATH_DASHBOARD} from "../../../routes/paths";
 import {capitalCase} from "change-case";
 import OrganizationMembers from "./OrganizationMembers";
 import RolesMenu from "./RolesMenu";
+import OrganizationTeams from "./team/OrganizationTeams";
+import {useParams} from "react-router-dom";
+import OrganizationGeneral from "./OrganizationGeneral";
 
 const OrganizationManage = () => {
     const { themeStretch } = useSettings();
 
     const [currentTab, setCurrentTab] = useState('general');
+    const {organizationId} = useParams();
 
     const ACCOUNT_TABS = [
         {
             value: 'general',
             icon: <Iconify icon={'mdi:cog-box'} width={20} height={20} />,
-            component: <AccountGeneral />,
+            component: <OrganizationGeneral />,
         },
         {
             value: 'roles',
@@ -32,9 +36,9 @@ const OrganizationManage = () => {
             icon: <Iconify icon={'mdi:account-group'} width={20} height={20} />,
             component: <OrganizationMembers />,
         },
-        {value: 'participants',
-            icon: <Iconify icon={'mdi:account-multiple'} width={20} height={20} />,
-            component: <OrganizationsList />,
+        {value: 'teams',
+            icon: <Iconify icon={'mdi:google-classroom'} width={20} height={20} />,
+            component: <OrganizationTeams />,
         },
 
 
@@ -47,7 +51,7 @@ const OrganizationManage = () => {
                     heading="Organization"
                     links={[
                         { name: 'Dashboard', href: PATH_DASHBOARD.root },
-                        { name: 'User', href: PATH_DASHBOARD.user.root },
+                        { name: 'Organization', href: `${PATH_DASHBOARD.root}/organization/${organizationId}` },
                         { name: 'Organization Manage' },
                     ]}
                 />

@@ -27,8 +27,6 @@ export default function MemberRolesMenu({id, roles, allRoles}: Props) {
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setOpen(event.currentTarget);
     };
-    console.log('my', roles);
-    console.log('all', allRoles);
 
     const handleClose = () => {
         setOpen(null);

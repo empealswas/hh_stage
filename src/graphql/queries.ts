@@ -114,6 +114,9 @@ export const getUserInOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      classrooms {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -145,6 +148,7 @@ export const listUserInOrganizations = /* GraphQL */ `
 export const getUserRole = /* GraphQL */ `
   query GetUserRole($id: ID!) {
     getUserRole(id: $id) {
+      id
       name
       organization {
         id
@@ -158,10 +162,19 @@ export const getUserRole = /* GraphQL */ `
       users {
         nextToken
       }
-      id
+      permissions {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
       createdAt
       updatedAt
       organizationRolesId
+      userRolePermissionsId
     }
   }
 `;
@@ -173,11 +186,53 @@ export const listUserRoles = /* GraphQL */ `
   ) {
     listUserRoles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
+      }
+      nextToken
+    }
+  }
+`;
+export const getRolePermissions = /* GraphQL */ `
+  query GetRolePermissions($id: ID!) {
+    getRolePermissions(id: $id) {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canRateLessons
+      canDeleteLessons
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
+    }
+  }
+`;
+export const listRolePermissions = /* GraphQL */ `
+  query ListRolePermissions(
+    $filter: ModelRolePermissionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRolePermissions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
       }
       nextToken
     }
@@ -724,6 +779,9 @@ export const getClassroom = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      members {
+        nextToken
       }
       createdAt
       updatedAt
@@ -1501,11 +1559,12 @@ export const getRolesOfUser = /* GraphQL */ `
         updatedAt
       }
       userRole {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
       }
       createdAt
       updatedAt
@@ -1523,6 +1582,55 @@ export const listRolesOfUsers = /* GraphQL */ `
         id
         userInOrganizationID
         userRoleID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserInOrganizationInClassroom = /* GraphQL */ `
+  query GetUserInOrganizationInClassroom($id: ID!) {
+    getUserInOrganizationInClassroom(id: $id) {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserInOrganizationInClassrooms = /* GraphQL */ `
+  query ListUserInOrganizationInClassrooms(
+    $filter: ModelUserInOrganizationInClassroomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserInOrganizationInClassrooms(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userInOrganizationID
+        classroomID
         createdAt
         updatedAt
       }

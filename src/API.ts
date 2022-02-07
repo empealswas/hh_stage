@@ -100,6 +100,7 @@ export type UserInOrganization = {
   user?: User | null,
   organization?: Organization | null,
   roles?: ModelRolesOfUserConnection | null,
+  classrooms?: ModelUserInOrganizationInClassroomConnection | null,
   id: string,
   createdAt: string,
   updatedAt: string,
@@ -210,6 +211,7 @@ export type Classroom = {
   Organization?: Organization | null,
   yearGroupID?: string | null,
   yearGroup?: Curriculum | null,
+  members?: ModelUserInOrganizationInClassroomConnection | null,
   createdAt: string,
   updatedAt: string,
   organizationClassroomsId?: string | null,
@@ -583,6 +585,23 @@ export type ModelInterventionConnection = {
   nextToken?: string | null,
 };
 
+export type ModelUserInOrganizationInClassroomConnection = {
+  __typename: "ModelUserInOrganizationInClassroomConnection",
+  items:  Array<UserInOrganizationInClassroom | null >,
+  nextToken?: string | null,
+};
+
+export type UserInOrganizationInClassroom = {
+  __typename: "UserInOrganizationInClassroom",
+  id: string,
+  userInOrganizationID: string,
+  classroomID: string,
+  userInOrganization: UserInOrganization,
+  classroom: Classroom,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type ModelTeacherOrganziationConnection = {
   __typename: "ModelTeacherOrganziationConnection",
   items:  Array<TeacherOrganziation | null >,
@@ -620,13 +639,15 @@ export type ModelUserRoleConnection = {
 
 export type UserRole = {
   __typename: "UserRole",
+  id: string,
   name: string,
   organization: Organization,
   users?: ModelRolesOfUserConnection | null,
-  id: string,
+  permissions?: RolePermissions | null,
   createdAt: string,
   updatedAt: string,
   organizationRolesId?: string | null,
+  userRolePermissionsId?: string | null,
 };
 
 export type ModelRolesOfUserConnection = {
@@ -644,6 +665,18 @@ export type RolesOfUser = {
   userRole: UserRole,
   createdAt: string,
   updatedAt: string,
+};
+
+export type RolePermissions = {
+  __typename: "RolePermissions",
+  role?: UserRole | null,
+  canAccessAttendanceSheet?: boolean | null,
+  canRateLessons?: boolean | null,
+  canDeleteLessons?: boolean | null,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  rolePermissionsRoleId?: string | null,
 };
 
 export type ModelOrganizationConnection = {
@@ -725,9 +758,10 @@ export type DeleteUserInOrganizationInput = {
 };
 
 export type CreateUserRoleInput = {
-  name: string,
   id?: string | null,
+  name: string,
   organizationRolesId?: string | null,
+  userRolePermissionsId?: string | null,
 };
 
 export type ModelUserRoleConditionInput = {
@@ -736,15 +770,54 @@ export type ModelUserRoleConditionInput = {
   or?: Array< ModelUserRoleConditionInput | null > | null,
   not?: ModelUserRoleConditionInput | null,
   organizationRolesId?: ModelIDInput | null,
+  userRolePermissionsId?: ModelIDInput | null,
 };
 
 export type UpdateUserRoleInput = {
-  name?: string | null,
   id: string,
+  name?: string | null,
   organizationRolesId?: string | null,
+  userRolePermissionsId?: string | null,
 };
 
 export type DeleteUserRoleInput = {
+  id: string,
+};
+
+export type CreateRolePermissionsInput = {
+  canAccessAttendanceSheet?: boolean | null,
+  canRateLessons?: boolean | null,
+  canDeleteLessons?: boolean | null,
+  id?: string | null,
+  rolePermissionsRoleId?: string | null,
+};
+
+export type ModelRolePermissionsConditionInput = {
+  canAccessAttendanceSheet?: ModelBooleanInput | null,
+  canRateLessons?: ModelBooleanInput | null,
+  canDeleteLessons?: ModelBooleanInput | null,
+  and?: Array< ModelRolePermissionsConditionInput | null > | null,
+  or?: Array< ModelRolePermissionsConditionInput | null > | null,
+  not?: ModelRolePermissionsConditionInput | null,
+  rolePermissionsRoleId?: ModelIDInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateRolePermissionsInput = {
+  canAccessAttendanceSheet?: boolean | null,
+  canRateLessons?: boolean | null,
+  canDeleteLessons?: boolean | null,
+  id: string,
+  rolePermissionsRoleId?: string | null,
+};
+
+export type DeleteRolePermissionsInput = {
   id: string,
 };
 
@@ -990,13 +1063,6 @@ export type ModelClassroomLessonConditionInput = {
   and?: Array< ModelClassroomLessonConditionInput | null > | null,
   or?: Array< ModelClassroomLessonConditionInput | null > | null,
   not?: ModelClassroomLessonConditionInput | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ClassroomLesson = {
@@ -1613,6 +1679,30 @@ export type DeleteRolesOfUserInput = {
   id: string,
 };
 
+export type CreateUserInOrganizationInClassroomInput = {
+  id?: string | null,
+  userInOrganizationID: string,
+  classroomID: string,
+};
+
+export type ModelUserInOrganizationInClassroomConditionInput = {
+  userInOrganizationID?: ModelIDInput | null,
+  classroomID?: ModelIDInput | null,
+  and?: Array< ModelUserInOrganizationInClassroomConditionInput | null > | null,
+  or?: Array< ModelUserInOrganizationInClassroomConditionInput | null > | null,
+  not?: ModelUserInOrganizationInClassroomConditionInput | null,
+};
+
+export type UpdateUserInOrganizationInClassroomInput = {
+  id: string,
+  userInOrganizationID?: string | null,
+  classroomID?: string | null,
+};
+
+export type DeleteUserInOrganizationInClassroomInput = {
+  id: string,
+};
+
 export type CreateTeacherOrganziationInput = {
   id?: string | null,
   organizationID: string,
@@ -1669,11 +1759,29 @@ export type ModelUserInOrganizationFilterInput = {
 };
 
 export type ModelUserRoleFilterInput = {
+  id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   and?: Array< ModelUserRoleFilterInput | null > | null,
   or?: Array< ModelUserRoleFilterInput | null > | null,
   not?: ModelUserRoleFilterInput | null,
   organizationRolesId?: ModelIDInput | null,
+  userRolePermissionsId?: ModelIDInput | null,
+};
+
+export type ModelRolePermissionsFilterInput = {
+  canAccessAttendanceSheet?: ModelBooleanInput | null,
+  canRateLessons?: ModelBooleanInput | null,
+  canDeleteLessons?: ModelBooleanInput | null,
+  and?: Array< ModelRolePermissionsFilterInput | null > | null,
+  or?: Array< ModelRolePermissionsFilterInput | null > | null,
+  not?: ModelRolePermissionsFilterInput | null,
+  rolePermissionsRoleId?: ModelIDInput | null,
+};
+
+export type ModelRolePermissionsConnection = {
+  __typename: "ModelRolePermissionsConnection",
+  items:  Array<RolePermissions | null >,
+  nextToken?: string | null,
 };
 
 export type ModelOrganizationFilterInput = {
@@ -2004,6 +2112,15 @@ export type ModelRolesOfUserFilterInput = {
   not?: ModelRolesOfUserFilterInput | null,
 };
 
+export type ModelUserInOrganizationInClassroomFilterInput = {
+  id?: ModelIDInput | null,
+  userInOrganizationID?: ModelIDInput | null,
+  classroomID?: ModelIDInput | null,
+  and?: Array< ModelUserInOrganizationInClassroomFilterInput | null > | null,
+  or?: Array< ModelUserInOrganizationInClassroomFilterInput | null > | null,
+  not?: ModelUserInOrganizationInClassroomFilterInput | null,
+};
+
 export type ModelTeacherOrganziationFilterInput = {
   id?: ModelIDInput | null,
   organizationID?: ModelIDInput | null,
@@ -2232,6 +2349,10 @@ export type CreateUserInOrganizationMutation = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -2269,6 +2390,10 @@ export type UpdateUserInOrganizationMutation = {
     } | null,
     roles?:  {
       __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
       nextToken?: string | null,
     } | null,
     id: string,
@@ -2310,6 +2435,10 @@ export type DeleteUserInOrganizationMutation = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -2324,6 +2453,7 @@ export type CreateUserRoleMutationVariables = {
 export type CreateUserRoleMutation = {
   createUserRole?:  {
     __typename: "UserRole",
+    id: string,
     name: string,
     organization:  {
       __typename: "Organization",
@@ -2339,10 +2469,20 @@ export type CreateUserRoleMutation = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
-    id: string,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationRolesId?: string | null,
+    userRolePermissionsId?: string | null,
   } | null,
 };
 
@@ -2354,6 +2494,7 @@ export type UpdateUserRoleMutationVariables = {
 export type UpdateUserRoleMutation = {
   updateUserRole?:  {
     __typename: "UserRole",
+    id: string,
     name: string,
     organization:  {
       __typename: "Organization",
@@ -2369,10 +2510,20 @@ export type UpdateUserRoleMutation = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
-    id: string,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationRolesId?: string | null,
+    userRolePermissionsId?: string | null,
   } | null,
 };
 
@@ -2384,6 +2535,7 @@ export type DeleteUserRoleMutationVariables = {
 export type DeleteUserRoleMutation = {
   deleteUserRole?:  {
     __typename: "UserRole",
+    id: string,
     name: string,
     organization:  {
       __typename: "Organization",
@@ -2399,10 +2551,101 @@ export type DeleteUserRoleMutation = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
-    id: string,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationRolesId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type CreateRolePermissionsMutationVariables = {
+  input: CreateRolePermissionsInput,
+  condition?: ModelRolePermissionsConditionInput | null,
+};
+
+export type CreateRolePermissionsMutation = {
+  createRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type UpdateRolePermissionsMutationVariables = {
+  input: UpdateRolePermissionsInput,
+  condition?: ModelRolePermissionsConditionInput | null,
+};
+
+export type UpdateRolePermissionsMutation = {
+  updateRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type DeleteRolePermissionsMutationVariables = {
+  input: DeleteRolePermissionsInput,
+  condition?: ModelRolePermissionsConditionInput | null,
+};
+
+export type DeleteRolePermissionsMutation = {
+  deleteRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
   } | null,
 };
 
@@ -3470,6 +3713,10 @@ export type CreateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationClassroomsId?: string | null,
@@ -3523,6 +3770,10 @@ export type UpdateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationClassroomsId?: string | null,
@@ -3575,6 +3826,10 @@ export type DeleteClassroomMutation = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -5730,11 +5985,12 @@ export type CreateRolesOfUserMutation = {
     },
     userRole:  {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -5762,11 +6018,12 @@ export type UpdateRolesOfUserMutation = {
     },
     userRole:  {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -5794,11 +6051,114 @@ export type DeleteRolesOfUserMutation = {
     },
     userRole:  {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUserInOrganizationInClassroomMutationVariables = {
+  input: CreateUserInOrganizationInClassroomInput,
+  condition?: ModelUserInOrganizationInClassroomConditionInput | null,
+};
+
+export type CreateUserInOrganizationInClassroomMutation = {
+  createUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserInOrganizationInClassroomMutationVariables = {
+  input: UpdateUserInOrganizationInClassroomInput,
+  condition?: ModelUserInOrganizationInClassroomConditionInput | null,
+};
+
+export type UpdateUserInOrganizationInClassroomMutation = {
+  updateUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserInOrganizationInClassroomMutationVariables = {
+  input: DeleteUserInOrganizationInClassroomInput,
+  condition?: ModelUserInOrganizationInClassroomConditionInput | null,
+};
+
+export type DeleteUserInOrganizationInClassroomMutation = {
+  deleteUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -6047,6 +6407,10 @@ export type GetUserInOrganizationQuery = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -6081,6 +6445,7 @@ export type GetUserRoleQueryVariables = {
 export type GetUserRoleQuery = {
   getUserRole?:  {
     __typename: "UserRole",
+    id: string,
     name: string,
     organization:  {
       __typename: "Organization",
@@ -6096,10 +6461,20 @@ export type GetUserRoleQuery = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
-    id: string,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationRolesId?: string | null,
+    userRolePermissionsId?: string | null,
   } | null,
 };
 
@@ -6114,11 +6489,61 @@ export type ListUserRolesQuery = {
     __typename: "ModelUserRoleConnection",
     items:  Array< {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetRolePermissionsQueryVariables = {
+  id: string,
+};
+
+export type GetRolePermissionsQuery = {
+  getRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type ListRolePermissionsQueryVariables = {
+  filter?: ModelRolePermissionsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRolePermissionsQuery = {
+  listRolePermissions?:  {
+    __typename: "ModelRolePermissionsConnection",
+    items:  Array< {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -6747,6 +7172,10 @@ export type GetClassroomQuery = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -7649,11 +8078,12 @@ export type GetRolesOfUserQuery = {
     },
     userRole:  {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -7674,6 +8104,60 @@ export type ListRolesOfUsersQuery = {
       id: string,
       userInOrganizationID: string,
       userRoleID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserInOrganizationInClassroomQueryVariables = {
+  id: string,
+};
+
+export type GetUserInOrganizationInClassroomQuery = {
+  getUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUserInOrganizationInClassroomsQueryVariables = {
+  filter?: ModelUserInOrganizationInClassroomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserInOrganizationInClassroomsQuery = {
+  listUserInOrganizationInClassrooms?:  {
+    __typename: "ModelUserInOrganizationInClassroomConnection",
+    items:  Array< {
+      __typename: "UserInOrganizationInClassroom",
+      id: string,
+      userInOrganizationID: string,
+      classroomID: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -7921,6 +8405,10 @@ export type OnCreateUserInOrganizationSubscription = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -7953,6 +8441,10 @@ export type OnUpdateUserInOrganizationSubscription = {
     } | null,
     roles?:  {
       __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
       nextToken?: string | null,
     } | null,
     id: string,
@@ -7989,6 +8481,10 @@ export type OnDeleteUserInOrganizationSubscription = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -7998,6 +8494,7 @@ export type OnDeleteUserInOrganizationSubscription = {
 export type OnCreateUserRoleSubscription = {
   onCreateUserRole?:  {
     __typename: "UserRole",
+    id: string,
     name: string,
     organization:  {
       __typename: "Organization",
@@ -8013,16 +8510,27 @@ export type OnCreateUserRoleSubscription = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
-    id: string,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationRolesId?: string | null,
+    userRolePermissionsId?: string | null,
   } | null,
 };
 
 export type OnUpdateUserRoleSubscription = {
   onUpdateUserRole?:  {
     __typename: "UserRole",
+    id: string,
     name: string,
     organization:  {
       __typename: "Organization",
@@ -8038,16 +8546,27 @@ export type OnUpdateUserRoleSubscription = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
-    id: string,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationRolesId?: string | null,
+    userRolePermissionsId?: string | null,
   } | null,
 };
 
 export type OnDeleteUserRoleSubscription = {
   onDeleteUserRole?:  {
     __typename: "UserRole",
+    id: string,
     name: string,
     organization:  {
       __typename: "Organization",
@@ -8063,10 +8582,86 @@ export type OnDeleteUserRoleSubscription = {
       __typename: "ModelRolesOfUserConnection",
       nextToken?: string | null,
     } | null,
-    id: string,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationRolesId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type OnCreateRolePermissionsSubscription = {
+  onCreateRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type OnUpdateRolePermissionsSubscription = {
+  onUpdateRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type OnDeleteRolePermissionsSubscription = {
+  onDeleteRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
   } | null,
 };
 
@@ -9009,6 +9604,10 @@ export type OnCreateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationClassroomsId?: string | null,
@@ -9057,6 +9656,10 @@ export type OnUpdateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     organizationClassroomsId?: string | null,
@@ -9104,6 +9707,10 @@ export type OnDeleteClassroomSubscription = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -10954,11 +11561,12 @@ export type OnCreateRolesOfUserSubscription = {
     },
     userRole:  {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -10981,11 +11589,12 @@ export type OnUpdateRolesOfUserSubscription = {
     },
     userRole:  {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -11008,11 +11617,99 @@ export type OnDeleteRolesOfUserSubscription = {
     },
     userRole:  {
       __typename: "UserRole",
-      name: string,
       id: string,
+      name: string,
       createdAt: string,
       updatedAt: string,
       organizationRolesId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserInOrganizationInClassroomSubscription = {
+  onCreateUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserInOrganizationInClassroomSubscription = {
+  onUpdateUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserInOrganizationInClassroomSubscription = {
+  onDeleteUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,

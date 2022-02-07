@@ -115,7 +115,7 @@ const ChipsArray = (props: LessonOptionProps) => {
         </>)
     }
     return (
-        <Card variant={'outlined'} sx={{width: '100%'}}>
+        <Card variant={'outlined'} sx={{width: '100%'}} >
             <CardHeader title={name}/>
             <CardContent>
                 <Stack direction={'column'} spacing={2}>

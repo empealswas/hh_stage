@@ -168,6 +168,9 @@ export const onCreateUserInOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      classrooms {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -197,6 +200,9 @@ export const onUpdateUserInOrganization = /* GraphQL */ `
         organizationLogoId
       }
       roles {
+        nextToken
+      }
+      classrooms {
         nextToken
       }
       id
@@ -230,6 +236,9 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      classrooms {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -239,6 +248,7 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
 export const onCreateUserRole = /* GraphQL */ `
   subscription OnCreateUserRole {
     onCreateUserRole {
+      id
       name
       organization {
         id
@@ -252,16 +262,26 @@ export const onCreateUserRole = /* GraphQL */ `
       users {
         nextToken
       }
-      id
+      permissions {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
       createdAt
       updatedAt
       organizationRolesId
+      userRolePermissionsId
     }
   }
 `;
 export const onUpdateUserRole = /* GraphQL */ `
   subscription OnUpdateUserRole {
     onUpdateUserRole {
+      id
       name
       organization {
         id
@@ -275,16 +295,26 @@ export const onUpdateUserRole = /* GraphQL */ `
       users {
         nextToken
       }
-      id
+      permissions {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
       createdAt
       updatedAt
       organizationRolesId
+      userRolePermissionsId
     }
   }
 `;
 export const onDeleteUserRole = /* GraphQL */ `
   subscription OnDeleteUserRole {
     onDeleteUserRole {
+      id
       name
       organization {
         id
@@ -298,10 +328,82 @@ export const onDeleteUserRole = /* GraphQL */ `
       users {
         nextToken
       }
-      id
+      permissions {
+        canAccessAttendanceSheet
+        canRateLessons
+        canDeleteLessons
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
       createdAt
       updatedAt
       organizationRolesId
+      userRolePermissionsId
+    }
+  }
+`;
+export const onCreateRolePermissions = /* GraphQL */ `
+  subscription OnCreateRolePermissions {
+    onCreateRolePermissions {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canRateLessons
+      canDeleteLessons
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
+    }
+  }
+`;
+export const onUpdateRolePermissions = /* GraphQL */ `
+  subscription OnUpdateRolePermissions {
+    onUpdateRolePermissions {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canRateLessons
+      canDeleteLessons
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
+    }
+  }
+`;
+export const onDeleteRolePermissions = /* GraphQL */ `
+  subscription OnDeleteRolePermissions {
+    onDeleteRolePermissions {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canRateLessons
+      canDeleteLessons
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
     }
   }
 `;
@@ -1152,6 +1254,9 @@ export const onCreateClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      members {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationClassroomsId
@@ -1195,6 +1300,9 @@ export const onUpdateClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      members {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationClassroomsId
@@ -1237,6 +1345,9 @@ export const onDeleteClassroom = /* GraphQL */ `
         name
         createdAt
         updatedAt
+      }
+      members {
+        nextToken
       }
       createdAt
       updatedAt
@@ -2935,11 +3046,12 @@ export const onCreateRolesOfUser = /* GraphQL */ `
         updatedAt
       }
       userRole {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
       }
       createdAt
       updatedAt
@@ -2960,11 +3072,12 @@ export const onUpdateRolesOfUser = /* GraphQL */ `
         updatedAt
       }
       userRole {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
       }
       createdAt
       updatedAt
@@ -2985,11 +3098,93 @@ export const onDeleteRolesOfUser = /* GraphQL */ `
         updatedAt
       }
       userRole {
-        name
         id
+        name
         createdAt
         updatedAt
         organizationRolesId
+        userRolePermissionsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUserInOrganizationInClassroom = /* GraphQL */ `
+  subscription OnCreateUserInOrganizationInClassroom {
+    onCreateUserInOrganizationInClassroom {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUserInOrganizationInClassroom = /* GraphQL */ `
+  subscription OnUpdateUserInOrganizationInClassroom {
+    onUpdateUserInOrganizationInClassroom {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUserInOrganizationInClassroom = /* GraphQL */ `
+  subscription OnDeleteUserInOrganizationInClassroom {
+    onDeleteUserInOrganizationInClassroom {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
       }
       createdAt
       updatedAt
