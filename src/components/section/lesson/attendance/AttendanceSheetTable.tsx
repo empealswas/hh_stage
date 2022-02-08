@@ -2,9 +2,16 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Icon} from '@iconify/react';
 import {API, graphqlOperation} from "aws-amplify";
 import {useParams} from "react-router-dom";
-import {Attendance, Classroom, ClassroomLesson} from "../../../../API";
+import {
+    Attendance,
+    Classroom,
+    ClassroomLesson,
+    CreateAttendanceInput,
+    PELessonRecord,
+    UserInOrganization, UserRole
+} from "../../../../API";
 import {createAttendance, createClassroomLesson, updateAttendance, updateClassroomLesson} from 'src/graphql/mutations';
-import {Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select} from "@mui/material";
+import {Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select, Stack} from "@mui/material";
 import {DataGrid, GridColDef, GridToolbar, GridValueGetterParams} from "@mui/x-data-grid";
 import Iconify from "../../../Iconify";
 import useAuth from "../../../../hooks/useAuth";
@@ -13,18 +20,20 @@ import CustomLoadingOverlay from './CustomLoadingOverlay';
 import LessonDetails from "./LessonDetails";
 
 
-
 interface GridConfigOptions {
     selectedClassroom: Classroom;
+    selectedUserRole: UserRole;
 }
 
 interface GridToolbarContainerProps {
     onApply: (options: GridConfigOptions) => void;
     classrooms: Classroom [];
+    roles: UserRole[];
     selectedClassroom: Classroom;
+    selectedUserRole: UserRole;
 }
 
-type AttendanceOfPupil = {
+type AttendanceOfUser = {
     id: string,
     attendanceId: string,
     firstName: string,
@@ -37,31 +46,44 @@ type AttendanceOfPupil = {
 }
 
 const classroomsOfTeacherQuery = `query MyQuery($id: ID = "") {
-  getTeacher(id: $id) {
+  getUserInOrganization(id: $id) {
     classrooms {
       items {
-        classroom {
-          name
-          id
+        userInOrganization {
+          user {
+            firstName
+            lastName
+            id
+          }
         }
       }
     }
   }
 }`
-const getPupilsOfClassroomAttendanceQuery = `query MyQuery($eq: ID = "", $id: ID = "") {
+const getMembersOfClassroomAttendanceQuery = `query MyQuery($id: ID = "", $eq: ID = "") {
   getClassroom(id: $id) {
-    pupils {
+    members {
       items {
-        pupil {
+        userInOrganization {
           id
-          firstName
-          lastName
+          user {
+            lastName
+            firstName
+            id
+          }
           Attendances(filter: {lessonID: {eq: $eq}}) {
             items {
               id
-              pupilID
               present
               wasRewarded
+            }
+          }
+          roles {
+            items {
+              userRole {
+                name
+                id
+              }
             }
           }
         }
@@ -80,10 +102,12 @@ const classroomCompleteQuery = `query MyQuery($classroom: ID = "", $lesson: ID =
 }
 `
 
-async function makeAttendance(pupilId: string, lessonId: string) {
-    const input = {
+
+async function addAttendanceForPupil(userInOrganizationId: string, lessonId: string, lessonRecordId: string) {
+    const input: CreateAttendanceInput = {
         lessonID: lessonId,
-        pupilID: pupilId,
+        userInOrganizationAttendancesId: userInOrganizationId,
+        lessonRecordID: lessonRecordId,
         present: true,
         wasRewarded: false,
     }
@@ -92,40 +116,65 @@ async function makeAttendance(pupilId: string, lessonId: string) {
     return result.data.createAttendance;
 }
 
-async function addAttendanceForPupil(pupilId: string, lessonId: string) {
-    return makeAttendance(pupilId, lessonId);
-}
-
 
 function SettingsPanel(props: GridToolbarContainerProps) {
-    const {onApply, selectedClassroom, classrooms} = props;
+    const {onApply, selectedClassroom, classrooms, selectedUserRole, roles} = props;
 
     const [classroom, setClassroom] = useState(selectedClassroom);
+    const [selectedRole, setSelectedRole] = useState<UserRole>(selectedUserRole);
 
     const handleDatasetChange = React.useCallback((event: any) => {
 
         const find = classrooms.find(value => value.id === event.target.value) as Classroom;
-        console.log(find)
         setClassroom(find)
     }, []);
+    const handleRoleChange = React.useCallback((event: any) => {
+
+        const find = roles.find(value => value.id === event.target.value) as UserRole;
+        console.log(find);
+        setSelectedRole(find)
+    }, []);
+
+
     const handleApplyChanges = React.useCallback(() => {
         onApply({
-            selectedClassroom: classroom
+            selectedClassroom: classroom,
+            selectedUserRole: selectedRole
         });
-    }, [classroom, onApply]);
+    }, [classroom, selectedRole, onApply]);
+
+
+
+    useEffect(() => {
+        console.log('applying')
+        handleApplyChanges();
+        return () => {
+
+        };
+    }, [classroom, selectedRole]);
 
 
     return (
         <FormGroup className="MuiFormGroup-options" row>
-            <FormControl variant="standard">
-                <InputLabel>Classroom</InputLabel>
-                <Select value={classroom.id} onChange={handleDatasetChange}>
-                    {classrooms.map((classroom: Classroom) => (
-                        <MenuItem key={classroom.id} value={classroom.id}>{classroom.name}</MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <Button
+            <Stack direction={'row'} spacing={3}>
+                <FormControl variant="standard">
+                    <InputLabel>Classroom</InputLabel>
+                    <Select value={classroom.id} onChange={handleDatasetChange}>
+                        {classrooms.map((classroom: Classroom) => (
+                            <MenuItem key={classroom.id} value={classroom.id}>{classroom.name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard">
+                    <InputLabel>Role</InputLabel>
+                    <Select value={selectedRole.id} onChange={handleRoleChange}>
+                        {roles.map((role) => (
+                            <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Stack>
+{/*                        <Button
                 size="small"
                 variant="outlined"
                 color="primary"
@@ -133,23 +182,40 @@ function SettingsPanel(props: GridToolbarContainerProps) {
                 sx={{ml: 2}}
             >
                 <Iconify icon={'eva:arrow-ios-forward-fill'} sx={{fontSize: 20}}/> Apply
-            </Button>
+            </Button>*/}
         </FormGroup>
     )
 }
 
-const AttendanceSheetTable = (props: {}) => {
-    const {user} = useAuth();
+type Props = {
+    userInOrganization: UserInOrganization,
+    roles: UserRole[]
+}
+const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
     const {lessonId} = useParams();
+    const [lessonRecord, setLessonRecord] = useState<PELessonRecord | null>(null);
 
-    const [classroomsOfTeacher, setClassroomsOfTeacher] = useState<null | Classroom[]>(null);
-    const [selectedClassroom, setSelectedClassroom] = useState<Classroom | null>(null);
-    const [pupils, setPupils] = useState<null | AttendanceOfPupil[]>(null);
-    const setSelectedClassroomData = (classroom: Classroom) => {
-        setSelectedClassroom(classroom);
-        getAttendanceOfPupils(classroom.id);
-        getClassroomCompleteness(classroom.id);
+    const classrooms = userInOrganization.classrooms?.items.map(value => value?.classroom) as Classroom[];
+    const [selectedClassroom, setSelectedClassroom] = useState<Classroom>(classrooms[0]);
+    const [selectedRole, setSelectedRole] = useState<UserRole>(roles[0]);
+
+    const [pupils, setPupils] = useState<null | AttendanceOfUser[]>(null);
+    const setSelectedClassroomData = (settings: GridConfigOptions, lessonRecord: PELessonRecord) => {
+        setSelectedClassroom(settings.selectedClassroom);
+        setSelectedRole(settings.selectedUserRole);
+        console.log('Applying', settings.selectedUserRole);
+        getAttendanceOfPupils(settings.selectedClassroom.id, lessonRecord.id, settings.selectedUserRole);
+        getClassroomCompleteness(settings.selectedClassroom.id);
     }
+
+    useEffect(() => {
+        if (lessonRecord) {
+            setSelectedClassroomData({selectedClassroom: selectedClassroom, selectedUserRole: selectedRole}, lessonRecord);
+        }
+        return () => {
+
+        };
+    }, [lessonRecord]);
     const [classroomData, setClassroomData] = useState<ClassroomLesson | null>(null);
     const getClassroomCompleteness = async (selectedClassroomId: string) => {
         const classroomDetails: any = await API.graphql(graphqlOperation(classroomCompleteQuery, {
@@ -172,43 +238,29 @@ const AttendanceSheetTable = (props: {}) => {
         setClassroomData(classroomLesson);
         console.log('classroomDetails', classroomDetails);
     }
-    const fetchClassrooms = async () => {
-        return API.graphql(graphqlOperation(classroomsOfTeacherQuery, {id: user?.email}));
-    }
-    const getClassroomsOfTeacher = () => {
-        fetchClassrooms().then((result: any) => {
-            const classrooms = result.data.getTeacher.classrooms.items.map((item: any) => item.classroom);
-            setClassroomsOfTeacher(classrooms)
-            if (classrooms.length > 0) {
-                setSelectedClassroomData(classrooms[0]);
-            }
-        })
-    }
-    const fetchPupils = async (classroomId: string) => {
-        return API.graphql(graphqlOperation(getPupilsOfClassroomAttendanceQuery, {id: classroomId, eq: lessonId}))
-    }
-    const getAttendance = async (data: any) => {
-        return Promise.resolve(await data.data.getClassroom.pupils.items?.map(async (item: any) => {
-            const pupil: any = item.pupil;
-            if (!pupil) {
+
+
+    const getAttendance = async (members: UserInOrganization[], lessonRecordId: string) => {
+        return Promise.resolve(await Promise.all(members.map(async (member) => {
+            if (!member) {
                 return;
             }
-            const noPreviousRecordsOfAttendanceInThisLesson = pupil.Attendances?.items?.length === 0;
+            const noPreviousRecordsOfAttendanceInThisLesson = member.Attendances?.items?.length === 0;
             let attendance: Attendance;
             if (noPreviousRecordsOfAttendanceInThisLesson) {
                 // @ts-ignore
-                const response = await addAttendanceForPupil(pupil.id, lessonId);
+                const response = await addAttendanceForPupil(member.id, lessonId, lessonRecordId);
                 attendance = response
                 console.log('res', response)
             } else {
-                const [attendanceInLesson] = pupil.Attendances?.items as Attendance[];
+                const [attendanceInLesson] = member.Attendances?.items as Attendance[];
                 attendance = attendanceInLesson;
             }
-            const attendanceOfPupil: AttendanceOfPupil = {
-                id: pupil.id,
+            const attendanceOfPupil: AttendanceOfUser = {
+                id: member.id,
                 attendanceId: attendance.id,
-                firstName: pupil.firstName,
-                lastName: pupil.lastName,
+                firstName: member.user?.firstName as string,
+                lastName: member.user?.lastName as string,
                 newRecord: noPreviousRecordsOfAttendanceInThisLesson,
                 present: noPreviousRecordsOfAttendanceInThisLesson ? true : attendance?.present ?? true,
                 wasRewarded: attendance.wasRewarded ?? false,
@@ -216,16 +268,26 @@ const AttendanceSheetTable = (props: {}) => {
                 receivesTrophy: false
             }
             return attendanceOfPupil;
-        }));
+        })));
     }
-    const getAttendanceOfPupils = (classroomId: string) => {
+    const getAttendanceOfPupils = async (classroomId: string, lessonRecordId: string, userRole: UserRole) => {
+        const result: any = await API.graphql(graphqlOperation(getMembersOfClassroomAttendanceQuery, {
+            id: classroomId,
+            eq: lessonId
+        }))
+        console.log(result.data.getClassroom.members.items);
+        const members: UserInOrganization[] = result.data.getClassroom.members.items
+            .map((item: any) => item.userInOrganization)
+            .filter((userInOrganization: UserInOrganization) => {
+                const rolesOfUser = userInOrganization.roles?.items?.map(value => value?.userRole);
+                console.log("Roles of user", rolesOfUser);
+                console.log('Selected roles', selectedRole);
+                return rolesOfUser?.find(value => value?.id === userRole.id) !== undefined;
+            });
+        console.log(members);
+        const pupilsAttendance = await getAttendance(members, lessonRecordId) as AttendanceOfUser[];
 
-
-        fetchPupils(classroomId).then((result: any) => {
-            return getAttendance(result);
-        }).then((data: any) => {
-            Promise.all(data).then((result: any) => setPupils(result))
-        })
+        setPupils(pupilsAttendance);
     }
     const columns: GridColDef[] = [
         {field: 'id', headerName: 'ID', flex: 0.5},
@@ -262,14 +324,6 @@ const AttendanceSheetTable = (props: {}) => {
             type: 'boolean',
             editable: true,
         },
-        // {
-        //     field: 'score',
-        //     headerName: 'Score',
-        //     flex: 1.3,
-        //     renderCell: renderRating,
-        //     renderEditCell: renderRatingEditInputCell,
-        //     editable: true
-        // },
         {
             field: 'wasRewarded',
             headerName: 'Reward',
@@ -284,48 +338,41 @@ const AttendanceSheetTable = (props: {}) => {
     ];
 
     const handleApplyClick = (settings: GridConfigOptions) => {
-
-        if (!selectedClassroom || selectedClassroom.id !== settings.selectedClassroom.id) {
+        console.log(settings)
             setPupils(null);
-            setSelectedClassroomData(settings.selectedClassroom);
-        }
+            if (lessonRecord) {
+                setSelectedClassroomData(settings, lessonRecord);
+            }
     };
-    useEffect(() => {
-
-        getClassroomsOfTeacher();
-
-        return () => {
-
-        };
-    }, []);
 
 
     return (
         <>
             {classroomData &&
-            <Button color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}}
-                    onClick={async () => {
-                        const result: any = await API.graphql(graphqlOperation(updateClassroomLesson, {
-                            input: {
-                                id: classroomData.id,
-                                completed: !classroomData.completed
-                            }
-                        }))
-                        setClassroomData(result.data.updateClassroomLesson);
+                <Button color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}}
+                        onClick={async () => {
+                            const result: any = await API.graphql(graphqlOperation(updateClassroomLesson, {
+                                input: {
+                                    id: classroomData.id,
+                                    completed: !classroomData.completed
+                                }
+                            }))
+                            setClassroomData(result.data.updateClassroomLesson);
 
-                    }
-                    }
-                    variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</Button>
+                        }
+                        }
+                        variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</Button>
             }
             {(selectedClassroom && lessonId) &&
-            <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}/>
+                <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}
+                               setLessonRecord={setLessonRecord}/>
             }
             <Box height={50}/>
-            {classroomsOfTeacher && selectedClassroom &&
-            <Box mb={1}>
-                <SettingsPanel onApply={handleApplyClick} classrooms={classroomsOfTeacher}
-                               selectedClassroom={selectedClassroom}/>
-            </Box>
+            {classrooms && selectedClassroom &&
+                <Box mb={1}>
+                    <SettingsPanel onApply={handleApplyClick} classrooms={classrooms}
+                                   selectedClassroom={selectedClassroom} roles={roles} selectedUserRole={selectedRole}/>
+                </Box>
             }
             <DataGrid
                 rows={pupils ?? []}
@@ -334,14 +381,14 @@ const AttendanceSheetTable = (props: {}) => {
                 pageSize={10}
                 autoHeight
                 rowsPerPageOptions={[5]}
-                loading={classroomsOfTeacher === null || pupils === null}
+                loading={classrooms === null || pupils === null}
                 components={{
                     Toolbar: GridToolbar,
                     LoadingOverlay: CustomLoadingOverlay,
                 }}
                 componentsProps={{}}
                 onCellEditCommit={(params, event, details) => {
-                    const attendanceOfPupil = pupils?.find(pupil => pupil.id === params.id) as AttendanceOfPupil;
+                    const attendanceOfPupil = pupils?.find(pupil => pupil.id === params.id) as AttendanceOfUser;
                     console.log(attendanceOfPupil);
                     console.log(params)
                     const res = API.graphql(graphqlOperation(updateAttendance, {

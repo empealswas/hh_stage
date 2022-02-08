@@ -115,16 +115,17 @@ const LessonOverview = () => {
                                                    navigate(-1);
                                                }
                                                }/>}/>
+                            {lessonId && <>
+                                {/*<LessonRating lessonId={lessonId}/>*/}
+                                <AttendanceSheetModal lessonId={lessonId}/>
+                            </>}
                             <Typography variant={"h4"} style={{marginTop: '30px'}}>
                                 {/*{lesson.description}*/}
                                 <Markdown  children={lesson.description || ''}/>
                             </Typography>
-                            <Can I={'read'} an={'attendance'}>
-                                {lessonId && <>
-                                    <LessonRating lessonId={lessonId}/>
-                                    <AttendanceSheetModal lessonId={lessonId}/>
-                                </>}
-                            </Can>
+                            {/*<Can I={'read'} an={'attendance'}>*/}
+
+                            {/*</Can>*/}
                         </Container>
                     </Box>
 

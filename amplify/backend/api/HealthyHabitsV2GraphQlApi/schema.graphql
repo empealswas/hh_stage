@@ -21,6 +21,7 @@ type UserInOrganization @model @auth(rules: [{allow: private}]) {
     organization: Organization @belongsTo(fields: ["organizationID"])
     roles: [UserRole] @manyToMany(relationName:"RolesOfUser")
     classrooms: [Classroom] @manyToMany(relationName: "UserInOrganizationInClassroom")
+    Attendances: [Attendance] @hasMany
 }
 
 
@@ -30,6 +31,7 @@ type UserRole @model  @auth(rules: [{allow: private}]) {
     organization: Organization! @belongsTo
     users: [UserInOrganization] @manyToMany(relationName:"RolesOfUser")
     permissions: RolePermissions @hasOne
+    sectionAvailableForThatRole: [Section] @manyToMany(relationName: "RolesThatCanAccess")
 }
 type RolePermissions @model @auth(rules: [{allow: private}]) {
     role: UserRole @belongsTo
@@ -74,7 +76,7 @@ type Section @model @auth(rules: [{allow: public, provider: iam}, {allow: public
     imagePreviewID: ID @index(name: "byFile")
     ImagePreview: File @hasOne(fields: ["imagePreviewID"])
     SectionOptions: SectionOptions @hasOne
-
+    rolesThatCanAccess: [UserRole] @manyToMany(relationName: "RolesThatCanAccess")
 }
 
 type Lesson @model @auth(rules: [{allow: private}]) {
@@ -195,6 +197,7 @@ type Attendance @model @auth(rules: [{allow: private}]) {
     pupilID: ID @index(name: "byPupil")
     lessonID: ID @index(name: "byLesson")
     Pupil: Pupil @belongsTo(fields: ["pupilID"])
+    UserInOrganization: UserInOrganization! @belongsTo
     Lesson: Lesson @belongsTo(fields: ["lessonID"])
     lessonRecord: PELessonRecord @belongsTo(fields: ["lessonRecordID"])
     lessonRecordID: ID @index(name: "byPELessonRecord")

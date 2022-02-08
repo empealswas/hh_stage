@@ -1,32 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {useParams, Link as RouterLink, Outlet} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
 import {API, graphqlOperation} from "aws-amplify";
 import {Organization} from "../../../API";
-import {
-    Autocomplete, Box,
-    Card,
-    CardActionArea,
-    CardContent,
-    CardHeader,
-    CardMedia, Container,
-    Grid, IconButton,
-    Link, Stack, TextField, ToggleButton, ToggleButtonGroup,
-    Typography
-} from '@mui/material';
-
-import {Teacher} from "../../../models/Teacher";
+import {Autocomplete, Box, Container, Grid, Stack, TextField, ToggleButton, ToggleButtonGroup} from '@mui/material';
 import CardSkeleton from "../../../components/skeleton/CardSkeleton";
 import useAuth from "../../../hooks/useAuth";
-import _mock from "../../../_mock";
-import ChatAccount from "../../../sections/@dashboard/chat/ChatAccount";
-import Iconify from "../../../components/Iconify";
-import {PATH_DASHBOARD} from "../../../routes/paths";
-import ChatContactSearch from "../../../sections/@dashboard/chat/ChatContactSearch";
-import Scrollbar from "../../../components/Scrollbar";
-import ChatConversationList from "../../../sections/@dashboard/chat/ChatConversationList";
-import ChatSearchResults from "../../../sections/@dashboard/chat/ChatSearchResults";
-import {Contact} from "../../../@types/chat";
-import axios from "../../../utils/axios";
 import useSettings from "../../../hooks/useSettings";
 import {listOrganizations} from "../../../graphql/queries";
 import EmptyContent from "../../../components/EmptyContent";
@@ -34,6 +11,20 @@ import OrganizationCard from "../organization/OrganizationCard";
 
 const organizationsQuery = `query MyQuery($id: ID = "") {
   getUser(id: $id) {
+  organizations {
+      items {
+        organization {
+          name
+          logo {
+            bucket
+            id
+            key
+          }
+          type
+          id
+        }
+      }
+    }
     ownedOrganizations {
       items {
         id
@@ -49,22 +40,8 @@ const organizationsQuery = `query MyQuery($id: ID = "") {
   }
 }
 `
-const teacherOrganizationsQuery = `query MyQuery($id: ID = "") {
-  getTeacher(id: $id) {
-    Organizations {
-      items {
-        id
-        organization {
-          name
-          type
-          id
-        }
-      }
-    }
-  }
-}
-`;
-const allOrganizationsQuery = `query MyQuery($pupilId: ID = "") {
+
+const allOrganizationsQuery = `query MyQuery {
   listOrganizations {
     items {
           logo {
@@ -72,22 +49,13 @@ const allOrganizationsQuery = `query MyQuery($pupilId: ID = "") {
         key
         region
       }
-      AcceptedPupils(pupilID: {eq: $pupilId}) {
-        items {
-          id
-        }
-      }
-      WaitingForAcceptPupils(pupilID: {eq: $pupilId}) {
-        items {
-          id
-        }
-      }
       type
       name
       id
     }
   }
 }`
+
 const OrganizationsGrid = () => {
     const [allOrganizations, setAllOrganizations] = useState<Organization[] | null>(null);
     const [userOrganizations, setUserOrganizations] = useState<Organization[] | null>(null);
@@ -108,11 +76,13 @@ const OrganizationsGrid = () => {
         const getOrganizations = async () => {
             setAllOrganizations(null)
             setUserOrganizations(null);
-            const result: any = await API.graphql(graphqlOperation(listOrganizations));
+            const result: any = await API.graphql(graphqlOperation(allOrganizationsQuery));
             setAllOrganizations(result.data.listOrganizations.items);
             const data: any = await API.graphql(graphqlOperation(organizationsQuery, {id: user?.email}));
-            let map = data.data.getUser?.ownedOrganizations.items;
-            setUserOrganizations(map);
+            let owned = data.data.getUser?.ownedOrganizations.items;
+            let memberOf = data.data.getUser?.organizations.items.map((item: any) => item.organization);
+            setUserOrganizations([...owned, ...memberOf]);
+
         }
         getOrganizations()
         return () => {

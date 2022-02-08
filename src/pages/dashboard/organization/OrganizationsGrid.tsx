@@ -120,7 +120,7 @@ const OrganizationsGrid = () => {
         if (!userOrganizations || !allOrganizations) {
             return (
                 <>
-                    {[0, 1, 2, 3, 4].map(index =>
+                    {[0, 1, 2, 3, 4, 5].map(index =>
                         <Grid item height={400} width={300} xs={12} sm={6} md={4} lg={4} key={index}>
                             <CardSkeleton/>
                         </Grid>
@@ -140,24 +140,9 @@ const OrganizationsGrid = () => {
         let organizations = organizationType === 'Your Clubs' ? userOrganizations : allOrganizations;
         return (
             <>
-
                 {organizations.filter(value => filter ? value.name === filter : true).map((organization, index) =>
                     <Grid key={organization.id} item xs={12} sm={6} md={4} lg={4} xl={4}>
-
                             <OrganizationCard organization={organization} index={index} discover={organizationType === 'Discover'}/>
-                            {/*                            <Card>
-                                <CardActionArea>
-                                        <CardMedia
-                                            component="img"
-                                            image={_mock.image.cover(index)}
-                                            // image="/static/HHT logo RGB.png"
-                                            alt="Paella dish"
-                                        />
-                                    <CardHeader title={organization.name} subheader={organization.type}/>
-                                    <CardContent>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>*/}
                     </Grid>
                 )}
             </>

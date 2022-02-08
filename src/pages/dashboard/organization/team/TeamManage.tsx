@@ -132,9 +132,11 @@ function SettingsPanel(props: GridToolbarContainerProps) {
     }, []);
     const handleTypeOfPeopleChange = React.useCallback((event: any) => {
         setTypeOfPersons(event.target.value);
+
     }, []);
     const handleShowAlreadyAssigned = React.useCallback((event: any) => {
         setShowAlreadyAssigned(event.target.checked);
+
     }, []);
     const handleApplyChanges = React.useCallback(() => {
         onApply({
@@ -144,6 +146,12 @@ function SettingsPanel(props: GridToolbarContainerProps) {
             showAlreadyAssigned: showAlreadyAssigned
         });
     }, [currentSet, typeOfPersons, onApply, showAlreadyAssigned]);
+    useEffect(() => {
+        handleApplyChanges();
+        return () => {
+
+        };
+    }, [currentSet, typeOfPersons, showAlreadyAssigned]);
 
     if (!settings || !settings.allRoles || !settings.currentRole || !currentSet) {
         return (
@@ -155,7 +163,7 @@ function SettingsPanel(props: GridToolbarContainerProps) {
             <Stack direction={'row'} spacing={3}>
                 <FormControl variant="standard">
                     <InputLabel>Roles</InputLabel>
-                    <Select disabled={settings.type === 'inThatClassroom'} value={currentSet.id} onChange={handleDatasetChange}>
+                    <Select disabled={typeOfPersons === 'inThatClassroom'} value={currentSet.id} onChange={handleDatasetChange}>
                         {settings?.allRoles.map(role => (
                             <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>))}
                     </Select>
@@ -168,10 +176,10 @@ function SettingsPanel(props: GridToolbarContainerProps) {
                     </Select>
                 </FormControl>
                 <FormControlLabel
-                    control={<Switch disabled={settings.type === 'inThatClassroom'} inputProps={{'aria-label': 'controlled'}} checked={showAlreadyAssigned}
+                    control={<Switch disabled={typeOfPersons === 'inThatClassroom'} inputProps={{'aria-label': 'controlled'}} checked={showAlreadyAssigned}
                                      onChange={handleShowAlreadyAssigned}/>}
                     label={showAlreadyAssigned ? 'All' : 'Not Assigned'}/>
-                <Button
+{/*                <Button
                     size="small"
                     variant="outlined"
                     color="primary"
@@ -179,7 +187,7 @@ function SettingsPanel(props: GridToolbarContainerProps) {
                     sx={{ml: 2}}
                 >
                     <Iconify icon={'eva:arrow-ios-forward-fill'} sx={{width: 20, height: 20}}/> Apply
-                </Button>
+                </Button>*/}
             </Stack>
         </FormGroup>
     );

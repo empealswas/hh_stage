@@ -6,7 +6,6 @@ import {GridCellParams, GridRenderEditCellParams} from "@mui/x-data-grid";
 
 export function renderReward(params: GridCellParams) {
     const value = Boolean(params.value);
-    console.log('val', value);
     return (
         <Checkbox value={value} color={'warning'}
                   readOnly={true}
@@ -21,7 +20,6 @@ function RewardEditCell(props: GridRenderEditCellParams) {
     const {id, value, api, field} = props;
     const valueOf = Boolean(value);
     const handleChange = (event: any) => {
-        console.log('event', event.target)
         api.setEditCellValue({id, field, value: Boolean(event.target.checked)}, event);
         // Check if the event is not from the keyboard
         // https://github.com/facebook/react/issues/7407

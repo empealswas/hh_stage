@@ -1,8 +1,20 @@
 import React, {useContext, useState} from 'react';
 
-import {Button, Card, CardContent, Dialog, DialogContent, IconButton, Toolbar, Typography} from "@mui/material";
+import {
+    Button,
+    Card,
+    CardContent,
+    Container,
+    Dialog,
+    DialogContent,
+    IconButton,
+    Toolbar,
+    Typography
+} from "@mui/material";
 import AttendanceSheetTable from "./AttendanceSheetTable";
 import Iconify from "../../../Iconify";
+import AttendanceSheetContainer from "./AttendanceSheetContainer";
+import useSettings from "../../../../hooks/useSettings";
 
 
 const query = `query MyQuery($id: ID = "") {
@@ -42,7 +54,7 @@ const getPupilsOfClassroomAttendanceQuery = `query MyQuery($eq: ID = "", $id: ID
 
 const AttendanceSheetModal = (props: { lessonId: string }) => {
     const [open, setOpen] = React.useState(false);
-
+    const settings = useSettings();
     const handleOpen = () => {
         setOpen(true);
     };
@@ -53,11 +65,13 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
 
 
     return (
-        <div>
+        <>
             <Button variant={'outlined'} color={'primary'} onClick={handleOpen}>
                 Attendance Sheet
             </Button>
-            <Dialog fullScreen open={open} onClose={handleClose} >
+            <Dialog fullScreen open={open} onClose={handleClose}>
+                <Container maxWidth={settings.themeStretch ? false: 'lg'}>
+
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                         <Iconify icon={'eva:close-square-outline'} sx={{fontSize: 30}}/>
@@ -69,15 +83,14 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
                 <DialogContent>
                     <Card>
                         <CardContent>
-                            <AttendanceSheetTable/>
+                            {/*<AttendanceSheetTable/>*/}
+                            <AttendanceSheetContainer />
                         </CardContent>
                     </Card>
-                    <DialogContent>
-
-                    </DialogContent>
                 </DialogContent>
+                </Container>
             </Dialog>
-        </div>
+        </>
     );
 }
 export default AttendanceSheetModal;

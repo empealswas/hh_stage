@@ -171,6 +171,9 @@ export const onCreateUserInOrganization = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      Attendances {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -203,6 +206,9 @@ export const onUpdateUserInOrganization = /* GraphQL */ `
         nextToken
       }
       classrooms {
+        nextToken
+      }
+      Attendances {
         nextToken
       }
       id
@@ -239,6 +245,9 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      Attendances {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -270,6 +279,9 @@ export const onCreateUserRole = /* GraphQL */ `
         createdAt
         updatedAt
         rolePermissionsRoleId
+      }
+      sectionAvailableForThatRole {
+        nextToken
       }
       createdAt
       updatedAt
@@ -304,6 +316,9 @@ export const onUpdateUserRole = /* GraphQL */ `
         updatedAt
         rolePermissionsRoleId
       }
+      sectionAvailableForThatRole {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationRolesId
@@ -336,6 +351,9 @@ export const onDeleteUserRole = /* GraphQL */ `
         createdAt
         updatedAt
         rolePermissionsRoleId
+      }
+      sectionAvailableForThatRole {
+        nextToken
       }
       createdAt
       updatedAt
@@ -656,6 +674,9 @@ export const onCreateSection = /* GraphQL */ `
         updatedAt
         sectionOptionsSectionId
       }
+      rolesThatCanAccess {
+        nextToken
+      }
       createdAt
       updatedAt
       sectionSectionOptionsId
@@ -710,6 +731,9 @@ export const onUpdateSection = /* GraphQL */ `
         updatedAt
         sectionOptionsSectionId
       }
+      rolesThatCanAccess {
+        nextToken
+      }
       createdAt
       updatedAt
       sectionSectionOptionsId
@@ -763,6 +787,9 @@ export const onDeleteSection = /* GraphQL */ `
         createdAt
         updatedAt
         sectionOptionsSectionId
+      }
+      rolesThatCanAccess {
+        nextToken
       }
       createdAt
       updatedAt
@@ -1815,6 +1842,13 @@ export const onCreateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      UserInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
       Lesson {
         id
         title
@@ -1840,6 +1874,7 @@ export const onCreateAttendance = /* GraphQL */ `
       lessonRecordID
       createdAt
       updatedAt
+      userInOrganizationAttendancesId
     }
   }
 `;
@@ -1862,6 +1897,13 @@ export const onUpdateAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      UserInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
       Lesson {
         id
         title
@@ -1887,6 +1929,7 @@ export const onUpdateAttendance = /* GraphQL */ `
       lessonRecordID
       createdAt
       updatedAt
+      userInOrganizationAttendancesId
     }
   }
 `;
@@ -1909,6 +1952,13 @@ export const onDeleteAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      UserInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
       Lesson {
         id
         title
@@ -1934,6 +1984,7 @@ export const onDeleteAttendance = /* GraphQL */ `
       lessonRecordID
       createdAt
       updatedAt
+      userInOrganizationAttendancesId
     }
   }
 `;
@@ -3185,6 +3236,93 @@ export const onDeleteUserInOrganizationInClassroom = /* GraphQL */ `
         createdAt
         updatedAt
         organizationClassroomsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateRolesThatCanAccess = /* GraphQL */ `
+  subscription OnCreateRolesThatCanAccess {
+    onCreateRolesThatCanAccess {
+      id
+      userRoleID
+      sectionID
+      userRole {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      section {
+        id
+        name
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateRolesThatCanAccess = /* GraphQL */ `
+  subscription OnUpdateRolesThatCanAccess {
+    onUpdateRolesThatCanAccess {
+      id
+      userRoleID
+      sectionID
+      userRole {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      section {
+        id
+        name
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteRolesThatCanAccess = /* GraphQL */ `
+  subscription OnDeleteRolesThatCanAccess {
+    onDeleteRolesThatCanAccess {
+      id
+      userRoleID
+      sectionID
+      userRole {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      section {
+        id
+        name
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
       }
       createdAt
       updatedAt

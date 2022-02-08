@@ -117,6 +117,9 @@ export const getUserInOrganization = /* GraphQL */ `
       classrooms {
         nextToken
       }
+      Attendances {
+        nextToken
+      }
       id
       createdAt
       updatedAt
@@ -170,6 +173,9 @@ export const getUserRole = /* GraphQL */ `
         createdAt
         updatedAt
         rolePermissionsRoleId
+      }
+      sectionAvailableForThatRole {
+        nextToken
       }
       createdAt
       updatedAt
@@ -392,6 +398,9 @@ export const getSection = /* GraphQL */ `
         createdAt
         updatedAt
         sectionOptionsSectionId
+      }
+      rolesThatCanAccess {
+        nextToken
       }
       createdAt
       updatedAt
@@ -979,6 +988,13 @@ export const getAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      UserInOrganization {
+        userID
+        organizationID
+        id
+        createdAt
+        updatedAt
+      }
       Lesson {
         id
         title
@@ -1004,6 +1020,7 @@ export const getAttendance = /* GraphQL */ `
       lessonRecordID
       createdAt
       updatedAt
+      userInOrganizationAttendancesId
     }
   }
 `;
@@ -1023,6 +1040,7 @@ export const listAttendances = /* GraphQL */ `
         lessonRecordID
         createdAt
         updatedAt
+        userInOrganizationAttendancesId
       }
       nextToken
     }
@@ -1054,6 +1072,7 @@ export const attendanceByLessonRecordID = /* GraphQL */ `
         lessonRecordID
         createdAt
         updatedAt
+        userInOrganizationAttendancesId
       }
       nextToken
     }
@@ -1631,6 +1650,57 @@ export const listUserInOrganizationInClassrooms = /* GraphQL */ `
         id
         userInOrganizationID
         classroomID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getRolesThatCanAccess = /* GraphQL */ `
+  query GetRolesThatCanAccess($id: ID!) {
+    getRolesThatCanAccess(id: $id) {
+      id
+      userRoleID
+      sectionID
+      userRole {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        userRolePermissionsId
+      }
+      section {
+        id
+        name
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listRolesThatCanAccesses = /* GraphQL */ `
+  query ListRolesThatCanAccesses(
+    $filter: ModelRolesThatCanAccessFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRolesThatCanAccesses(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userRoleID
+        sectionID
         createdAt
         updatedAt
       }

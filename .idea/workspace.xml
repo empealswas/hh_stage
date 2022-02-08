@@ -5,8 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/role/RoleChangePermissionsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/role/RoleChangePermissionsDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/ActivityCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/ActivityCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetailsForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetailsForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/Reward.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/Reward.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/mutations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/subscriptions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/header/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +127,10 @@
       <workItem from="1643986340797" duration="20403000" />
       <workItem from="1644149827115" duration="16705000" />
       <workItem from="1644186840426" duration="6202000" />
-      <workItem from="1644223464881" duration="1135000" />
+      <workItem from="1644223464881" duration="1732000" />
+      <workItem from="1644320908378" duration="4231000" />
+      <workItem from="1644329927992" duration="10891000" />
+      <workItem from="1644352950991" duration="5599000" />
     </task>
     <servers />
   </component>
@@ -141,6 +160,12 @@
           <url>file://$PROJECT_DIR$/src/components/section/lesson/LessonsGridSection.tsx</url>
           <line>23</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx</url>
+          <line>339</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

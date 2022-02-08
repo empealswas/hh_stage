@@ -206,7 +206,6 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
             <Typography textAlign={'center'} variant={'h2'} sx={{mb: 15}}>Attendance Sheet</Typography>
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Settings/>
-                    <Can I={'read'} an={'attendance'}>
                         <LoadingButton
                             size="large"
                             type="submit"
@@ -215,7 +214,6 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                         >
                             Update Record
                         </LoadingButton>
-                    </Can>
             </Form>
         </FormikProvider>
     );
