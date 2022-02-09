@@ -11,6 +11,53 @@ import CardSkeleton from "../skeleton/CardSkeleton";
 import ActivityCard from "./ActivityCard";
 import EmptyContent from "../EmptyContent";
 
+const getChildrenSectionsQuery = `query MyQuery($eq: ID = "") {
+  listSections(filter: {parentID: {eq: $eq}}, limit: 100000) {
+    items {
+      name
+      id
+      parentID
+      organizationID
+      ImagePreview {
+        bucket
+        id
+        key
+      }
+    }
+  }
+}
+`
+const parentsQuery = `query MyQuery($organizationId: ID = "") {
+  listSections(filter: {parentID: {attributeExists: false}, organizationID: {eq: $organizationId}}, limit: 100000) {
+    items {
+      name
+      id
+      parentID
+      organizationID
+      ImagePreview {
+        bucket
+        id
+        key
+      }
+    }
+  }
+}
+`
+const old = `query MyQuery {
+  listSections(limit: 100000) {
+    items {
+      id
+      name
+      parentID
+      organizationID
+      ImagePreview {
+        id
+        bucket
+        key
+      }
+    }
+  }
+}`
 const SectionGrid = () => {
     const {sectionId, organizationId} = useParams();
 
@@ -27,22 +74,18 @@ const SectionGrid = () => {
     useEffect(() => {
         const getSectionsAsync = async () => {
             setSections(null);
-            const result: any = await API.graphql(graphqlOperation(`query MyQuery {
-  listSections(limit: 100000) {
-    items {
-      id
-      name
-      parentID
-      organizationID
-      ImagePreview {
-        id
-        bucket
-        key
-      }
-    }
-  }
-}`));
-            setSections(result.data.listSections.items);
+            if (sectionId) {
+                const result: any = await API.graphql(graphqlOperation(getChildrenSectionsQuery, {eq: sectionId}));
+                console.log(result)
+
+                setSections(result.data.listSections.items);
+            } else {
+                const result: any = await API.graphql(graphqlOperation(parentsQuery, {organizationId: organizationId}));
+                console.log(result)
+                setSections(result.data.listSections.items);
+            }
+
+
         }
         const createSubscription: any = API.graphql(graphqlOperation(onCreateSection));
         const updateSubscription = createSubscription.subscribe({
@@ -62,7 +105,7 @@ const SectionGrid = () => {
             updateSubscription.unsubscribe();
             subscription.unsubscribe();
         })
-    }, [])
+    }, [sectionId])
 
     const Sections = () => {
         if (!sections) {
@@ -98,7 +141,7 @@ const SectionGrid = () => {
             <>
                 {sectionsToDisplay?.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0).map((value: Section, index: number) => (
                     <Grid key={value.id} item lg={4} md={4} sm={6} xs={12}>
-                        <ActivityCard linkTo={sectionId? '..\\'+value.id : `section/${value.id}`}
+                        <ActivityCard linkTo={sectionId ? '..\\' + value.id : `section/${value.id}`}
                                       imagePath={value?.ImagePreview?.key} title={value.name ?? ''}/>
 
                     </Grid>

@@ -5,24 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetContainer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/section/NewSectionForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/section/RolesThatCanAccess.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/ActivityCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/ActivityCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetailsForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetailsForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/Reward.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/Reward.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/mutations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/queries.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/subscriptions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/header/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dialog/AddingDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dialog/AddingDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/AddSectionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/AddSectionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/EditSectionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/EditSectionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/RolesMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/RolesMenu.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +54,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/organization/team" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/section" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -83,11 +74,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\section" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\user" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\parent\child" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\analytics" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
@@ -130,7 +121,8 @@
       <workItem from="1644223464881" duration="1732000" />
       <workItem from="1644320908378" duration="4231000" />
       <workItem from="1644329927992" duration="10891000" />
-      <workItem from="1644352950991" duration="5599000" />
+      <workItem from="1644352950991" duration="5645000" />
+      <workItem from="1644400797141" duration="6748000" />
     </task>
     <servers />
   </component>
@@ -164,7 +156,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx</url>
           <line>339</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

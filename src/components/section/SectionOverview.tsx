@@ -16,27 +16,50 @@ import {Can} from "../../abilities/Ability";
 import SectionGrid from "./SectionGrid";
 import LessonsGridSection from "./lesson/LessonsGridSection";
 import Iconify from "../Iconify";
+import AddingDialog from "../dialog/AddingDialog";
+import NewSectionForm from "../../pages/dashboard/section/NewSectionForm";
 
-
+const getSectionQuery = `query MyQuery($id: ID = "") {
+  getSection(id: $id) {
+    id
+    name
+    SectionOptions {
+      Durations
+      DeliveredBy
+      Activities
+      createdAt
+      id
+    }
+    rolesThatCanAccess {
+      items {
+        userRole {
+          id
+          name
+        }
+      }
+    }
+    ImagePreview {
+      id
+      key
+      bucket
+    }
+  }
+}
+`
 const SectionOverview = () => {
     const {sectionId} = useParams();
     const [section, setSection] = useState<Section | null>(null);
-    const [allSections, setAllSections] = useState<Section[] | null>(null);
     const {organizationId} = useParams();
 
     useEffect(() => {
         const getSectionAsync = async () => {
-            const result: any = await API.graphql(graphqlOperation(getSection, {id: sectionId}));
+            const result: any = await API.graphql(graphqlOperation(getSectionQuery, {id: sectionId}));
             let fetchedSection = result.data.getSection;
             setSection(fetchedSection);
         }
-        const getBreadcrumbs = async () => {
-            const result: any = await API.graphql(graphqlOperation(listSections));
-            setAllSections(result.data.listSections.items);
-        }
+
         if (sectionId) {
             getSectionAsync();
-            getBreadcrumbs();
         }
         const createSubscription: any = API.graphql(graphqlOperation(onUpdateSection));
         const updateSubscription = createSubscription.subscribe({
@@ -105,11 +128,17 @@ const SectionOverview = () => {
 
                 </Typography>
                 {/*<Can I={'create'} a={'section'}>*/}
+{/*                <AddingDialog title={'Add'} buttonName={'Done'} onSubmit={async () => {
+
+                }}>
+                    <NewSectionForm/>
+                </AddingDialog>*/}
                 <AddSectionModal/>
                 {sectionId ?
                     <Button component={RouterLink} to={'lesson/new'} variant={'contained'}>Add Lesson</Button>
                     :
-                    <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'} variant={'contained'}>Manage</Button>
+                    <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
+                            variant={'contained'}>Manage</Button>
                 }
                 {/*</Can>*/}
             </Stack>

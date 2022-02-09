@@ -22,6 +22,7 @@ import Iconify from "../../../components/Iconify";
 import {LoadingButton} from "@mui/lab";
 import {createUserRole, deleteUserRole} from "../../../graphql/mutations";
 import RoleChangePermissionsDialog from "./role/RoleChangePermissionsDialog";
+import LoadingScreen from "../../../components/LoadingScreen";
 
 
 const getRolesQuery = `query MyQuery($id: ID = "") {
@@ -34,6 +35,7 @@ const getRolesQuery = `query MyQuery($id: ID = "") {
     }
   }
 }`;
+
 const RolesMenu = () => {
     const {themeStretch} = useSettings();
     const {organizationId} = useParams();

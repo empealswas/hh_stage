@@ -1,15 +1,37 @@
-import React from 'react';
+import React, {SetStateAction, useEffect, useState} from 'react';
 import * as Yup from "yup";
 // @ts-ignore
 import {FormikProvider, useFormik} from "formik";
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
-import {createSection, createSectionOptions, updateSection} from "../../graphql/mutations";
-import {CreateOrganizationInput, CreateSectionInput, CreateSectionOptionsInput, Section} from "../../API";
+import {createRolesThatCanAccess, createSection, createSectionOptions, updateSection} from "../../graphql/mutations";
+import {CreateOrganizationInput, CreateSectionInput, CreateSectionOptionsInput, Section, UserRole} from "../../API";
 import AddingDialog from "../dialog/AddingDialog";
-import {TextField} from "@mui/material";
+import {
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormHelperText,
+    FormLabel,
+    TextField,
+    Typography
+} from "@mui/material";
 import LessonOptionComponent from "./lesson/LessonOptionComponent";
+import LoadingScreen from "../LoadingScreen";
+import RolesThatCanAccess from "../../pages/dashboard/section/RolesThatCanAccess";
+import {onCreateRolesThatCanAccess} from "../../graphql/subscriptions";
 
+const getRolesQuery = `query MyQuery($id: ID = "") {
+  getOrganization(id: $id) {
+    roles {
+      items {
+        id
+        name
+      }
+    }
+  }
+}`;
 const AddSectionModal = () => {
     const RegisterSchema = Yup.object().shape({
         name: Yup.string()
@@ -22,6 +44,24 @@ const AddSectionModal = () => {
 
     });
     const {sectionId, organizationId} = useParams();
+    const [roles, setRoles] = useState<{ role: UserRole, selected: boolean }[] | null>(null);
+    useEffect(() => {
+        const getRolesAsync = async () => {
+            setRoles(null);
+            const result: any = await API.graphql(graphqlOperation(getRolesQuery, {id: organizationId}));
+            setRoles(result.data.getOrganization.roles.items.map((role: UserRole) => {
+                return {
+                    role: role,
+                    selected: false,
+                }
+            }));
+        }
+        getRolesAsync()
+        return () => {
+
+        };
+    }, []);
+
 
     const formik = useFormik({
         initialValues: {
@@ -38,7 +78,6 @@ const AddSectionModal = () => {
         validationSchema: RegisterSchema,
         isInitialValid: false,
         onSubmit: async () => {
-
             let activities = getFieldProps('activities').value;
             activities = [...activities.filter((value: { chosenAsDefault: any; }) => value.chosenAsDefault),
                 ...activities.filter((value: { chosenAsDefault: any; }) => !value.chosenAsDefault)
@@ -73,11 +112,28 @@ const AddSectionModal = () => {
             const result: any = await API.graphql(graphqlOperation(createSection, {
                 input
             }));
+            for (let role of roles ?? []) {
+                if (role.selected) {
+                    const data: any = await API.graphql(graphqlOperation(createRolesThatCanAccess, {
+                        input: {
+                            sectionID: result.data.createSection.id,
+                            userRoleID: role.role.id,
+                        }
+                    }));
+                    console.log(data.data);
+                }
+            }
 
-            console.log('Create Result', result);
         }
     });
     const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid, setFieldValue} = formik;
+
+    if (!roles) {
+        return (
+            <LoadingScreen/>
+        )
+    }
+
     return (
         <FormikProvider value={formik}>
             <AddingDialog title={"Adding new Section"}
@@ -101,10 +157,11 @@ const AddSectionModal = () => {
                 <LessonOptionComponent name={'Delivered By'} actionName={'Add Delivered By Type'}
                                        entityName={'deliveredBy'}
                                        info={'Provide roles that can deliver lessons in this section'}/>
-
+                <RolesThatCanAccess roles={roles} setRoles={setRoles}/>
             </AddingDialog>
         </FormikProvider>
     );
 };
+
 
 export default AddSectionModal;

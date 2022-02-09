@@ -24,6 +24,7 @@ interface AddingDialogProps {
     children?: ReactNode,
     edit?: boolean,
     onSubmit: () => Promise<any>,
+    fullWidth?: boolean,
 }
 
 export default function AddingDialog(props: AddingDialogProps) {
@@ -62,7 +63,7 @@ export default function AddingDialog(props: AddingDialogProps) {
                     {props.buttonName}
                 </Button>
             }
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog fullScreen={props.fullWidth ?? false} open={open} onClose={handleClose}>
                     <Toolbar>
                         <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                             <CloseIcon/>
@@ -72,7 +73,7 @@ export default function AddingDialog(props: AddingDialogProps) {
                         </Typography>
                     </Toolbar>
                     <DialogContent dividers>
-                        <Card>
+                        <Card sx={{bgcolor: 'background.neutral'}}>
                             <CardContent>
                                 <FormControl sx={{minWidth: ('calc(200px + 10vw)')}}>
                                     <Stack direction='column' spacing={3}>

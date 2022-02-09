@@ -5,18 +5,19 @@ import {FormikProvider, useFormik} from "formik";
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation, Storage} from "aws-amplify";
 import {createFile, updateSection} from "../../graphql/mutations";
-import {Section} from "../../API";
+import {Section, UserRole} from "../../API";
 import {Card, CardHeader, CardMedia, TextField} from '@mui/material';
 import awsConfig from "../../aws-exports";
 import {result} from "lodash";
 import AddingDialog from "../dialog/AddingDialog";
 import {UploadSingleFile} from "../upload";
 import {RHFUploadSingleFile} from "../hook-form";
+import RolesThatCanAccess from "../../pages/dashboard/section/RolesThatCanAccess";
 
 
 const EditSectionModal = (props: { updateObject: Section }) => {
     const {updateObject} = {...props};
-
+    console.log(updateObject);
     useEffect(() => {
         let keyOfObject = updateObject.ImagePreview?.key;
         if (keyOfObject) {
@@ -36,6 +37,14 @@ const EditSectionModal = (props: { updateObject: Section }) => {
     });
     const {sectionId} = useParams();
     const [linkToPreview, setLinkToPreview] = useState('');
+    const rol = updateObject?.rolesThatCanAccess?.items.map(value => value?.userRole).map(value => {
+        return {
+            role: value,
+            selected: true,
+        }
+    }) as { role: UserRole, selected: boolean }[]
+
+    const [roles, setRoles] = useState<{ role: UserRole, selected: boolean }[] | null>(rol);
     const formik = useFormik({
         initialValues: {
             name: updateObject.name
@@ -102,19 +111,22 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                     helperText={touched.name && errors.name}
                 />
                 <UploadSingleFile file={selectedFile ? URL.createObjectURL(selectedFile) : null} onDrop={onDrop}
-                                     accept={['image/*']}/>
+                                  accept={['image/*']}/>
                 {linkToPreview &&
-                <Card>
-                    <CardHeader title={'Uploaded Photo'}/>
-                    <CardMedia
-                        component={'img'}
-                        height="194"
-                        image={linkToPreview}
-                        alt="Activity image"
-                    />
-                </Card>
+                    <Card>
+                        <CardHeader title={'Uploaded Photo'}/>
+                        <CardMedia
+                            component={'img'}
+                            height="194"
+                            image={linkToPreview}
+                            alt="Activity image"
+                        />
+                    </Card>
                 }
-{/*                {selectedFile &&
+                {roles &&
+                    <RolesThatCanAccess roles={roles} setRoles={setRoles}/>
+                }
+                {/*                {selectedFile &&
                 <Card>
                     <CardHeader title={'Selected Photo'}/>
                     <CardMedia
