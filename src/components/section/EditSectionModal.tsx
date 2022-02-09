@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import * as Yup from "yup";
 // @ts-ignore
 import {FormikProvider, useFormik} from "formik";
@@ -18,6 +18,7 @@ import RolesThatCanAccess from "../../pages/dashboard/section/RolesThatCanAccess
 const EditSectionModal = (props: { updateObject: Section }) => {
     const {updateObject} = {...props};
     console.log(updateObject);
+    const [roles, setRoles] = useState<{ role: UserRole, selected: boolean }[] | null>(null);
     useEffect(() => {
         let keyOfObject = updateObject.ImagePreview?.key;
         if (keyOfObject) {
@@ -26,6 +27,13 @@ const EditSectionModal = (props: { updateObject: Section }) => {
             })
         }
         formik.setFieldValue('name', updateObject.name);
+        const newRoles = updateObject?.rolesThatCanAccess?.items.map(value => value?.userRole).map(value => {
+            return {
+                role: value,
+                selected: true,
+            }
+        }) as { role: UserRole, selected: boolean }[]
+        setRoles(newRoles)
 
     }, [props.updateObject])
     const RegisterSchema = Yup.object().shape({
@@ -37,14 +45,8 @@ const EditSectionModal = (props: { updateObject: Section }) => {
     });
     const {sectionId} = useParams();
     const [linkToPreview, setLinkToPreview] = useState('');
-    const rol = updateObject?.rolesThatCanAccess?.items.map(value => value?.userRole).map(value => {
-        return {
-            role: value,
-            selected: true,
-        }
-    }) as { role: UserRole, selected: boolean }[]
 
-    const [roles, setRoles] = useState<{ role: UserRole, selected: boolean }[] | null>(rol);
+
     const formik = useFormik({
         initialValues: {
             name: updateObject.name
