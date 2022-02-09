@@ -106,26 +106,32 @@ const LessonOverview = () => {
                         <Container>
                             <SectionHeader title={lesson.title ?? ''}
                                            editingForm={
-                                               <LessonEditForm lesson={lesson}/>
+                                               <Can I={'update'} a={'lesson'}>
+                                                   <LessonEditForm lesson={lesson}/>
+                                               </Can>
                                            }
-                                           deletionModal={<DeletionModal
-                                               title={'Delete Lesson'}
-                                               onDelete={async () => {
-                                                   await API.graphql(graphqlOperation(deleteLesson, {input: {id: lessonId}}));
-                                                   navigate(-1);
-                                               }
-                                               }/>}/>
+                                           deletionModal={
+                                               <Can I={'delete'} a={'lesson'}>
+                                                   <DeletionModal
+                                                       title={'Delete Lesson'}
+                                                       onDelete={async () => {
+                                                           await API.graphql(graphqlOperation(deleteLesson, {input: {id: lessonId}}));
+                                                           navigate(-1);
+                                                       }
+                                                       }/>
+                                               </Can>
+                                           }/>
                             {lessonId && <>
                                 {/*<LessonRating lessonId={lessonId}/>*/}
-                                <AttendanceSheetModal lessonId={lessonId}/>
+                                <Can I={'read'} an={'attendance'}>
+                                    <AttendanceSheetModal lessonId={lessonId}/>
+                                </Can>
                             </>}
                             <Typography variant={"h4"} style={{marginTop: '30px'}}>
                                 {/*{lesson.description}*/}
-                                <Markdown  children={lesson.description || ''}/>
+                                <Markdown children={lesson.description || ''}/>
                             </Typography>
-                            {/*<Can I={'read'} an={'attendance'}>*/}
 
-                            {/*</Can>*/}
                         </Container>
                     </Box>
 

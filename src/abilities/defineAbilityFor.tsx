@@ -12,7 +12,7 @@ export default function defineAbilityFor(user: User | null) {
         return build();
     }
     // can('visit', 'register');
-    // can('visit', 'login');
+   /* // can('visit', 'login');
     if (user instanceof Admin) {
         can('visit', 'schools');
         can('visit', 'lessons');
@@ -62,7 +62,7 @@ export default function defineAbilityFor(user: User | null) {
         can(['create', 'update', 'delete', 'view'], 'file');
         can(['create', 'update', 'delete', 'view'], 'section');
 
-    }
+    }*/
 
     return build();
 }

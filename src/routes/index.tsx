@@ -15,6 +15,7 @@ import {PATH_AFTER_LOGIN} from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 import OrganizationManage from 'src/pages/dashboard/organization/OrganizationManage';
+import OrganizationOutlet from "../pages/dashboard/organization/OrganizationOutlet";
 
 // ----------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ export default function Router() {
                 },
                 {
                     path: 'organization',
-                    element: <Outlet/>,
+                    element: <OrganizationOutlet/>,
                     children: [
                         {path: '', element: <OrganizationsGrid/>},
                         {path: ':organizationId', element: <SectionOverview/>},

@@ -155,7 +155,7 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                                                 }
                                                 }
                                                 defaultChecked={Boolean(permissions.canDeleteLessons)}/>}
-                                                              label="Allow upload content in lessons"/>
+                                                              label="Allow to delete lessons in sections"/>
                                             <FormControlLabel control={<Switch
                                                 onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
                                                     console.log(permissions);

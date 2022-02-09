@@ -85,7 +85,7 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                 ))}
             </>
         }
-        if (user instanceof Teacher && lessonsComplete) {
+        if (lessonsComplete) {
             return (
                 <>
                     {lessonsComplete

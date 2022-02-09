@@ -81,7 +81,16 @@ const OrganizationsGrid = () => {
             const data: any = await API.graphql(graphqlOperation(organizationsQuery, {id: user?.email}));
             let owned = data.data.getUser?.ownedOrganizations.items;
             let memberOf = data.data.getUser?.organizations.items.map((item: any) => item.organization);
-            setUserOrganizations([...owned, ...memberOf]);
+            const merged = [...owned, ...memberOf];
+            const unique: Organization[] = [];
+            merged.forEach(item => {
+                const i = unique.findIndex(x => x.id === item.id);
+                if(i <= -1){
+                    unique.push(item);
+                }
+            })
+            setUserOrganizations(unique);
+
 
         }
         getOrganizations()

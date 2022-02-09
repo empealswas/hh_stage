@@ -55,7 +55,7 @@ type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: p
     type: String
     logo: File @hasOne
 }
-####################
+####################U
 
 type File @model @auth(rules: [{allow: private}]) {
     id: ID!
