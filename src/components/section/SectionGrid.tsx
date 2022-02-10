@@ -1,15 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {API, graphqlOperation} from "aws-amplify";
 
 import {Section} from "../../API";
-import {Link as RouterLink, useParams} from "react-router-dom";
-import {listSections} from '../../graphql/queries';
-import {onCreateSection, onDeleteSection, onUpdateSection} from "../../graphql/subscriptions";
-import {Container, Grid, Typography} from '@mui/material';
-import {Organization} from "../../models/Organization";
+import {useParams} from "react-router-dom";
+import {onCreateSection, onDeleteSection} from "../../graphql/subscriptions";
+import {Container, Grid} from '@mui/material';
 import CardSkeleton from "../skeleton/CardSkeleton";
 import ActivityCard from "./ActivityCard";
 import EmptyContent from "../EmptyContent";
+import useUserInOrganization from 'src/hooks/useUserInOrganization';
 
 const getChildrenSectionsQuery = `query MyQuery($eq: ID = "") {
   listSections(filter: {parentID: {eq: $eq}}, limit: 100000) {
@@ -22,6 +21,14 @@ const getChildrenSectionsQuery = `query MyQuery($eq: ID = "") {
         bucket
         id
         key
+      }
+      rolesThatCanAccess {
+        items {
+          userRole {
+            name
+            id
+          }
+        }
       }
     }
   }
@@ -38,6 +45,14 @@ const parentsQuery = `query MyQuery($organizationId: ID = "") {
         bucket
         id
         key
+      }
+      rolesThatCanAccess {
+        items {
+          userRole {
+            name
+            id
+          }
+        }
       }
     }
   }
@@ -60,7 +75,7 @@ const old = `query MyQuery {
 }`
 const SectionGrid = () => {
     const {sectionId, organizationId} = useParams();
-
+    const userInOrganization = useUserInOrganization();
     const updateItems = (prevData: any, data: any) => {
         let newData = {...prevData};
         console.log('prevData', prevData)
@@ -139,7 +154,13 @@ const SectionGrid = () => {
         }
         return (
             <>
-                {sectionsToDisplay?.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0).map((value: Section, index: number) => (
+                {sectionsToDisplay?.filter(value => {
+                    if (userInOrganization.ownedOrganizations?.items.some(organization => organization?.id === organizationId)) {
+                        return true;
+                    }
+                    const inOrganization = userInOrganization.organizations?.items[0];
+                    return value.rolesThatCanAccess?.items.map(role => role?.userRole).some(role => inOrganization?.roles?.items.map(userRole => userRole?.userRole).some(userRole => userRole?.id === role?.id))
+                })?.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0).map((value: Section, index: number) => (
                     <Grid key={value.id} item lg={4} md={4} sm={6} xs={12}>
                         <ActivityCard linkTo={sectionId ? '..\\' + value.id : `section/${value.id}`}
                                       imagePath={value?.ImagePreview?.key} title={value.name ?? ''}/>
