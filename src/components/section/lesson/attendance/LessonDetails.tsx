@@ -71,6 +71,7 @@ const LessonDetails = (props: { lessonId: string, selectedClassroom: Classroom, 
                 const result: any = await API.graphql(graphqlOperation(createPELessonRecord, {
                     input
                 }));
+                console.log('RECORD', result.data);
                 snackbar.enqueueSnackbar(`${input.activity} Record Created`, {variant: 'success'});
                 console.log('Created Lesson Result', result);
                 setLessonRecord(result.data.createPELessonRecord);

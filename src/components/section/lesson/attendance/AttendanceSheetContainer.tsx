@@ -52,7 +52,6 @@ const AttendanceSheetContainer = () => {
     const {organizationId} = useParams();
     const [userInOrganization, setUserInOrganization] = useState<UserInOrganization | null>(null);
     const [roles, setRoles] = useState<UserRole[] | null>(null);
-
     useEffect(() => {
         const getUserInOrganization = async () => {
             const result: any = await API.graphql(graphqlOperation(getUserInOrganizationQuery, {
@@ -61,6 +60,7 @@ const AttendanceSheetContainer = () => {
             }))
             let userInOrganization = result.data.getOrganization.members.items[0];
             if (!userInOrganization) {
+
                 throw new Error('This user does not belong to this organization)');
             }
             setUserInOrganization(userInOrganization);

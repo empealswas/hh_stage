@@ -1,107 +1,122 @@
 import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
+import {useSnackbar} from 'notistack';
+import {useCallback} from 'react';
 // form
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 // @mui
-import { Box, Grid, Card, Stack, Typography } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import {Box, Grid, Card, Stack, Typography} from '@mui/material';
+import {LoadingButton} from '@mui/lab';
 // hooks
 import useAuth from '../../../../hooks/useAuth';
 // utils
-import { fData } from '../../../../utils/formatNumber';
+import {fData} from '../../../../utils/formatNumber';
 // _mock
-import { countries } from '../../../../_mock';
+import {countries} from '../../../../_mock';
 // components
 import {
-  FormProvider,
-  RHFSwitch,
-  RHFSelect,
-  RHFTextField,
-  RHFUploadAvatar,
+    FormProvider,
+    RHFSwitch,
+    RHFSelect,
+    RHFTextField,
+    RHFUploadAvatar,
 } from '../../../../components/hook-form';
+import {API, graphqlOperation} from "aws-amplify";
+import {updateUser} from "../../../../graphql/mutations";
 
 // ----------------------------------------------------------------------
 
 type FormValuesProps = {
-  displayName: string;
-  email: string;
-  photoURL: File | any;
-  phoneNumber: string | null;
-  country: string | null;
-  address: string | null;
-  state: string | null;
-  city: string | null;
-  zipCode: string | null;
-  about: string | null;
-  isPublic: boolean;
+    displayName: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    photoURL: File | any;
+    phoneNumber: string | null;
+    country: string | null;
+    address: string | null;
+    state: string | null;
+    city: string | null;
+    zipCode: string | null;
+    about: string | null;
+    isPublic: boolean;
 };
 
 export default function AccountGeneral() {
-  const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
 
-  const { user } = useAuth();
+    const {user} = useAuth();
 
-  const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
-  });
+    const UpdateUserSchema = Yup.object().shape({
+        firstName: Yup.string().required('First name is required'),
+        lastName: Yup.string().required('Last name is required')
+    });
 
-  const defaultValues = {
-    displayName: user?.displayName || '',
-    email: user?.email || '',
-/*    photoURL: user?.photoURL || '',
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
-    isPublic: user?.isPublic || '',*/
-  };
+    const defaultValues = {
+        // displayName: user?.displayName || '',
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        // email: user?.email || '',
+        /*    photoURL: user?.photoURL || '',
+            phoneNumber: user?.phoneNumber || '',
+            country: user?.country || '',
+            address: user?.address || '',
+            state: user?.state || '',
+            city: user?.city || '',
+            zipCode: user?.zipCode || '',
+            about: user?.about || '',
+            isPublic: user?.isPublic || '',*/
+    };
 
-  const methods = useForm<FormValuesProps>({
-    resolver: yupResolver(UpdateUserSchema),
-    defaultValues,
-  });
+    const methods = useForm<FormValuesProps>({
+        resolver: yupResolver(UpdateUserSchema),
+        defaultValues,
+    });
 
-  const {
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+    const {
+        setValue,
+        handleSubmit,
+        formState: {isSubmitting},
+    } = methods;
 
-  const onSubmit = async (data: FormValuesProps) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar('Update success!');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    const onSubmit = async (data: FormValuesProps) => {
+        try {
+            const result: any = await API.graphql(graphqlOperation(updateUser, {
+                input: {
+                    id: user?.email,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
 
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
+                }
+            }));
+            console.log(result);
+            enqueueSnackbar('Update success!');
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-      if (file) {
-        setValue(
-          'photoURL',
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        );
-      }
-    },
-    [setValue]
-  );
+    const handleDrop = useCallback(
+        (acceptedFiles) => {
+            const file = acceptedFiles[0];
 
-  return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+            if (file) {
+                setValue(
+                    'photoURL',
+                    Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                    })
+                );
+            }
+        },
+        [setValue]
+    );
+
+    return (
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+                {/*<Grid item xs={12} md={4}>*/}
+                    {/*          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <RHFUploadAvatar
               name="photoURL"
               accept="image/*"
@@ -130,21 +145,22 @@ export default function AccountGeneral() {
               label="Public Profile"
               sx={{ mt: 5 }}
             />
-          </Card>
-        </Grid>
+          </Card>*/}
+                {/*</Grid>*/}
 
-        <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
-            <Box
-              sx={{
-                display: 'grid',
-                rowGap: 3,
-                columnGap: 2,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
-              }}
-            >
-              <RHFTextField name="displayName" label="Name" />
-              <RHFTextField name="email" label="Email Address" />
+                <Grid item xs={12} md={8}>
+                    <Card sx={{p: 3}}>
+                        <Box
+                            sx={{
+                                display: 'grid',
+                                rowGap: 3,
+                                columnGap: 2,
+                                gridTemplateColumns: {xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)'},
+                            }}
+                        >
+                            <RHFTextField name="firstName" label="First Name"/>
+                            <RHFTextField name="lastName" label="Last Name"/>
+                            {/* <RHFTextField name="email" label="Email Address" />
 
               <RHFTextField name="phoneNumber" label="Phone Number" />
               <RHFTextField name="address" label="Address" />
@@ -161,19 +177,19 @@ export default function AccountGeneral() {
               <RHFTextField name="state" label="State/Region" />
 
               <RHFTextField name="city" label="City" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
-            </Box>
+              <RHFTextField name="zipCode" label="Zip/Code" />*/}
+                        </Box>
 
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <RHFTextField name="about" multiline rows={4} label="About" />
+                        <Stack spacing={3} alignItems="flex-end" sx={{mt: 3}}>
+                            {/*<RHFTextField name="about" multiline rows={4} label="About" />*/}
 
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                Save Changes
-              </LoadingButton>
-            </Stack>
-          </Card>
-        </Grid>
-      </Grid>
-    </FormProvider>
-  );
+                            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                                Save Changes
+                            </LoadingButton>
+                        </Stack>
+                    </Card>
+                </Grid>
+            </Grid>
+        </FormProvider>
+    );
 }

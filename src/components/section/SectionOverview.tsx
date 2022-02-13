@@ -134,9 +134,6 @@ const SectionOverview = () => {
 
                 <Stack direction={{xs: 'column', sm: "row"}} alignItems="center"
                        justifyContent={{xs: 'start', sm: "space-between"}} spacing={{xs: 2, sm: 0}} mb={5}>
-                    <Typography variant="h4" gutterBottom>
-
-                    </Typography>
                     {/*<Can I={'create'} a={'section'}>*/}
                     {/*                <AddingDialog title={'Add'} buttonName={'Done'} onSubmit={async () => {
 
@@ -151,10 +148,14 @@ const SectionOverview = () => {
                             <Button component={RouterLink} to={'lesson/new'} variant={'contained'}>Add Lesson</Button>
                         </Can>
                         :
+                        <>
                         <Can I={'manage'} an={'organization'}>
                             <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
                                     variant={'contained'}>Manage</Button>
                         </Can>
+                            <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>} to={'dashboard'}
+                                    variant={'contained'}>Dashboard</Button>
+                        </>
                     }
                     {/*</Can>*/}
                 </Stack>

@@ -171,7 +171,7 @@ export default function LessonNewForm({currentLesson, isEdit = false}: Props) {
     const uploadFiles = async (lessonID: string, files: File[]) => {
         for (const file of files) {
             try {
-                const fileName = `${Date.now()}-${file.name}`;
+                const fileName = `${Date.now()}-${file.name.replace(/ /g, '_')}`;
                 const uploadedFile: any = await Storage.put(fileName, file, {
                     contentType: file.type
                 })

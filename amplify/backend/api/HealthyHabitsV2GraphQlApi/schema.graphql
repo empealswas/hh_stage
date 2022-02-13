@@ -104,14 +104,14 @@ type PELessonRecord @model @auth(rules: [{allow: public, provider: iam}, {allow:
     teacherID: ID @index(name: "byTeacher")
     Teacher: Teacher @hasOne(fields: ["teacherID"])
     Attendances: [Attendance] @hasMany(indexName: "byPELessonRecord", fields: ["id"])
-    date: AWSDate @index(name: "byName", queryField: "lessonRecordByName", sortKeyFields: ["id"])
+    date: AWSDate! @index(name: "byName", queryField: "lessonRecordByName", sortKeyFields: ["id"])
     deliveredBy: String
     duration: Int
     activity: String @index(name: "lessonByDate", queryField: "lessonByDate", sortKeyFields: ["date"])
     rating: Int
     notes: String
-    classroomID: ID
-    Classroom: Classroom @hasOne(fields: ["classroomID"])
+    classroomID: ID @index(name: "byClassroom")
+    Classroom: Classroom @belongsTo(fields: ["classroomID"])
     lessonID: ID @index(name: "byLesson")
     Lesson: Lesson @belongsTo(fields: ["lessonID"])
 }
@@ -142,6 +142,7 @@ type Classroom @model @auth(rules: [{allow: private}]) {
     yearGroupID: ID @index(name: "byCurriculum")
     yearGroup: Curriculum @hasOne(fields: ["yearGroupID"])
     members: [UserInOrganization] @manyToMany(relationName: "UserInOrganizationInClassroom")
+    LessonRecords: [PELessonRecord] @hasMany(indexName: "byClassroom", fields: ["id"])
 }
 
 type TeacherClassroom @model(queries: null) @auth(rules: [{allow: private}]) {
@@ -336,4 +337,3 @@ type CurriculumSubject @model(queries: null) @auth(rules: [{allow: private}]) {
     curriculum: Curriculum! @belongsTo(fields: ["curriculumID"])
     subject: Subject! @belongsTo(fields: ["subjectID"])
 }
-  

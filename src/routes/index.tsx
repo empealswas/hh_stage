@@ -117,6 +117,7 @@ export default function Router() {
                     children: [
                         {path: '', element: <OrganizationsGrid/>},
                         {path: ':organizationId', element: <SectionOverview/>},
+                        {path: ':organizationId/dashboard', element: <OrganizationDashboard/>},
                         {path: ':organizationId/manage', element: <OrganizationManage/>},
                         {path: ':organizationId/manage/team/:teamId', element: <TeamManageOverview/>},
                         {path: ':organizationId/section/:sectionId', element: <SectionOverview/>},
@@ -234,7 +235,7 @@ const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
-
+const OrganizationDashboard = Loadable(lazy(() => import('../pages/dashboard/organization/OrganizationDashboard')));
 const SectionOverview = Loadable(lazy(() => import( "../components/section/SectionOverview")));
 const LessonOerview = Loadable(lazy(() => import( "../components/section/lesson/LessonOerview")));
 const CreateOrganization = Loadable(lazy(() => import( "../pages/dashboard/user/CreateOrganization")));

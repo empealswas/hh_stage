@@ -1284,6 +1284,9 @@ export const onCreateClassroom = /* GraphQL */ `
       members {
         nextToken
       }
+      LessonRecords {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationClassroomsId
@@ -1330,6 +1333,9 @@ export const onUpdateClassroom = /* GraphQL */ `
       members {
         nextToken
       }
+      LessonRecords {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationClassroomsId
@@ -1374,6 +1380,9 @@ export const onDeleteClassroom = /* GraphQL */ `
         updatedAt
       }
       members {
+        nextToken
+      }
+      LessonRecords {
         nextToken
       }
       createdAt

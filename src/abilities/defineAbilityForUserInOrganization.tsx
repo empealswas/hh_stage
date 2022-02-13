@@ -12,7 +12,6 @@ export default function DefineAbilityForUserInOrganization(user: User, organizat
         return build();
     }
     const isOwner = user.ownedOrganizations?.items.some(value => value?.id === organizationId);
-    console.log('is Owner', isOwner);
     if (isOwner) {
         can('read', 'attendance');
         can('delete', 'lesson');
@@ -23,6 +22,7 @@ export default function DefineAbilityForUserInOrganization(user: User, organizat
         can('create', 'lesson');
         can('update', 'lesson');
         can('delete', 'lesson');
+        can('delete', 'file');
         can('read', 'attendance');
         can('create', 'section');
 

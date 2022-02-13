@@ -792,6 +792,9 @@ export const getClassroom = /* GraphQL */ `
       members {
         nextToken
       }
+      LessonRecords {
+        nextToken
+      }
       createdAt
       updatedAt
       organizationClassroomsId

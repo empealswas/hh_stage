@@ -18,7 +18,7 @@ const OrganizationMembers = () => {
 
             <Stack sx={{mb: 2}} justifyContent={{sx: 'center', md: 'space-between'}}
                    direction={{sx: 'column', md: 'row'}}>
-                <Typography variant={'h4'}>Your organizations</Typography>
+                <Typography variant={'h4'}>Members of your organization</Typography>
                 <InviteMemberDialog/>
             </Stack>
             <Card>
