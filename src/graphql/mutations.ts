@@ -303,8 +303,16 @@ export const createUserRole = /* GraphQL */ `
       }
       permissions {
         canAccessAttendanceSheet
+        canCreateLesson
         canRateLessons
         canDeleteLessons
+        canUpdateLesson
+        canUploadContent
+        canViewContent
+        canCreateSection
+        canDeleteSection
+        canUpdateSection
+        canViewDashboard
         id
         createdAt
         updatedAt
@@ -342,8 +350,16 @@ export const updateUserRole = /* GraphQL */ `
       }
       permissions {
         canAccessAttendanceSheet
+        canCreateLesson
         canRateLessons
         canDeleteLessons
+        canUpdateLesson
+        canUploadContent
+        canViewContent
+        canCreateSection
+        canDeleteSection
+        canUpdateSection
+        canViewDashboard
         id
         createdAt
         updatedAt
@@ -381,8 +397,16 @@ export const deleteUserRole = /* GraphQL */ `
       }
       permissions {
         canAccessAttendanceSheet
+        canCreateLesson
         canRateLessons
         canDeleteLessons
+        canUpdateLesson
+        canUploadContent
+        canViewContent
+        canCreateSection
+        canDeleteSection
+        canUpdateSection
+        canViewDashboard
         id
         createdAt
         updatedAt
@@ -413,8 +437,16 @@ export const createRolePermissions = /* GraphQL */ `
         userRolePermissionsId
       }
       canAccessAttendanceSheet
+      canCreateLesson
       canRateLessons
       canDeleteLessons
+      canUpdateLesson
+      canUploadContent
+      canViewContent
+      canCreateSection
+      canDeleteSection
+      canUpdateSection
+      canViewDashboard
       id
       createdAt
       updatedAt
@@ -437,8 +469,16 @@ export const updateRolePermissions = /* GraphQL */ `
         userRolePermissionsId
       }
       canAccessAttendanceSheet
+      canCreateLesson
       canRateLessons
       canDeleteLessons
+      canUpdateLesson
+      canUploadContent
+      canViewContent
+      canCreateSection
+      canDeleteSection
+      canUpdateSection
+      canViewDashboard
       id
       createdAt
       updatedAt
@@ -461,8 +501,16 @@ export const deleteRolePermissions = /* GraphQL */ `
         userRolePermissionsId
       }
       canAccessAttendanceSheet
+      canCreateLesson
       canRateLessons
       canDeleteLessons
+      canUpdateLesson
+      canUploadContent
+      canViewContent
+      canCreateSection
+      canDeleteSection
+      canUpdateSection
+      canViewDashboard
       id
       createdAt
       updatedAt

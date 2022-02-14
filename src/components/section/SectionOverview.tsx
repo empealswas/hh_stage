@@ -36,6 +36,7 @@ const getSectionQuery = `query MyQuery($id: ID = "") {
     }
     rolesThatCanAccess {
       items {
+        id
         userRole {
           id
           name
@@ -113,61 +114,64 @@ const SectionOverview = () => {
 
     return (
 
-            <Container>
-                {section && <SectionHeader title={sectionId ? section?.name ?? "Sections" : "Sections"}
-                                           editingForm={
-                                               <Can I={'update'} a={'section'}>
-                                                   <EditSectionModal updateObject={section}/>
-                                               </Can>
-                                           }
-                                           deletionModal={
-                                               <Can I={'delete'} a={'section'}>
-                                                   <DeletionModal title={'Do you want to delete this Year Group?'}
-                                                                  onDelete={async () => {
-                                                                      const result: any = await deleteSectionAsync();
-                                                                      snackbar.enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteSection.name}`, {variant: 'success'})
-                                                                      navigate(-1);
-                                                                  }}/>
-                                               </Can>
-                                           }
-                />}
+        <Container>
+            {section && <SectionHeader title={sectionId ? section?.name ?? "Sections" : "Sections"}
+                                       editingForm={
+                                           <Can I={'update'} a={'section'}>
+                                               <EditSectionModal updateObject={section}/>
+                                           </Can>
+                                       }
+                                       deletionModal={
+                                           <Can I={'delete'} a={'section'}>
+                                               <DeletionModal title={'Do you want to delete this Year Group?'}
+                                                              onDelete={async () => {
+                                                                  const result: any = await deleteSectionAsync();
+                                                                  snackbar.enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteSection.name}`, {variant: 'success'})
+                                                                  navigate(-1);
+                                                              }}/>
+                                           </Can>
+                                       }
+            />}
 
-                <Stack direction={{xs: 'column', sm: "row"}} alignItems="center"
-                       justifyContent={{xs: 'start', sm: "space-between"}} spacing={{xs: 2, sm: 0}} mb={5}>
-                    {/*<Can I={'create'} a={'section'}>*/}
-                    {/*                <AddingDialog title={'Add'} buttonName={'Done'} onSubmit={async () => {
+            <Stack direction={{xs: 'column', sm: "row"}} alignItems="center"
+                   justifyContent={{xs: 'start', sm: "space-between"}} spacing={{xs: 2, sm: 0}} mb={5}>
+                {/*<Can I={'create'} a={'section'}>*/}
+                {/*                <AddingDialog title={'Add'} buttonName={'Done'} onSubmit={async () => {
 
                 }}>
                     <NewSectionForm/>
                 </AddingDialog>*/}
-                    <Can I={'create'} a={'section'}>
+                <Can I={'create'} a={'section'}>
                     <AddSectionModal/>
+                </Can>
+                {sectionId ?
+                    <Can I={'create'} a={'lesson'}>
+                        <Button component={RouterLink} to={'lesson/new'} variant={'contained'}>Add Lesson</Button>
                     </Can>
-                    {sectionId ?
-                        <Can I={'create'} a={'lesson'}>
-                            <Button component={RouterLink} to={'lesson/new'} variant={'contained'}>Add Lesson</Button>
-                        </Can>
-                        :
-                        <>
+                    :
+                    <>
                         <Can I={'manage'} an={'organization'}>
                             <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
                                     variant={'contained'}>Manage</Button>
                         </Can>
-                            <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>} to={'dashboard'}
+                        <Can I={'read'} this={'dashboard'}>
+                            <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
+                                    to={'dashboard'}
                                     variant={'contained'}>Dashboard</Button>
-                        </>
-                    }
-                    {/*</Can>*/}
-                </Stack>
-                <Stack direction={'column'} spacing={3}>
-                    <SectionGrid/>
-                    {sectionId &&
-                        <>
-                            <LessonsGridSection/>
-                        </>
-                    }
-                </Stack>
-            </Container>
+                        </Can>
+                    </>
+                }
+                {/*</Can>*/}
+            </Stack>
+            <Stack direction={'column'} spacing={3}>
+                <SectionGrid/>
+                {sectionId &&
+                    <>
+                        <LessonsGridSection/>
+                    </>
+                }
+            </Stack>
+        </Container>
     );
 };
 

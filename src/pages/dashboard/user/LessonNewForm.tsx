@@ -38,6 +38,7 @@ import {createFile, createLesson, updateLesson} from "../../../graphql/mutations
 import awsConfig from "../../../aws-exports";
 import {Lesson} from "../../../API";
 import useSettings from "../../../hooks/useSettings";
+import {Can} from "../../../abilities/Ability";
 //
 
 // ----------------------------------------------------------------------
@@ -229,18 +230,19 @@ export default function LessonNewForm({currentLesson, isEdit = false}: Props) {
                                     <LabelStyle>Content</LabelStyle>
                                     <RHFEditor name="description"/>
                                 </div>
-
-                                <div>
-                                    <LabelStyle>Files</LabelStyle>
-                                    <RHFUploadMultiFile
-                                        name="images"
-                                        showPreview
-                                        accept={['image/*', 'video/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4', '.csv', '.doc', '.docx', '.xlsx', 'application/*', '.*']}
-                                        onDrop={handleDrop}
-                                        onRemove={handleRemove}
-                                        onRemoveAll={handleRemoveAll}
-                                    />
-                                </div>
+                                <Can I={'upload'} a={'content'}>
+                                    <div>
+                                        <LabelStyle>Files</LabelStyle>
+                                        <RHFUploadMultiFile
+                                            name="images"
+                                            showPreview
+                                            accept={['image/*', 'video/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4', '.csv', '.doc', '.docx', '.xlsx', 'application/*', '.*']}
+                                            onDrop={handleDrop}
+                                            onRemove={handleRemove}
+                                            onRemoveAll={handleRemoveAll}
+                                        />
+                                    </div>
+                                </Can>
                             </Stack>
                         </Card>
                     </Grid>

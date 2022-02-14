@@ -125,13 +125,13 @@ const RolesMenu = () => {
                                         secondaryAction={
                                             <Stack direction={'row'} spacing={2}>
                                                 <RoleChangePermissionsDialog roleId={role.id} name={role.name}/>
-                                                <Tooltip title={'Delete role'}>
+{/*                                                <Tooltip title={'Delete role'}>
                                                     <IconButton onClick={() => {
                                                         deleteRole(role.id)
                                                     }} edge="end" aria-label="delete">
                                                         <Iconify icon={'mdi:delete'}/>
                                                     </IconButton>
-                                                </Tooltip>
+                                                </Tooltip>*/}
                                             </Stack>
                                         }
                                     >

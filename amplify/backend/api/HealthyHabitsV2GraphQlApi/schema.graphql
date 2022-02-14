@@ -18,6 +18,7 @@ type UserInOrganization @model @auth(rules: [{allow: private}]) {
     userID: ID @index(name: "byUser")
     organizationID: ID @index(name: "byOrganization")
     user: User @belongsTo(fields: ["userID"])
+
     organization: Organization @belongsTo(fields: ["organizationID"])
     roles: [UserRole] @manyToMany(relationName:"RolesOfUser")
     classrooms: [Classroom] @manyToMany(relationName: "UserInOrganizationInClassroom")
@@ -35,9 +36,22 @@ type UserRole @model  @auth(rules: [{allow: private}]) {
 }
 type RolePermissions @model @auth(rules: [{allow: private}]) {
     role: UserRole @belongsTo
+    #lesson
     canAccessAttendanceSheet: Boolean @default(value: "false")
+    canCreateLesson: Boolean @default(value: "false")
     canRateLessons: Boolean @default(value: "false")
     canDeleteLessons: Boolean @default(value: "false")
+    canUpdateLesson: Boolean @default(value: "false")
+    #content
+    canUploadContent: Boolean @default(value: "false")
+    canViewContent: Boolean @default(value: "false")
+    #section
+    canCreateSection: Boolean @default(value: "false")
+    canDeleteSection: Boolean @default(value: "false")
+    canUpdateSection: Boolean @default(value: "false")
+    #dashboard
+    canViewDashboard: Boolean @default(value: "false")
+
 }
 
 type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {

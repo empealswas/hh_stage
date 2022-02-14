@@ -24,6 +24,7 @@ import LessonRating from "./LessonRating";
 import AttendanceSheetModal from "./attendance/AttendanceSheetModal";
 import FilesViewer from "../../files-utilities/FilesViewer";
 import Markdown from "../../Markdown";
+import {UploadMultiFile} from "../../upload";
 
 
 const LessonOverview = () => {
@@ -134,17 +135,17 @@ const LessonOverview = () => {
 
                         </Container>
                     </Box>
-
-                    <Can I={'create'} a={'file'}>
-                        {/*                        <FilesUploadDropzoneWithChildren dropzone={{
+                    {/*<UploadMultiFile onDrop={acceptedFiles => setFilesToUpload(acceptedFiles)} files={filesToUpload} showPreview={true} onRemove={file => {}} onRemoveAll={() => {}}/>*/}
+                    {/*                        <FilesUploadDropzoneWithChildren dropzone={{
                             onDrop: onDrop,
                             accept: ['image/*','video/*', 'application/pdf', 'text/plain', 'application/mp4', '.mp4','.csv', '.doc', '.docx', '.xlsx', 'application/*', '.*']
                         }}/>*/}
-                    </Can>
                     <Container>
-                        {lesson.Files?.items &&
-                            <FilesViewer files={lesson.Files?.items}/>
-                        }
+                        <Can I={'read'} this={'content'}>
+                            {lesson.Files?.items &&
+                                <FilesViewer files={lesson.Files?.items}/>
+                            }
+                        </Can>
                     </Container>
                     <Snackbar
                         anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}

@@ -7,10 +7,11 @@ import {Classroom, Organization, Pupil} from "../../../../API";
 import axios from "axios";
 import {Principal} from "../../../../models/Principal";
 import merge from "lodash/merge";
-import {fShortenNumber} from "../../../../utils/formatNumber";
+import {fNumber, fShortenNumber} from "../../../../utils/formatNumber";
 import {Box, Card, CardHeader} from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 import collect, {Collection} from 'collect.js';
+import {useTheme} from "@mui/material/styles";
 
 const averageData = [{
     name: 'Marine Sprite',
@@ -39,87 +40,74 @@ const ActivityOrganizationBarchart = ({organization}: { organization: Organizati
         });
         return result.all();
     }, []);
-    const series: { name: string, data: number[]; } [] = [];
+    const series: { name: string, data: number; } [] = [];
     for (let label in data) {
         console.log(label);
         console.log(data);
-        const dataForChart = [0, 0, 0, 0];
-        data[label].items.forEach((item: any) => {
-
-            const date = parseISO(String(item.date));
-            const month = getMonth(date) + 1;
-            console.log(month);
-            if (month === 12 || month < 3) {
-                dataForChart[0] += item?.duration ?? 0;
-            } else if (month < 6) {
-                dataForChart[1] += item?.duration ?? 0;
-
-            } else if (month < 9) {
-                dataForChart[2] += item?.duration ?? 0;
-            } else {
-                dataForChart[3] += item?.duration ?? 0;
-            }
-        })
+        const dataForChart = 0;
+        collect(data[label].items).sum()
         series.push({
             name: label,
-            data: dataForChart,
-        })
-    }
+            data: Number(collect(data[label].items).sum((item: any) => item?.duration ?? 0)),
 
+        });
+    }
+    console.log(series)
+
+    const theme = useTheme();
 
 //
     const chartOptions = merge(apexOptions, {
-        chart: {
-            type: 'bar',
-            height: 350,
-            stacked: true,
+        colors: [
+            theme.palette.primary.main,
+            theme.palette.chart.blue[0],
+            theme.palette.chart.violet[0],
+            theme.palette.chart.yellow[0],
+        ],
+
+        dataLabels: {
+            enabled: true,
+            textAnchor: 'start',
+            style: {
+                colors: ['#fff']
+            },
+            formatter: function (val: any, opt: any) {
+                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val + 'mins'
+            },
+            offsetX: 0,
+            dropShadow: {
+                enabled: true
+            }
+        },
+
+        tooltip: {
+            marker: {show: false},
+            y: {
+                formatter: (seriesName: string) => fNumber(seriesName) + ' Min',
+                title: {
+                    formatter: () => '',
+                },
+            },
+        },
+        xaxis: {
+            categories: series.map(value => value.name),
         },
         plotOptions: {
             bar: {
-                horizontal: true,
+                horizontal: true, barHeight: '70%', borderRadius: 2, dataLabels: {
+                    position: 'bottom'
+                },
             },
         },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
-        },
 
-        xaxis: {
-            categories: ['Winter', 'Spring', 'Summer', 'Autumn'],
-
-            labels: {
-                formatter: function (val: string) {
-                    return val + " Minutes"
-                }
-            }
-        },
-        yaxis: {
-            title: {
-                text: undefined
-            },
-        },
-        tooltip: {
-            y: {
-                formatter: function (val: string) {
-                    return val + " Minutes"
-                }
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        legend: {
-            position: 'top',
-            horizontalAlign: 'left',
-            offsetX: 40
-        }
     });
 
     return (
         <Card>
-            <CardHeader title="Skills Delivered" />
+            <CardHeader title="Skills Delivered"/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
-                <ReactApexChart type="bar" series={series} options={chartOptions} height={364}/>
+                <ReactApexChart type="bar" series={[{data: series.map(value => value?.data)}]} options={chartOptions}
+                                height={364}/>
             </Box>
         </Card>
     );

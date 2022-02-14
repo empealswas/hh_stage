@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import {FormikProvider, useFormik} from "formik";
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation, Storage} from "aws-amplify";
-import {createFile, updateSection} from "../../graphql/mutations";
+import {createFile, createRolesThatCanAccess, deleteRolesThatCanAccess, updateSection} from "../../graphql/mutations";
 import {Section, UserRole} from "../../API";
 import {Card, CardHeader, CardMedia, TextField} from '@mui/material';
 import awsConfig from "../../aws-exports";
@@ -14,9 +14,19 @@ import {UploadSingleFile} from "../upload";
 import {RHFUploadSingleFile} from "../hook-form";
 import RolesThatCanAccess from "../../pages/dashboard/section/RolesThatCanAccess";
 
-
+const getRolesQuery = `query MyQuery($id: ID = "") {
+  getOrganization(id: $id) {
+    roles {
+      items {
+        id
+        name
+      }
+    }
+  }
+}`
 const EditSectionModal = (props: { updateObject: Section }) => {
     const {updateObject} = {...props};
+    const {organizationId} = useParams();
     console.log(updateObject);
     const [roles, setRoles] = useState<{ role: UserRole, selected: boolean }[] | null>(null);
     useEffect(() => {
@@ -27,13 +37,20 @@ const EditSectionModal = (props: { updateObject: Section }) => {
             })
         }
         formik.setFieldValue('name', updateObject.name);
-        const newRoles = updateObject?.rolesThatCanAccess?.items.map(value => value?.userRole).map(value => {
-            return {
-                role: value,
-                selected: true,
-            }
-        }) as { role: UserRole, selected: boolean }[]
-        setRoles(newRoles)
+        const getRoles = async () => {
+            const result: any = await API.graphql(graphqlOperation(getRolesQuery, {id: organizationId}))
+            let rolesThatCanAccess = updateObject?.rolesThatCanAccess?.items.map(value => value?.userRole);
+            const roles: UserRole[] = result.data.getOrganization?.roles?.items;
+            const newRoles = roles?.map(role => {
+                return {
+                    role: role,
+                    selected: rolesThatCanAccess?.find(value => value?.id === role.id) !== undefined,
+                }
+            })as { role: UserRole, selected: boolean }[]
+
+            setRoles(newRoles)
+        }
+        getRoles();
 
     }, [props.updateObject])
     const RegisterSchema = Yup.object().shape({
@@ -72,23 +89,34 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                 const result: any = await API.graphql(graphqlOperation(createFile, {input}));
                 console.log('result', result);
                 console.log(result);
-                API.graphql(graphqlOperation(updateSection, {
-                    input: {
-                        id: updateObject.id,
-                        name: getFieldProps('name').value,
-                        parentID: updateObject.parentID,
-                        imagePreviewID: result.data.createFile.id
-                    }
-                }));
-                return;
             }
-            API.graphql(graphqlOperation(updateSection, {
+            const result: any = await API.graphql(graphqlOperation(updateSection, {
                 input: {
                     id: updateObject.id,
                     name: getFieldProps('name').value,
                     parentID: updateObject.parentID
                 }
             }));
+            for (let value of updateObject?.rolesThatCanAccess?.items ?? []) {
+                await API.graphql(graphqlOperation(deleteRolesThatCanAccess, {
+                    input: {
+                        id: value?.id,
+                    },
+                }));
+            }
+            for (let role of roles ?? []) {
+                if (role.selected) {
+                    const data: any = await API.graphql(graphqlOperation(createRolesThatCanAccess, {
+                        input: {
+                            sectionID: result.data.updateSection.id,
+                            userRoleID: role.role.id,
+                        }
+                    }));
+                    console.log(data.data);
+                }
+            }
+
+
         }
     });
     const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid} = formik;

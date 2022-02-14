@@ -167,8 +167,16 @@ export const getUserRole = /* GraphQL */ `
       }
       permissions {
         canAccessAttendanceSheet
+        canCreateLesson
         canRateLessons
         canDeleteLessons
+        canUpdateLesson
+        canUploadContent
+        canViewContent
+        canCreateSection
+        canDeleteSection
+        canUpdateSection
+        canViewDashboard
         id
         createdAt
         updatedAt
@@ -215,8 +223,16 @@ export const getRolePermissions = /* GraphQL */ `
         userRolePermissionsId
       }
       canAccessAttendanceSheet
+      canCreateLesson
       canRateLessons
       canDeleteLessons
+      canUpdateLesson
+      canUploadContent
+      canViewContent
+      canCreateSection
+      canDeleteSection
+      canUpdateSection
+      canViewDashboard
       id
       createdAt
       updatedAt
@@ -233,8 +249,16 @@ export const listRolePermissions = /* GraphQL */ `
     listRolePermissions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         canAccessAttendanceSheet
+        canCreateLesson
         canRateLessons
         canDeleteLessons
+        canUpdateLesson
+        canUploadContent
+        canViewContent
+        canCreateSection
+        canDeleteSection
+        canUpdateSection
+        canViewDashboard
         id
         createdAt
         updatedAt

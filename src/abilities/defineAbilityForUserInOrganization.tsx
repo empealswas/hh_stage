@@ -25,7 +25,9 @@ export default function DefineAbilityForUserInOrganization(user: User, organizat
         can('delete', 'file');
         can('read', 'attendance');
         can('create', 'section');
-
+        can('upload', 'content');
+        can('read', 'content');
+        can('read', 'dashboard');
         return build();
     }
     const userInOrganization = user?.organizations?.items[0];
@@ -46,6 +48,34 @@ export default function DefineAbilityForUserInOrganization(user: User, organizat
     if (permissions?.some((value) => value?.canRateLessons)) {
         can('rate', 'lesson');
     }
+    if (permissions?.some((value) => value?.canCreateLesson)) {
+        can('create', 'lesson');
+    }
+    if (permissions?.some((value) => value?.canUpdateLesson)) {
+        can('update', 'lesson');
+    }
+    if (permissions?.some((value) => value?.canUpdateLesson)) {
+        can('upload', 'content');
+    }
+    if (permissions?.some((value) => value?.canViewContent)) {
+        can('read', 'content');
+    }
+    if (permissions?.some((value) => value?.canCreateSection)) {
+        can('create', 'section');
+    }
+    if (permissions?.some((value) => value?.canDeleteSection)) {
+        can('delete', 'section');
+    }
+    if (permissions?.some((value) => value?.canUpdateSection)) {
+        can('update', 'section');
+    }
+    if (permissions?.some((value) => value?.canViewDashboard)) {
+        can('read', 'dashboard');
+    }
+
+
+
+
 
 
     // can('visit', 'register');

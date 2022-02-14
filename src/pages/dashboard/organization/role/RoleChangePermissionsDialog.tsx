@@ -29,6 +29,14 @@ const getPermissionsQuery = `query MyQuery($id: ID = "") {
       canAccessAttendanceSheet
       canDeleteLessons
       canRateLessons
+      canCreateLesson
+      canUpdateLesson
+      canUploadContent
+      canViewContent
+      canCreateSection
+      canDeleteSection
+      canUpdateSection
+      canViewDashboard
     }
   }
 }`
@@ -122,7 +130,7 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                         <CardContent>
                             <FormControl sx={{minWidth: ('calc(200px + 10vw)')}}>
                                 <Stack direction='column' spacing={3}>
-                                    <PermissionsSearch/>
+                                    {/*<PermissionsSearch/>*/}
                                     {permissions ?
                                         <FormGroup>
                                             <FormControlLabel control={<Switch
@@ -139,7 +147,7 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                                                 }
                                                 }
                                                 defaultChecked={Boolean(permissions.canAccessAttendanceSheet)}/>}
-                                                              label="Allow access attendance sheet of a lesson"/>
+                                                              label="Can access attendance sheet of a lesson"/>
                                             <FormControlLabel control={<Switch
                                                 onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
                                                     console.log(permissions);
@@ -155,8 +163,138 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                                                 }
                                                 }
                                                 defaultChecked={Boolean(permissions.canDeleteLessons)}/>}
-                                                              label="Allow to delete lessons in sections"/>
+                                                              label="Can delete lessons"/>
                                             <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canCreateLesson: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canCreateLesson)}/>}
+                                                              label="Can create lessons"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canUpdateLesson: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canUpdateLesson)}/>}
+                                                              label="Can update lessons"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canUploadContent: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canUploadContent)}/>}
+                                                              label="Can upload content"/>
+
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canViewContent: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canViewContent)}/>}
+                                                              label="Can view content"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canCreateSection: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canCreateSection)}/>}
+                                                              label="Can create sections"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canDeleteSection: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canDeleteSection)}/>}
+                                                              label="Can delete sections"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canUpdateSection: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canUpdateSection)}/>}
+                                                              label="Can update sections"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canViewDashboard: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions.canViewDashboard)}/>}
+                                                              label="Can view dashboard"/>
+
+                {/*                            <FormControlLabel control={<Switch
                                                 onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
                                                     console.log(permissions);
                                                     const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
@@ -171,7 +309,7 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                                                 }
                                                 }
                                                 defaultChecked={Boolean(permissions.canRateLessons)}/>}
-                                                              label="Allow rate lessons"/>
+                                                              label="Allow rate lessons"/>*/}
                                         </FormGroup>
                                         :
                                         <CircularProgress/>

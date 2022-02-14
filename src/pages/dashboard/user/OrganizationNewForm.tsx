@@ -234,7 +234,6 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
                                 <RHFUploadSingleFile
                                     name="image"
                                     accept="image/*"
-                                    maxSize={3145728}
                                     onDrop={handleDrop}
                                 />
 

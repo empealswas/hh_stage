@@ -19,9 +19,17 @@ const rolesQuery = `query MyQuery($id: ID = "", $eq: ID = "") {
               name
               id
               permissions {
-                canAccessAttendanceSheet
-                canDeleteLessons
-                canRateLessons
+      canAccessAttendanceSheet
+      canDeleteLessons
+      canRateLessons
+      canCreateLesson
+      canUpdateLesson
+      canUploadContent
+      canViewContent
+      canCreateSection
+      canDeleteSection
+      canUpdateSection
+      canViewDashboard
               }
             }
           }
