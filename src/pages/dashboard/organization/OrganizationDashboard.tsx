@@ -72,7 +72,7 @@ const OrganizationDashboard = () => {
     const sum = organization?.Classrooms?.items
         .flatMap(value => value?.LessonRecords?.items)
         .map(value => value?.rating ?? 0)
-        .reduce((accumulator, curr) => accumulator + curr) ?? 0;
+        .reduce((accumulator, curr) => accumulator + curr, 0) ?? 0;
     const all = organization?.Classrooms?.items
         .flatMap(value => value?.LessonRecords?.items).length ?? 1;
     const averageRating = useMemo(() => {
@@ -126,7 +126,7 @@ const OrganizationDashboard = () => {
                                 total={(organization.Classrooms?.items
                                     .flatMap(value => value?.LessonRecords?.items)
                                     .map(value => value?.duration ?? 0)
-                                    .reduce((accumulator, curr) => accumulator + curr) ?? 0) / 60.0
+                                    .reduce((accumulator, curr) => accumulator + curr, 0) ?? 0) / 60.0
                                 }
                                 icon={'bx:bx-time-five'}
                             />

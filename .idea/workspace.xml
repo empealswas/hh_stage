@@ -5,28 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/dashboard/ActivityOrganizationBarchart.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/dashboard/ActivityOrganizationLineChart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/abilities/defineAbilityForUserInOrganization.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/abilities/defineAbilityForUserInOrganization.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/mutations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/queries.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/subscriptions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/main/MainFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/main/MainFooter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/UserAccount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/UserAccount.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembers.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/LessonNewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/LessonNewForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sections/@dashboard/user/account/AccountGeneral.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/@dashboard/user/account/AccountGeneral.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +119,8 @@
       <workItem from="1644440750582" duration="6512000" />
       <workItem from="1644485284448" duration="2271000" />
       <workItem from="1644755577068" duration="10743000" />
-      <workItem from="1644777016596" duration="12275000" />
+      <workItem from="1644777016596" duration="12301000" />
+      <workItem from="1644838336301" duration="207000" />
     </task>
     <servers />
   </component>
