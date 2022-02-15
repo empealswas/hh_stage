@@ -89,6 +89,12 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                 const result: any = await API.graphql(graphqlOperation(createFile, {input}));
                 console.log('result', result);
                 console.log(result);
+                await API.graphql(graphqlOperation(updateSection, {
+                    input: {
+                        id: updateObject.id,
+                        imagePreviewID: result.data.createFile.id,
+                    }
+                }));
             }
             const result: any = await API.graphql(graphqlOperation(updateSection, {
                 input: {
