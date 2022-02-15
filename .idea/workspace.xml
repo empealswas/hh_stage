@@ -6,21 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/abilities/defineAbilityForUserInOrganization.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/abilities/defineAbilityForUserInOrganization.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/EditSectionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/EditSectionModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/mutations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/queries.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/subscriptions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationOutlet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationOutlet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/RolesMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/RolesMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/dashboard/ActivityOrganizationBarchart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/dashboard/ActivityOrganizationBarchart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/role/RoleChangePermissionsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/role/RoleChangePermissionsDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/LessonNewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/LessonNewForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationNewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationNewForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/dashboard/ActivityOrganizationLineChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/dashboard/ActivityOrganizationLineChart.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +121,8 @@
       <workItem from="1644485284448" duration="2271000" />
       <workItem from="1644755577068" duration="10743000" />
       <workItem from="1644777016596" duration="12301000" />
-      <workItem from="1644838336301" duration="9145000" />
+      <workItem from="1644838336301" duration="9175000" />
+      <workItem from="1644924499767" duration="4831000" />
     </task>
     <servers />
   </component>

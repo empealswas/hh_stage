@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {BaseOptionChart} from "../../../../components/chart";
-import {addDays, format, getMonth, parseISO, subDays} from "date-fns";
+import {addDays, compareAsc, format, getMonth, parseISO, subDays} from "date-fns";
 import {Teacher} from "../../../../models/Teacher";
 import {API, graphqlOperation} from "aws-amplify";
 import {Classroom, Organization, PELessonRecord, Pupil} from "../../../../API";
@@ -13,6 +13,7 @@ import ReactApexChart from "react-apexcharts";
 import collect, {Collection} from 'collect.js';
 import {useParams} from "react-router-dom";
 import ActivtityChartSkeleton from "../../../../components/skeleton/ActivtityChartSkeleton";
+import OrganizationDashboard from "../OrganizationDashboard";
 
 const averageData = [{
     name: 'Marine Sprite',
@@ -45,11 +46,13 @@ const query = `query MyQuery($id: ID = "", $gt: String = "", $lt: String = "") {
     }
   }
 }`
-const ActivityOrganizationLineChart = () => {
+
+type Props = {
+    organization: Organization,
+}
+const ActivityOrganizationLineChart = ({organization}: Props) => {
     let apexOptions = BaseOptionChart();
     const {organizationId} = useParams();
-    const labels = getDates(subDays(new Date(), 7), new Date());
-    const [organization, setOrganization] = useState<Organization | null>(null);
     const [previousResult, setPreviousResult] = useState<Organization | null>(null);
     const series: any = {};
 
@@ -64,15 +67,15 @@ const ActivityOrganizationLineChart = () => {
     }
 
     useEffect(() => {
-        const getLast7DaysActivity = async () => {
-            const result: any = await API.graphql(graphqlOperation(query, {
-                id: organizationId,
-                gt: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
-                lt: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
-            }))
-            setOrganization(result.data.getOrganization);
-        }
-        getLast7DaysActivity();
+        /*        const getLast7DaysActivity = async () => {
+                    const result: any = await API.graphql(graphqlOperation(query, {
+                        id: organizationId,
+                        gt: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                        lt: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
+                    }))
+                    setOrganizationResult(result.data.getOrganization);
+                }
+                getLast7DaysActivity();*/
         const getPreviousResult = async () => {
             const result: any = await API.graphql(graphqlOperation(query, {
                 id: organizationId,
@@ -81,36 +84,47 @@ const ActivityOrganizationLineChart = () => {
             }))
             setPreviousResult(result.data.getOrganization);
         }
-        getLast7DaysActivity();
+        // getLast7DaysActivity();
         getPreviousResult();
         return () => {
 
         };
     }, [organizationId]);
 
-    if (!organization || !previousResult) {
+    if (!previousResult) {
 
         return (<ActivtityChartSkeleton/>);
     }
-    labels.forEach(value => {
-        series[format(value, 'yyyy-MM-dd')] = 0;
-    })
+
     console.log('series', series);
 
     let lessonRecords = organization.Classrooms?.items.flatMap(classroom => classroom?.LessonRecords?.items);
     const all = Number(collect(lessonRecords).sum(item => item?.duration ?? 0));
     const previousAll = Number(collect(previousResult.Classrooms?.items.flatMap(classroom => classroom?.LessonRecords?.items)).sum(item => item?.duration ?? 0));
     const biggerThan = (previousAll - all) / previousAll * 100;
-    lessonRecords?.forEach((lessonRecord) => {
+    lessonRecords?.sort((a, b) => {
+        if (!a || !b) {
+            return 0;
+        } else {
+            return compareAsc(parseISO(a?.date), parseISO(b?.date));
+
+        }
+
+    }).forEach((lessonRecord) => {
         console.log(lessonRecord?.date);
         if (lessonRecord?.date) {
+            if (!series[lessonRecord?.date]) {
+                series[lessonRecord?.date] = 0;
+            }
             series[lessonRecord?.date] += lessonRecord.duration;
         }
     })
     console.log(series);
+    const dataLabels = [];
     const dataChart: any = {name: 'Activity', data: []};
     for (const seriesKey in series) {
         dataChart.data.push(series[seriesKey]);
+        dataLabels.push(seriesKey);
     }
     console.log(dataChart);
 
@@ -122,29 +136,26 @@ const ActivityOrganizationLineChart = () => {
                 enabled: false
             }
         },
-        labels: labels?.map(value => format(value, 'yyyy-MM-dd')),
+        labels: dataLabels,
 
         stroke: {
             curve: 'straight'
         },
-        title: {
-            text: 'Product Trends by Month',
-            align: 'left'
-        },
+
         grid: {
             row: {
                 opacity: 0.5
             },
         },
         xaxis: {
-            categories: labels?.map(value => format(value, 'yyyy-MM-dd')),
+            categories: dataLabels,
 
         }
     },);
 
     return (
         <Card>
-            <CardHeader title="7 days activity" subheader={`${biggerThan >= 0 ? '+' : '-'}${biggerThan}% than 7 days ago`}/>
+            {/*<CardHeader title="7 days activity" subheader={`${biggerThan >= 0 ? '+' : ''}${biggerThan}% than 7 days ago`}/>*/}
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart type="line" series={[dataChart]} options={chartOptions} height={364}/>
             </Box>
