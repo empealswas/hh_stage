@@ -113,6 +113,7 @@ export default function LessonNewForm({currentLesson, isEdit = false}: Props) {
         watch,
         control,
         setValue,
+        getValues,
         handleSubmit,
         formState: {isSubmitting, isValid},
     } = methods;
@@ -193,13 +194,15 @@ export default function LessonNewForm({currentLesson, isEdit = false}: Props) {
 
     const handleDrop = useCallback(
         (acceptedFiles) => {
+            console.log(getValues('images'));
             setValue(
                 'images',
-                acceptedFiles.map((file: Blob | MediaSource) =>
-                    Object.assign(file, {
-                        preview: URL.createObjectURL(file),
-                    })
-                )
+                [...getValues('images'),
+                ...acceptedFiles.map((file: Blob | MediaSource) =>
+                        Object.assign(file, {
+                            preview: URL.createObjectURL(file),
+                        })
+                    )]
             );
         },
         [setValue]
