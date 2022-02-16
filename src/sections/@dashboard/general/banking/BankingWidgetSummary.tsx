@@ -4,7 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import { styled, useTheme } from '@mui/material/styles';
 import { Card, Typography, Stack } from '@mui/material';
 // utils
-import { fCurrency, fPercent } from '../../../../utils/formatNumber';
+import {fCurrency, fPercent, fShortenNumber} from '../../../../utils/formatNumber';
 // theme
 import { ColorSchema } from '../../../../theme/palette';
 // components
@@ -61,9 +61,10 @@ export default function BankingWidgetSummary({
     legend: { show: false },
     grid: { show: false },
     tooltip: {
+      theme: 'dark',
       marker: { show: false },
       y: {
-        formatter: (seriesName: string) => fCurrency(seriesName),
+        formatter: (seriesName: string) => seriesName,
         title: {
           formatter: () => '',
         },
@@ -90,7 +91,7 @@ export default function BankingWidgetSummary({
 
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography sx={{ typography: 'subtitle2' }}>{title}</Typography>
-        <Typography sx={{ typography: 'h3' }}>{fCurrency(total)}</Typography>
+        <Typography sx={{ typography: 'h3' }}>{fShortenNumber(total)}</Typography>
         <Stack direction="row" alignItems="center" flexWrap="wrap">
           <Iconify
             width={20}
