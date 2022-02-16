@@ -148,9 +148,7 @@ const SectionGrid = () => {
             console.log(sectionsToDisplay)
         }
         if (sectionsToDisplay.length === 0) {
-            return <Container style={{textAlign: 'center'}}>
-                <EmptyContent title={'No Sections'}/>
-            </Container>
+            return <></>
         }
         return (
             <>
