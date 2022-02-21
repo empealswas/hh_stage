@@ -1,17 +1,18 @@
-import useAuth from "../../../hooks/useAuth";
 import {DataGrid, GridCellParams, GridColDef, GridRenderCellParams} from "@mui/x-data-grid";
-import OrganizationMoreMenu from "../user/OrganizationMoreMenu";
 import {useEffect, useState} from "react";
-import {Organization, User, UserInOrganization, UserRole} from "../../../API";
 import {API, graphqlOperation} from "aws-amplify";
-import {Button, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
-import Iconify from "../../../components/Iconify";
+import {Button, Chip, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
 import {useParams} from "react-router-dom";
-import MemberRolesMenu from "./MemberRolesMenu";
+import MemberRolesMenu from "../MemberRolesMenu";
+import Iconify from "../../../../components/Iconify";
+import {UserInOrganization, UserRole} from "../../../../API";
+import useAuth from "../../../../hooks/useAuth";
+import {LoadingButton} from "@mui/lab";
+import {updateUserInOrganization} from "../../../../graphql/mutations";
 
 const query = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    members(filter: {status: {eq: ACCEPTED}}) {
+    members(filter: {status: {eq: WAITING_FOR_USER_TO_APPROVE}}) {
       items {
         id
         user {
@@ -47,14 +48,14 @@ const getRolesQuery = `query MyQuery($id: ID = "") {
 }`;
 const MemberTableItem = (params: GridRenderCellParams) => {
 
-    const roles: any = params.getValue(params.id, 'roles');
-    const allRoles: any = params.getValue(params.id, 'allRoles');
+
     return (
-        <MemberRolesMenu id={String(params.id)} roles={roles} allRoles={allRoles}/>
+        <Chip label="Waiting" color="info"/>
     );
+
 }
 
-export default function OrganizationMembersTable() {
+export default function OrganizationMembersSentRequest() {
     const {user} = useAuth();
     const {organizationId} = useParams();
     const [roles, setRoles] = useState<UserRole[] | null>(null);
@@ -76,7 +77,7 @@ export default function OrganizationMembersTable() {
         },
         {
             field: 'roles',
-            headerName: 'Roles',
+            headerName: 'Actions',
             description: 'This column has a value getter and is not sortable.',
             sortable: false,
             flex: 0.4,
@@ -86,10 +87,10 @@ export default function OrganizationMembersTable() {
         },
         {
             field: 'allRoles',
-            headerName: 'Roles',
+            headerName: 'Actions',
             description: 'This column has a value getter and is not sortable.',
             sortable: false,
-            flex: 0.4,
+            flex: 1,
             align: 'center',
             headerAlign: 'center',
             hide: true
@@ -103,6 +104,7 @@ export default function OrganizationMembersTable() {
         const result: any = await API.graphql(graphqlOperation(query, {id: organizationId}));
         setMembers(result.data.getOrganization.members?.items);
     }
+
     const getRolesAsync = async () => {
         setRoles(null);
         const result: any = await API.graphql(graphqlOperation(getRolesQuery, {id: organizationId}));

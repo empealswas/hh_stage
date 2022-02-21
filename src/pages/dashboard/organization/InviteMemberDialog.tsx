@@ -4,12 +4,9 @@ import {
     Alert,
     Box,
     Button,
-    Card,
-    CardContent,
     Dialog,
     DialogActions,
     DialogContent,
-    FormControl,
     IconButton,
     Stack,
     Toolbar,
@@ -19,20 +16,14 @@ import Iconify from "../../../components/Iconify";
 import {CloseIcon} from "../../../theme/overrides/CustomIcons";
 import {LoadingButton} from "@mui/lab";
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useForm, Controller} from 'react-hook-form';
-import {
-    FormProvider,
-    RHFSelect,
-    RHFSwitch,
-    RHFTextField,
-    RHFUploadAvatar,
-} from '../../../components/hook-form';
+import {useForm} from 'react-hook-form';
+import {FormProvider, RHFTextField,} from '../../../components/hook-form';
 import {useSnackbar} from "notistack";
 import {API, graphqlOperation} from "aws-amplify";
 import {useParams} from "react-router-dom";
 import {getUser} from "../../../graphql/queries";
 import {createUserInOrganization} from "../../../graphql/mutations";
-
+import {UserInOrganizationStatus as Status} from 'src/API';
 
 const checkIfUserAlreadyInOrganizationQuery = `query MyQuery($id: ID = "", $eq: ID = "") {
   getOrganization(id: $id) {
@@ -49,6 +40,7 @@ const checkIfUserAlreadyInOrganizationQuery = `query MyQuery($id: ID = "", $eq: 
 type InviteUser = {
     email: string,
 }
+
 const InviteMemberDialog = () => {
     const [open, setOpen] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
@@ -107,6 +99,7 @@ const InviteMemberDialog = () => {
             const userAddToOrganizationResult: any = await API.graphql(graphqlOperation(createUserInOrganization, {
                 input: {
                     userID: data.email,
+                    status: Status.WAITING_FOR_USER_TO_APPROVE,
                     organizationID: organizationId,
                 }
             }))
@@ -157,6 +150,7 @@ const InviteMemberDialog = () => {
                         <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                             Invite
                         </LoadingButton>
+
                     </DialogActions>
                 </FormProvider>
             </Dialog>

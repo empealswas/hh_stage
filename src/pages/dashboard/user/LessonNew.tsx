@@ -21,7 +21,7 @@ const {sectionId,organizationId} = useParams();
     <Page title="Blog: New Post">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Create a new post"
+          heading="Create a new lesson"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Organization', href: `${PATH_DASHBOARD.root}/organization/${organizationId}` },

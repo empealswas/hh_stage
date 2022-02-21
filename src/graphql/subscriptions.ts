@@ -156,9 +156,11 @@ export const onCreateUserInOrganization = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -193,9 +195,11 @@ export const onUpdateUserInOrganization = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -230,9 +234,11 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -262,6 +268,7 @@ export const onCreateUserRole = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -306,6 +313,7 @@ export const onUpdateUserRole = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -350,6 +358,7 @@ export const onDeleteUserRole = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -510,6 +519,7 @@ export const onCreateOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      isPublic
       type
       logo {
         id
@@ -564,6 +574,7 @@ export const onUpdateOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      isPublic
       type
       logo {
         id
@@ -618,6 +629,7 @@ export const onDeleteOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      isPublic
       type
       logo {
         id
@@ -694,6 +706,7 @@ export const onCreateSection = /* GraphQL */ `
       OrganizationOwner {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -751,6 +764,7 @@ export const onUpdateSection = /* GraphQL */ `
       OrganizationOwner {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -808,6 +822,7 @@ export const onDeleteSection = /* GraphQL */ `
       OrganizationOwner {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1316,6 +1331,7 @@ export const onCreateClassroom = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1365,6 +1381,7 @@ export const onUpdateClassroom = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1414,6 +1431,7 @@ export const onDeleteClassroom = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1639,6 +1657,7 @@ export const onCreatePupilOrganizationRequest = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1670,6 +1689,7 @@ export const onUpdatePupilOrganizationRequest = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1701,6 +1721,7 @@ export const onDeletePupilOrganizationRequest = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1732,6 +1753,7 @@ export const onCreatePupilOrganizationAccepted = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1763,6 +1785,7 @@ export const onUpdatePupilOrganizationAccepted = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1794,6 +1817,7 @@ export const onDeletePupilOrganizationAccepted = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1902,6 +1926,7 @@ export const onCreateAttendance = /* GraphQL */ `
       UserInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -1957,6 +1982,7 @@ export const onUpdateAttendance = /* GraphQL */ `
       UserInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -2012,6 +2038,7 @@ export const onDeleteAttendance = /* GraphQL */ `
       UserInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -2438,6 +2465,7 @@ export const onCreatePrincipal = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -2470,6 +2498,7 @@ export const onUpdatePrincipal = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -2502,6 +2531,7 @@ export const onDeletePrincipal = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -3149,6 +3179,7 @@ export const onCreateRolesOfUser = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -3175,6 +3206,7 @@ export const onUpdateRolesOfUser = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -3201,6 +3233,7 @@ export const onDeleteRolesOfUser = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -3227,6 +3260,7 @@ export const onCreateUserInOrganizationInClassroom = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -3254,6 +3288,7 @@ export const onUpdateUserInOrganizationInClassroom = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -3281,6 +3316,7 @@ export const onDeleteUserInOrganizationInClassroom = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -3395,6 +3431,7 @@ export const onCreateTeacherOrganziation = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -3424,6 +3461,7 @@ export const onUpdateTeacherOrganziation = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -3453,6 +3491,7 @@ export const onDeleteTeacherOrganziation = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt

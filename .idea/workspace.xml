@@ -5,7 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/MembersTabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationMembersSentRequest.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationRequestJoin.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/user/organization/UserJoinOrganizationList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/cli.json" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/cli.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/mutations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/subscriptions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/UserAccount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/UserAccount.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/InviteMemberDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/InviteMemberDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationJoinButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationJoinButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationManage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationManage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembers.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/LessonNew.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/LessonNew.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationNewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationNewForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +66,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/organization/dashboard" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/user/organization" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -66,11 +86,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\user\organization" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\member" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\dashboard" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\section" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\user" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
@@ -123,7 +143,8 @@
       <workItem from="1644924499767" duration="7636000" />
       <workItem from="1645002016943" duration="4327000" />
       <workItem from="1645008088969" duration="3773000" />
-      <workItem from="1645018554623" duration="803000" />
+      <workItem from="1645018554623" duration="1510000" />
+      <workItem from="1645443882075" duration="9869000" />
     </task>
     <servers />
   </component>

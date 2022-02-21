@@ -8,6 +8,7 @@ import OrganizationsTable from "../user/OrganizationsTable";
 import useSettings from "../../../hooks/useSettings";
 import OrganizationMembersTable from "./OrganizationMembersTable";
 import InviteMemberDialog from "./InviteMemberDialog";
+import MembersTabs from "./member/MembersTabs";
 
 const OrganizationMembers = () => {
 
@@ -23,7 +24,7 @@ const OrganizationMembers = () => {
             </Stack>
             <Card>
                 <CardContent>
-                    <OrganizationMembersTable/>
+                    <MembersTabs/>
                 </CardContent>
             </Card>
         </Container>

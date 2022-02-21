@@ -23,6 +23,7 @@ import {
 import UserList from "./UserList";
 import ChildrenList from "./parent/child/ChildrenList";
 import OrganizationsList from "./parent/child/OrganizationsList";
+import UserJoinOrganizationList from "./user/organization/UserJoinOrganizationList";
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,10 @@ export default function UserAccount() {
     {value: 'organizations',
       icon: <Iconify icon={'codicon:organization'} width={20} height={20} />,
       component: <OrganizationsList />,
+    },
+    {value: 'Request',
+      icon: <Iconify icon={'ic:outline-plus'} width={20} height={20} />,
+      component: <UserJoinOrganizationList />,
     },
 /*    {
       value: 'billing',

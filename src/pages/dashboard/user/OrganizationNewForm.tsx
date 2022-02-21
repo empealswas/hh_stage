@@ -8,11 +8,11 @@ import {yupResolver} from '@hookform/resolvers/yup';
 // @mui
 import {styled} from '@mui/material/styles';
 import {LoadingButton} from '@mui/lab';
-import {Card, Grid, Stack, Typography,} from '@mui/material';
+import {Button, Card, Grid, Stack, Typography,} from '@mui/material';
 // routes
 // @types
 // components
-import {FormProvider, RHFSelect, RHFTextField, RHFUploadSingleFile,} from '../../../components/hook-form';
+import {FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadSingleFile,} from '../../../components/hook-form';
 import {CreateOrganizationInput, Organization, UpdateOrganizationMutation} from "../../../API";
 import {API, graphqlOperation, Storage} from "aws-amplify";
 import {createFile, createOrganization, updateOrganization} from "../../../graphql/mutations";
@@ -34,15 +34,28 @@ const LabelStyle = styled(Typography)(({theme}) => ({
 interface FormValuesProps {
     type: string;
     image: File | null;
+    isPublic: boolean;
     name: string;
 }
 
 type Props = {
     isEdit: boolean;
     currentOrganization?: Organization;
-    setOrganization?:  React.Dispatch<React.SetStateAction<Organization | null>>
+    setOrganization?: React.Dispatch<React.SetStateAction<Organization | null>>
 };
-
+const query = `query MyQuery {
+  listOrganizations {
+    items {
+      id
+    }
+  }
+}
+`
+const mute = `mutation MyMutation($id: ID = "") {
+  updateOrganization(input: {id: $id, isPublic: true}) {
+    id
+  }
+}`
 export default function OrganizationNewForm({isEdit, currentOrganization, setOrganization}: Props) {
     const navigate = useNavigate();
     const [linkToLogo, setLinkToLogo] = useState('');
@@ -60,8 +73,8 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
         () => ({
             name: currentOrganization?.name || '',
             type: currentOrganization?.type || 'Club',
+            isPublic: currentOrganization?.isPublic || false,
             image: null,
-
         }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [currentOrganization]
@@ -148,6 +161,7 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
             }
             const input: CreateOrganizationInput = {
                 id: currentOrganization.id,
+                isPublic: data.isPublic,
                 name: data.name,
                 type: data.type,
             }
@@ -176,6 +190,7 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
             const input: CreateOrganizationInput = {
                 name: data.name,
                 userOwnedOrganizationsId: user?.email,
+                isPublic: data.isPublic,
                 type: data.type,
             }
             if (logoId) {
@@ -216,6 +231,21 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
                 <Grid item xs={12} md={8}>
                     <Card sx={{p: 3}}>
                         <Stack spacing={3}>
+                            <RHFSwitch
+                                name="isPublic"
+                                labelPlacement="start"
+                                label={
+                                    <>
+                                        <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+                                            Organization is public
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                            This will affect weather users will be able to find your organization in discover menu.
+                                        </Typography>
+                                    </>
+                                }
+                                sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
+                            />
                             <RHFTextField name="name" label="Organization Name"/>
 
                             {/*              <div>
@@ -223,7 +253,7 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
                 <RHFEditor simple name="description" />
               </div>*/}
                             <RHFSelect name="type" label="Type" placeholder="Type">
-                                {['Primary School', 'Secondary School', 'Team', 'Club', 'Gym'].map((option) => (
+                                {['Primary School', 'Secondary School', 'Team', 'Club', 'Gym', 'Family', 'Friends'].map((option) => (
                                     <option key={option} value={option}>
                                         {option}
                                     </option>
@@ -236,11 +266,9 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
                                     accept="image/*"
                                     onDrop={handleDrop}
                                 />
-
                             </div>
                             <Grid item xs={12}>
                                 <Stack spacing={3}>
-
                                     <LoadingButton type="submit" variant="contained" size="large"
                                                    loading={isSubmitting}>
                                         {!isEdit ? 'Create Organization' : 'Save Changes'}

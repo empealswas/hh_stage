@@ -94,11 +94,11 @@ export default function OrganizationCard({organization, discover, index}: Props)
             discover={discover}
             id={organization.id}
         />
-        {/*        {discover &&
+                {discover &&
             <CardActions>
                 <OrganizationJoinButton organization={organization}/>
             </CardActions>
-        }*/}
+        }
     </Card>;
     if (discover) {
         return (<>

@@ -41,7 +41,6 @@ const OrganizationManage = () => {
             component: <OrganizationTeams />,
         },
 
-
     ];
 
     return (

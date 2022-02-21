@@ -13,12 +13,16 @@ type DependantGuardian @model @auth(rules: [{allow: public, provider: iam}, {all
     guardian: User!
     dependant: User!
 }
-
+enum UserInOrganizationStatus {
+    ACCEPTED,
+    WAITING_FOR_ORGANIZATION_TO_APPROVE,
+    WAITING_FOR_USER_TO_APPROVE,
+}
 type UserInOrganization @model @auth(rules: [{allow: private}]) {
     userID: ID @index(name: "byUser")
     organizationID: ID @index(name: "byOrganization")
     user: User @belongsTo(fields: ["userID"])
-
+    status: UserInOrganizationStatus! @default(value: "ACCEPTED")
     organization: Organization @belongsTo(fields: ["organizationID"])
     roles: [UserRole] @manyToMany(relationName:"RolesOfUser")
     classrooms: [Classroom] @manyToMany(relationName: "UserInOrganizationInClassroom")
@@ -66,6 +70,7 @@ type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: p
     Classrooms: [Classroom] @hasMany
     members: [UserInOrganization] @hasMany(indexName: "byOrganization", fields: ["id"])
     roles: [UserRole] @hasMany
+    isPublic: Boolean! @default(value:"false")
     type: String
     logo: File @hasOne
 }

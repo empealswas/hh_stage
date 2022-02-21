@@ -102,9 +102,11 @@ export const getUserInOrganization = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -140,6 +142,7 @@ export const listUserInOrganizations = /* GraphQL */ `
       items {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -156,6 +159,7 @@ export const getUserRole = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -305,6 +309,7 @@ export const getOrganization = /* GraphQL */ `
       roles {
         nextToken
       }
+      isPublic
       type
       logo {
         id
@@ -332,6 +337,7 @@ export const listOrganizations = /* GraphQL */ `
       items {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -395,6 +401,7 @@ export const getSection = /* GraphQL */ `
       OrganizationOwner {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -800,6 +807,7 @@ export const getClassroom = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -865,6 +873,7 @@ export const getPupilOrganizationRequest = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -918,6 +927,7 @@ export const getPupilOrganizationAccepted = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1018,6 +1028,7 @@ export const getAttendance = /* GraphQL */ `
       UserInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -1311,6 +1322,7 @@ export const getPrincipal = /* GraphQL */ `
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
@@ -1600,6 +1612,7 @@ export const getRolesOfUser = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -1644,6 +1657,7 @@ export const getUserInOrganizationInClassroom = /* GraphQL */ `
       userInOrganization {
         userID
         organizationID
+        status
         id
         createdAt
         updatedAt
@@ -1744,6 +1758,7 @@ export const getTeacherOrganziation = /* GraphQL */ `
       organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt

@@ -2,21 +2,21 @@ import React, {useEffect, useState} from 'react';
 import {LoadingButton} from "@mui/lab";
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
-import {createPupilOrganizationRequest} from "../../../graphql/mutations";
+import {createPupilOrganizationRequest, createUserInOrganization} from "../../../graphql/mutations";
 import {Organization} from "../../../API";
+import useAuth from "../../../hooks/useAuth";
+import {UserInOrganizationStatus as Status} from "src/API";
 
 type statusType = 'waitingForAccept' | 'accepted' | 'canSendRequest' | null;
 
 const OrganizationJoinButton = (params: { organization: Organization }) => {
     const {organization} = {...params};
     const [loading, setLoading] = useState<boolean>(false);
-    const {pupilId} = useParams();
+    const {user} = useAuth();
     const [status, setStatus] = useState<statusType>(null);
 
     useEffect(() => {
-        if (organization.WaitingForAcceptPupils?.items?.length ?? 0 > 1) {
-            setStatus('waitingForAccept');
-        } else if (organization.AcceptedPupils?.items?.length ?? 0 > 1) {
+        if (organization.members?.items?.length ?? 0 > 1) {
             setStatus('accepted');
         } else {
             setStatus('canSendRequest');
@@ -29,13 +29,14 @@ const OrganizationJoinButton = (params: { organization: Organization }) => {
     const sendRequest = async () => {
         setLoading(true);
         try {
-            const result: any = await API.graphql(graphqlOperation(createPupilOrganizationRequest, {
+            const result: any = await API.graphql(graphqlOperation(createUserInOrganization, {
                 input: {
                     organizationID: params.organization.id,
-                    pupilID: pupilId,
+                    userID: user?.email,
+                    status: Status.WAITING_FOR_ORGANIZATION_TO_APPROVE,
                 }
             }));
-            if (result.data.createPupilOrganizationRequest) {
+            if (result.data.createUserInOrganization) {
                 setStatus('waitingForAccept');
             } else {
                 setStatus('canSendRequest');

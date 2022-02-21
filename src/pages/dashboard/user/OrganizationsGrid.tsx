@@ -11,7 +11,7 @@ import OrganizationCard from "../organization/OrganizationCard";
 
 const organizationsQuery = `query MyQuery($id: ID = "") {
   getUser(id: $id) {
-  organizations {
+    organizations(filter: {status: {eq: ACCEPTED}}) {
       items {
         organization {
           name
@@ -30,21 +30,21 @@ const organizationsQuery = `query MyQuery($id: ID = "") {
         id
         name
         type
-              logo {
-        id
-        key
-        region
-      }
+        logo {
+          id
+          key
+          region
+        }
       }
     }
   }
 }
 `
 
-const allOrganizationsQuery = `query MyQuery {
-  listOrganizations {
+const allOrganizationsQuery = `query MyQuery($userId: ID = "") {
+  listOrganizations(limit: 100000, filter: {isPublic: {eq: true}}) {
     items {
-          logo {
+      logo {
         id
         key
         region
@@ -52,9 +52,15 @@ const allOrganizationsQuery = `query MyQuery {
       type
       name
       id
+      members(filter: {userID: {eq: $userId}}, limit: 10000) {
+        items {
+          id
+        }
+      }
     }
   }
-}`
+}
+`
 
 const OrganizationsGrid = () => {
     const [allOrganizations, setAllOrganizations] = useState<Organization[] | null>(null);
@@ -62,10 +68,10 @@ const OrganizationsGrid = () => {
     const [filter, setFilter] = React.useState<string | null>('');
     const {user} = useAuth();
     const settings = useSettings();
-    const [organizationType, setOrganizationType] = React.useState<'Your Clubs' | 'Discover'>('Your Clubs');
+    const [organizationType, setOrganizationType] = React.useState<'Your Organizations' | 'Discover'>('Your Organizations');
     const handleChange = (
         event: React.MouseEvent<HTMLElement>,
-        type: 'Your Clubs' | 'Discover',
+        type: 'Your Organizations' | 'Discover',
     ) => {
         if (type) {
             setOrganizationType(type);
@@ -76,7 +82,7 @@ const OrganizationsGrid = () => {
         const getOrganizations = async () => {
             setAllOrganizations(null)
             setUserOrganizations(null);
-            const result: any = await API.graphql(graphqlOperation(allOrganizationsQuery));
+            const result: any = await API.graphql(graphqlOperation(allOrganizationsQuery, {userId: user?.email}));
             setAllOrganizations(result.data.listOrganizations.items);
             const data: any = await API.graphql(graphqlOperation(organizationsQuery, {id: user?.email}));
             let owned = data.data.getUser?.ownedOrganizations.items;
@@ -110,16 +116,16 @@ const OrganizationsGrid = () => {
                 </>
             )
         }
-        if (organizationType === 'Your Clubs') {
+        if (organizationType === 'Your Organizations') {
             if (userOrganizations.length === 0) {
                 return <EmptyContent
                     title="No organizations added yet"
-                    description="Looks like you have no organizations that accepted your child. Click 'Discover' button to find an organization!"
+                    description="Looks like you don't belong to any organization yet. Click 'Discover' button to find an organization!"
                     img="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_empty_content.svg"
                 />
             }
         }
-        let organizations = organizationType === 'Your Clubs' ? userOrganizations : allOrganizations;
+        let organizations = organizationType === 'Your Organizations' ? userOrganizations : allOrganizations;
         return (
             <>
 
@@ -142,7 +148,7 @@ const OrganizationsGrid = () => {
                 <Autocomplete
                     disablePortal
                     id="combo-box-demo"
-                    options={organizationType === 'Your Clubs' ? userOrganizations?.map(value => value?.name ?? '') ?? [] : allOrganizations?.map(value => value?.name ?? '') ?? []}
+                    options={organizationType === 'Your Organizations' ? userOrganizations?.map(value => value?.name ?? '') ?? [] : allOrganizations?.map(value => value?.name ?? '') ?? []}
                     value={filter}
                     sx={{minWidth: 300}}
                     // @ts-ignore
@@ -157,7 +163,7 @@ const OrganizationsGrid = () => {
                     exclusive
                     onChange={handleChange}
                 >
-                    <ToggleButton value="Your Clubs">Your Clubs</ToggleButton>
+                    <ToggleButton value="Your Organizations">Your Organizations</ToggleButton>
                     <ToggleButton value="Discover">Discover</ToggleButton>
                 </ToggleButtonGroup>
             </Stack>
