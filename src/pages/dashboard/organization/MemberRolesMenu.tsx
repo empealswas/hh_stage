@@ -1,5 +1,5 @@
 import {paramCase} from 'change-case';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Link as RouterLink, useParams} from 'react-router-dom';
 // @mui
 import {MenuItem, IconButton, Checkbox, FormGroup, FormControlLabel, CardContent, Card, Container} from '@mui/material';
@@ -19,10 +19,12 @@ type Props = {
     id: string,
     roles: RolesOfUser[],
     allRoles: UserRole[],
+    updateUsers: any
 };
 
-export default function MemberRolesMenu({id, roles, allRoles}: Props) {
+export default function MemberRolesMenu({id, roles, allRoles, updateUsers}: Props) {
     const [open, setOpen] = useState<HTMLElement | null>(null);
+
     const theme = useTheme();
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setOpen(event.currentTarget);
@@ -30,13 +32,11 @@ export default function MemberRolesMenu({id, roles, allRoles}: Props) {
 
     const handleClose = () => {
         setOpen(null);
+        updateUsers();
     };
 
-    const ICON = {
-        mr: 2,
-        width: 20,
-        height: 20,
-    };
+
+    // const [addedRoles, setAddedRoles] = useState<RolesOfUser[]>([]);
 
     return (
         <>
@@ -65,27 +65,37 @@ export default function MemberRolesMenu({id, roles, allRoles}: Props) {
                                 key={value.id}
                                 onChange={async (event, checked) => {
                                     if (checked) {
-                                        const result = await API.graphql(graphqlOperation(createRolesOfUser, {
+                                        const result: any = await API.graphql(graphqlOperation(createRolesOfUser, {
                                             input: {
                                                 userInOrganizationID: id,
                                                 userRoleID: value.id,
                                             }
                                         }))
+                                        /*                                     setAddedRoles(prevState => {
+                                                                                 const copy = [...prevState];
+                                                                                 copy.push(result.data.createRolesOfUser);
+                                                                                 return copy;
+                                                                             })*/
                                         console.log(result);
                                     } else {
                                         const idToDelete = roles.find(role => role.userRole.id === value.id)?.id;
                                         console.log(idToDelete)
                                         if (idToDelete) {
-                                            const result = await API.graphql(graphqlOperation(deleteRolesOfUser, {
+                                            const result: any = await API.graphql(graphqlOperation(deleteRolesOfUser, {
                                                 input: {
                                                     id: idToDelete,
                                                 }
                                             }));
-                                            console.log(result);
+                                            /*                            setAddedRoles(prevState => {
+                                                                            const copy = [...prevState];
+                                                                            return copy.filter(value1 => value1.id !== result.data.deleteRolesOfUser);
+                                                                        })
+                                                                        console.log(result);*/
                                         }
                                     }
                                 }}
-                                control={<Checkbox defaultChecked={!!roles.find(role => role.userRole.id === value.id)}/>}
+                                control={<Checkbox
+                                    defaultChecked={!!roles.find(role => role.userRole.id === value.id)}/>}
                                 label={String(value.name)}
                             />)}
 

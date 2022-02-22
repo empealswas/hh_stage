@@ -73,13 +73,13 @@ export default function Router() {
             ),
             children: [
                 {element: <Navigate to={PATH_AFTER_LOGIN} replace/>, index: true},
-                {path: 'app', element: <GeneralApp/>},
+/*                {path: 'app', element: <GeneralApp/>},
                 {path: 'ecommerce', element: <GeneralEcommerce/>},
                 {path: 'analytics', element: <GeneralAnalytics/>},
                 {path: 'banking', element: <GeneralBanking/>},
-                {path: 'booking', element: <GeneralBooking/>},
+                {path: 'booking', element: <GeneralBooking/>},*/
 
-                {
+/*                {
                     path: 'e-commerce',
                     children: [
                         {element: <Navigate to="/dashboard/e-commerce/shop" replace/>, index: true},
@@ -91,7 +91,7 @@ export default function Router() {
                         {path: 'checkout', element: <EcommerceCheckout/>},
                         {path: 'invoice', element: <EcommerceInvoice/>},
                     ],
-                },
+                },*/
                 {
                     path: 'user',
                     children: [
@@ -126,7 +126,7 @@ export default function Router() {
 
                     ],
                 },
-                {
+/*                {
                     path: 'blog',
                     children: [
                         {element: <Navigate to="/dashboard/blog/posts" replace/>, index: true},
@@ -154,7 +154,7 @@ export default function Router() {
                     ],
                 },
                 {path: 'calendar', element: <Calendar/>},
-                {path: 'kanban', element: <Kanban/>},
+                {path: 'kanban', element: <Kanban/>},*/
             ],
         },
 

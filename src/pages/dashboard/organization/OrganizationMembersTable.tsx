@@ -45,20 +45,20 @@ const getRolesQuery = `query MyQuery($id: ID = "") {
     }
   }
 }`;
-const MemberTableItem = (params: GridRenderCellParams) => {
-
-    const roles: any = params.getValue(params.id, 'roles');
-    const allRoles: any = params.getValue(params.id, 'allRoles');
-    return (
-        <MemberRolesMenu id={String(params.id)} roles={roles} allRoles={allRoles}/>
-    );
-}
 
 export default function OrganizationMembersTable() {
     const {user} = useAuth();
     const {organizationId} = useParams();
     const [roles, setRoles] = useState<UserRole[] | null>(null);
+    const MemberTableItem = (params: GridRenderCellParams) => {
 
+        const roles: any = params.getValue(params.id, 'roles');
+        const allRoles: any = params.getValue(params.id, 'allRoles');
+
+        return (
+            <MemberRolesMenu id={String(params.id)} roles={roles} allRoles={allRoles} updateUsers={getOrganizations}/>
+        );
+    }
     const columns: GridColDef[] = [
         {field: 'id', flex: 0.2, headerName: 'Id', hide: true},
         {field: 'email', flex: 1, headerName: 'Email'},
@@ -99,7 +99,6 @@ export default function OrganizationMembersTable() {
     const [members, setMembers] = useState<UserInOrganization[] | null>(null);
 
     async function getOrganizations() {
-        setMembers(null);
         const result: any = await API.graphql(graphqlOperation(query, {id: organizationId}));
         setMembers(result.data.getOrganization.members?.items);
     }
@@ -108,6 +107,8 @@ export default function OrganizationMembersTable() {
         const result: any = await API.graphql(graphqlOperation(getRolesQuery, {id: organizationId}));
         setRoles(result.data.getOrganization.roles.items);
     }
+
+
 
     useEffect(() => {
 
