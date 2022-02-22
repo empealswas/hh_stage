@@ -320,6 +320,7 @@ export const createUserRole = /* GraphQL */ `
         canDeleteSection
         canUpdateSection
         canViewDashboard
+        canManageOrganization
         id
         createdAt
         updatedAt
@@ -368,6 +369,7 @@ export const updateUserRole = /* GraphQL */ `
         canDeleteSection
         canUpdateSection
         canViewDashboard
+        canManageOrganization
         id
         createdAt
         updatedAt
@@ -416,6 +418,7 @@ export const deleteUserRole = /* GraphQL */ `
         canDeleteSection
         canUpdateSection
         canViewDashboard
+        canManageOrganization
         id
         createdAt
         updatedAt
@@ -456,6 +459,7 @@ export const createRolePermissions = /* GraphQL */ `
       canDeleteSection
       canUpdateSection
       canViewDashboard
+      canManageOrganization
       id
       createdAt
       updatedAt
@@ -488,6 +492,7 @@ export const updateRolePermissions = /* GraphQL */ `
       canDeleteSection
       canUpdateSection
       canViewDashboard
+      canManageOrganization
       id
       createdAt
       updatedAt
@@ -520,6 +525,7 @@ export const deleteRolePermissions = /* GraphQL */ `
       canDeleteSection
       canUpdateSection
       canViewDashboard
+      canManageOrganization
       id
       createdAt
       updatedAt

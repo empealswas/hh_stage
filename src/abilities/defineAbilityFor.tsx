@@ -11,6 +11,9 @@ export default function defineAbilityFor(user: User | null) {
     if (!user) {
         return build();
     }
+    if (user.isAdmin) {
+        can('create', 'organizations');
+    }
     // can('visit', 'register');
    /* // can('visit', 'login');
     if (user instanceof Admin) {

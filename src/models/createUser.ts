@@ -9,9 +9,7 @@ import {UnifiedUser} from "./UnifiedUser";
 export function createUser(userData: any, attributes: any): User | null {
     const userRoles = userData.signInUserSession.accessToken.payload['cognito:groups'];
     console.log(attributes);
-    if (userRoles.includes('Admins')) {
-        return new Admin(attributes.email);
-    }else if (userRoles.includes('Teachers')) {
+    if (userRoles.includes('Teachers')) {
         return new Teacher(attributes.email);
     }else if (userRoles.includes('Principals')) {
         return new Principal(attributes.email);
@@ -20,7 +18,7 @@ export function createUser(userData: any, attributes: any): User | null {
     }else if (userRoles.includes('Organizations')) {
         return new Organization(attributes.email);
     } else if (userRoles.includes('Users')) {
-        return new UnifiedUser(attributes.email);
+        return new UnifiedUser(attributes.email, !!userRoles.includes('Admins'));
     }
 
     return null;

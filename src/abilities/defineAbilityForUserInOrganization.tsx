@@ -1,10 +1,5 @@
-import {AbilityBuilder, Ability} from '@casl/ability'
-import {Principal} from "../models/Principal";
-import {Admin} from "../models/Admin";
-import {Teacher} from "../models/Teacher";
-import {Parent} from "../models/Parent";
-import {Organization} from "../models/Organization";
-import {RolePermissions, User, UserInOrganization, UserRole} from "../API";
+import {Ability, AbilityBuilder} from '@casl/ability'
+import {User} from "../API";
 
 export default function DefineAbilityForUserInOrganization(user: User, organizationId: string) {
     const {can, cannot, build} = new AbilityBuilder(Ability);
@@ -71,6 +66,9 @@ export default function DefineAbilityForUserInOrganization(user: User, organizat
     }
     if (permissions?.some((value) => value?.canViewDashboard)) {
         can('read', 'dashboard');
+    }
+    if (permissions?.some((value) => value?.canManageOrganization)) {
+        can('manage', 'organization');
     }
 
 

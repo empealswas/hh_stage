@@ -30,6 +30,7 @@ import HeaderBreadcrumbs from "../../../../components/HeaderBreadcrumbs";
 import Scrollbar from "../../../../components/Scrollbar";
 import {randomInArray} from "../../../../_mock/funcs";
 import OrganizationsTable from "../../user/OrganizationsTable";
+import useAuth from "../../../../hooks/useAuth";
 // routes
 // hooks
 // @types
@@ -53,34 +54,45 @@ export default function OrganizationsList() {
     const theme = useTheme();
 
     const {themeStretch} = useSettings();
+    const {user} = useAuth();
+    if (user?.isAdmin) {
+        return (
+            <Page title="User: Organization">
+                <Container maxWidth={themeStretch ? false : 'lg'}>
 
-
-
+                    <Stack sx={{mb: 2}} justifyContent={{sx: 'center', md: 'space-between'}}
+                           direction={{sx: 'column', md: 'row'}}>
+                        <Typography variant={'h4'}>Your organizations</Typography>
+                        <Button
+                            variant="contained"
+                            component={RouterLink}
+                            to={PATH_DASHBOARD.user.newOrganization}
+                            startIcon={<Iconify icon={'eva:plus-fill'}/>}
+                        >
+                            New Organization
+                        </Button>
+                    </Stack>
+                    <Card>
+                        <CardContent>
+                            <OrganizationsTable/>
+                        </CardContent>
+                    </Card>
+                </Container>
+            </Page>
+        )
+    }
     return (
-        <Page title="User: List">
+        <Page title="User: Organization">
             <Container maxWidth={themeStretch ? false : 'lg'}>
-
-                <Stack sx={{mb: 2}} justifyContent={{sx: 'center', md: 'space-between'}}
-                       direction={{sx: 'column', md: 'row'}}>
-                    <Typography variant={'h4'}>Your organizations</Typography>
-                    <Button
-                        variant="contained"
-                        component={RouterLink}
-                        to={PATH_DASHBOARD.user.newOrganization}
-                        startIcon={<Iconify icon={'eva:plus-fill'}/>}
-                    >
-                        New Organization
-                    </Button>
-                </Stack>
                 <Card>
                     <CardContent>
-                        <OrganizationsTable/>
+                        <Button variant={'contained'} fullWidth component={RouterLink} to={'/dashboard/organization'}>Discover Organizations</Button>
                     </CardContent>
                 </Card>
             </Container>
         </Page>
     )
-        ;
+
 }
 
 // ----------------------------------------------------------------------

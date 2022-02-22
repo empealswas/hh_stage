@@ -55,6 +55,8 @@ type RolePermissions @model @auth(rules: [{allow: private}]) {
     canUpdateSection: Boolean @default(value: "false")
     #dashboard
     canViewDashboard: Boolean @default(value: "false")
+    #general
+    canManageOrganization: Boolean @default(value: "false")
 
 }
 

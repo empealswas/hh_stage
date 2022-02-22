@@ -6,13 +6,16 @@ export abstract class User {
 
     lastName?: string;
 
+    isAdmin: boolean;
+
 
     protected _email: string;
 
     pupilsIds: null | any[] = null;
 
-    public constructor(email: string) {
+    public constructor(email: string, isAdmin: boolean = false) {
         this._email = email
+        this.isAdmin = isAdmin;
     }
 
     abstract getCredentials(): Promise<void>;

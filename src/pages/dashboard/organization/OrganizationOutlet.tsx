@@ -30,6 +30,7 @@ const rolesQuery = `query MyQuery($id: ID = "", $eq: ID = "") {
       canDeleteSection
       canUpdateSection
       canViewDashboard
+      canManageOrganization
               }
             }
           }

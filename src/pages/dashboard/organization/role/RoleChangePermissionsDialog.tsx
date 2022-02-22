@@ -37,6 +37,7 @@ const getPermissionsQuery = `query MyQuery($id: ID = "") {
       canDeleteSection
       canUpdateSection
       canViewDashboard
+      canManageOrganization
     }
   }
 }`
@@ -293,6 +294,22 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                                                 }
                                                 defaultChecked={Boolean(permissions.canViewDashboard)}/>}
                                                               label="Can view dashboard"/>
+                                            <FormControlLabel control={<Switch
+                                                onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
+                                                    console.log(permissions);
+                                                    const result: any = await API.graphql(graphqlOperation(updateRolePermissions, {
+                                                        input: {
+                                                            id: permissions.id,
+                                                            canManageOrganization: event.target.checked,
+                                                        }
+                                                    }))
+                                                    console.log(result)
+                                                    setPermissions(result.data.updateRolePermissions)
+
+                                                }
+                                                }
+                                                defaultChecked={Boolean(permissions?.canManageOrganization ?? false)}/>}
+                                                              label="Can manage oragnization"/>
 
                 {/*                            <FormControlLabel control={<Switch
                                                 onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {
