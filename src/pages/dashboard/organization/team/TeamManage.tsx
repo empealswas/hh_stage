@@ -13,11 +13,15 @@ import {
     MenuItem,
     Select,
     Stack,
-    Switch
+    Switch, TextField
 } from "@mui/material";
 
 import {UserInOrganization, UserRole} from "../../../../API";
-import {createUserInOrganizationInClassroom, deleteUserInOrganizationInClassroom} from "../../../../graphql/mutations";
+import {
+    createUserInOrganizationInClassroom,
+    deleteUserInOrganizationInClassroom,
+    updateClassroom
+} from "../../../../graphql/mutations";
 import CustomLoadingOverlay from "../../../../components/section/lesson/attendance/CustomLoadingOverlay";
 import {
     DataGrid,
@@ -30,6 +34,9 @@ import {
 import Iconify from "../../../../components/Iconify";
 import LoadingScreen from "../../../../components/LoadingScreen";
 import useSettings from "../../../../hooks/useSettings";
+import {getClassroom} from "../../../../graphql/queries";
+import {LoadingButton} from "@mui/lab";
+import {useSnackbar} from "notistack";
 
 const getRolesQuery = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -114,7 +121,7 @@ interface GridConfigOptions {
 }
 
 interface GridToolbarContainerProps {
-    settings: GridConfigOptions ;
+    settings: GridConfigOptions;
     onApply: (options: GridConfigOptions) => void;
 }
 
@@ -163,7 +170,8 @@ function SettingsPanel(props: GridToolbarContainerProps) {
             <Stack direction={'row'} spacing={3}>
                 <FormControl variant="standard">
                     <InputLabel>Roles</InputLabel>
-                    <Select disabled={typeOfPersons === 'inThatClassroom'} value={currentSet.id} onChange={handleDatasetChange}>
+                    <Select disabled={typeOfPersons === 'inThatClassroom'} value={currentSet.id}
+                            onChange={handleDatasetChange}>
                         {settings?.allRoles.map(role => (
                             <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>))}
                     </Select>
@@ -176,10 +184,11 @@ function SettingsPanel(props: GridToolbarContainerProps) {
                     </Select>
                 </FormControl>
                 <FormControlLabel
-                    control={<Switch disabled={typeOfPersons === 'inThatClassroom'} inputProps={{'aria-label': 'controlled'}} checked={showAlreadyAssigned}
+                    control={<Switch disabled={typeOfPersons === 'inThatClassroom'}
+                                     inputProps={{'aria-label': 'controlled'}} checked={showAlreadyAssigned}
                                      onChange={handleShowAlreadyAssigned}/>}
                     label={showAlreadyAssigned ? 'All' : 'Not Assigned'}/>
-{/*                <Button
+                {/*                <Button
                     size="small"
                     variant="outlined"
                     color="primary"
@@ -200,7 +209,10 @@ const TeamManage = () => {
     const [usersInThatTeam, setUsersInThatTeam] = useState<null | UserInOrganization[]>(null);
     const [allUsersInOrganization, setAllUsersInOrganization] = useState<null | UserInOrganization[]>(null);
     const [rolesInOrganization, setRolesInOrganization] = useState<UserRole[] | null>(null);
-
+    const [team, setTeam] = useState(null);
+    const [teamName, setTeamName] = useState('');
+    const [loading, setLoading] = useState(false);
+    const snackbar = useSnackbar();
     const [configOptions, setConfigOptions] = useState<GridConfigOptions | null>(null);
     const [currentSet, setCurrentSet] = useState<UserInOrganization[] | null>(null);
 
@@ -233,14 +245,14 @@ const TeamManage = () => {
     function applySettings(settings: GridConfigOptions) {
         if (settings.type === 'all') {
             setCurrentSet(allUsersInOrganization
-                ?.filter((member) => member?.roles?.items.map(value=> value?.userRole)
+                ?.filter((member) => member?.roles?.items.map(value => value?.userRole)
                     .find(value => value?.id === settings?.currentRole?.id) !== undefined)
                 .filter((member) => {
                     if (settings.showAlreadyAssigned) {
                         return true;
                     }
                     return member?.classrooms?.items?.length === 0;
-                })?? []);
+                }) ?? []);
 
         } else if (settings.type === 'inThatClassroom') {
             setCurrentSet(usersInThatTeam);
@@ -281,7 +293,12 @@ const TeamManage = () => {
         await getRolesAsync();
     };
     useEffect(() => {
-
+        const getTeamAsync = async () => {
+            const result: any = await API.graphql(graphqlOperation(getClassroom, {id: teamId}))
+            setTeamName(result.data.getClassroom.name);
+            setTeam(result.data.getClassroom);
+        };
+        getTeamAsync();
         getRolesAsync()
         return () => {
 
@@ -336,7 +353,7 @@ const TeamManage = () => {
             console.log('removing row' + id)
             console.log("Member", member);
             member?.classrooms?.items?.forEach((item: any) => {
-                if(item.classroomID !== teamId){
+                if (item.classroomID !== teamId) {
                     return;
                 }
                 try {
@@ -365,7 +382,7 @@ const TeamManage = () => {
         //
 
         return (
-            <GridToolbarContainer style={{justifyContent: 'space-between', padding:5}}>
+            <GridToolbarContainer style={{justifyContent: 'space-between', padding: 5}}>
                 <Button onClick={() => {
                     buttonAction().then(value => {
                         refreshTable();
@@ -387,7 +404,32 @@ const TeamManage = () => {
 
     }
     return (
-        <>
+        <Stack direction={'column'} spacing={2}>
+            {teamName &&
+                <Stack direction={{xs: 'column', sm: 'row'}} spacing={2}>
+
+                <TextField value={teamName} onChange={event => {
+                    setTeamName(event.target.value);
+                }
+                } label={'Team Name'}>
+                </TextField>
+                    <LoadingButton variant={'contained'} loading={loading} onClick={async () => {
+                        setLoading(true);
+                        await API.graphql(graphqlOperation(updateClassroom, {
+                            input: {
+                                id: teamId,
+                                name: teamName,
+                            }
+                        }))
+                        snackbar.enqueueSnackbar("Team name updated");
+                        setLoading(false);
+                    }
+                    }>
+                        Change Name
+                    </LoadingButton>
+                </Stack>
+
+            }
             {usersInThatTeam &&
                 <Box mb={1}>
                     <SettingsPanel onApply={handleApplyClick} settings={configOptions}/>
@@ -438,7 +480,7 @@ const TeamManage = () => {
                 checkboxSelection
                 disableSelectionOnClick
             />
-        </>
+        </Stack>
     );
 }
 export default TeamManage;

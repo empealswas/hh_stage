@@ -237,10 +237,10 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
                                 label={
                                     <>
                                         <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                                            Organization is public
+                                            {values.isPublic ? 'Public' : 'Private'}
                                         </Typography>
                                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                            This will affect weather users will be able to find your organization in discover menu.
+                                            {values.isPublic ? 'Your Organization will be discoverable by other users' : 'Your Organization will NOT be discoverable by other users'}
                                         </Typography>
                                     </>
                                 }
