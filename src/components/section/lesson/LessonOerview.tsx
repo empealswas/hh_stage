@@ -33,6 +33,7 @@ const LessonOverview = () => {
     const [droppedFiles, setDroppedFiles] = useState<File []>([]);
     const [snackBarOpen, setSnackBarOpen] = useState(true);
     const [filesToUpload, setFilesToUpload] = useState<File []>([]);
+    const {organizationId} = useParams();
 
     // const snackbar = useSnackbar();
 
@@ -51,6 +52,9 @@ const LessonOverview = () => {
     id
     title
     description
+    Section {
+      organizationID
+    }
   }
 }
 `, {id: lessonId}));
@@ -107,20 +111,26 @@ const LessonOverview = () => {
                         <Container>
                             <SectionHeader title={lesson.title ?? ''}
                                            editingForm={
-                                               <Can I={'update'} a={'lesson'}>
-                                                   <LessonEditForm lesson={lesson}/>
-                                               </Can>
+                                               lesson.Section?.organizationID === organizationId ?
+                                                   <Can I={'update'} a={'lesson'}>
+                                                       <LessonEditForm lesson={lesson}/>
+                                                   </Can>
+                                                   :
+                                                   <></>
                                            }
                                            deletionModal={
-                                               <Can I={'delete'} a={'lesson'}>
-                                                   <DeletionModal
-                                                       title={'Delete Lesson'}
-                                                       onDelete={async () => {
-                                                           await API.graphql(graphqlOperation(deleteLesson, {input: {id: lessonId}}));
-                                                           navigate(-1);
-                                                       }
-                                                       }/>
-                                               </Can>
+                                               lesson.Section?.organizationID === organizationId ?
+                                                   <Can I={'delete'} a={'lesson'}>
+                                                       <DeletionModal
+                                                           title={'Delete Lesson'}
+                                                           onDelete={async () => {
+                                                               await API.graphql(graphqlOperation(deleteLesson, {input: {id: lessonId}}));
+                                                               navigate(-1);
+                                                           }
+                                                           }/>
+                                                   </Can>
+                                                   :
+                                                   <></>
                                            }/>
                             {lessonId && <>
                                 {/*<LessonRating lessonId={lessonId}/>*/}

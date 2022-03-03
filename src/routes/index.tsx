@@ -16,6 +16,7 @@ import {PATH_AFTER_LOGIN} from '../config';
 import LoadingScreen from '../components/LoadingScreen';
 import OrganizationManage from 'src/pages/dashboard/organization/OrganizationManage';
 import OrganizationOutlet from "../pages/dashboard/organization/OrganizationOutlet";
+import ContentStore from "../pages/dashboard/organization/content_store/ContentStore";
 
 // ----------------------------------------------------------------------
 
@@ -110,6 +111,10 @@ export default function Router() {
                     children: [
                         {path: ':pupilId', element: <ChildProfile/>},
                     ],
+                },
+                {
+                    path: 'contentStore',
+                    element: <ContentStore/>,
                 },
                 {
                     path: 'organization',

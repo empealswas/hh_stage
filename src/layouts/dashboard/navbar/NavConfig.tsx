@@ -47,6 +47,11 @@ const navConfig = [
                 path: PATH_DASHBOARD.general.organization,
                 icon: <Iconify icon={'eos-icons:admin-outlined'} sx={{width: 20, height: 20}}/>
             },
+            {
+                title: 'Content Store',
+                path: PATH_DASHBOARD.general.contentStore,
+                icon: <Iconify icon={'bx:store'} sx={{width: 20, height: 20}}/>
+            }
         ],
     },
 

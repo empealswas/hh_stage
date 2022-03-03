@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import * as Yup from "yup";
 // @ts-ignore
 import {FormikProvider, useFormik} from "formik";
@@ -6,12 +6,11 @@ import {useParams} from "react-router-dom";
 import {API, graphqlOperation, Storage} from "aws-amplify";
 import {createFile, createRolesThatCanAccess, deleteRolesThatCanAccess, updateSection} from "../../graphql/mutations";
 import {Section, UserRole} from "../../API";
-import {Card, CardHeader, CardMedia, TextField} from '@mui/material';
+import {Card, CardHeader, CardMedia, FormControlLabel, FormGroup, Switch, TextField} from '@mui/material';
 import awsConfig from "../../aws-exports";
 import {result} from "lodash";
 import AddingDialog from "../dialog/AddingDialog";
 import {UploadSingleFile} from "../upload";
-import {RHFUploadSingleFile} from "../hook-form";
 import RolesThatCanAccess from "../../pages/dashboard/section/RolesThatCanAccess";
 
 const getRolesQuery = `query MyQuery($id: ID = "") {
@@ -20,6 +19,7 @@ const getRolesQuery = `query MyQuery($id: ID = "") {
       items {
         id
         name
+        
       }
     }
   }
@@ -27,8 +27,8 @@ const getRolesQuery = `query MyQuery($id: ID = "") {
 const EditSectionModal = (props: { updateObject: Section }) => {
     const {updateObject} = {...props};
     const {organizationId} = useParams();
-    console.log(updateObject);
     const [roles, setRoles] = useState<{ role: UserRole, selected: boolean }[] | null>(null);
+    console.log(updateObject);
     useEffect(() => {
         let keyOfObject = updateObject.ImagePreview?.key;
         if (keyOfObject) {
@@ -46,7 +46,7 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                     role: role,
                     selected: rolesThatCanAccess?.find(value => value?.id === role.id) !== undefined,
                 }
-            })as { role: UserRole, selected: boolean }[]
+            }) as { role: UserRole, selected: boolean }[]
 
             setRoles(newRoles)
         }
@@ -58,6 +58,7 @@ const EditSectionModal = (props: { updateObject: Section }) => {
             .min(2, 'Too Short!')
             .max(100, 'Too Long!')
             .required('Section name is required'),
+        isAvailableInContentStore: Yup.boolean(),
 
     });
     const {sectionId} = useParams();
@@ -66,7 +67,8 @@ const EditSectionModal = (props: { updateObject: Section }) => {
 
     const formik = useFormik({
         initialValues: {
-            name: updateObject.name
+            name: updateObject.name,
+            isAvailableInContentStore: updateObject.isPlacedInContentStore ?? false,
         },
         validationSchema: RegisterSchema,
         onSubmit: async () => {
@@ -100,9 +102,11 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                 input: {
                     id: updateObject.id,
                     name: getFieldProps('name').value,
+                    isPlacedInContentStore: getFieldProps('isAvailableInContentStore').value,
                     parentID: updateObject.parentID
                 }
             }));
+            console.log(result);
             for (let value of updateObject?.rolesThatCanAccess?.items ?? []) {
                 await API.graphql(graphqlOperation(deleteRolesThatCanAccess, {
                     input: {
@@ -125,11 +129,12 @@ const EditSectionModal = (props: { updateObject: Section }) => {
 
         }
     });
-    const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid} = formik;
+    const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid, setFieldValue} = formik;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const onDrop = useCallback(acceptedFiles => {
         setSelectedFile(acceptedFiles[0]);
     }, []);
+
 
     return (
         <FormikProvider value={formik}>
@@ -138,6 +143,18 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                           onSubmit={async () => {
                               handleSubmit();
                           }}>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={getFieldProps('isAvailableInContentStore').value}
+
+                                {...getFieldProps('isAvailableInContentStore')}
+                            />
+                        }
+                        label={getFieldProps('isAvailableInContentStore').value ? 'Available in the Content Store' : 'NOT available in the Content Store'}
+                    />
+                </FormGroup>
                 <TextField
                     fullWidth
                     required={true}

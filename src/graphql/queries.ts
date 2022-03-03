@@ -94,15 +94,6 @@ export const getUserInOrganization = /* GraphQL */ `
     getUserInOrganization(id: $id) {
       userID
       organizationID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      status
       organization {
         id
         name
@@ -113,6 +104,15 @@ export const getUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      status
       roles {
         nextToken
       }
@@ -193,6 +193,7 @@ export const getUserRole = /* GraphQL */ `
       createdAt
       updatedAt
       organizationRolesId
+      sectionFromContentStoreRolesThatCanAccessId
       userRolePermissionsId
     }
   }
@@ -210,6 +211,7 @@ export const listUserRoles = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       nextToken
@@ -225,6 +227,7 @@ export const getRolePermissions = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       canAccessAttendanceSheet
@@ -300,6 +303,9 @@ export const getOrganization = /* GraphQL */ `
       Sections {
         nextToken
       }
+      SectionsFromContentStore {
+        nextToken
+      }
       Teachers {
         nextToken
       }
@@ -351,6 +357,65 @@ export const listOrganizations = /* GraphQL */ `
     }
   }
 `;
+export const getSectionFromContentStore = /* GraphQL */ `
+  query GetSectionFromContentStore($id: ID!) {
+    getSectionFromContentStore(id: $id) {
+      sectionID
+      organizationID
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      section {
+        id
+        name
+        isPlacedInContentStore
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      rolesThatCanAccess {
+        nextToken
+      }
+      score
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSectionFromContentStores = /* GraphQL */ `
+  query ListSectionFromContentStores(
+    $filter: ModelSectionFromContentStoreFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSectionFromContentStores(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        sectionID
+        organizationID
+        score
+        id
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getFile = /* GraphQL */ `
   query GetFile($id: ID!) {
     getFile(id: $id) {
@@ -389,11 +454,13 @@ export const getSection = /* GraphQL */ `
     getSection(id: $id) {
       id
       name
+      isPlacedInContentStore
       parentID
       organizationID
       ParentSection {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -410,6 +477,9 @@ export const getSection = /* GraphQL */ `
         updatedAt
         userOwnedOrganizationsId
         organizationLogoId
+      }
+      OrganizationsFromContentStore {
+        nextToken
       }
       Lessons {
         nextToken
@@ -452,6 +522,7 @@ export const listSections = /* GraphQL */ `
       items {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -473,6 +544,7 @@ export const getLesson = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -526,6 +598,7 @@ export const getSectionOptions = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -1626,6 +1699,7 @@ export const getRolesOfUser = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       createdAt
@@ -1713,11 +1787,13 @@ export const getRolesThatCanAccess = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID

@@ -81,7 +81,6 @@ export default function ActivityCard(props: ActivityCardProps) {
 
                 </CardActionArea>
 
-
             </Card>
         </Link>
     );

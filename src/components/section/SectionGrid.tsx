@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {API, graphqlOperation} from "aws-amplify";
 
-import {Section} from "../../API";
+import {Section, SectionFromContentStore} from "../../API";
 import {useParams} from "react-router-dom";
 import {onCreateSection, onDeleteSection} from "../../graphql/subscriptions";
 import {Container, Grid} from '@mui/material';
@@ -58,17 +58,30 @@ const parentsQuery = `query MyQuery($organizationId: ID = "") {
   }
 }
 `
-const old = `query MyQuery {
-  listSections(limit: 100000) {
-    items {
-      id
-      name
-      parentID
-      organizationID
-      ImagePreview {
-        id
-        bucket
-        key
+const getContentStoreSectionsQuery = `query MyQuery($id: ID = "") {
+  getOrganization(id: $id) {
+    SectionsFromContentStore {
+      items {
+        section {
+          ImagePreview {
+            bucket
+            createdAt
+            id
+            key
+            lessonID
+          }
+          name
+          id
+          rolesThatCanAccess {
+            items {
+              id
+              userRole {
+                id
+                name
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -86,18 +99,22 @@ const SectionGrid = () => {
         return newData;
     };
     const [sections, setSections] = useState<Section[] | null>(null)
+    const [sectionsFromContentStore, setSectionsFromContentStore] = useState<SectionFromContentStore[] | null>(null);
     useEffect(() => {
         const getSectionsAsync = async () => {
             setSections(null);
             if (sectionId) {
                 const result: any = await API.graphql(graphqlOperation(getChildrenSectionsQuery, {eq: sectionId}));
-                console.log(result)
 
                 setSections(result.data.listSections.items);
             } else {
                 const result: any = await API.graphql(graphqlOperation(parentsQuery, {organizationId: organizationId}));
                 console.log(result)
                 setSections(result.data.listSections.items);
+                const result2: any = await API.graphql(graphqlOperation(getContentStoreSectionsQuery, {id: organizationId}))
+                let items = result2.data.getOrganization?.SectionsFromContentStore.items;
+                console.log(items);
+                setSectionsFromContentStore(items);
             }
 
 
@@ -145,7 +162,7 @@ const SectionGrid = () => {
             } else {
                 sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === null && subject.organizationID === null);
             }
-            console.log(sectionsToDisplay)
+
         }
         if (sectionsToDisplay.length === 0) {
             return <></>
@@ -165,6 +182,12 @@ const SectionGrid = () => {
 
                     </Grid>
                 ))}
+                {!sectionId && sectionsFromContentStore?.map(value =>
+                    <Grid key={value.id} item lg={4} md={4} sm={6} xs={12}>
+                        <ActivityCard linkTo={`section/${value.section.id}`}
+                                      imagePath={value?.section.ImagePreview?.key} title={value.section.name ?? ''}/>
+                    </Grid>
+                )}
             </>
         );
     }

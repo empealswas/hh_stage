@@ -40,7 +40,8 @@ export const PATH_DASHBOARD = {
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
     booking: path(ROOTS_DASHBOARD, '/booking'),
-    organization: path(ROOTS_DASHBOARD, '/organization')
+    organization: path(ROOTS_DASHBOARD, '/organization'),
+    contentStore: path(ROOTS_DASHBOARD, '/contentStore'),
   },
   parent: {
     child: path(ROOTS_DASHBOARD, '/child'),

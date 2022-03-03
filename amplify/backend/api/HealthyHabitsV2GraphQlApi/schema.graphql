@@ -21,9 +21,9 @@ enum UserInOrganizationStatus {
 type UserInOrganization @model @auth(rules: [{allow: private}]) {
     userID: ID @index(name: "byUser")
     organizationID: ID @index(name: "byOrganization")
+    organization: Organization @belongsTo(fields: ["organizationID"])
     user: User @belongsTo(fields: ["userID"])
     status: UserInOrganizationStatus! @default(value: "ACCEPTED")
-    organization: Organization @belongsTo(fields: ["organizationID"])
     roles: [UserRole] @manyToMany(relationName:"RolesOfUser")
     classrooms: [Classroom] @manyToMany(relationName: "UserInOrganizationInClassroom")
     Attendances: [Attendance] @hasMany
@@ -68,6 +68,7 @@ type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: p
     WaitingForAcceptPupils: [PupilOrganizationRequest] @hasMany(indexName: "byOrganization", fields: ["id"])
     AcceptedPupils: [PupilOrganizationAccepted] @hasMany(indexName: "byOrganization", fields: ["id"])
     Sections: [Section] @hasMany(indexName: "byOrganization", fields: ["id"])
+    SectionsFromContentStore: [SectionFromContentStore] @hasMany(indexName: "byOrganization", fields: ["id"])
     Teachers: [Teacher] @manyToMany(relationName: "TeacherOrganziation")
     Classrooms: [Classroom] @hasMany
     members: [UserInOrganization] @hasMany(indexName: "byOrganization", fields: ["id"])
@@ -75,6 +76,14 @@ type Organization @model @auth(rules: [{allow: public, provider: iam}, {allow: p
     isPublic: Boolean! @default(value:"false")
     type: String
     logo: File @hasOne
+}
+type SectionFromContentStore @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
+    sectionID: ID @index(name: "bySection")
+    organizationID: ID @index(name: "byOrganization")
+    organization: Organization! @belongsTo(fields: ["organizationID"])
+    section: Section! @belongsTo(fields: ["sectionID"])
+    rolesThatCanAccess: [UserRole] @hasMany
+    score: Int
 }
 ####################U
 
@@ -89,10 +98,12 @@ type File @model @auth(rules: [{allow: private}]) {
 type Section @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     id: ID!
     name: String
+    isPlacedInContentStore: Boolean
     parentID: ID @index(name: "bySection")
     organizationID: ID @index(name: "byOrganization")
     ParentSection: Section @hasOne(fields: ["parentID"])
     OrganizationOwner: Organization @belongsTo(fields: ["organizationID"])
+    OrganizationsFromContentStore: [SectionFromContentStore] @hasMany(indexName: "bySection", fields: ["id"])
     Lessons: [Lesson] @hasMany(indexName: "bySection", fields: ["id"])
     imagePreviewID: ID @index(name: "byFile")
     ImagePreview: File @hasOne(fields: ["imagePreviewID"])

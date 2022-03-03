@@ -27,6 +27,8 @@ const getSectionQuery = `query MyQuery($id: ID = "") {
   getSection(id: $id) {
     id
     name
+    organizationID
+    isPlacedInContentStore
     SectionOptions {
       Durations
       DeliveredBy
@@ -117,18 +119,23 @@ const SectionOverview = () => {
         <Container>
             {section && <SectionHeader title={sectionId ? section?.name ?? "Sections" : "Sections"}
                                        editingForm={
-                                           <Can I={'update'} a={'section'}>
-                                               <EditSectionModal updateObject={section}/>
-                                           </Can>
+                                           organizationId === section.organizationID ?
+                                               <Can I={'update'} a={'section'}>
+                                                   <EditSectionModal updateObject={section}/>
+                                               </Can>
+                                               : <></>
                                        }
                                        deletionModal={
                                            <Can I={'delete'} a={'section'}>
-                                               <DeletionModal title={'Do you want to delete this Year Group?'}
-                                                              onDelete={async () => {
-                                                                  const result: any = await deleteSectionAsync();
-                                                                  snackbar.enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteSection.name}`, {variant: 'success'})
-                                                                  navigate(-1);
-                                                              }}/>
+                                               {organizationId === section.organizationID ?
+                                                   <DeletionModal title={'Do you want to delete this Year Group?'}
+                                                                  onDelete={async () => {
+                                                                      const result: any = await deleteSectionAsync();
+                                                                      snackbar.enqueueSnackbar(`You\'ve successfully deleted Year Group: ${result.data.deleteSection.name}`, {variant: 'success'})
+                                                                      navigate(-1);
+                                                                  }}/>
+                                                   :
+                                                   <></>}
                                            </Can>
                                        }
             />}
@@ -141,24 +148,28 @@ const SectionOverview = () => {
                 }}>
                     <NewSectionForm/>
                 </AddingDialog>*/}
-                <Can I={'create'} a={'section'}>
-                    <AddSectionModal/>
-                </Can>
+                {organizationId === section?.organizationID &&
+                    <Can I={'create'} a={'section'}>
+                        <AddSectionModal/>
+                    </Can>
+                }
                 {sectionId ?
+                    organizationId === section?.organizationID &&
                     <Can I={'create'} a={'lesson'}>
                         <Button component={RouterLink} to={'lesson/new'} variant={'contained'}>Add Lesson</Button>
                     </Can>
+
                     :
                     <>
-                        <Can I={'manage'} an={'organization'}>
-                            <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
-                                    variant={'contained'}>Manage</Button>
-                        </Can>
-                        <Can I={'read'} this={'dashboard'}>
-                            <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
-                                    to={'dashboard'}
-                                    variant={'contained'}>Dashboard</Button>
-                        </Can>
+                    <Can I={'manage'} an={'organization'}>
+                    <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
+                    variant={'contained'}>Manage</Button>
+                    </Can>
+                    <Can I={'read'} this={'dashboard'}>
+                    <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
+                    to={'dashboard'}
+                    variant={'contained'}>Dashboard</Button>
+                    </Can>
                     </>
                 }
                 {/*</Can>*/}

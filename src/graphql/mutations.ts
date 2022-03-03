@@ -169,15 +169,6 @@ export const createUserInOrganization = /* GraphQL */ `
     createUserInOrganization(input: $input, condition: $condition) {
       userID
       organizationID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      status
       organization {
         id
         name
@@ -188,6 +179,15 @@ export const createUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      status
       roles {
         nextToken
       }
@@ -211,15 +211,6 @@ export const updateUserInOrganization = /* GraphQL */ `
     updateUserInOrganization(input: $input, condition: $condition) {
       userID
       organizationID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      status
       organization {
         id
         name
@@ -230,6 +221,15 @@ export const updateUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      status
       roles {
         nextToken
       }
@@ -253,15 +253,6 @@ export const deleteUserInOrganization = /* GraphQL */ `
     deleteUserInOrganization(input: $input, condition: $condition) {
       userID
       organizationID
-      user {
-        id
-        firstName
-        lastName
-        email
-        createdAt
-        updatedAt
-      }
-      status
       organization {
         id
         name
@@ -272,6 +263,15 @@ export const deleteUserInOrganization = /* GraphQL */ `
         userOwnedOrganizationsId
         organizationLogoId
       }
+      user {
+        id
+        firstName
+        lastName
+        email
+        createdAt
+        updatedAt
+      }
+      status
       roles {
         nextToken
       }
@@ -332,6 +332,7 @@ export const createUserRole = /* GraphQL */ `
       createdAt
       updatedAt
       organizationRolesId
+      sectionFromContentStoreRolesThatCanAccessId
       userRolePermissionsId
     }
   }
@@ -381,6 +382,7 @@ export const updateUserRole = /* GraphQL */ `
       createdAt
       updatedAt
       organizationRolesId
+      sectionFromContentStoreRolesThatCanAccessId
       userRolePermissionsId
     }
   }
@@ -430,6 +432,7 @@ export const deleteUserRole = /* GraphQL */ `
       createdAt
       updatedAt
       organizationRolesId
+      sectionFromContentStoreRolesThatCanAccessId
       userRolePermissionsId
     }
   }
@@ -446,6 +449,7 @@ export const createRolePermissions = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       canAccessAttendanceSheet
@@ -479,6 +483,7 @@ export const updateRolePermissions = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       canAccessAttendanceSheet
@@ -512,6 +517,7 @@ export const deleteRolePermissions = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       canAccessAttendanceSheet
@@ -559,6 +565,9 @@ export const createOrganization = /* GraphQL */ `
         nextToken
       }
       Sections {
+        nextToken
+      }
+      SectionsFromContentStore {
         nextToken
       }
       Teachers {
@@ -619,6 +628,9 @@ export const updateOrganization = /* GraphQL */ `
       Sections {
         nextToken
       }
+      SectionsFromContentStore {
+        nextToken
+      }
       Teachers {
         nextToken
       }
@@ -677,6 +689,9 @@ export const deleteOrganization = /* GraphQL */ `
       Sections {
         nextToken
       }
+      SectionsFromContentStore {
+        nextToken
+      }
       Teachers {
         nextToken
       }
@@ -704,6 +719,123 @@ export const deleteOrganization = /* GraphQL */ `
       updatedAt
       userOwnedOrganizationsId
       organizationLogoId
+    }
+  }
+`;
+export const createSectionFromContentStore = /* GraphQL */ `
+  mutation CreateSectionFromContentStore(
+    $input: CreateSectionFromContentStoreInput!
+    $condition: ModelSectionFromContentStoreConditionInput
+  ) {
+    createSectionFromContentStore(input: $input, condition: $condition) {
+      sectionID
+      organizationID
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      section {
+        id
+        name
+        isPlacedInContentStore
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      rolesThatCanAccess {
+        nextToken
+      }
+      score
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSectionFromContentStore = /* GraphQL */ `
+  mutation UpdateSectionFromContentStore(
+    $input: UpdateSectionFromContentStoreInput!
+    $condition: ModelSectionFromContentStoreConditionInput
+  ) {
+    updateSectionFromContentStore(input: $input, condition: $condition) {
+      sectionID
+      organizationID
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      section {
+        id
+        name
+        isPlacedInContentStore
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      rolesThatCanAccess {
+        nextToken
+      }
+      score
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSectionFromContentStore = /* GraphQL */ `
+  mutation DeleteSectionFromContentStore(
+    $input: DeleteSectionFromContentStoreInput!
+    $condition: ModelSectionFromContentStoreConditionInput
+  ) {
+    deleteSectionFromContentStore(input: $input, condition: $condition) {
+      sectionID
+      organizationID
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      section {
+        id
+        name
+        isPlacedInContentStore
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      rolesThatCanAccess {
+        nextToken
+      }
+      score
+      id
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -763,11 +895,13 @@ export const createSection = /* GraphQL */ `
     createSection(input: $input, condition: $condition) {
       id
       name
+      isPlacedInContentStore
       parentID
       organizationID
       ParentSection {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -784,6 +918,9 @@ export const createSection = /* GraphQL */ `
         updatedAt
         userOwnedOrganizationsId
         organizationLogoId
+      }
+      OrganizationsFromContentStore {
+        nextToken
       }
       Lessons {
         nextToken
@@ -824,11 +961,13 @@ export const updateSection = /* GraphQL */ `
     updateSection(input: $input, condition: $condition) {
       id
       name
+      isPlacedInContentStore
       parentID
       organizationID
       ParentSection {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -845,6 +984,9 @@ export const updateSection = /* GraphQL */ `
         updatedAt
         userOwnedOrganizationsId
         organizationLogoId
+      }
+      OrganizationsFromContentStore {
+        nextToken
       }
       Lessons {
         nextToken
@@ -885,11 +1027,13 @@ export const deleteSection = /* GraphQL */ `
     deleteSection(input: $input, condition: $condition) {
       id
       name
+      isPlacedInContentStore
       parentID
       organizationID
       ParentSection {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -906,6 +1050,9 @@ export const deleteSection = /* GraphQL */ `
         updatedAt
         userOwnedOrganizationsId
         organizationLogoId
+      }
+      OrganizationsFromContentStore {
+        nextToken
       }
       Lessons {
         nextToken
@@ -951,6 +1098,7 @@ export const createLesson = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -991,6 +1139,7 @@ export const updateLesson = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -1031,6 +1180,7 @@ export const deleteLesson = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -1068,6 +1218,7 @@ export const createSectionOptions = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -1094,6 +1245,7 @@ export const updateSectionOptions = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -1120,6 +1272,7 @@ export const deleteSectionOptions = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -3505,6 +3658,7 @@ export const createRolesOfUser = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       createdAt
@@ -3535,6 +3689,7 @@ export const updateRolesOfUser = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       createdAt
@@ -3565,6 +3720,7 @@ export const deleteRolesOfUser = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       createdAt
@@ -3680,11 +3836,13 @@ export const createRolesThatCanAccess = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -3712,11 +3870,13 @@ export const updateRolesThatCanAccess = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
@@ -3744,11 +3904,13 @@ export const deleteRolesThatCanAccess = /* GraphQL */ `
         createdAt
         updatedAt
         organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
         userRolePermissionsId
       }
       section {
         id
         name
+        isPlacedInContentStore
         parentID
         organizationID
         imagePreviewID
