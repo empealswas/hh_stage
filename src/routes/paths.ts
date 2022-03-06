@@ -42,6 +42,8 @@ export const PATH_DASHBOARD = {
     booking: path(ROOTS_DASHBOARD, '/booking'),
     organization: path(ROOTS_DASHBOARD, '/organization'),
     contentStore: path(ROOTS_DASHBOARD, '/contentStore'),
+    test: path(ROOTS_DASHBOARD, '/test'),
+
   },
   parent: {
     child: path(ROOTS_DASHBOARD, '/child'),

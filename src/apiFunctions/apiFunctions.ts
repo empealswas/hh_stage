@@ -36,6 +36,14 @@ export async function getPupilActivity(params: PupilActivityRequest) {
     console.log(result)
     return result;
 }
+export async function testWearables(params: any) {
+
+    const result = await API.post(apiName, '/api/wearables', {
+        body: {...params}
+    });
+    console.log(result)
+    return result;
+}
 
 export async function getSleepDataAsync(params: PupilActivityRequest) {
     const result = await API.post(apiName, '/api/getSleep', {

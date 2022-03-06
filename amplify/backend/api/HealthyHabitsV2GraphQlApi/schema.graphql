@@ -9,6 +9,7 @@ type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, p
     ownedOrganizations: [Organization] @hasMany
 }
 
+
 type DependantGuardian @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {
     guardian: User!
     dependant: User!

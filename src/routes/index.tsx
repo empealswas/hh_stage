@@ -17,6 +17,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import OrganizationManage from 'src/pages/dashboard/organization/OrganizationManage';
 import OrganizationOutlet from "../pages/dashboard/organization/OrganizationOutlet";
 import ContentStore from "../pages/dashboard/organization/content_store/ContentStore";
+import TestPage from "../components/TestPage";
 
 // ----------------------------------------------------------------------
 
@@ -93,6 +94,7 @@ export default function Router() {
                         {path: 'invoice', element: <EcommerceInvoice/>},
                     ],
                 },*/
+                {path: 'test', element: <TestPage/>},
                 {
                     path: 'user',
                     children: [

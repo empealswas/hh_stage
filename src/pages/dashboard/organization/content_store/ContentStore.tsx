@@ -156,7 +156,7 @@ const ContentStore = () => {
     return (
         <Container>
             <Typography sx={{pb: 5}} align={'center'} variant={'h2'}>Content Store</Typography>
-            
+
             <Grid container
                   direction="row"
                   justifyContent="center"

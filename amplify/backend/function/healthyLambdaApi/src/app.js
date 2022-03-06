@@ -124,6 +124,34 @@ app.post('/api/getActivity',  function (req, res) {
             res.json({data: null});
         });
 });
+
+app.post('/api/wearables',  function (req, res) {
+    console.log(req);
+    console.log(req.body);
+
+    var config = {
+        method: 'post',
+        url: `https://bk1r5cjeif.execute-api.eu-west-2.amazonaws.com/dev`,
+        headers: {
+            'dev-id': 'healthcare-analytics-aT9uvuscoO',
+            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
+            'Content-Type': 'application/json'
+        },
+        data: req.body,
+    };
+    axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            res.json({data: response.data});
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.json({data: null});
+        });
+});
+
+
+
 app.post('/api/getSleep',  function (req, res) {
     console.log(req);
     console.log(req.body);

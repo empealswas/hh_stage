@@ -24,6 +24,7 @@ export const ICONS = {
     analytics: getIcon('ic_analytics'),
     dashboard: getIcon('ic_dashboard'),
     booking: getIcon('ic_booking'),
+    admin: getIcon('ic_user')
 };
 
 const navConfig = [
@@ -54,6 +55,7 @@ const navConfig = [
             }
         ],
     },
+
 
 
 
