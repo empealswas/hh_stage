@@ -2,6 +2,7 @@ import {AddParentRequest, AddTeacherOrganizationRequest, AddTeacherRequest} from
 import {API} from "aws-amplify";
 import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
 import {PupilActivityRequest} from "./DTO/PupilActivityRequest";
+import {result} from "lodash";
 const apiName = 'HealthyHabitsV2API'
 
 
@@ -24,7 +25,15 @@ export async function subscribeToNotifications(subscription: any): Promise<any> 
         }
     }));
 }
-
+export async function getWidgetLink(data: any): Promise<any> {
+    const result: any = await API.post(apiName, '/getTerraLink', {
+        body: {...data},
+        headers: {
+            'content-type': 'application/json',
+        }
+    });
+    return result;
+}
 
 export async function getPupilActivity(params: PupilActivityRequest) {
     console.log(params);

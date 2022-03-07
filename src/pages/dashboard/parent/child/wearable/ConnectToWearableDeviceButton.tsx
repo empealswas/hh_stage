@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {LoadingButton} from "@mui/lab";
 import axios from "axios";
-import {getPupilWearableDeviceStatus} from "../../../../../apiFunctions/apiFunctions";
+import {getPupilWearableDeviceStatus, getWidgetLink} from "../../../../../apiFunctions/apiFunctions";
 import {IconButton} from "@mui/material";
 import Iconify from "../../../../../components/Iconify";
 import {Pupil, User} from "../../../../../API";
@@ -17,15 +17,17 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
 
 
     async function  followRegistrationLink() {
-        const data = JSON.stringify({
-            "reference_id": props.user.id,
-            "providers": "FITBIT, GOOGLE, GARMIN, APPLE, OURA, SUUNTO",
-            "auth_success_redirect_url": window.location.href,
-            "auth_failure_redirect_url": window.location.href,
-            "language": "EN",
-            "applicationCode": "52e7cf966b724749a7c4efadc3727ed7"
-        });
-
+        const data = {
+            reference_id: props.user.id,
+            providers: "FITBIT, GOOGLE, GARMIN, APPLE, OURA, SUUNTO",
+            auth_success_redirect_url: window.location.href,
+            auth_failure_redirect_url: window.location.href,
+            language: "EN",
+            applicationCode: "52e7cf966b724749a7c4efadc3727ed7"
+        };
+/*        getWidgetLink(data).then(value => {
+            setLinkToTerraWidget(value.url);
+        })*/
         const config: any = {
             method: 'post',
             url: 'https://api.tryterra.co/v2/auth/generateWidgetSession',

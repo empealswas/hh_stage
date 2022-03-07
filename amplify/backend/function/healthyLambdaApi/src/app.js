@@ -176,6 +176,35 @@ app.post('/api/getSleep',  function (req, res) {
             res.json({data: null});
         });
 });
+app.post('/api/getTerraLink',  function (req, res) {
+    console.log(req.body);
+    const config = {
+        method: 'post',
+        url: 'https://api.tryterra.co/v2/auth/generateWidgetSession',
+        headers: {
+            'dev-id': 'healthcare-analytics-aT9uvuscoO',
+            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+            reference_id: props.user.id,
+            providers: "FITBIT, GOOGLE, GARMIN, APPLE, OURA, SUUNTO",
+            auth_success_redirect_url: window.location.href,
+            auth_failure_redirect_url: window.location.href,
+            language: "EN",
+            applicationCode: "52e7cf966b724749a7c4efadc3727ed7"
+        }),
+    };
+    axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            res.json({url: response.data.url});
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.json({data: null});
+        })
+});
 
 app.get('/api/getAverage', async function (req, res) {
     const statement = `select * from "Attendance-z3pgonvfxjgxjbgblzjkb3kvv4-dev"`
@@ -276,6 +305,7 @@ app.post('/api/addParent', (req, res) => {
         }
     });
 })
+
 app.post('/api/addPrincipal', (req, res) => {
     const event = {
         body: {

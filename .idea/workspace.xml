@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apiFunctions/apiFunctions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiFunctions/apiFunctions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/wearable/ConnectToWearableDeviceButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/wearable/ConnectToWearableDeviceButton.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,8 +52,10 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/user/organization" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -135,7 +140,7 @@
       <workItem from="1646571982136" duration="1089000" />
       <workItem from="1646648815029" duration="3992000" />
       <workItem from="1646662116008" duration="1875000" />
-      <workItem from="1646664529886" duration="58000" />
+      <workItem from="1646664529886" duration="4210000" />
     </task>
     <servers />
   </component>
