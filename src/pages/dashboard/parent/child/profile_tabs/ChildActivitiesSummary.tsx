@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import Typography from "@mui/material/Typography";
-import axios from "axios";
 import {format, subDays} from "date-fns";
-import {Box, Button, Container, Grid} from "@mui/material";
-import {Pupil} from "../../../../../API";
+import {Box, Grid} from "@mui/material";
+import {User} from "../../../../../API";
 import {SleepData, TerraData} from "../../../../../models/terraDataModels/TerraData";
 import {PupilActivityRequest} from "../../../../../apiFunctions/DTO/PupilActivityRequest";
 import {getPupilActivity, getSleepDataAsync} from "../../../../../apiFunctions/apiFunctions";
@@ -11,22 +9,20 @@ import StepsChart from "./StepsChart";
 import PupilActivitiesChart from "./PupilActivitiesChart";
 import SleepChart from "./SleepChart";
 import ConnectToWearableDeviceButton from "../wearable/ConnectToWearableDeviceButton";
-import {AppWidgetSummary} from "../../../../../sections/@dashboard/general/app";
 import {useTheme} from "@mui/material/styles";
 import ActivityWidgets from "./activity/ActivityWidgets";
 
 export const TerraDataContext = React.createContext<TerraData | null>(null);
 export const SleepDataContext = React.createContext<SleepData | null>(null);
 
-const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
-    const {pupil} = {...props};
+const ChildActivitiesSummary = (props: {user: User}) => {
     const [data, setData] = useState<TerraData | null>(null);
     const [sleepData, setSleepData] = useState<SleepData | null>(null);
     const theme = useTheme();
     const getActivity = async () => {
         setData(null);
         const input: PupilActivityRequest = {
-            terraId: String(pupil.terraId),
+            terraId: String(props.user.terraId),
             start_date: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
             end_date: format(new Date(), 'yyyy-MM-dd')
         }
@@ -37,7 +33,7 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
     const getSleepData = async () => {
         setSleepData(null);
         const input: PupilActivityRequest = {
-            terraId: String(pupil.terraId),
+            terraId: String(props.user.terraId),
             start_date: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
             end_date: format(subDays(new Date(), 1), 'yyyy-MM-dd')
         }
@@ -53,17 +49,17 @@ const ChildActivitiesSummary = (props: { pupil: Pupil }) => {
         return () => {
 
         };
-    }, [pupil]);
+    }, [props.user]);
 
     return (
         <TerraDataContext.Provider value={data}>
             <SleepDataContext.Provider value={sleepData}>
-                <ConnectToWearableDeviceButton pupil={pupil}/>
+                <ConnectToWearableDeviceButton user={props.user}/>
                 <Box height={5}></Box>
                 <Grid container spacing={3}>
                     <ActivityWidgets/>
                     <Grid item xs={12} md={12} lg={8}>
-                        <StepsChart pupilId={pupil.id}/>
+                        <StepsChart userId={props.user.id}/>
                     </Grid>
                     <Grid item xs={12} md={12} lg={4}>
                         <PupilActivitiesChart/>

@@ -18,6 +18,8 @@ export const getUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
+      terraId
+      provider
       createdAt
       updatedAt
     }
@@ -35,6 +37,8 @@ export const listUsers = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -50,6 +54,8 @@ export const getDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -58,6 +64,8 @@ export const getDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -109,6 +117,8 @@ export const getUserInOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -288,6 +298,8 @@ export const getOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }

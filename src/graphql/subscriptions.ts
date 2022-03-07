@@ -18,6 +18,8 @@ export const onCreateUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
+      terraId
+      provider
       createdAt
       updatedAt
     }
@@ -39,6 +41,8 @@ export const onUpdateUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
+      terraId
+      provider
       createdAt
       updatedAt
     }
@@ -60,6 +64,8 @@ export const onDeleteUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
+      terraId
+      provider
       createdAt
       updatedAt
     }
@@ -73,6 +79,8 @@ export const onCreateDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -81,6 +89,8 @@ export const onCreateDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -99,6 +109,8 @@ export const onUpdateDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -107,6 +119,8 @@ export const onUpdateDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -125,6 +139,8 @@ export const onDeleteDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -133,6 +149,8 @@ export const onDeleteDependantGuardian = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -163,6 +181,8 @@ export const onCreateUserInOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -202,6 +222,8 @@ export const onUpdateUserInOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -241,6 +263,8 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -504,6 +528,8 @@ export const onCreateOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -562,6 +588,8 @@ export const onUpdateOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }
@@ -620,6 +648,8 @@ export const onDeleteOrganization = /* GraphQL */ `
         firstName
         lastName
         email
+        terraId
+        provider
         createdAt
         updatedAt
       }

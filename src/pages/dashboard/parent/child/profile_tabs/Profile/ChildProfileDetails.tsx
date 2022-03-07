@@ -4,14 +4,14 @@ import {Grid, Stack} from '@mui/material';
 //
 import ProfileAbout from './ProfileAbout';
 import ParentsInfo from './ParentsInfo';
-import {Pupil} from "../../../../../../API";
+import {Pupil, User} from "../../../../../../API";
 import TechInfo from "./TechInfo";
 import InterventionsList from "./intervention/InterventionsList";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-    child: Pupil;
+    child: User;
 };
 
 export default function ChildProfileDetails({child}: Props) {
@@ -20,14 +20,14 @@ export default function ChildProfileDetails({child}: Props) {
             <Grid item xs={12} md={4}>
                 <Stack spacing={3}>
                     <ProfileAbout pupil={child}/>
-                    <ParentsInfo pupil={child}/>
+                    {/*<ParentsInfo pupil={child}/>*/}
                     <TechInfo pupil={child}/>
                 </Stack>
             </Grid>
 
             <Grid item xs={12} md={8}>
                 <Stack spacing={3}>
-                  <InterventionsList pupil={child}/>
+                  {/*<InterventionsList pupil={child}/>*/}
                 </Stack>
             </Grid>
         </Grid>

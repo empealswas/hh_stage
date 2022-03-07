@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Link, Card, Typography, CardHeader, Stack } from '@mui/material';
 // @types
 // components
-import {Pupil} from "../../../../../../API";
+import {Pupil, User} from "../../../../../../API";
 import Iconify from "../../../../../../components/Iconify";
 
 // ----------------------------------------------------------------------
@@ -19,7 +19,7 @@ const IconStyle = styled(Iconify)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type Props = {
-  pupil: Pupil;
+  pupil: User;
 };
 
 export default function ProfileAbout({ pupil }: Props) {
@@ -32,7 +32,7 @@ export default function ProfileAbout({ pupil }: Props) {
           <Typography variant="body2">Hello! My name is {pupil.firstName} {pupil.lastName}</Typography>
 
 
-          {pupil.school &&
+{/*          {pupil.school &&
           <Stack direction="row">
             <IconStyle icon={'ic:baseline-school'}/>
             <Typography variant="body2">
@@ -53,7 +53,7 @@ export default function ProfileAbout({ pupil }: Props) {
                   </Link>
                 </Typography>
               </Stack>
-          }
+          }*/}
 
         </Stack>
       </Card>

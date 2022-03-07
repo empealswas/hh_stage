@@ -5,17 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/TestPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/team-provider-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/team-provider-info.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/apiFunctions/apiFunctions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiFunctions/apiFunctions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/mutations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/subscriptions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/UnifiedUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/UnifiedUser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildAvatar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildAvatar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildProfile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildProfileCover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/ChildProfileCover.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/Profile/ChildProfileDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/Profile/ChildProfileDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/Profile/ProfileAbout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/Profile/ProfileAbout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/Profile/TechInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/Profile/TechInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/PupilActivitiesChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/PupilActivitiesChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/wearable/ConnectToWearableDeviceButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/wearable/ConnectToWearableDeviceButton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/paths.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/paths.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +150,8 @@
       <workItem from="1646219738958" duration="10351000" />
       <workItem from="1646308131748" duration="7672000" />
       <workItem from="1646392035510" duration="7054000" />
-      <workItem from="1646571982136" duration="728000" />
+      <workItem from="1646571982136" duration="1089000" />
+      <workItem from="1646648815029" duration="3122000" />
     </task>
     <servers />
   </component>

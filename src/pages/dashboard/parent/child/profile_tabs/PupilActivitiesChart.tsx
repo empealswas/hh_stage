@@ -10,8 +10,9 @@ import {styled} from "@mui/material/styles";
 import ActivtityChartSkeleton from "../../../../../components/skeleton/ActivtityChartSkeleton";
 import {API, graphqlOperation} from "aws-amplify";
 import {useParams} from "react-router-dom";
-import {Attendance, PELessonRecord} from "../../../../../API";
+import {Attendance, PELessonRecord, UserInOrganization} from "../../../../../API";
 import {fPercent} from "../../../../../utils/formatNumber";
+import useAuth from "../../../../../hooks/useAuth";
 // utils
 //
 
@@ -40,12 +41,20 @@ const ChartWrapperStyle = styled('div')(({theme}) => ({
     }
 }));
 const activityQuery = `query MyQuery($id: ID = "") {
-  getPupil(id: $id) {
-    Attendances(limit: 10000, filter: {present: {eq: true}}) {
+  getUser(id: $id) {
+    organizations {
       items {
-        lessonRecord {
-          activity
-          duration
+        Attendances {
+          items {
+            lessonRecord {
+              activity
+              id
+              duration
+              date
+              notes
+              rating
+            }
+          }
         }
       }
     }
@@ -53,15 +62,16 @@ const activityQuery = `query MyQuery($id: ID = "") {
 }
 `
 export default function PupilActivitiesChart() {
-    const {pupilId} = useParams();
+    const {user} = useAuth();
     // const [activities, setActivities] = useState<{name: string, durationInMinutes: number}[] | null>(null);
     const [data, setData] = useState<{names: string[], series: number[]}| null>(null);
     useEffect(() => {
         const fetchData = async () => {
             setData(null);
 
-            const result: any = await API.graphql(graphqlOperation(activityQuery, {id: pupilId}))
-            const lessonRecords: PELessonRecord[] = result.data.getPupil.Attendances.items.map((item: Attendance) => item.lessonRecord).filter((item: PELessonRecord) => !!item);
+            const result: any = await API.graphql(graphqlOperation(activityQuery, {id: user?.email}))
+
+            const lessonRecords: PELessonRecord[] = result.data.getUser?.organizations.items.flatMap((item: UserInOrganization) => item.Attendances?.items).map((item: Attendance) => item.lessonRecord).filter((item: PELessonRecord) => !!item);
             const activities = lessonRecords.reduce((acc: any, value: any) => {
                 if (!value) {
                     return acc;
@@ -107,7 +117,7 @@ export default function PupilActivitiesChart() {
         return () => {
 
         };
-    }, [pupilId]);
+    }, [user]);
 
     if (!data) {
         return (<ActivtityChartSkeleton/>);

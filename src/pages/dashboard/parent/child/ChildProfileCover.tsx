@@ -49,19 +49,13 @@ type Props = {
     pupil: Pupil;
 };
 
-export default function ChildProfileCover({pupil}: Props) {
+export default function ChildProfileCover() {
 
-    let classesText = 'No class';
-    if (pupil.classrooms?.items?.length  === 1) {
-        classesText = "";
-    }else if (pupil.classrooms?.items?.length ?? 0  > 2) {
-        classesText = "Classes: "
-    }
+    const {user} = useAuth();
     return (
         <RootStyle>
             <InfoStyle>
                 <ChildAvatar
-                    pupil={pupil}
                     sx={{
                         mx: 'auto',
                         borderWidth: 2,
@@ -79,10 +73,10 @@ export default function ChildProfileCover({pupil}: Props) {
                         textAlign: {xs: 'center', md: 'left'},
                     }}
                 >
-                    <Typography variant="h4">{`${pupil.firstName} ${pupil.lastName}`}</Typography>
-                    <Typography
+                    <Typography variant="h4">{`${user?.firstName} ${user?.lastName}`}</Typography>
+{/*                    <Typography
                         sx={{opacity: 0.72}}>{classesText}{pupil.classrooms?.items?.
-                    map((item) => item?.classroom).map(value => value?.name).join(", ")}</Typography>
+                    map((item) => item?.classroom).map(value => value?.name).join(", ")}</Typography>*/}
                 </Box>
             </InfoStyle>
             <Image

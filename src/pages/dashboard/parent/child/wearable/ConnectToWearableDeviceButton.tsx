@@ -4,19 +4,19 @@ import axios from "axios";
 import {getPupilWearableDeviceStatus} from "../../../../../apiFunctions/apiFunctions";
 import {IconButton} from "@mui/material";
 import Iconify from "../../../../../components/Iconify";
-import {Pupil} from "../../../../../API";
+import {Pupil, User} from "../../../../../API";
 
-const ConnectToWearableDeviceButton = (props: { pupil: Pupil }) => {
+const ConnectToWearableDeviceButton = (props: { user: User }) => {
     const [loading, setLoading] = useState(true);
     const [authenticationState, setAuthenticationState] = useState<'CHECKING_AUTHENTICATION'| 'NOT_AUTHENTICATED' | 'AUTHENTICATED'>('CHECKING_AUTHENTICATION');
-    const {pupil} = {...props};
+    const {user} = {...props};
     const [color, setColor] = useState('primary');
     const [authenticated, setAuthenticated] = useState<null | boolean>(null);
 
 
     function followRegistrationLink () {
         const data = JSON.stringify({
-            "reference_id": props.pupil.id,
+            "reference_id": props.user.id,
             "providers": "FITBIT, GOOGLE, GARMIN, APPLE, OURA, SUUNTO",
             "auth_success_redirect_url": window.location.href,
             "auth_failure_redirect_url": window.location.href,
@@ -61,12 +61,12 @@ const ConnectToWearableDeviceButton = (props: { pupil: Pupil }) => {
         return () => {
 
         };
-    }, [pupil]);
+    }, [user]);
 
     async function checkUserAuthentication() {
         setLoading(true);
-        if (pupil.terraId) {
-            const result = await getPupilWearableDeviceStatus(pupil.terraId);
+        if (user.terraId) {
+            const result = await getPupilWearableDeviceStatus(user.terraId);
             console.log(result)
             if (result.status === 'success' && result.data.is_authenticated) {
                 setAuthenticationState('AUTHENTICATED');

@@ -34,7 +34,7 @@ const childQuery = `query MyQuery {
     }
   }
 }`;
-export default function StepsChart(props: { pupilId: string }) {
+export default function StepsChart(props: { userId: string }) {
     const terraData = useContext(TerraDataContext);
     let basedOptions = BaseOptionChart();
     const theme = useTheme();

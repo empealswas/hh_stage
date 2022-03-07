@@ -28,8 +28,8 @@ exports.handler = async (event) => {
     };
     return response;
 };
-const mutation = gql`mutation MyMutation($id: ID = "", $terraId: String = "", $provider: String = "") {
-    updatePupil(input: {id: $id, terraId: $terraId, provider: $provider}) {
+const mutation = gql`mutation MyMutation($id: ID = "", $provider: String = "", $terraId: String = "") {
+    updateUser(input: {id: $id, provider: $provider, terraId: $terraId}) {
         id
     }
 }

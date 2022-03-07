@@ -3,7 +3,7 @@ import {styled} from '@mui/material/styles';
 import {Link, Card, Typography, CardHeader, Stack} from '@mui/material';
 // @types
 // components
-import {Parent, Pupil} from "../../../../../../API";
+import {Parent, Pupil, User} from "../../../../../../API";
 import Iconify from "../../../../../../components/Iconify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import CopyClipboard from "../../../../../../components/CopyClipboard";
@@ -21,7 +21,7 @@ const IconStyle = styled(Iconify)(({theme}) => ({
 // ----------------------------------------------------------------------
 
 type Props = {
-    pupil: Pupil;
+    pupil: User;
 };
 
 export default function TechInfo({pupil}: Props) {
@@ -30,14 +30,14 @@ export default function TechInfo({pupil}: Props) {
         <Card>
             <CardHeader title="Tech Stuff"/>
             <Stack spacing={2} sx={{p: 3}}>
-                <Stack direction={'column'}>
+{/*                <Stack direction={'column'}>
                     <Typography variant="body2">
                         <Link component="span" variant="subtitle2" color="text.primary">
                         ID
                         </Link>
                     </Typography>
-                    <CopyClipboard  value={String(pupil.id)}/>
-                </Stack>
+                    <CopyClipboard value={String(pupil.id)}/>
+                </Stack>*/}
                 <Stack direction={'column'}>
                     <Typography variant="body2">
                         <Link component="span" variant="subtitle2" color="text.primary">

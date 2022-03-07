@@ -80,7 +80,7 @@ const ActivityWidgets = () => {
     }, [pupilId]);
     return (
         <>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
                 {stepsData ?
                     <ActivityWidgetSummary title={'Steps'}
                                            total={stepsData?.data[stepsData?.data?.length - 1]?.distance_data.steps ?? 0}
@@ -91,7 +91,7 @@ const ActivityWidgets = () => {
                     <CardSkeleton/>
                 }
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
                 {sleepData ?
                     <ActivityWidgetSummary title={'Sleep'}
                                            total={sleepData?.data[sleepData?.data?.length - 1]?.sleep_durations_data.asleep.duration_asleep_state / 60 / 60 ?? 0}
@@ -102,7 +102,7 @@ const ActivityWidgets = () => {
                     <CardSkeleton/>
                 }
             </Grid>
-            <Grid item xs={12} md={4}>
+{/*            <Grid item xs={12} md={4}>
                 {averageData ?
                     <ActivityWidgetSummary title={"Average Steps in your child's classroom"}
                                            total={averageData[averageData?.length - 1]?.value ?? 0}
@@ -112,7 +112,7 @@ const ActivityWidgets = () => {
                     :
                     <CardSkeleton/>
                 }
-            </Grid>
+            </Grid>*/}
 
 
         </>
