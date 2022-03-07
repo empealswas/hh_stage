@@ -41,7 +41,8 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
         await axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                setLinkToTerraWidget(response.data.url);
+                window.open(response.data.url);
+                // setLinkToTerraWidget(response.data.url);
             })
             .catch(function (error) {
                 console.log(error);
@@ -57,7 +58,7 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
 
     useEffect(() => {
         checkUserAuthentication()
-        generateRegistrationLink()
+        // generateRegistrationLink()
 
         return () => {
 
@@ -81,12 +82,19 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
     }
 
     return (
+        <LoadingButton  onClick={       generateRegistrationLink}
+                       loading={authenticationState === 'CHECKING_AUTHENTICATION'}
+                       variant={authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'}
+                       startIcon={<Iconify icon={'mdi:watch'}></Iconify>}
+        >{authenticationState === 'AUTHENTICATED' ? 'Connected' : 'Connect to Wearable'}</LoadingButton>
+    );
+/*    return (
         <LoadingButton  href={linkToTerraWidget}
                        loading={authenticationState === 'CHECKING_AUTHENTICATION' || !linkToTerraWidget}
                        variant={authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'}
                        startIcon={<Iconify icon={'mdi:watch'}></Iconify>}
         >{authenticationState === 'AUTHENTICATED' ? 'Connected' : 'Connect to Wearable'}</LoadingButton>
-    );
+    );*/
 };
 
 export default ConnectToWearableDeviceButton;
