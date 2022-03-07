@@ -5,16 +5,18 @@ import {getPupilWearableDeviceStatus} from "../../../../../apiFunctions/apiFunct
 import {IconButton} from "@mui/material";
 import Iconify from "../../../../../components/Iconify";
 import {Pupil, User} from "../../../../../API";
+import {Link} from "react-router-dom";
 
 const ConnectToWearableDeviceButton = (props: { user: User }) => {
-    const [loading, setLoading] = useState(true);
-    const [authenticationState, setAuthenticationState] = useState<'CHECKING_AUTHENTICATION'| 'NOT_AUTHENTICATED' | 'AUTHENTICATED'>('CHECKING_AUTHENTICATION');
+    const [loading, setLoading] = useState(false);
+    const [authenticationState, setAuthenticationState] = useState<'CHECKING_AUTHENTICATION' | 'NOT_AUTHENTICATED' | 'AUTHENTICATED'>('CHECKING_AUTHENTICATION');
     const {user} = {...props};
     const [color, setColor] = useState('primary');
     const [authenticated, setAuthenticated] = useState<null | boolean>(null);
+    const [linkToTerraWidget, setLinkToTerraWidget] = useState('');
 
 
-    function followRegistrationLink () {
+    async function  followRegistrationLink() {
         const data = JSON.stringify({
             "reference_id": props.user.id,
             "providers": "FITBIT, GOOGLE, GARMIN, APPLE, OURA, SUUNTO",
@@ -34,11 +36,10 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
             },
             data: data
         };
-        setLoading(true)
-        axios(config)
+        await axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                window.open(response.data.url, '_blank')
+                setLinkToTerraWidget(response.data.url);
             })
             .catch(function (error) {
                 console.log(error);
@@ -49,39 +50,45 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
     }
 
     function generateRegistrationLink() {
-
-       followRegistrationLink()
+        setLoading(true);
+        followRegistrationLink().then(value => {
+            setLoading(false);
+        })
 
 
     }
 
     useEffect(() => {
         checkUserAuthentication()
-
         return () => {
 
         };
     }, [user]);
 
     async function checkUserAuthentication() {
-        setLoading(true);
         if (user.terraId) {
             const result = await getPupilWearableDeviceStatus(user.terraId);
-            console.log(result)
+            console.log(result);
             if (result.status === 'success' && result.data.is_authenticated) {
                 setAuthenticationState('AUTHENTICATED');
-            }else{
+            } else {
                 setAuthenticationState('NOT_AUTHENTICATED');
+                generateRegistrationLink()
+
             }
         } else {
             setAuthenticationState('NOT_AUTHENTICATED');
+            generateRegistrationLink()
+
         }
-        setLoading(false);
     }
 
     return (
-        <LoadingButton  loading={loading} variant={ authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'} startIcon={<Iconify icon={'mdi:watch'}></Iconify>}
-                       onClick={generateRegistrationLink}>{authenticationState === 'AUTHENTICATED' ? 'Connected' : 'Connect to Wearable'}</LoadingButton>
+        <LoadingButton target="_blank" href={linkToTerraWidget}
+                       loading={authenticationState === 'CHECKING_AUTHENTICATION' || loading}
+                       variant={authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'}
+                       startIcon={<Iconify icon={'mdi:watch'}></Iconify>}
+        >{authenticationState === 'AUTHENTICATED' ? 'Connected' : 'Connect to Wearable'}</LoadingButton>
     );
 };
 
