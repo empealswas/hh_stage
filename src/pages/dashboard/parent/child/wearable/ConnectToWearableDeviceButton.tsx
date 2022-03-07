@@ -44,22 +44,19 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
             .catch(function (error) {
                 console.log(error);
 
-            }).finally(() => {
-            setLoading(false);
-        });
+            })
     }
 
     function generateRegistrationLink() {
-        setLoading(true);
-        followRegistrationLink().then(value => {
-            setLoading(false);
-        })
+        followRegistrationLink()
 
 
     }
 
     useEffect(() => {
         checkUserAuthentication()
+        generateRegistrationLink()
+
         return () => {
 
         };
@@ -73,19 +70,17 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
                 setAuthenticationState('AUTHENTICATED');
             } else {
                 setAuthenticationState('NOT_AUTHENTICATED');
-                generateRegistrationLink()
 
             }
         } else {
             setAuthenticationState('NOT_AUTHENTICATED');
-            generateRegistrationLink()
 
         }
     }
 
     return (
-        <LoadingButton target="_blank" href={linkToTerraWidget}
-                       loading={authenticationState === 'CHECKING_AUTHENTICATION' || loading}
+        <LoadingButton  href={linkToTerraWidget}
+                       loading={authenticationState === 'CHECKING_AUTHENTICATION' || !linkToTerraWidget}
                        variant={authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'}
                        startIcon={<Iconify icon={'mdi:watch'}></Iconify>}
         >{authenticationState === 'AUTHENTICATED' ? 'Connected' : 'Connect to Wearable'}</LoadingButton>
