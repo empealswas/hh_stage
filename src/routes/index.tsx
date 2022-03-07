@@ -100,13 +100,14 @@ export default function Router() {
                     children: [
                         {element: <Navigate to="/dashboard/user/profile" replace/>, index: true},
                         {path: 'profile', element: <ChildProfile/>},
-                        {path: 'account', element: <UserAccount/>}
-/*                        {path: 'cards', element: <UserCards/>},
+                        {path: 'account', element: <UserAccount/>},
+                        {path: 'account/organization/new', element: <CreateOrganization/>},
+                        {path: 'cards', element: <UserCards/>},
                         {path: 'list', element: <UserList/>},
                         {path: 'new', element: <UserCreate/>},
                         {path: ':name/edit', element: <UserCreate/>},
                         {path: 'account', element: <UserAccount/>},
-                        {path: 'account/organization/new', element: <CreateOrganization/>}*/
+                        {path: 'account/organization/new', element: <CreateOrganization/>}
                     ],
                 },
                 {
