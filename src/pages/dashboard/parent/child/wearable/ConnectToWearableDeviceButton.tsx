@@ -25,39 +25,20 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
             language: "EN",
             applicationCode: "52e7cf966b724749a7c4efadc3727ed7"
         };
-/*        getWidgetLink(data).then(value => {
+        getWidgetLink(data).then(value => {
             setLinkToTerraWidget(value.url);
-        })*/
-        const config: any = {
-            method: 'post',
-            url: 'https://api.tryterra.co/v2/auth/generateWidgetSession',
-            headers: {
-                'dev-id': 'healthcare-analytics-aT9uvuscoO',
-                'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
-                'Content-Type': 'application/json'
-            },
-            data: data
-        };
-        await axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-                window.open(response.data.url);
-                // setLinkToTerraWidget(response.data.url);
-            })
-            .catch(function (error) {
-                console.log(error);
-
-            })
+            console.log('LINK', value.url);
+        })
     }
 
     function generateRegistrationLink() {
         followRegistrationLink()
 
-
     }
 
     useEffect(() => {
         checkUserAuthentication()
+        generateRegistrationLink()
         // generateRegistrationLink()
 
         return () => {
@@ -74,6 +55,7 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
             } else {
                 setAuthenticationState('NOT_AUTHENTICATED');
 
+
             }
         } else {
             setAuthenticationState('NOT_AUTHENTICATED');
@@ -82,8 +64,8 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
     }
 
     return (
-        <LoadingButton  onClick={       generateRegistrationLink}
-                       loading={authenticationState === 'CHECKING_AUTHENTICATION'}
+        <LoadingButton  href={linkToTerraWidget}
+                       loading={authenticationState === 'CHECKING_AUTHENTICATION' || !linkToTerraWidget}
                        variant={authenticationState === 'AUTHENTICATED' ? 'outlined' : 'contained'}
                        startIcon={<Iconify icon={'mdi:watch'}></Iconify>}
         >{authenticationState === 'AUTHENTICATED' ? 'Connected' : 'Connect to Wearable'}</LoadingButton>

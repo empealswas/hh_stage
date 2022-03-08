@@ -26,7 +26,7 @@ export async function subscribeToNotifications(subscription: any): Promise<any> 
     }));
 }
 export async function getWidgetLink(data: any): Promise<any> {
-    const result: any = await API.post(apiName, '/getTerraLink', {
+    const result: any = await API.post(apiName, '/api/getTerraLink', {
         body: {...data},
         headers: {
             'content-type': 'application/json',
