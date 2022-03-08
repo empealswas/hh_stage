@@ -119,7 +119,7 @@ const SectionOverview = () => {
         <Container>
             {section && <SectionHeader title={sectionId ? section?.name ?? "Sections" : "Sections"}
                                        editingForm={
-                                           organizationId === section.organizationID ?
+                                            organizationId === section.organizationID ?
                                                <Can I={'update'} a={'section'}>
                                                    <EditSectionModal updateObject={section}/>
                                                </Can>
@@ -148,7 +148,7 @@ const SectionOverview = () => {
                 }}>
                     <NewSectionForm/>
                 </AddingDialog>*/}
-                {organizationId === section?.organizationID &&
+                {organizationId === (section?.organizationID ?? organizationId) &&
                     <Can I={'create'} a={'section'}>
                         <AddSectionModal/>
                     </Can>
