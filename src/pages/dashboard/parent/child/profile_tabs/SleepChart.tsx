@@ -14,6 +14,7 @@ import {SkeletonPost} from "../../../../../components/skeleton";
 import {fShortenNumber} from "../../../../../utils/formatNumber";
 import {Box, Card, CardHeader, Skeleton} from "@mui/material";
 import ActivtityChartSkeleton from "../../../../../components/skeleton/ActivtityChartSkeleton";
+import {getWearablesData, TerraWearables} from "../../../../../apiFunctions/apiFunctions";
 //
 
 // ----------------------------------------------------------------------
@@ -40,11 +41,12 @@ export default function SleepChart() {
     const baseOptions = BaseOptionChart();
     const theme = useTheme();
     const [averageData, setAverageData] = useState<any>(null);
+    console.log(sleepData)
     useEffect(() => {
         const getAverage = async () => {
             const result: any = await API.graphql(graphqlOperation(childQuery));
             const terraIds = result.data.listPupils?.items.filter((item: Pupil) => !!item.terraId).map((item: Pupil) => item.terraId);
-            var data = JSON.stringify({
+            var data: TerraWearables= {
                 "idList": terraIds,
                 "grouping": "group",
                 "category": "sleep",
@@ -53,24 +55,10 @@ export default function SleepChart() {
                 "startDate": format(subDays(new Date(), 7), 'yyyy-MM-dd'),
                 "endDate": format(subDays(new Date(), 0), 'yyyy-MM-dd'),
                 "returnType": "average"
-            });
-            var config: any = {
-                method: 'post',
-                url: 'https://terra.healthyhabits.link/api/data/get-data',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: data
-            };
+            }
+            const terraData: any = await getWearablesData(data);
+            setAverageData(terraData.data);
 
-            axios(config)
-                .then(function (response) {
-                    console.log('Average Sleep', JSON.stringify(response.data));
-                    setAverageData(response.data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
         }
         getAverage();
         return () => {
@@ -89,7 +77,7 @@ export default function SleepChart() {
                     show: false
                 },
             },
-            colors: ['#2897ff', '#00579f', theme.palette.warning.light],
+            colors: ['#2897ff', theme.palette.warning.light],
             dataLabels: {
                 enabled: false
             },
@@ -178,14 +166,9 @@ export default function SleepChart() {
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart series={[
                     {
-                        name: 'Light sleep',
+                        name: "Duration Asleep",
                         type: 'column',
-                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_light_sleep_state / 60.0 / 60.0)),
-                    },
-                    {
-                        name: 'Deep sleep',
-                        type: 'column',
-                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_deep_sleep_state / 60.0 / 60.0)),
+                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_asleep_state / 60.0 / 60.0)),
                     },
                     {
                         name: 'Average Sleep',

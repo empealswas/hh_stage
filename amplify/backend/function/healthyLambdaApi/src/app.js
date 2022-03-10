@@ -131,10 +131,8 @@ app.post('/api/wearables',  function (req, res) {
 
     var config = {
         method: 'post',
-        url: `https://bk1r5cjeif.execute-api.eu-west-2.amazonaws.com/dev`,
+        url: process.env.TerraApiEndpoint,
         headers: {
-            'dev-id': 'healthcare-analytics-aT9uvuscoO',
-            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
             'Content-Type': 'application/json'
         },
         data: req.body,

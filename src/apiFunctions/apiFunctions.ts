@@ -3,9 +3,19 @@ import {API} from "aws-amplify";
 import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
 import {PupilActivityRequest} from "./DTO/PupilActivityRequest";
 import {result} from "lodash";
+
 const apiName = 'HealthyHabitsV2API'
 
-
+export type TerraWearables = {
+    idList: string[],
+    grouping: 'user' | 'group',
+    category: 'activity' | 'daily' | 'sleep',
+    subtype: 'steps' | 'distance' | 'duration' | 'calories' | 'durationTotal' | 'durationRem' | 'durationDeep' | 'durationAwake' | 'durationOther' | 'efficiency';
+    period: 'day' | 'week' | 'month' | 'year' | 'millennium',
+    startDate: string,
+    endDate: string,
+    returnType: 'total' | 'average' | 'stanine';
+}
 
 export async function addTeacherApi(params: AddTeacherRequest) {
 
@@ -17,6 +27,7 @@ export async function addTeacherApi(params: AddTeacherRequest) {
     console.log(result);
     console.log('Added');
 }
+
 export async function subscribeToNotifications(subscription: any): Promise<any> {
     return Promise.resolve(await API.post(apiName, '/subscribe', {
         body: JSON.stringify(subscription),
@@ -25,6 +36,7 @@ export async function subscribeToNotifications(subscription: any): Promise<any> 
         }
     }));
 }
+
 export async function getWidgetLink(data: any): Promise<any> {
     const result: any = await API.post(apiName, '/api/getTerraLink', {
         body: {...data},
@@ -38,14 +50,15 @@ export async function getWidgetLink(data: any): Promise<any> {
 export async function getPupilActivity(params: PupilActivityRequest) {
     console.log(params);
     const result = await API.post(apiName, '/api/getActivity', {
-       body: {
-           ...params,
-       }
+        body: {
+            ...params,
+        }
     });
     console.log(result)
     return result;
 }
-export async function testWearables(params: any) {
+
+export async function getWearablesData(params: TerraWearables) {
 
     const result = await API.post(apiName, '/api/wearables', {
         body: {...params}
@@ -63,7 +76,8 @@ export async function getSleepDataAsync(params: PupilActivityRequest) {
     console.log(result)
     return result;
 }
-export async function getPupilWearableDeviceStatus(terraId: string){
+
+export async function getPupilWearableDeviceStatus(terraId: string) {
     const result = await API.get(apiName, '/api/userInfo', {
         queryStringParameters: {  // OPTIONAL
             user_id: terraId
@@ -73,6 +87,7 @@ export async function getPupilWearableDeviceStatus(terraId: string){
     return result;
 
 }
+
 export async function addTeacherForOrganizationApi(params: AddTeacherOrganizationRequest) {
     const result = await API.post(apiName, '/api/addTeacherOrganization', {
         body: {
@@ -82,7 +97,8 @@ export async function addTeacherForOrganizationApi(params: AddTeacherOrganizatio
     console.log(result);
     console.log('Added');
 }
-export async function addParentApi(params: AddParentRequest){
+
+export async function addParentApi(params: AddParentRequest) {
     const result = await API.post(apiName, '/api/addParent', {
         body: {
             ...params
@@ -90,7 +106,8 @@ export async function addParentApi(params: AddParentRequest){
     });
     return result;
 }
-export async function addPrincipalApi(params: AddParentRequest){
+
+export async function addPrincipalApi(params: AddParentRequest) {
     const result = await API.post(apiName, '/api/addPrincipal', {
         body: {
             ...params
@@ -98,19 +115,21 @@ export async function addPrincipalApi(params: AddParentRequest){
     });
     return result;
 }
-export async function listUnconfirmedOrganizations(){
-    const result = await API.get(apiName, '/api/listUnconfirmedOrganizations', {
-    });
+
+export async function listUnconfirmedOrganizations() {
+    const result = await API.get(apiName, '/api/listUnconfirmedOrganizations', {});
     return result;
 }
+
 type ConfirmOrganizationParams = {
     email: string
 }
-export async function confirmOrganization(params: ConfirmOrganizationParams){
+
+export async function confirmOrganization(params: ConfirmOrganizationParams) {
     console.log(params)
     const result = await API.post(apiName, '/api/confirmOrganization', {
         body: {
-           ...params
+            ...params
         }
     });
     console.log(result)
@@ -118,8 +137,7 @@ export async function confirmOrganization(params: ConfirmOrganizationParams){
 }
 
 
-
-export async function getAverage(){
+export async function getAverage() {
     return Promise.resolve(await API.get(apiName, '/api/getAverage', {}));
 }
 
@@ -132,7 +150,7 @@ export async function resendCodeToTeacher(params: ResendTeacherInvitation) {
 }
 
 
-export async function genUrlOfThumbnailOfFile(fileName: string){
+export async function genUrlOfThumbnailOfFile(fileName: string) {
 
     const result = await API.get(apiName, '/api/getUrlToObject', {
         queryStringParameters: {  // OPTIONAL
@@ -141,8 +159,9 @@ export async function genUrlOfThumbnailOfFile(fileName: string){
     })
     return result;
 }
-export async function deleteFileById(id: string){
 
-    const result = await API.del(apiName, `/api/deleteFile/${id}`,{})
+export async function deleteFileById(id: string) {
+
+    const result = await API.del(apiName, `/api/deleteFile/${id}`, {})
     return result;
 }

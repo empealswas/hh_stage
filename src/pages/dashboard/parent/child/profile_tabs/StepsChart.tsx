@@ -9,11 +9,12 @@ import axios from "axios";
 import {useTheme} from "@mui/material/styles";
 import {TerraDataContext} from "./ChildActivitiesSummary";
 import {BaseOptionChart} from "../../../../../components/chart";
-import {Pupil} from "../../../../../API";
+import {Pupil, User} from "../../../../../API";
 import {fShortenNumber} from "../../../../../utils/formatNumber";
 import {Box, Card, CardHeader, Skeleton} from "@mui/material";
 import {SkeletonKanbanColumn, SkeletonPost, SkeletonProductItem} from "../../../../../components/skeleton";
 import ActivtityChartSkeleton from "../../../../../components/skeleton/ActivtityChartSkeleton";
+import {getWearablesData, TerraWearables} from "../../../../../apiFunctions/apiFunctions";
 //
 
 // ----------------------------------------------------------------------
@@ -28,7 +29,7 @@ const CHART_DATA = [
     },
 ];
 const childQuery = `query MyQuery {
-  listPupils(limit: 100000) {
+  listUsers(limit: 100000) {
     items {
       terraId
     }
@@ -43,34 +44,22 @@ export default function StepsChart(props: { userId: string }) {
     useEffect(() => {
         const getAverage = async () =>{
             const result: any = await API.graphql(graphqlOperation(childQuery));
-            const terraIds = result.data.listPupils?.items.filter((item: Pupil) => !!item.terraId).map((item: Pupil) => item.terraId);
-            var data = JSON.stringify({
-                "idList": terraIds,
-                "grouping": "group",
-                "category": "daily",
-                "subtype": "steps",
-                "period": "day",
-                "startDate":  format(subDays(new Date(), 7), 'yyyy-MM-dd'),
-                "endDate": format(new Date(), 'yyyy-MM-dd'),
-                "returnType": "average"
-            });
-            var config: any = {
-                method: 'post',
-                url: 'https://terra.healthyhabits.link/api/data/get-data',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data : data
+            const terraIds = result.data.listUsers?.items.filter((item: User) => !!item.terraId).map((item: Pupil) => item.terraId);
+            const data: TerraWearables = {
+                idList: terraIds,
+                grouping: "group",
+                category: "daily",
+                subtype: "steps",
+                period: "day",
+                startDate:  format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                endDate: format(new Date(), 'yyyy-MM-dd'),
+                returnType: "average"
             };
+            console.log(data);
+            const wearablesResult: any = await getWearablesData(data);
+            console.log('Data', wearablesResult)
+            setAverageData(wearablesResult.data);
 
-            axios(config)
-                .then(function (response) {
-                    console.log('Average', JSON.stringify(response.data));
-                    setAverageData(response.data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
         }
         getAverage();
         return () => {

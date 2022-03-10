@@ -335,7 +335,7 @@ const RoleChangePermissionsDialog = ({roleId, name}: Props) => {
                                                     }
                                                     }
                                                     defaultChecked={Boolean(permissions?.canManageOrganization ?? false)}/>}
-                                                                  label="Can manage oragnization"/>
+                                                                  label="Can manage organization"/>
 
                                                 {/*                            <FormControlLabel control={<Switch
                                                 onChange={async (event: React.ChangeEvent<HTMLInputElement>) => {

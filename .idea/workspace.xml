@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/healthyLambdaApi/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apiFunctions/apiFunctions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiFunctions/apiFunctions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TestPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TestPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/role/RoleChangePermissionsDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/role/RoleChangePermissionsDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/SleepChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/SleepChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +144,8 @@
       <workItem from="1646648815029" duration="3992000" />
       <workItem from="1646662116008" duration="1875000" />
       <workItem from="1646664529886" duration="5431000" />
-      <workItem from="1646759742530" duration="216000" />
+      <workItem from="1646759742530" duration="1101000" />
+      <workItem from="1646902850118" duration="6267000" />
     </task>
     <servers />
   </component>
