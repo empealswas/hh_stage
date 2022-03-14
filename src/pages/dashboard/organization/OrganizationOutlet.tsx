@@ -13,6 +13,7 @@ const rolesQuery = `query MyQuery($id: ID = "", $eq: ID = "") {
   getUser(id: $id) {
     organizations(filter: {organizationID: {eq: $eq}}) {
       items {
+        id
         roles {
           items {
             userRole {

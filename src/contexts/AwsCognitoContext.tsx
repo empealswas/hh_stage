@@ -104,6 +104,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     () =>
       new Promise((resolve, reject) => {
         const user = UserPool.getCurrentUser();
+        console.log("USER", user);
         if (user) {
           user.getSession(async (err: Error | null, session: CognitoUserSession | null) => {
             if (err) {

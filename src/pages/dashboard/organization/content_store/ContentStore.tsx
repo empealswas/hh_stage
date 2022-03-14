@@ -38,30 +38,34 @@ import useAuth from "../../../../hooks/useAuth";
 const query = `query MyQuery {
   listSections(limit: 10000, filter: {isPlacedInContentStore: {eq: true}}) {
     items {
-    id
-    name
-    isPlacedInContentStore
-    SectionOptions {
-      Durations
-      DeliveredBy
-      Activities
-      createdAt
       id
-    }
-    rolesThatCanAccess {
-      items {
+      name
+      isPlacedInContentStore
+      SectionOptions {
+        Durations
+        DeliveredBy
+        Activities
+        createdAt
         id
-        userRole {
+      }
+      rolesThatCanAccess {
+        items {
           id
-          name
+          userRole {
+            id
+            name
+          }
         }
       }
-    }
-    ImagePreview {
-      id
-      key
-      bucket
-    }
+      ImagePreview {
+        id
+        key
+        bucket
+      }
+      OrganizationOwner {
+        id
+        name
+      }
     }
   }
 }
@@ -73,6 +77,7 @@ export type ActivityCardProps = {
     organizations: Organization [],
     sectionId: string,
     updateOrganizations: () => Promise<void>;
+    ownerOrganization: Organization;
 
 }
 const CaptionStyle = styled(CardContent)(({theme}) => ({
@@ -145,7 +150,7 @@ const ContentStore = () => {
             <>
                 {sectionsToDisplay?.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0).map((value: Section, index: number) => (
                     <Grid key={value.id} item lg={4} md={4} sm={6} xs={12}>
-                        <SectionCard linkTo={''} imagePath={value?.ImagePreview?.key} title={value.name ?? ''}
+                        <SectionCard ownerOrganization={value?.OrganizationOwner as Organization} linkTo={''} imagePath={value?.ImagePreview?.key} title={value.name ?? ''}
                                      sectionId={value.id} organizations={organizations}
                                      updateOrganizations={getOrganizationsAsync}/>
                     </Grid>
@@ -287,7 +292,7 @@ const SectionCard = (props: ActivityCardProps) => {
                     <div>
                         <Typography variant="subtitle1">{title}</Typography>
                         <Typography variant="body2" textAlign={'center'} sx={{opacity: 0.72}}>
-                            {/*{fDate('10/20/2022')}*/}
+                            {props.ownerOrganization.name}
                         </Typography>
                     </div>
                     <MoreMenuButton {...props}/>

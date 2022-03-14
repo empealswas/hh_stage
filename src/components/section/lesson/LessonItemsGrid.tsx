@@ -5,6 +5,7 @@ import {Teacher} from "../../../models/Teacher";
 import {API, graphqlOperation} from "aws-amplify";
 import useAuth from "../../../hooks/useAuth";
 import {Card, CardActionArea, CardContent, Grid, Link, Typography} from "@mui/material";
+import useUserInOrganization from "../../../hooks/useUserInOrganization";
 
 
 type LessonItemsGridProps = {
@@ -20,6 +21,18 @@ const classroomCompleteQuery = `query MyQuery($classroom: ID = "", $lesson: ID =
   }
 }
 `
+const getClassroomQuery = `query MyQuery($id: ID = "") {
+  getUserInOrganization(id: $id) {
+    classrooms {
+      items {
+        classroom {
+          id
+        }
+      }
+    }
+  }
+}
+`
 type LessonComplete = {
     lesson: Lesson,
     completed: boolean
@@ -28,10 +41,19 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
         const {lessons, path} = {...props}
         const {user} = useAuth();
         const [lessonsComplete, setLessonsComplete] = useState<LessonComplete[] | null>(null);
+        const userInOrganization = useUserInOrganization();
+    console.log(userInOrganization);
         useEffect(() => {
-            if (user instanceof Teacher) {
+            setLessonsComplete(null);
+            if (userInOrganization?.organizations?.items[0]?.id) {
                 const getCompletenes = async () => {
-                    const classrooms = await user.getClassrooms();
+                    const result: any = (await API.graphql(graphqlOperation(getClassroomQuery, {
+                        id: userInOrganization?.organizations?.items[0]?.id,
+                    })));
+                    const classrooms = result.data?.getUserInOrganization?.classrooms?.items?.map((item: any) => item.classroom);
+                    if (classrooms.length == 0) {
+                        return;
+                    }
                     const lessonsComplete: LessonComplete[] = [];
                     await Promise.all(lessons.sort((a, b) => a.title?.localeCompare(b.title ?? '') as number).map(async (lesson: Lesson, index: number) => {
                         const completedArray: boolean[] = [];
@@ -40,7 +62,7 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                                 classroom: classroom.id,
                                 lesson: lesson.id
                             }));
-                            // console.log(result.data.listClassroomLessons.items)
+                            console.log(result.data.listClassroomLessons.items)
                             if (result.data.listClassroomLessons.items.length == 0) {
                                 completedArray.push(false);
                             }else{
@@ -58,19 +80,19 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
             return () => {
 
             };
-        }, []);
+        }, [lessons]);
 
         if (lessons.length === 0) {
             return (
                 <></>
             )
         }
-        if (user instanceof Teacher && !lessonsComplete) {
+        if (!lessonsComplete) {
             return <>
                 {lessons.sort((a, b) => a.title?.localeCompare(b.title ?? '') as number).map((value: Lesson, index: number) => (
 
                     <Grid key={index} item xs={12} sm={6} md={3}>
-                        <Link component={RouterLink} to={`\\lessons\\${value.id}`} underline={'none'}>
+                        <Link component={RouterLink} to={`lesson/${value.id}`} underline={'none'}>
                             <Card style={{height: '100%'}}>
                                 <CardActionArea style={{height: '100%'}}>
                                     <CardContent style={{textAlign: 'center'}}>
@@ -94,7 +116,7 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                             // console.log(value);
                             return (
                                 <Grid key={index} item xs={12} sm={6} md={3}>
-                                    <Link component={RouterLink} to={`/lessons/${value.lesson.id}`}
+                                    <Link component={RouterLink} to={`lesson/${value.lesson.id}`}
                                           underline={'none'}>
                                         <Card style={{height: '100%', backgroundColor: value.completed ? 'green' : 'inherit'}}>
                                             <CardActionArea style={{height: '100%'}}>

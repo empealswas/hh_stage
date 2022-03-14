@@ -105,7 +105,7 @@ const SectionGrid = () => {
             setSections(null);
             if (sectionId) {
                 const result: any = await API.graphql(graphqlOperation(getChildrenSectionsQuery, {eq: sectionId}));
-
+                console.log(result);
                 setSections(result.data.listSections.items);
             } else {
                 const result: any = await API.graphql(graphqlOperation(parentsQuery, {organizationId: organizationId}));
@@ -153,23 +153,16 @@ const SectionGrid = () => {
             );
         }
         let sectionsToDisplay: Section[] = sections;
-        if (sectionId) {
-            sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === sectionId);
-        } else {
-            console.log(sectionsToDisplay)
-            if (organizationId) {
-                sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === null && subject.organizationID === organizationId);
-            } else {
-                sectionsToDisplay = sectionsToDisplay.filter(subject => subject.parentID === null && subject.organizationID === null);
-            }
 
-        }
         if (sectionsToDisplay.length === 0) {
             return <></>
         }
         return (
             <>
                 {sectionsToDisplay?.filter(value => {
+                    if (value.organizationID !== organizationId) {
+                        return true;
+                    }
                     if (userInOrganization.ownedOrganizations?.items.some(organization => organization?.id === organizationId)) {
                         return true;
                     }
