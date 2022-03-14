@@ -68,7 +68,7 @@ async function removeRecordDependencies(record) {
 }
 
 const listChildSections = gql`query MyQuery($eq: ID = "") {
-    listSections(filter: {parentID: {eq: $eq}}) {
+    listSections(filter: {parentID: {eq: $eq}}, limit: 1000000) {
         items {
             id
         }

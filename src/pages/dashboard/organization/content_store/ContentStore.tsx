@@ -118,6 +118,7 @@ const ContentStore = () => {
     useEffect(() => {
         const getContentSections = async () => {
             const result: any = await API.graphql(graphqlOperation(query));
+            console.log(result.data.listSections?.items);
             setSections(result.data.listSections?.items);
 
         }

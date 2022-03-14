@@ -12,6 +12,7 @@ import {result} from "lodash";
 import AddingDialog from "../dialog/AddingDialog";
 import {UploadSingleFile} from "../upload";
 import RolesThatCanAccess from "../../pages/dashboard/section/RolesThatCanAccess";
+import {useSnackbar} from "notistack";
 
 const getRolesQuery = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -28,8 +29,11 @@ const EditSectionModal = (props: { updateObject: Section }) => {
     const {updateObject} = {...props};
     const {organizationId} = useParams();
     const [roles, setRoles] = useState<{ role: UserRole, selected: boolean }[] | null>(null);
+    const snackbar = useSnackbar();
     console.log(updateObject);
     useEffect(() => {
+        setRoles(null);
+
         let keyOfObject = updateObject.ImagePreview?.key;
         if (keyOfObject) {
             Storage.get(keyOfObject, {expires: 10000}).then(result => {
@@ -37,6 +41,7 @@ const EditSectionModal = (props: { updateObject: Section }) => {
             })
         }
         formik.setFieldValue('name', updateObject.name);
+        formik.setFieldValue('isAvailableInContentStore', updateObject.isPlacedInContentStore ?? false);
         const getRoles = async () => {
             const result: any = await API.graphql(graphqlOperation(getRolesQuery, {id: organizationId}))
             let rolesThatCanAccess = updateObject?.rolesThatCanAccess?.items.map(value => value?.userRole);
@@ -125,8 +130,7 @@ const EditSectionModal = (props: { updateObject: Section }) => {
                     console.log(data.data);
                 }
             }
-
-
+            snackbar.enqueueSnackbar('Section updated');
         }
     });
     const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid, setFieldValue} = formik;
@@ -141,7 +145,7 @@ const EditSectionModal = (props: { updateObject: Section }) => {
             <AddingDialog edit={true} title={"Update Section"}
                           buttonName={'Update Section'}
                           onSubmit={async () => {
-                              handleSubmit();
+                              await formik.submitForm();
                           }}>
                 <FormGroup>
                     <FormControlLabel

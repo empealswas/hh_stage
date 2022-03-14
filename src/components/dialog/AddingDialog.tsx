@@ -39,17 +39,16 @@ export default function AddingDialog(props: AddingDialogProps) {
     const handleClose = () => {
         setOpen(false);
     };
-    const onSubmitDialog = () => {
+    const onSubmitDialog = async () => {
         setLoading(true);
-        props.onSubmit()
-            .then(
-                value => {
-                }
-            ).catch(error => {
-            console.log(error);
-        }).finally(() => {
+        try {
+            await props.onSubmit();
+        } catch (e) {
+            console.error(e);
+        } finally {
             setLoading(false);
-        })
+        }
+
     }
     return (
         <>
@@ -63,33 +62,33 @@ export default function AddingDialog(props: AddingDialogProps) {
                     {props.buttonName}
                 </Button>
             }
-                <Dialog fullScreen={props.fullWidth ?? false} open={open} onClose={handleClose}>
-                    <Toolbar>
-                        <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-                            <CloseIcon/>
-                        </IconButton>
-                        <Typography variant="h6">
-                            {props.title}
-                        </Typography>
-                    </Toolbar>
-                    <DialogContent dividers>
-                        <Card sx={{bgcolor: 'background.neutral'}}>
-                            <CardContent>
-                                <FormControl sx={{minWidth: ('calc(200px + 10vw)')}}>
-                                    <Stack direction='column' spacing={3}>
-                                        {props.children}
-                                    </Stack>
-                                </FormControl>
-                            </CardContent>
-                        </Card>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button color={'inherit'} variant={'contained'} onClick={handleClose}>Cancel</Button>
-                        <LoadingButton variant={'contained'} onClick={onSubmitDialog}
-                                       loading={loading}
-                                       disabled={loading || (formik ? !formik?.isValid : false)}>Add</LoadingButton>
-                    </DialogActions>
-                </Dialog>
+            <Dialog fullScreen={props.fullWidth ?? false} open={open} onClose={handleClose}>
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                        <CloseIcon/>
+                    </IconButton>
+                    <Typography variant="h6">
+                        {props.title}
+                    </Typography>
+                </Toolbar>
+                <DialogContent dividers>
+                    <Card sx={{bgcolor: 'background.neutral'}}>
+                        <CardContent>
+                            <FormControl sx={{minWidth: ('calc(200px + 10vw)')}}>
+                                <Stack direction='column' spacing={3}>
+                                    {props.children}
+                                </Stack>
+                            </FormControl>
+                        </CardContent>
+                    </Card>
+                </DialogContent>
+                <DialogActions>
+                    <Button color={'inherit'} variant={'contained'} onClick={handleClose}>Cancel</Button>
+                    <LoadingButton variant={'contained'} onClick={onSubmitDialog}
+                                   loading={loading}
+                                   disabled={loading || (formik ? !formik?.isValid : false)}>Add</LoadingButton>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }
