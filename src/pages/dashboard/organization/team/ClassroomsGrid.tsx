@@ -87,7 +87,7 @@ const ClassroomsGrid = () => {
             </Container>
         }
         return (<>
-            {classrooms.map((value: Classroom, index: number) => (
+            {classrooms.sort((a, b) => a?.name?.localeCompare(b?.name ?? '') ?? 0).map((value: Classroom, index: number) => (
                 <Grid key={index} item xs={12} sm={6} md={3}>
                     <Card sx={{
                         bgcolor: 'background.neutral',

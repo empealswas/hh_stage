@@ -3,7 +3,17 @@ import {useNavigate, useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify"; //Auth, Storage
 import {Lesson} from "../../../API";
 
-import {AccordionActions, Box, Container, IconButton, List, Snackbar, Typography} from "@mui/material";
+import {
+    AccordionActions,
+    Box,
+    CardActionArea,
+    Container,
+    IconButton,
+    List,
+    Snackbar, Stack,
+    Tooltip,
+    Typography
+} from "@mui/material";
 // import FilesUploadDropzone from "../../FilesUploading/FilesUploadDropzone";
 
 
@@ -25,6 +35,8 @@ import AttendanceSheetModal from "./attendance/AttendanceSheetModal";
 import FilesViewer from "../../files-utilities/FilesViewer";
 import Markdown from "../../Markdown";
 import {UploadMultiFile} from "../../upload";
+import {BoxMask} from "../../settings";
+import {styled} from "@mui/material/styles";
 
 
 const LessonOverview = () => {
@@ -136,8 +148,11 @@ const LessonOverview = () => {
                                 {/*<LessonRating lessonId={lessonId}/>*/}
                                 <Can I={'read'} an={'attendance'}>
                                     <AttendanceSheetModal lessonId={lessonId}/>
+
                                 </Can>
                             </>}
+
+
                             <Typography variant={"h4"} style={{marginTop: '30px'}}>
                                 {/*{lesson.description}*/}
                                 <Markdown children={lesson.description || ''}/>

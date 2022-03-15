@@ -154,9 +154,6 @@ const SectionGrid = () => {
         }
         let sectionsToDisplay: Section[] = sections;
 
-        if (sectionsToDisplay.length === 0) {
-            return <></>
-        }
         return (
             <>
                 {sectionsToDisplay?.filter(value => {

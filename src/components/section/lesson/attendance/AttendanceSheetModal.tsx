@@ -2,12 +2,12 @@ import React, {useContext, useState} from 'react';
 
 import {
     Button,
-    Card,
+    Card, CardActionArea,
     CardContent,
     Container,
     Dialog,
     DialogContent,
-    IconButton,
+    IconButton, Stack,
     Toolbar,
     Typography
 } from "@mui/material";
@@ -15,6 +15,8 @@ import AttendanceSheetTable from "./AttendanceSheetTable";
 import Iconify from "../../../Iconify";
 import AttendanceSheetContainer from "./AttendanceSheetContainer";
 import useSettings from "../../../../hooks/useSettings";
+import {BoxMask} from "../../../settings";
+import {styled} from "@mui/material/styles";
 
 
 const query = `query MyQuery($id: ID = "") {
@@ -51,7 +53,15 @@ const getPupilsOfClassroomAttendanceQuery = `query MyQuery($eq: ID = "", $id: ID
   }
 }
 `
-
+const BoxStyle = styled(CardActionArea)(({theme}) => ({
+    height: 72,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.text.disabled,
+    border: `solid 1px ${theme.palette.grey[500_12]}`,
+    borderRadius: Number(theme.shape.borderRadius) * 1.25,
+}));
 const AttendanceSheetModal = (props: { lessonId: string }) => {
     const [open, setOpen] = React.useState(false);
     const settings = useSettings();
@@ -66,9 +76,23 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
 
     return (
         <>
-            <Button variant={'outlined'} color={'primary'} onClick={handleOpen}>
-                Attendance Sheet
-            </Button>
+            <BoxStyle
+                sx={{
+                    padding: 5,
+                    width: 100
+                }}
+                onClick={handleOpen}
+            >
+                <Stack direction={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Iconify
+                        icon={'lucide:sheet'}
+                        width={28}
+                        height={28}
+                    />
+                    <Typography variant={'subtitle1'}>Attendance sheet</Typography>
+                </Stack>
+                <BoxMask value={'ltr'}/>
+            </BoxStyle>
             <Dialog fullScreen open={open} onClose={handleClose}>
                 <Container maxWidth={settings.themeStretch ? false: 'lg'}>
 

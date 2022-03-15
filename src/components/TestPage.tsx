@@ -16,9 +16,19 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import {API, graphqlOperation} from "aws-amplify";
 import {listUsers} from "../graphql/queries";
-import {User} from "../API";
+import {Section, User} from "../API";
 import {format, parseISO} from "date-fns";
+import {updateSection} from "../graphql/mutations";
 
+const query = `query MyQuery {
+  listSections(filter: {isPlacedInContentStore: {eq: true}}, limit: 100000) {
+    items {
+      id
+      name
+    }
+  }
+}
+`
 const TestPage = () => {
     const [value, setValue] = useState<string>('');
     const [loading, setLoading] = useState(false);
@@ -178,6 +188,24 @@ const TestPage = () => {
                 </LocalizationProvider>
 
                 <LoadingButton loading={loading} variant={'contained'} onClick={search}>Test</LoadingButton>
+                <Button onClick={async () => {
+                    const result: any = await API.graphql(graphqlOperation(query));
+
+                    const sections = result.data.listSections?.items;
+                    setLoading(true);
+                    for (const section of sections) {
+                        await API.graphql(graphqlOperation(updateSection, {
+                            input: {
+                                id: section.id,
+                                isPlacedInContentStore: false
+                            }
+                        }))
+                    }
+                    setLoading(false);
+
+                }}>
+                    1123
+                </Button>
                 <TextareaAutosize minRows={5} value={value}></TextareaAutosize>
             </Stack>
         </Container>

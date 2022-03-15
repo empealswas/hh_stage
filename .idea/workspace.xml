@@ -7,10 +7,11 @@
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dialog/AddingDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dialog/AddingDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/EditSectionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/EditSectionModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonItemsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonItemsGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TestPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TestPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/team/ClassroomsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/team/ClassroomsGrid.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +149,8 @@
       <workItem from="1647171319803" duration="16000" />
       <workItem from="1647196269249" duration="1000" />
       <workItem from="1647255522422" duration="3899000" />
-      <workItem from="1647285316843" duration="1930000" />
+      <workItem from="1647285316843" duration="2231000" />
+      <workItem from="1647355005870" duration="3516000" />
     </task>
     <servers />
   </component>

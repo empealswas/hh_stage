@@ -47,7 +47,12 @@ const deleteSectionQuery = gql`mutation MyMutation($id: ID = "") {
     }
 }
 `
-
+const deleteSectionInOtherOrganizationQuery = gql`mutation MyMutation($id: ID = "") {
+    deleteSectionFromContentStore(input: {id: $id}) {
+        id
+    }
+}
+`
 async function removeRecordDependencies(record) {
     let sectionId = record.dynamodb.OldImage.id.S;
     console.log(record)
@@ -64,7 +69,14 @@ async function removeRecordDependencies(record) {
         console.log('Deleted Child Section', result.data.deleteSection.id);
     }
     const deletedSection = await removeCurrentSection(sectionId);
-    console.log('Deleted Section', deletedSection);
+    const sectionInOtherOrganizations = await graphqlQuery(getSectionsFromOtherOrganizationsQuery, {
+        sectionId: sectionId
+    })
+    for(const sectionInOrganization of sectionInOtherOrganizations.data.listSectionFromContentStores.items) {
+        await graphqlQuery(deleteSectionInOtherOrganizationQuery, {
+            id: sectionInOrganization.id,
+        })
+    }
 }
 
 const listChildSections = gql`query MyQuery($eq: ID = "") {
@@ -92,6 +104,14 @@ const getCurrentSectionQuery = gql`query MyQuery($id: ID = "") {
             items {
                 id
             }
+        }
+    }
+}
+`
+const getSectionsFromOtherOrganizationsQuery = gql`query MyQuery($sectionId: ID = "") {
+    listSectionFromContentStores(limit: 1000000, filter: {sectionID: {eq: $sectionId}}) {
+        items {
+            id
         }
     }
 }
