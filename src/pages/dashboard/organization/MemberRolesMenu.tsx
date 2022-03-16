@@ -2,7 +2,17 @@ import {paramCase} from 'change-case';
 import {useEffect, useState} from 'react';
 import {Link as RouterLink, useParams} from 'react-router-dom';
 // @mui
-import {MenuItem, IconButton, Checkbox, FormGroup, FormControlLabel, CardContent, Card, Container} from '@mui/material';
+import {
+    MenuItem,
+    IconButton,
+    Checkbox,
+    FormGroup,
+    FormControlLabel,
+    CardContent,
+    Card,
+    Container,
+    Tooltip
+} from '@mui/material';
 // routes
 // components
 import {Organization, RolesOfUser, UserRole} from "../../../API";
@@ -12,6 +22,7 @@ import {PATH_DASHBOARD} from "../../../routes/paths";
 import {useTheme} from "@mui/material/styles";
 import {API, graphqlOperation} from "aws-amplify";
 import {createRolesOfUser, deleteRolesOfUser} from "../../../graphql/mutations";
+import {UserMoreMenu} from "../../../sections/@dashboard/user/list";
 
 // ----------------------------------------------------------------------
 
@@ -40,9 +51,11 @@ export default function MemberRolesMenu({id, roles, allRoles, updateUsers}: Prop
 
     return (
         <>
-            <IconButton onClick={handleOpen}>
-                <Iconify icon={'mdi:account'} width={20} height={20}/>
-            </IconButton>
+            <Tooltip title={'Roles'} >
+                <IconButton onClick={handleOpen}>
+                    <Iconify icon={'mdi:account'} width={20} height={20}/>
+                </IconButton>
+            </Tooltip>
 
             <MenuPopover
                 open={Boolean(open)}

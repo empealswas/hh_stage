@@ -5,13 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/UserMoreMenu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sections/auth/reset-password/ResetPasswordWithCodeForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/RemoveSections/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TestPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TestPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonOerview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/team/ClassroomsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/team/ClassroomsGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/ResetPassword.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/ResetPassword.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/MemberRolesMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/MemberRolesMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/SleepChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/SleepChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationNewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationNewForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sections/auth/reset-password/ResetPasswordForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/auth/reset-password/ResetPasswordForm.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +57,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/user/organization" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/sections/auth/reset-password" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -74,11 +79,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\sections\auth\reset-password" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\user\organization" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\member" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\dashboard" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\section" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
@@ -150,7 +155,9 @@
       <workItem from="1647196269249" duration="1000" />
       <workItem from="1647255522422" duration="3899000" />
       <workItem from="1647285316843" duration="2231000" />
-      <workItem from="1647355005870" duration="3516000" />
+      <workItem from="1647355005870" duration="3560000" />
+      <workItem from="1647370095579" duration="326000" />
+      <workItem from="1647443747129" duration="5091000" />
     </task>
     <servers />
   </component>

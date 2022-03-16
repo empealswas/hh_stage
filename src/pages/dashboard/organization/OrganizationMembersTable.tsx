@@ -4,10 +4,11 @@ import OrganizationMoreMenu from "../user/OrganizationMoreMenu";
 import {useEffect, useState} from "react";
 import {Organization, User, UserInOrganization, UserRole} from "../../../API";
 import {API, graphqlOperation} from "aws-amplify";
-import {Button, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
+import {Button, IconButton, Menu, MenuItem, Stack, Tooltip} from "@mui/material";
 import Iconify from "../../../components/Iconify";
 import {useParams} from "react-router-dom";
 import MemberRolesMenu from "./MemberRolesMenu";
+import UserMoreMenu from "./UserMoreMenu";
 
 const query = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -56,7 +57,11 @@ export default function OrganizationMembersTable() {
         const allRoles: any = params.getValue(params.id, 'allRoles');
 
         return (
-            <MemberRolesMenu id={String(params.id)} roles={roles} allRoles={allRoles} updateUsers={getOrganizations}/>
+            <Stack direction={'row'} spacing={2}>
+                <MemberRolesMenu id={String(params.id)} roles={roles} allRoles={allRoles}
+                                 updateUsers={getOrganizations}/>
+                <UserMoreMenu id={String(params.id)} setMembers={setMembers}/>
+            </Stack>
         );
     }
     const columns: GridColDef[] = [
@@ -76,10 +81,10 @@ export default function OrganizationMembersTable() {
         },
         {
             field: 'roles',
-            headerName: 'Roles',
+            headerName: 'Actions',
             description: 'This column has a value getter and is not sortable.',
             sortable: false,
-            flex: 0.4,
+            flex: 0.6,
             align: 'center',
             headerAlign: 'center',
             renderCell: MemberTableItem,
@@ -93,7 +98,8 @@ export default function OrganizationMembersTable() {
             align: 'center',
             headerAlign: 'center',
             hide: true
-        }
+        },
+
 
     ];
     const [members, setMembers] = useState<UserInOrganization[] | null>(null);
@@ -102,12 +108,12 @@ export default function OrganizationMembersTable() {
         const result: any = await API.graphql(graphqlOperation(query, {id: organizationId}));
         setMembers(result.data.getOrganization.members?.items);
     }
+
     const getRolesAsync = async () => {
         setRoles(null);
         const result: any = await API.graphql(graphqlOperation(getRolesQuery, {id: organizationId}));
         setRoles(result.data.getOrganization.roles.items);
     }
-
 
 
     useEffect(() => {

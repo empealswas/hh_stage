@@ -253,7 +253,7 @@ export default function OrganizationNewForm({isEdit, currentOrganization, setOrg
                 <RHFEditor simple name="description" />
               </div>*/}
                             <RHFSelect name="type" label="Type" placeholder="Type">
-                                {['Primary School', 'Secondary School', 'Team', 'Club', 'Gym', 'Family', 'Friends'].map((option) => (
+                                {['Primary School', 'Secondary School', 'Team', 'Club', 'Gym', 'Family', 'Friends', 'Content Creator'].map((option) => (
                                     <option key={option} value={option}>
                                         {option}
                                     </option>

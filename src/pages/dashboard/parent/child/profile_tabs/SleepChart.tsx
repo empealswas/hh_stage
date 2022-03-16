@@ -57,7 +57,9 @@ export default function SleepChart() {
                 "returnType": "average"
             }
             const terraData: any = await getWearablesData(data);
+            if (terraData?.data) {
             setAverageData(terraData.data);
+            }
 
         }
         getAverage();
@@ -65,7 +67,7 @@ export default function SleepChart() {
 
         };
     }, []);
-    if (!sleepData || !averageData) {
+    if (!sleepData ) {
         return (<ActivtityChartSkeleton />);
     }
     console.log(sleepData)
@@ -170,11 +172,11 @@ export default function SleepChart() {
                         type: 'column',
                         data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_asleep_state / 60.0 / 60.0)),
                     },
-                    {
+/*                    {
                         name: 'Average Sleep',
-                        data: averageData.map((item: any) => item.value / 60 / 60),
+                        data: averageData?.map((item: any) => item.value / 60 / 60),
                         type: 'line'
-                    }
+                    }*/
 
                 ]} type="line" options={chartOptions} height={364}/>
             </Box>

@@ -42,7 +42,7 @@ export default function StepsChart(props: { userId: string }) {
 
     const [averageData, setAverageData] = useState<any>(null);
     useEffect(() => {
-        const getAverage = async () =>{
+        const getAverage = async () => {
             const result: any = await API.graphql(graphqlOperation(childQuery));
             const terraIds = result.data.listUsers?.items.filter((item: User) => !!item.terraId).map((item: Pupil) => item.terraId);
             const data: TerraWearables = {
@@ -51,14 +51,14 @@ export default function StepsChart(props: { userId: string }) {
                 category: "daily",
                 subtype: "steps",
                 period: "day",
-                startDate:  format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                startDate: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
                 endDate: format(new Date(), 'yyyy-MM-dd'),
                 returnType: "average"
             };
             console.log(data);
             const wearablesResult: any = await getWearablesData(data);
             console.log('Data', wearablesResult)
-            setAverageData(wearablesResult.data);
+                setAverageData(wearablesResult?.data ?? []);
 
         }
         getAverage();
@@ -68,18 +68,18 @@ export default function StepsChart(props: { userId: string }) {
     }, []);
 
 
-    if (!terraData || !averageData) {
-        return (<ActivtityChartSkeleton />);
+    if (!terraData) {
+        return (<ActivtityChartSkeleton/>);
 
     }
     const chartOptions: any = merge(basedOptions, {
-        stroke: { width: [5, 3]},
+        stroke: {width: [5, 3]},
         colors: [theme.palette.success.light, theme.palette.warning.light],
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
         labels: terraData?.data?.map(value =>
             `${format(parseISO(value.metadata.start_time), "eee do")}`
-        ) ?? averageData?.data?.map((value:any) =>
-                `${format(parseISO(value.date), "eee do")} `),
+        ) ?? averageData?.data?.map((value: any) =>
+            `${format(parseISO(value.date), "eee do")} `),
         yaxis: {
             labels: {
                 formatter: function (value: any) {
@@ -105,8 +105,11 @@ export default function StepsChart(props: { userId: string }) {
         <Card>
             <CardHeader title="Steps" subheader={format(new Date(), 'MMMM')}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
-                <ReactApexChart type="line" series={[{data: terraData?.data?.map(value => value.distance_data.steps) ?? [],name: 'Number of Steps',
-                    type: 'line'}, {data: averageData?.map((item: any) => item.value) ?? [], name: 'Average', type: 'line'}]} options={chartOptions} height={364}/>
+                <ReactApexChart type="line" series={[{
+                    data: terraData?.data?.map(value => value.distance_data.steps) ?? [], name: 'Number of Steps',
+                    type: 'line'
+                }, {data: averageData?.map((item: any) => item.value) ?? [], name: 'Average', type: 'line'}]}
+                                options={chartOptions} height={364}/>
             </Box>
         </Card>
     );

@@ -67,7 +67,7 @@ const ActivityWidgets = () => {
                 "returnType": "average"
             };
             const wearableData: any = await getWearablesData(data);
-            setAverageData(wearableData.data);
+            setAverageData(wearableData?.data ?? []);
         }
         getAverage();
         return () => {

@@ -13,6 +13,7 @@ import Page from '../../components/Page';
 import { ResetPasswordForm } from '../../sections/auth/reset-password';
 // assets
 import { SentIcon } from '../../assets';
+import ResetPasswordWithCodeForm from "../../sections/auth/reset-password/ResetPasswordWithCodeForm";
 
 // ----------------------------------------------------------------------
 
@@ -78,7 +79,7 @@ export default function ResetPassword() {
                   <br />
                   Please check your email.
                 </Typography>
-
+                <ResetPasswordWithCodeForm email={email}/>
                 <Button
                   size="large"
                   variant="contained"
