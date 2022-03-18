@@ -188,24 +188,6 @@ const TestPage = () => {
                 </LocalizationProvider>
 
                 <LoadingButton loading={loading} variant={'contained'} onClick={search}>Test</LoadingButton>
-                <Button onClick={async () => {
-                    const result: any = await API.graphql(graphqlOperation(query));
-
-                    const sections = result.data.listSections?.items;
-                    setLoading(true);
-                    for (const section of sections) {
-                        await API.graphql(graphqlOperation(updateSection, {
-                            input: {
-                                id: section.id,
-                                isPlacedInContentStore: false
-                            }
-                        }))
-                    }
-                    setLoading(false);
-
-                }}>
-                    1123
-                </Button>
                 <TextareaAutosize minRows={5} value={value}></TextareaAutosize>
             </Stack>
         </Container>

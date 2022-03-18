@@ -127,13 +127,13 @@ app.post('/api/getActivity',  function (req, res) {
 
 app.post('/api/wearables',  function (req, res) {
     console.log(req);
-    console.log(req.body);
-
+    console.log('BODY', req.body);
+    console.log('here');
     var config = {
         method: 'post',
         url: process.env.TerraApiEndpoint,
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         data: req.body,
     };

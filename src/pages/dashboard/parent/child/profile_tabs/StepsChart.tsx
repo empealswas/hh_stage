@@ -57,7 +57,7 @@ export default function StepsChart(props: { userId: string }) {
             };
             console.log(data);
             const wearablesResult: any = await getWearablesData(data);
-            console.log('Data', wearablesResult)
+            console.log('Wearables', wearablesResult)
                 setAverageData(wearablesResult?.data ?? []);
 
         }
