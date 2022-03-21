@@ -9,7 +9,7 @@ import Iconify from "../../../components/Iconify";
 import MenuPopover from "../../../components/MenuPopover";
 import {PATH_DASHBOARD} from "../../../routes/paths";
 import {API, graphqlOperation} from "aws-amplify";
-import {deleteUserInOrganization} from "../../../graphql/mutations";
+import {deleteUserInOrganization, deleteUserInOrganizationInClassroom} from "../../../graphql/mutations";
 import {useSnackbar} from "notistack";
 
 // ----------------------------------------------------------------------
@@ -18,6 +18,23 @@ type Props = {
     id: string,
     setMembers: React.Dispatch<React.SetStateAction<UserInOrganization[] | null>>,
 };
+const deleteFromClassroom = `query MyQuery($eq: ID = "") {
+  listUserInOrganizationInClassrooms(limit: 10000000, filter: {userInOrganizationID: {eq: $eq}}) {
+    items {
+      id
+    }
+  }
+}
+`
+const deleteQuery = `mutation MyMutation($id: ID = "") {
+  deleteUserInOrganization(input: {id: $id}) {
+    classrooms {
+      items {
+        id
+      }
+    }
+  }
+}`
 
 export default function UserMoreMenu({id, setMembers}: Props) {
     const [open, setOpen] = useState<HTMLElement | null>(null);
@@ -39,11 +56,16 @@ export default function UserMoreMenu({id, setMembers}: Props) {
     const removeUserFromOrganization = async () => {
         setLoading(true);
         try {
-            const result: any = await API.graphql(graphqlOperation(deleteUserInOrganization, {
-                input: {
-                    id: id,
-                }
+            const result: any = await API.graphql(graphqlOperation(deleteQuery, {
+                id: id
             }))
+            for (const classroom of result.data.deleteUserInOrganization.classrooms.items) {
+                await API.graphql(graphqlOperation(deleteFromClassroom, {
+                    id: classroom.id
+                }))
+            }
+
+
             console.log(result);
             snackbar.enqueueSnackbar('User was removed from the organization');
             setMembers(prevState => {
@@ -52,7 +74,7 @@ export default function UserMoreMenu({id, setMembers}: Props) {
             handleClose();
         } catch (e) {
             console.error(e);
-            snackbar.enqueueSnackbar(e.message);
+            snackbar.enqueueSnackbar(e.message, {});
         } finally {
             setLoading(false);
         }
@@ -81,12 +103,12 @@ export default function UserMoreMenu({id, setMembers}: Props) {
 
                 {/*<Divider sx={{borderStyle: 'dashed'}}/>*/}
                 {loading ?
-                    <CircularProgress />
-                :
-                <MenuItem onClick={removeUserFromOrganization} sx={{color: 'error.main'}}>
-                    <Iconify icon={'eva:person-delete-outline'} sx={{...ICON}}/>
-                    Remove
-                </MenuItem>
+                    <CircularProgress/>
+                    :
+                    <MenuItem onClick={removeUserFromOrganization} sx={{color: 'error.main'}}>
+                        <Iconify icon={'eva:person-delete-outline'} sx={{...ICON}}/>
+                        Remove
+                    </MenuItem>
 
                 }
 
