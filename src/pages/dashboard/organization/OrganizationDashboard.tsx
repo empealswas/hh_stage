@@ -54,11 +54,6 @@ const query = `query MyQuery($id: ID = "") {
         }
       }
     }
-    members(limit: 10000) {
-      items {
-        id
-      }
-    }
   }
 }
 `
@@ -83,11 +78,6 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
             }
           }
         }
-      }
-    }
-    members(limit: 10000) {
-      items {
-        id
       }
     }
   }
@@ -324,7 +314,7 @@ const OrganizationDashboard = () => {
                     <Grid item xs={12} sm={6} md={3}>
                         {organization ?
                             <BankingWidgetSummary
-                                title="Total Hours"
+                                title="Total Minutes"
                                 icon={'bx:bx-time-five'}
                                 percent={2.6}
                                 total={dashboardValues?.totalDuration ?? 0}

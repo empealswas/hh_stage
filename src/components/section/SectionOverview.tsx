@@ -119,7 +119,7 @@ const SectionOverview = () => {
         <Container>
             {section && <SectionHeader title={sectionId ? section?.name ?? "Sections" : "Sections"}
                                        editingForm={
-                                            organizationId === section.organizationID ?
+                                           organizationId === section.organizationID ?
                                                <Can I={'update'} a={'section'}>
                                                    <EditSectionModal updateObject={section}/>
                                                </Can>
@@ -161,15 +161,20 @@ const SectionOverview = () => {
 
                     :
                     <>
-                    <Can I={'manage'} an={'organization'}>
-                    <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
-                    variant={'contained'}>Manage</Button>
-                    </Can>
-                    <Can I={'read'} this={'dashboard'}>
-                    <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
-                    to={'dashboard'}
-                    variant={'contained'}>Dashboard</Button>
-                    </Can>
+                        <Can I={'manage'} an={'organization'}>
+                            <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
+                                    variant={'contained'}>Manage</Button>
+                        </Can>
+                        <Can I={'read'} this={'dashboard'}>
+                            <>
+                                <Button component={RouterLink} startIcon={<Iconify icon={'ion:fitness-outline'}/>}
+                                        to={'activity'}
+                                        variant={'contained'}>Activity Dashboard</Button>
+                                <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
+                                        to={'dashboard'}
+                                        variant={'contained'}>Dashboard</Button>
+                            </>
+                        </Can>
                     </>
                 }
                 {/*</Can>*/}

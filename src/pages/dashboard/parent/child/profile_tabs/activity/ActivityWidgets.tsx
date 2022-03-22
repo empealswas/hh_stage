@@ -48,8 +48,11 @@ const ActivityWidgets = () => {
         const getAverage = async () => {
             setAverageData(null);
             const result: any = await API.graphql(graphqlOperation(pupilQuery, {id: user?.email}));
+            console.log('DATA', result);
+
             const terraIds = result.data.getUser?.organizations.items
                 ?.flatMap((item: any) => item.classrooms.items)
+                .filter((item: any) => !!item.classroom)
                 .map((item: any) => item.classroom)
                 .flatMap((item: any) => item.members.items)
                 .map((item: any) => item.userInOrganization.user)

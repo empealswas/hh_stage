@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/ActivityDashboard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/activity/SleepActivityChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/activity/StepsActivityChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/activity/UsersDetailsAccordion.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/MemberActivityOverview.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/UserMoreMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/UserMoreMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/updateTerraId/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +57,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/sections/auth/reset-password" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/organization/activity" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -69,11 +79,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\activity" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\sections\auth\reset-password" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\user\organization" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\member" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\dashboard" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
@@ -149,7 +159,10 @@
       <workItem from="1647370095579" duration="326000" />
       <workItem from="1647443747129" duration="5285000" />
       <workItem from="1647597310002" duration="2842000" />
-      <workItem from="1647860347694" duration="1058000" />
+      <workItem from="1647860347694" duration="3272000" />
+      <workItem from="1647939136079" duration="3103000" />
+      <workItem from="1647968773872" duration="3385000" />
+      <workItem from="1647981506795" duration="4802000" />
     </task>
     <servers />
   </component>

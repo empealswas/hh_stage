@@ -75,25 +75,25 @@ export default function Router() {
             ),
             children: [
                 {element: <Navigate to={PATH_AFTER_LOGIN} replace/>, index: true},
-/*                {path: 'app', element: <GeneralApp/>},
-                {path: 'ecommerce', element: <GeneralEcommerce/>},
-                {path: 'analytics', element: <GeneralAnalytics/>},
-                {path: 'banking', element: <GeneralBanking/>},
-                {path: 'booking', element: <GeneralBooking/>},*/
+                /*                {path: 'app', element: <GeneralApp/>},
+                                {path: 'ecommerce', element: <GeneralEcommerce/>},
+                                {path: 'analytics', element: <GeneralAnalytics/>},
+                                {path: 'banking', element: <GeneralBanking/>},
+                                {path: 'booking', element: <GeneralBooking/>},*/
 
-/*                {
-                    path: 'e-commerce',
-                    children: [
-                        {element: <Navigate to="/dashboard/e-commerce/shop" replace/>, index: true},
-                        {path: 'shop', element: <EcommerceShop/>},
-                        {path: 'product/:name', element: <EcommerceProductDetails/>},
-                        {path: 'list', element: <EcommerceProductList/>},
-                        {path: 'product/new', element: <EcommerceProductCreate/>},
-                        {path: 'product/:name/edit', element: <EcommerceProductCreate/>},
-                        {path: 'checkout', element: <EcommerceCheckout/>},
-                        {path: 'invoice', element: <EcommerceInvoice/>},
-                    ],
-                },*/
+                /*                {
+                                    path: 'e-commerce',
+                                    children: [
+                                        {element: <Navigate to="/dashboard/e-commerce/shop" replace/>, index: true},
+                                        {path: 'shop', element: <EcommerceShop/>},
+                                        {path: 'product/:name', element: <EcommerceProductDetails/>},
+                                        {path: 'list', element: <EcommerceProductList/>},
+                                        {path: 'product/new', element: <EcommerceProductCreate/>},
+                                        {path: 'product/:name/edit', element: <EcommerceProductCreate/>},
+                                        {path: 'checkout', element: <EcommerceCheckout/>},
+                                        {path: 'invoice', element: <EcommerceInvoice/>},
+                                    ],
+                                },*/
                 {path: 'test', element: <TestPage/>},
                 {
                     path: 'user',
@@ -127,6 +127,8 @@ export default function Router() {
                         {path: '', element: <OrganizationsGrid/>},
                         {path: ':organizationId', element: <SectionOverview/>},
                         {path: ':organizationId/dashboard', element: <OrganizationDashboard/>},
+                        {path: ':organizationId/activity', element: <ActivityDashboard/>,},
+                        {path: ':organizationId/activity/:userId', element: <MemberActivityOverview/>},
                         {path: ':organizationId/manage', element: <OrganizationManage/>},
                         {path: ':organizationId/manage/team/:teamId', element: <TeamManageOverview/>},
                         {path: ':organizationId/section/:sectionId', element: <SectionOverview/>},
@@ -135,35 +137,35 @@ export default function Router() {
 
                     ],
                 },
-/*                {
-                    path: 'blog',
-                    children: [
-                        {element: <Navigate to="/dashboard/blog/posts" replace/>, index: true},
-                        {path: 'posts', element: <BlogPosts/>},
-                        {path: 'post/:title', element: <BlogPost/>},
-                        {path: 'new-post', element: <BlogNewPost/>},
-                    ],
-                },
-                {
-                    path: 'mail',
-                    children: [
-                        {element: <Navigate to="/dashboard/mail/all" replace/>, index: true},
-                        {path: 'label/:customLabel', element: <Mail/>},
-                        {path: 'label/:customLabel/:mailId', element: <Mail/>},
-                        {path: ':systemLabel', element: <Mail/>},
-                        {path: ':systemLabel/:mailId', element: <Mail/>},
-                    ],
-                },
-                {
-                    path: 'chat',
-                    children: [
-                        {element: <Chat/>, index: true},
-                        {path: 'new', element: <Chat/>},
-                        {path: ':conversationKey', element: <Chat/>},
-                    ],
-                },
-                {path: 'calendar', element: <Calendar/>},
-                {path: 'kanban', element: <Kanban/>},*/
+                /*                {
+                                    path: 'blog',
+                                    children: [
+                                        {element: <Navigate to="/dashboard/blog/posts" replace/>, index: true},
+                                        {path: 'posts', element: <BlogPosts/>},
+                                        {path: 'post/:title', element: <BlogPost/>},
+                                        {path: 'new-post', element: <BlogNewPost/>},
+                                    ],
+                                },
+                                {
+                                    path: 'mail',
+                                    children: [
+                                        {element: <Navigate to="/dashboard/mail/all" replace/>, index: true},
+                                        {path: 'label/:customLabel', element: <Mail/>},
+                                        {path: 'label/:customLabel/:mailId', element: <Mail/>},
+                                        {path: ':systemLabel', element: <Mail/>},
+                                        {path: ':systemLabel/:mailId', element: <Mail/>},
+                                    ],
+                                },
+                                {
+                                    path: 'chat',
+                                    children: [
+                                        {element: <Chat/>, index: true},
+                                        {path: 'new', element: <Chat/>},
+                                        {path: ':conversationKey', element: <Chat/>},
+                                    ],
+                                },
+                                {path: 'calendar', element: <Calendar/>},
+                                {path: 'kanban', element: <Kanban/>},*/
             ],
         },
 
@@ -245,6 +247,8 @@ const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const OrganizationDashboard = Loadable(lazy(() => import('../pages/dashboard/organization/OrganizationDashboard')));
+const MemberActivityOverview = Loadable(lazy(() => import('../pages/dashboard/organization/member/MemberActivityOverview')));
+const ActivityDashboard = Loadable(lazy(() => import('../pages/dashboard/organization/ActivityDashboard')));
 const SectionOverview = Loadable(lazy(() => import( "../components/section/SectionOverview")));
 const LessonOerview = Loadable(lazy(() => import( "../components/section/lesson/LessonOerview")));
 const CreateOrganization = Loadable(lazy(() => import( "../pages/dashboard/user/CreateOrganization")));
