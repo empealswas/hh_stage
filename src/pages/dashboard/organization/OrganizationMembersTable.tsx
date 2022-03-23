@@ -12,7 +12,7 @@ import UserMoreMenu from "./UserMoreMenu";
 
 const query = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    members(filter: {status: {eq: ACCEPTED}}) {
+    members(limit: 10000000, filter: {status: {eq: ACCEPTED}}) {
       items {
         id
         user {

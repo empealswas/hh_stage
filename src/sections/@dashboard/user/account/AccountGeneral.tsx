@@ -57,7 +57,7 @@ export default function AccountGeneral() {
         firstName: user?.firstName,
         lastName: user?.lastName,
         // email: user?.email || '',
-        /*    photoURL: user?.photoURL || '',
+/*            photoURL: user?.photoURL || '',
             phoneNumber: user?.phoneNumber || '',
             country: user?.country || '',
             address: user?.address || '',
@@ -160,7 +160,7 @@ export default function AccountGeneral() {
                         >
                             <RHFTextField name="firstName" label="First Name"/>
                             <RHFTextField name="lastName" label="Last Name"/>
-                            {/* <RHFTextField name="email" label="Email Address" />
+                             <RHFTextField name="email" label="Email Address" />
 
               <RHFTextField name="phoneNumber" label="Phone Number" />
               <RHFTextField name="address" label="Address" />
@@ -177,7 +177,7 @@ export default function AccountGeneral() {
               <RHFTextField name="state" label="State/Region" />
 
               <RHFTextField name="city" label="City" />
-              <RHFTextField name="zipCode" label="Zip/Code" />*/}
+              <RHFTextField name="zipCode" label="Zip/Code" />
                         </Box>
 
                         <Stack spacing={3} alignItems="flex-end" sx={{mt: 3}}>

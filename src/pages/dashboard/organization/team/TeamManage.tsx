@@ -83,7 +83,7 @@ const getPupilsQuery = `query MyQuery($id: ID = "") {
 const schoolQuery =
     `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    members {
+    members(limit: 100000) {
       items {
         id
         user {
