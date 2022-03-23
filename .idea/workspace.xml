@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sections/@dashboard/user/account/AccountGeneral.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/sections/@dashboard/user/account/AccountGeneral.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +153,7 @@
       <workItem from="1647939136079" duration="3103000" />
       <workItem from="1647968773872" duration="3385000" />
       <workItem from="1647981506795" duration="4929000" />
-      <workItem from="1648042240700" duration="1616000" />
+      <workItem from="1648042240700" duration="2742000" />
     </task>
     <servers />
   </component>

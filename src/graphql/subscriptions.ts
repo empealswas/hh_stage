@@ -20,6 +20,11 @@ export const onCreateUser = /* GraphQL */ `
       }
       terraId
       provider
+      phoneNumber
+      country
+      address
+      city
+      zipCode
       createdAt
       updatedAt
     }
@@ -43,6 +48,11 @@ export const onUpdateUser = /* GraphQL */ `
       }
       terraId
       provider
+      phoneNumber
+      country
+      address
+      city
+      zipCode
       createdAt
       updatedAt
     }
@@ -66,6 +76,11 @@ export const onDeleteUser = /* GraphQL */ `
       }
       terraId
       provider
+      phoneNumber
+      country
+      address
+      city
+      zipCode
       createdAt
       updatedAt
     }
@@ -81,6 +96,11 @@ export const onCreateDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -91,6 +111,11 @@ export const onCreateDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -111,6 +136,11 @@ export const onUpdateDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -121,6 +151,11 @@ export const onUpdateDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -141,6 +176,11 @@ export const onDeleteDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -151,6 +191,11 @@ export const onDeleteDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -183,6 +228,11 @@ export const onCreateUserInOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -224,6 +274,11 @@ export const onUpdateUserInOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -265,6 +320,11 @@ export const onDeleteUserInOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -530,6 +590,11 @@ export const onCreateOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -590,6 +655,11 @@ export const onUpdateOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -650,6 +720,11 @@ export const onDeleteOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }

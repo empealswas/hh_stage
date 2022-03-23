@@ -9,6 +9,11 @@ type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, p
     ownedOrganizations: [Organization] @hasMany
     terraId: String
     provider: String
+    phoneNumber: String,
+    country: String,
+    address: String,
+    city: String,
+    zipCode: String,
 }
 
 

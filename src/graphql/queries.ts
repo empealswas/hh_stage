@@ -20,6 +20,11 @@ export const getUser = /* GraphQL */ `
       }
       terraId
       provider
+      phoneNumber
+      country
+      address
+      city
+      zipCode
       createdAt
       updatedAt
     }
@@ -39,6 +44,11 @@ export const listUsers = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -56,6 +66,11 @@ export const getDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -66,6 +81,11 @@ export const getDependantGuardian = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -119,6 +139,11 @@ export const getUserInOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
@@ -300,6 +325,11 @@ export const getOrganization = /* GraphQL */ `
         email
         terraId
         provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
         createdAt
         updatedAt
       }
