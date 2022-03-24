@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/HealthyHabitsV2GraphQlApi/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/function/ConfirmOrganization/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify/team-provider-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/team-provider-info.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +154,10 @@
       <workItem from="1647939136079" duration="3103000" />
       <workItem from="1647968773872" duration="3385000" />
       <workItem from="1647981506795" duration="4929000" />
-      <workItem from="1648042240700" duration="2742000" />
+      <workItem from="1648042240700" duration="3665000" />
+      <workItem from="1648105151439" duration="55000" />
+      <workItem from="1648126669600" duration="3720000" />
+      <workItem from="1648142108584" duration="1689000" />
     </task>
     <servers />
   </component>
