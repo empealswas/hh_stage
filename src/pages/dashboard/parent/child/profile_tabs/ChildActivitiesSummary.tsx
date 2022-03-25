@@ -55,13 +55,13 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         <TerraDataContext.Provider value={data}>
             <SleepDataContext.Provider value={sleepData}>
                 <ConnectToWearableDeviceButton user={props.user}/>
-                <Box height={5}></Box>
+                <Box height={5}/>
                 <Grid container spacing={3}>
                     <ActivityWidgets/>
-                    <Grid item xs={12} md={12} lg={8}>
+                    <Grid item xs={12} md={12} lg={12}>
                         <StepsChart userId={props.user.id}/>
                     </Grid>
-                    <Grid item xs={12} md={12} lg={4}>
+                    <Grid item xs={12} md={12} lg={12}>
                         <PupilActivitiesChart/>
                     </Grid>
                     <Grid item xs={12} md={12} lg={12}>

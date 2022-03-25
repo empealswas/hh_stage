@@ -67,12 +67,15 @@ const AddSectionModal = () => {
         initialValues: {
             name: '',
             activities: [],
-            periods: [{key: -2, label: '15', chosenAsDefault: false}, {
-                key: -1,
-                label: '30',
-                chosenAsDefault: true
-            }, {key: -3, label: '45', chosenAsDefault: false}, {key: -4, label: '60', chosenAsDefault: false}],
-            deliveredBy: [{key: -1, label: 'Coach', chosenAsDefault: true}]
+            periods: [
+                {key: -3, label: '0', chosenAsDefault: false},
+                {key: -2, label: '15', chosenAsDefault: false},
+                {
+                    key: -1,
+                    label: '30',
+                    chosenAsDefault: true
+                }, {key: -3, label: '45', chosenAsDefault: false}, {key: -4, label: '60', chosenAsDefault: false}],
+            deliveredBy: [{key: -2, label: 'Coach', chosenAsDefault: true},{key: -1, label: 'Teacher', chosenAsDefault: false}]
 
         },
         validationSchema: RegisterSchema,

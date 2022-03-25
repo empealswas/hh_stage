@@ -92,7 +92,7 @@ const ActivityWidgets = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 {sleepData ?
-                    <ActivityWidgetSummary title={'Sleep'}
+                    <ActivityWidgetSummary title={'Sleep (hours)'}
                                            total={sleepData?.data[sleepData?.data?.length - 1]?.sleep_durations_data.asleep.duration_asleep_state / 60 / 60 ?? 0}
                                            percent={(((sleepData?.data[sleepData?.data?.length - 1]?.sleep_durations_data.asleep.duration_asleep_state ?? 0) - (sleepData?.data[sleepData?.data?.length - 2]?.sleep_durations_data.asleep.duration_asleep_state ?? 0))) / (sleepData?.data[sleepData?.data?.length - 2]?.sleep_durations_data.asleep.duration_asleep_state ?? 1) * 100}
                                            chartColor={theme.palette.chart.blue[0]}

@@ -283,10 +283,10 @@ const OrganizationDashboard = () => {
                             </Stack>
                         </Grid>
                     }
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={3}>
                         {organization ?
                             <BankingWidgetSummary
-                                title="Training Sessions"
+                                title="Total Number of Activities"
                                 icon={'akar-icons:trophy'}
                                 percent={2.6}
                                 color={'warning'}
@@ -297,7 +297,7 @@ const OrganizationDashboard = () => {
                             <CardSkeleton height={'300px'}/>
                         }
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={3}>
                         {organization ?
                             <BankingWidgetSummary
                                 title="Total Participants"
@@ -311,7 +311,7 @@ const OrganizationDashboard = () => {
                             <CardSkeleton height={'300px'}/>
                         }
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={3} >
                         {organization ?
                             <BankingWidgetSummary
                                 title="Total Minutes"
@@ -324,7 +324,7 @@ const OrganizationDashboard = () => {
                             <CardSkeleton height={'300px'}/>
                         }
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={6 } lg={3}>
                         {organization ?
                             <BankingWidgetSummary
                                 title="Training Quality(%)"

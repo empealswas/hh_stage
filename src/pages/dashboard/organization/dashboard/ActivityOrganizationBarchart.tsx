@@ -104,7 +104,7 @@ const ActivityOrganizationBarchart = ({organization}: { organization: Organizati
 
     return (
         <Card>
-            <CardHeader title="Skills Delivered"/>
+            <CardHeader title="Activities"/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart type="bar" series={[{data: series.map(value => value?.data)}]} options={chartOptions}
                                 height={364}/>

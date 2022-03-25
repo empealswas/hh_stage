@@ -1,195 +1,75 @@
-import * as Yup from 'yup';
-import {useSnackbar} from 'notistack';
-import {useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 // form
-import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
 // @mui
-import {Box, Grid, Card, Stack, Typography} from '@mui/material';
-import {LoadingButton} from '@mui/lab';
 // hooks
 import useAuth from '../../../../hooks/useAuth';
 // utils
-import {fData} from '../../../../utils/formatNumber';
 // _mock
-import {countries} from '../../../../_mock';
 // components
-import {
-    FormProvider,
-    RHFSwitch,
-    RHFSelect,
-    RHFTextField,
-    RHFUploadAvatar,
-} from '../../../../components/hook-form';
+import AccountGeneralForm from "./AccountGeneralForm";
+import {User} from "../../../../API";
 import {API, graphqlOperation} from "aws-amplify";
-import {updateUser} from "../../../../graphql/mutations";
+import {getUser} from "../../../../graphql/queries";
+import {Box, Card, Grid, Skeleton, Stack} from "@mui/material";
+import {RHFSelect, RHFTextField} from "../../../../components/hook-form";
+import {countries} from "../../../../_mock";
+import {LoadingButton} from "@mui/lab";
 
 // ----------------------------------------------------------------------
 
-type FormValuesProps = {
-    displayName: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    photoURL: File | any;
-    phoneNumber: string | null;
-    country: string | null;
-    address: string | null;
-    state: string | null;
-    city: string | null;
-    zipCode: string | null;
-    about: string | null;
-    isPublic: boolean;
-};
 
 export default function AccountGeneral() {
-    const {enqueueSnackbar} = useSnackbar();
-
     const {user} = useAuth();
+    const [userDetails, setUserDetails] = useState<User | null>(null);
+    useEffect(() => {
+        const getUserInfo = async () => {
+            console.log(user?.email)
+            const result: any = await API.graphql(graphqlOperation(getUser, {
+                id: user?.email,
+            }))
 
-    const UpdateUserSchema = Yup.object().shape({
-        firstName: Yup.string().required('First name is required'),
-        lastName: Yup.string().required('Last name is required')
-    });
-
-    const defaultValues = {
-        // displayName: user?.displayName || '',
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-        // email: user?.email || '',
-/*            photoURL: user?.photoURL || '',
-            phoneNumber: user?.phoneNumber || '',
-            country: user?.country || '',
-            address: user?.address || '',
-            state: user?.state || '',
-            city: user?.city || '',
-            zipCode: user?.zipCode || '',
-            about: user?.about || '',
-            isPublic: user?.isPublic || '',*/
-    };
-
-    const methods = useForm<FormValuesProps>({
-        resolver: yupResolver(UpdateUserSchema),
-        defaultValues,
-    });
-
-    const {
-        setValue,
-        handleSubmit,
-        formState: {isSubmitting},
-    } = methods;
-
-    const onSubmit = async (data: FormValuesProps) => {
-        try {
-            const result: any = await API.graphql(graphqlOperation(updateUser, {
-                input: {
-                    id: user?.email,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-
-                }
-            }));
-            console.log(result);
-            enqueueSnackbar('Update success!');
-        } catch (error) {
-            console.error(error);
+            setUserDetails(result.data.getUser);
         }
-    };
+        getUserInfo();
+        return () => {
 
-    const handleDrop = useCallback(
-        (acceptedFiles) => {
-            const file = acceptedFiles[0];
-
-            if (file) {
-                setValue(
-                    'photoURL',
-                    Object.assign(file, {
-                        preview: URL.createObjectURL(file),
-                    })
-                );
-            }
-        },
-        [setValue]
-    );
+        };
+    }, []);
 
     return (
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={3}>
-                {/*<Grid item xs={12} md={4}>*/}
-                    {/*          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
-            <RHFUploadAvatar
-              name="photoURL"
-              accept="image/*"
-              maxSize={3145728}
-              onDrop={handleDrop}
-              helperText={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mt: 2,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary',
-                  }}
-                >
-                  Allowed *.jpeg, *.jpg, *.png, *.gif
-                  <br /> max size of {fData(3145728)}
-                </Typography>
-              }
-            />
+        <>
+            {userDetails ?
+                <AccountGeneralForm user={userDetails}/>
+                :
+                <Grid container spacing={3}>
 
-            <RHFSwitch
-              name="isPublic"
-              labelPlacement="start"
-              label="Public Profile"
-              sx={{ mt: 5 }}
-            />
-          </Card>*/}
-                {/*</Grid>*/}
+                    <Grid item xs={12} md={8}>
+                        <Card sx={{p: 3}}>
+                            <Box
+                                sx={{
+                                    display: 'grid',
+                                    rowGap: 3,
+                                    columnGap: 2,
+                                    gridTemplateColumns: {xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)'},
+                                }}
+                            >
+                                {[0,1,2,3,4,5,6,7].map(value =>
+                                    <Skeleton key={value} variant={'rectangular'} width={450} height={50}/>
+                                )}
 
-                <Grid item xs={12} md={8}>
-                    <Card sx={{p: 3}}>
-                        <Box
-                            sx={{
-                                display: 'grid',
-                                rowGap: 3,
-                                columnGap: 2,
-                                gridTemplateColumns: {xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)'},
-                            }}
-                        >
-                            <RHFTextField name="firstName" label="First Name"/>
-                            <RHFTextField name="lastName" label="Last Name"/>
-                             <RHFTextField name="email" label="Email Address" />
+                            </Box>
 
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-              <RHFTextField name="address" label="Address" />
+                            <Stack spacing={3} alignItems="flex-end" sx={{mt: 3}}>
 
-              <RHFSelect name="country" label="Country" placeholder="Country">
-                <option value="" />
-                {countries.map((option) => (
-                  <option key={option.code} value={option.label}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <RHFTextField name="state" label="State/Region" />
-
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
-                        </Box>
-
-                        <Stack spacing={3} alignItems="flex-end" sx={{mt: 3}}>
-                            {/*<RHFTextField name="about" multiline rows={4} label="About" />*/}
-
-                            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                                Save Changes
-                            </LoadingButton>
-                        </Stack>
-                    </Card>
+                                <LoadingButton disabled variant="contained" >
+                                    Save Changes
+                                </LoadingButton>
+                            </Stack>
+                        </Card>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </FormProvider>
+
+            }
+        </>
     );
 }
