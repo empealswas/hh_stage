@@ -33,7 +33,7 @@ const navConfig = [
     {
         subheader: 'general',
         items: [
-            {title: 'Profile', path: PATH_DASHBOARD.user.profile, icon: ICONS.user},
+            {title: 'User Dashboard', path: PATH_DASHBOARD.user.profile, icon: ICONS.user},
 
 /*            {title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce},
             {title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics},

@@ -18,7 +18,7 @@ const SleepActivityChart = ({labels, values}: Props) => {
     const theme = useTheme();
     const chartOptions: any = merge(basedOptions, {
         stroke: {width: [5, 3]},
-        colors: ["#410b0b"],
+        colors: ["#2897ff"],
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
         labels: labels,
         yaxis: {

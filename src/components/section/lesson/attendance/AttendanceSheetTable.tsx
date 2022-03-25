@@ -406,7 +406,6 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                     // }
                     // setData(prevState => [...data]);
                 }}
-                checkboxSelection
                 disableSelectionOnClick
             />
         </>

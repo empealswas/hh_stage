@@ -169,10 +169,10 @@ const SectionOverview = () => {
                             <>
                                 <Button component={RouterLink} startIcon={<Iconify icon={'ion:fitness-outline'}/>}
                                         to={'activity'}
-                                        variant={'contained'}>Activity Dashboard</Button>
+                                        variant={'contained'}>Wearables Dashboard</Button>
                                 <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
                                         to={'dashboard'}
-                                        variant={'contained'}>Dashboard</Button>
+                                        variant={'contained'}>Activity Dashboard</Button>
                             </>
                         </Can>
                     </>
