@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionOverview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TestPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TestPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonItemsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonItemsGrid.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/activity/SleepActivityChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/activity/SleepActivityChart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/member/MemberActivityOverview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/MemberActivityOverview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/UserMoreMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/UserMoreMenu.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +161,10 @@
       <workItem from="1648126669600" duration="3720000" />
       <workItem from="1648142108584" duration="2567000" />
       <workItem from="1648192452565" duration="3404000" />
-      <workItem from="1648207126209" duration="2248000" />
+      <workItem from="1648207126209" duration="4636000" />
+      <workItem from="1648217438504" duration="595000" />
+      <workItem from="1648477111555" duration="669000" />
+      <workItem from="1648569242184" duration="2525000" />
     </task>
     <servers />
   </component>
@@ -195,7 +197,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx</url>
-          <line>339</line>
+          <line>341</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

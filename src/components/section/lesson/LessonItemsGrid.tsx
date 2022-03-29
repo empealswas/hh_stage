@@ -119,7 +119,7 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                                 <Grid key={index} item xs={12} sm={6} md={3}>
                                     <Link component={RouterLink} to={`lesson/${value.lesson.id}`}
                                           underline={'none'}>
-                                        <Card style={{height: '100%', backgroundColor: value.completed ? 'green' : 'inherit'}}>
+                                        <Card sx={{height: '100%', backgroundColor: value.completed ? 'primary.main' : 'auto'}}>
                                             <CardActionArea style={{height: '100%'}}>
                                                 <CardContent style={{textAlign: 'center'}}>
                                                     <Typography variant="h5" component="h2">

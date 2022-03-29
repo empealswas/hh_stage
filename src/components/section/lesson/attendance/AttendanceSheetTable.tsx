@@ -18,6 +18,7 @@ import useAuth from "../../../../hooks/useAuth";
 import {renderRatingEditInputCell, renderReward} from "./Reward";
 import CustomLoadingOverlay from './CustomLoadingOverlay';
 import LessonDetails from "./LessonDetails";
+import {LoadingButton} from "@mui/lab";
 
 
 interface GridConfigOptions {
@@ -198,6 +199,7 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
     const classrooms = userInOrganization.classrooms?.items.map(value => value?.classroom) as Classroom[];
     const [selectedClassroom, setSelectedClassroom] = useState<Classroom>(classrooms[0]);
     const [selectedRole, setSelectedRole] = useState<UserRole>(roles[0]);
+    const [completeLessonLoading, setCompleteLessonLoading] = useState(false);
 
     const [pupils, setPupils] = useState<null | AttendanceOfUser[]>(null);
     const setSelectedClassroomData = (settings: GridConfigOptions, lessonRecord: PELessonRecord) => {
@@ -349,19 +351,21 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
     return (
         <>
             {classroomData &&
-                <Button color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}}
+                <LoadingButton loading={completeLessonLoading} color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}}
                         onClick={async () => {
+                            setCompleteLessonLoading(true);
                             const result: any = await API.graphql(graphqlOperation(updateClassroomLesson, {
                                 input: {
                                     id: classroomData.id,
                                     completed: !classroomData.completed
                                 }
                             }))
+                            setCompleteLessonLoading(false);
                             setClassroomData(result.data.updateClassroomLesson);
 
                         }
                         }
-                        variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</Button>
+                               variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</LoadingButton>
             }
             {(selectedClassroom && lessonId) &&
                 <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}

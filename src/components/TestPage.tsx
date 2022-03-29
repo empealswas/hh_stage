@@ -18,7 +18,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import {listUsers} from "../graphql/queries";
 import {Section, User} from "../API";
 import {format, parseISO} from "date-fns";
-import {updateSection} from "../graphql/mutations";
+import {deleteUserInOrganizationInClassroom, updateSection} from "../graphql/mutations";
 
 const query = `query MyQuery {
   listSections(filter: {isPlacedInContentStore: {eq: true}}, limit: 100000) {
@@ -188,6 +188,44 @@ const TestPage = () => {
                 </LocalizationProvider>
 
                 <LoadingButton loading={loading} variant={'contained'} onClick={search}>Test</LoadingButton>
+                <LoadingButton variant={'contained'} onClick={async () => {
+                    setLoading(true);
+                    const query1 =
+                        `query MyQuery($id: ID = "16f21789-4fdb-4157-b9ba-1865e61e1915") {
+  getOrganization(id: $id) {
+    members(limit: 100000) {
+      items {
+        id
+      }
+    }
+    Classrooms(filter: {id: {eq: "f92ce805-fd78-40f0-af4a-ba08c0122f0d"}}) {
+      items {
+        members(limit: 10000) {
+          items {
+            id
+            userInOrganizationID
+          }
+        }
+      }
+    }
+  }
+}
+`
+                    const result: any = await API.graphql(graphqlOperation(query1));
+                    for (const item of result.data.getOrganization?.Classrooms.items[0].members.items) {
+                        if (result.data.getOrganization.members.items.find((member: any) => member.id === item.userInOrganizationID) === undefined) {
+                            console.log("ITEM", item.userInOrganizationID);
+                            const deleted = await API.graphql(graphqlOperation(deleteUserInOrganizationInClassroom, {
+                                input: {
+                                    id: item.id
+                                }
+                            }))
+                            console.log(deleted);
+
+                        }
+                    }
+                    setLoading(false);
+                }} loading={loading}>Function</LoadingButton>
                 <TextareaAutosize minRows={5} value={value}></TextareaAutosize>
             </Stack>
         </Container>

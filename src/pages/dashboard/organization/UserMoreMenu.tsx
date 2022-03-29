@@ -35,7 +35,15 @@ const deleteQuery = `mutation MyMutation($id: ID = "") {
     }
   }
 }`
-
+const getClassroomsQuery = `query MyQuery($id: ID = "") {
+  getUserInOrganization(id: $id) {
+    classrooms {
+      items {
+        id
+      }
+    }
+  }
+}`;
 export default function UserMoreMenu({id, setMembers}: Props) {
     const [open, setOpen] = useState<HTMLElement | null>(null);
 
@@ -56,16 +64,21 @@ export default function UserMoreMenu({id, setMembers}: Props) {
     const removeUserFromOrganization = async () => {
         setLoading(true);
         try {
+
+            const classroomsResult: any = await API.graphql(graphqlOperation(getClassroomsQuery, {
+                id: id,
+            }))
+
+            for (const classroom of classroomsResult.data.getUserInOrganization.classrooms.items) {
+                await API.graphql(graphqlOperation(deleteUserInOrganizationInClassroom, {
+                    input: {
+                        id: classroom.id
+                    }
+                }))
+            }
             const result: any = await API.graphql(graphqlOperation(deleteQuery, {
                 id: id
             }))
-            for (const classroom of result.data.deleteUserInOrganization.classrooms.items) {
-                await API.graphql(graphqlOperation(deleteFromClassroom, {
-                    id: classroom.id
-                }))
-            }
-
-
             console.log(result);
             snackbar.enqueueSnackbar('User was removed from the organization');
             setMembers(prevState => {
