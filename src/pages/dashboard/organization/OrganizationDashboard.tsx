@@ -1,4 +1,3 @@
-
 import React, {useEffect, useMemo, useState} from 'react';
 import Page from "../../../components/Page";
 import {
@@ -17,7 +16,7 @@ import CardSkeleton from "../../../components/skeleton/CardSkeleton";
 import useSettings from 'src/hooks/useSettings';
 import useAuth from "../../../hooks/useAuth";
 import AnalyticsWidgetSummary from 'src/sections/@dashboard/general/analytics/AnalyticsWidgetSummary';
-import {Classroom, Lesson, Organization, PELessonRecord} from "../../../API";
+import {Classroom, Lesson, Organization, PELessonRecord, UserInOrganization} from "../../../API";
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import ActivityOrganizationBarchart from "./dashboard/ActivityOrganizationBarchart";
@@ -27,7 +26,7 @@ import ActivityOrganizationLineChart from "./dashboard/ActivityOrganizationLineC
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
-import {compareAsc, format, parseISO} from "date-fns";
+import {compareAsc, format, parseISO, subDays, subMonths, subYears} from "date-fns";
 import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
@@ -83,6 +82,24 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
   }
 }
 `
+const participantsQuery = `query MyQuery($id: ID = "") {
+  getOrganization(id: $id) {
+    members(limit: 10000000) {
+      items {
+        Attendances(limit: 1) {
+          items {
+            present
+            Lesson {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+`
 type DashboardValues = {
     trainingSessionsData?: number[];
     participantsData?: number[];
@@ -101,6 +118,8 @@ const OrganizationDashboard = () => {
     const [selectedClassroom, setSelectedClassroom] = React.useState<Classroom | null>(null);
     const [startDate, setStartDate] = React.useState<Date | null>(null);
     const [endDate, setEndDate] = React.useState<Date | null>(null);
+    const [selectedPeriod, setSelectedPeriod] = useState('none');
+    const [participants, setParticipants] = useState<number | null>(null);
 
     const handleChange = (event: SelectChangeEvent) => {
         if (!event.target.value) {
@@ -108,6 +127,30 @@ const OrganizationDashboard = () => {
             return;
         }
         setSelectedClassroom(classrooms?.find(item => item.id === event.target.value as string) ?? null)
+    };
+    const handleSelectedPeriodChange = (event: SelectChangeEvent) => {
+        setSelectedPeriod(event.target.value as string);
+        switch (event.target.value) {
+            case 'week':
+                setStartDate(subDays(new Date(), 7));
+                setEndDate(new Date());
+                break;
+            case 'month':
+                setStartDate(subDays(new Date(), 30));
+                setEndDate(new Date());
+                break;
+            case 'term':
+                setStartDate(subMonths(new Date(), 4));
+                setEndDate(new Date());
+                break;
+            case 'year':
+                setStartDate(subYears(new Date(), 1));
+                setEndDate(new Date());
+                break;
+            case 'none':
+                setStartDate(null);
+                setEndDate(null);
+        }
     };
     const getResultWithFilters = async () => {
         let organization: Organization;
@@ -163,6 +206,13 @@ const OrganizationDashboard = () => {
     useEffect(() => {
 
         getOrganizationAsync();
+        const getParticipants = async () => {
+            const result: any = await API.graphql(graphqlOperation(participantsQuery, {
+                id: organizationId
+            }));
+            setParticipants(result.data.getOrganization?.members.items.filter((member: UserInOrganization) => member.Attendances?.items?.length ?? 0 > 0).length)
+        }
+        getParticipants();
         return () => {
 
         };
@@ -238,12 +288,12 @@ const OrganizationDashboard = () => {
                         <Grid item xs={12}>
                             <Stack direction={{xs: 'column', sm: 'row'}} spacing={3}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Team</InputLabel>
+                                    <InputLabel id="demo-simple-team-select">Team</InputLabel>
                                     <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
+                                        labelId="demo-simple-team-select"
+                                        id="demo-simple-team-select-id"
                                         value={selectedClassroom?.id ?? ''}
-                                        label="Age"
+                                        label="Team"
                                         onChange={handleChange}
                                     >
                                         <MenuItem value="">
@@ -253,11 +303,30 @@ const OrganizationDashboard = () => {
                                                                           value={item.id}>{item.name}</MenuItem>)}
                                     </Select>
                                 </FormControl>
+                                <FormControl sx={{minWidth: 150}}>
+                                    <InputLabel id="demo-simple-select-label">Period</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={selectedPeriod}
+                                        label="Period"
+                                        onChange={handleSelectedPeriodChange}
+                                    >
+                                        <MenuItem value="none">
+                                            <em>None</em>
+                                        </MenuItem>
+                                        <MenuItem value={'week'}>7 Days</MenuItem>
+                                        <MenuItem value={'month'}>30 Days</MenuItem>
+                                        <MenuItem value={'term'}>4 Months</MenuItem>
+                                        <MenuItem value={'year'}>1 Year</MenuItem>
+                                    </Select>
+                                </FormControl>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
                                         label="Start Date"
                                         // @ts-ignore
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => <TextField                                         style={{minWidth: 200}}
+                                                                                                                    {...params} />}
                                         value={startDate}
                                         onChange={(newValue) => {
                                             setStartDate(newValue);
@@ -268,7 +337,7 @@ const OrganizationDashboard = () => {
                                     <DatePicker
                                         label="End Date"
                                         // @ts-ignore
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => <TextField  style={{minWidth: 200}} {...params} />}
                                         value={endDate}
                                         onChange={(newValue) => {
                                             setEndDate(newValue);
@@ -298,20 +367,20 @@ const OrganizationDashboard = () => {
                         }
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={3}>
-                        {organization ?
+                        {participants ?
                             <BankingWidgetSummary
                                 title="Total Participants"
                                 icon={'ant-design:user-add-outlined'}
                                 percent={2.6}
                                 color={'info'}
-                                total={dashboardValues?.totalParticipants ?? 0}
+                                total={participants}
                                 chartData={dashboardValues?.participantsData ?? []}
                             />
                             :
                             <CardSkeleton height={'300px'}/>
                         }
                     </Grid>
-                    <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Grid item xs={12} sm={6} md={6} lg={3}>
                         {organization ?
                             <BankingWidgetSummary
                                 title="Total Minutes"
@@ -324,7 +393,7 @@ const OrganizationDashboard = () => {
                             <CardSkeleton height={'300px'}/>
                         }
                     </Grid>
-                    <Grid item xs={12} sm={6} md={6 } lg={3}>
+                    <Grid item xs={12} sm={6} md={6} lg={3}>
                         {organization ?
                             <BankingWidgetSummary
                                 title="Training Quality(%)"

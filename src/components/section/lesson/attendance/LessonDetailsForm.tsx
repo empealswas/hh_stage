@@ -225,7 +225,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                     variant="contained"
                     loading={loading}
                 >
-                    Update Record
+                    Update Activity
                 </LoadingButton>
             </Form>
         </FormikProvider>

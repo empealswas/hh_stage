@@ -53,81 +53,25 @@ type Props = {
 const ActivityOrganizationLineChart = ({organization}: Props) => {
     let apexOptions = BaseOptionChart();
     const {organizationId} = useParams();
-    const [previousResult, setPreviousResult] = useState<Organization | null>(null);
-    const series: any = {};
-
-    function getDates(startDate: Date, stopDate: Date) {
-        var dateArray = [];
-        var currentDate = startDate;
-        while (currentDate <= stopDate) {
-            dateArray.push(new Date(currentDate));
-            currentDate = addDays(currentDate, 1);
-        }
-        return dateArray;
+    const items = collect(organization?.Classrooms?.items
+        .flatMap(value => value?.LessonRecords?.items));
+    const data: any = useMemo(() => {
+        const result = items.groupBy(item => {
+            return item?.date;
+        });
+        return result.all();
+    }, []);
+    const series: { name: string, data: number; } [] = [];
+    console.log(items);
+    for (let label in data) {
+        series.push({
+            name: label,
+            data: Number(collect(data[label].items)
+                .sum((item: any) => ((item?.duration ?? 0) * (item?.Attendances?.items?.length ?? 0)))),
+        });
     }
-
-    useEffect(() => {
-        /*        const getLast7DaysActivity = async () => {
-                    const result: any = await API.graphql(graphqlOperation(query, {
-                        id: organizationId,
-                        gt: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
-                        lt: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
-                    }))
-                    setOrganizationResult(result.data.getOrganization);
-                }
-                getLast7DaysActivity();*/
-        const getPreviousResult = async () => {
-            const result: any = await API.graphql(graphqlOperation(query, {
-                id: organizationId,
-                gt: format(subDays(new Date(), 14), 'yyyy-MM-dd'),
-                lt: format(addDays(new Date(), 8), 'yyyy-MM-dd'),
-            }))
-            setPreviousResult(result.data.getOrganization);
-        }
-        // getLast7DaysActivity();
-        getPreviousResult();
-        return () => {
-
-        };
-    }, [organizationId]);
-
-    if (!previousResult) {
-
-        return (<ActivtityChartSkeleton/>);
-    }
-
-    console.log('series', series);
-
-    let lessonRecords = organization.Classrooms?.items.flatMap(classroom => classroom?.LessonRecords?.items);
-    const all = Number(collect(lessonRecords).sum(item => item?.duration ?? 0));
-    const previousAll = Number(collect(previousResult.Classrooms?.items.flatMap(classroom => classroom?.LessonRecords?.items)).sum(item => item?.duration ?? 0));
-    const biggerThan = (previousAll - all) / previousAll * 100;
-    lessonRecords?.sort((a, b) => {
-        if (!a || !b) {
-            return 0;
-        } else {
-            return compareAsc(parseISO(a?.date), parseISO(b?.date));
-
-        }
-
-    }).forEach((lessonRecord) => {
-        console.log(lessonRecord?.date);
-        if (lessonRecord?.date) {
-            if (!series[lessonRecord?.date]) {
-                series[lessonRecord?.date] = 0;
-            }
-            series[lessonRecord?.date] += lessonRecord.duration;
-        }
-    })
-    console.log(series);
-    const dataLabels = [];
-    const dataChart: any = {name: 'Activity', data: []};
-    for (const seriesKey in series) {
-        dataChart.data.push(series[seriesKey]);
-        dataLabels.push(seriesKey);
-    }
-    console.log(dataChart);
-
+    console.log(series)
+    series.sort((a, b) => compareAsc(parseISO(a.name), parseISO(b.name)));
     const chartOptions = merge(apexOptions, {
         chart: {
             height: 350,
@@ -136,28 +80,33 @@ const ActivityOrganizationLineChart = ({organization}: Props) => {
                 enabled: false
             }
         },
-        labels: dataLabels,
+        labels: series.map(value => value.name),
 
         stroke: {
             curve: 'straight'
         },
-
+        yaxis: {
+            labels: {
+                formatter: function (value: any) {
+                    return value;
+                }
+            },
+        },
         grid: {
             row: {
                 opacity: 0.5
             },
         },
-        xaxis: {
-            categories: dataLabels,
-
-        }
     },);
 
     return (
         <Card>
             {/*<CardHeader title="7 days activity" subheader={`${biggerThan >= 0 ? '+' : ''}${biggerThan}% than 7 days ago`}/>*/}
             <Box sx={{p: 3, pb: 1}} dir="ltr">
-                <ReactApexChart type="line" series={[dataChart]} options={chartOptions} height={364}/>
+                <ReactApexChart type="line" series={[{
+                    data: series?.map(value => value.data),
+                    type: 'line'
+                }]} options={chartOptions} height={364}/>
             </Box>
         </Card>
     );

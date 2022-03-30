@@ -7,11 +7,11 @@ import {Classroom, Organization, Pupil} from "../../../../API";
 import axios from "axios";
 import {Principal} from "../../../../models/Principal";
 import merge from "lodash/merge";
-import {fNumber, fShortenNumber} from "../../../../utils/formatNumber";
+import {fNumber, fPercent, fShortenNumber} from "../../../../utils/formatNumber";
 import {Box, Card, CardHeader} from "@mui/material";
 import ReactApexChart from "react-apexcharts";
 import collect, {Collection} from 'collect.js';
-import {useTheme} from "@mui/material/styles";
+import {styled, useTheme} from "@mui/material/styles";
 
 const averageData = [{
     name: 'Marine Sprite',
@@ -29,6 +29,23 @@ const averageData = [{
     name: 'Reborn Kid',
     data: [25, 12, 19, 32, 25, 24, 10]
 }];
+const CHART_HEIGHT = 600;
+const LEGEND_HEIGHT = 120;
+const ChartWrapperStyle = styled('div')(({theme}) => ({
+    height: CHART_HEIGHT,
+    marginTop: theme.spacing(0),
+    '& .apexcharts-canvas svg': {height: CHART_HEIGHT},
+    '& .apexcharts-canvas svg,.apexcharts-canvas foreignObject': {
+        overflow: 'visible'
+    },
+    '& .apexcharts-legend': {
+        height: LEGEND_HEIGHT,
+        alignContent: 'center',
+        position: 'relative !important',
+        borderTop: `solid 1px ${theme.palette.divider}`,
+        top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`
+    }
+}));
 const ActivityOrganizationBarchart = ({organization}: { organization: Organization }) => {
     let apexOptions = BaseOptionChart();
     const items = collect(organization?.Classrooms?.items
@@ -41,15 +58,14 @@ const ActivityOrganizationBarchart = ({organization}: { organization: Organizati
         return result.all();
     }, []);
     const series: { name: string, data: number; } [] = [];
+    console.log(items);
+    const all = items.sum(item => (item?.duration ?? 0) * (item?.Attendances?.items?.length ?? 0)) as number;
+    console.log('All', all);
     for (let label in data) {
-        console.log(label);
-        console.log(data);
-        const dataForChart = 0;
-        collect(data[label].items).sum()
         series.push({
             name: label,
-            data: Number(collect(data[label].items).sum((item: any) => item?.duration ?? 0)),
-
+            data: Number(collect(data[label].items)
+                .sum((item: any) => ((item?.duration ?? 0) * (item?.Attendances?.items?.length ?? 0)) / all)),
         });
     }
     console.log(series)
@@ -57,58 +73,38 @@ const ActivityOrganizationBarchart = ({organization}: { organization: Organizati
     const theme = useTheme();
 
 //
-    const chartOptions = merge(apexOptions, {
-        colors: [
-            theme.palette.primary.main,
-            theme.palette.chart.blue[0],
-            theme.palette.chart.violet[0],
-            theme.palette.chart.yellow[0],
-        ],
+    const chartOptions: any = merge(BaseOptionChart(), {
 
-        dataLabels: {
-            enabled: true,
-            textAnchor: 'start',
-            style: {
-                colors: ['#fff']
-            },
-            formatter: function (val: any, opt: any) {
-                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val + 'mins'
-            },
-            offsetX: 0,
-            dropShadow: {
-                enabled: true
+        labels: series.map(value => value.name),
+        legend: {floating: true, horizontalAlign: 'center'},
+        dataLabels: {enabled: true, dropShadow: {enabled: false}},
+        tooltip: {
+            fillSeriesColor: false,
+            y: {
+                formatter: (seriesName: any) => fPercent(seriesName * 100),
+                title: {
+                    formatter: (seriesName: any) => {
+                        if (seriesName === 'null') {
+                            return 'Undefined';
+                        }
+                        return `${seriesName}`;
+                    }
+                }
             }
         },
-
-        tooltip: {
-            marker: {show: false},
-            y: {
-                formatter: (seriesName: string) => fNumber(seriesName) + ' Min',
-                title: {
-                    formatter: () => '',
-                },
-            },
-        },
-        xaxis: {
-            categories: series.map(value => value.name),
-        },
         plotOptions: {
-            bar: {
-                horizontal: true, barHeight: '70%', borderRadius: 2, dataLabels: {
-                    position: 'bottom'
-                },
-            },
-        },
-
+            pie: {donut: {labels: {show: false}}}
+        }
     });
 
     return (
         <Card>
             <CardHeader title="Activities"/>
-            <Box sx={{p: 3, pb: 1}} dir="ltr">
-                <ReactApexChart type="bar" series={[{data: series.map(value => value?.data)}]} options={chartOptions}
-                                height={364}/>
-            </Box>
+
+            <ChartWrapperStyle dir="ltr">
+                <ReactApexChart type="pie" series={series.map(value => value?.data)} options={chartOptions}
+                                height={500}/>
+            </ChartWrapperStyle>
         </Card>
     );
 };
