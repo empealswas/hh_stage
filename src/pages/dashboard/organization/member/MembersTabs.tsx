@@ -64,7 +64,7 @@ const MembersTabs = () => {
 
             {ACCOUNT_TABS.map((tab) => {
                 const isMatched = tab.value === currentTab;
-                return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+                return isMatched && <Box  key={tab.value}>{tab.component}</Box>;
             })}
         </>
 

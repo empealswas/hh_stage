@@ -22,11 +22,8 @@ const OrganizationMembers = () => {
                 <Typography variant={'h4'}>Members of your organization</Typography>
                 <InviteMemberDialog/>
             </Stack>
-            <Card>
-                <CardContent>
+
                     <MembersTabs/>
-                </CardContent>
-            </Card>
         </Container>
     );
 };

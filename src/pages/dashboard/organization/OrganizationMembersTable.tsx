@@ -1,5 +1,12 @@
 import useAuth from "../../../hooks/useAuth";
-import {DataGrid, GridCellParams, GridColDef, GridRenderCellParams} from "@mui/x-data-grid";
+import {
+    DataGrid,
+    GridCellParams,
+    GridColDef,
+    GridRenderCellParams,
+    GridToolbar,
+    GridValueGetterParams
+} from "@mui/x-data-grid";
 import OrganizationMoreMenu from "../user/OrganizationMoreMenu";
 import {useEffect, useState} from "react";
 import {Organization, User, UserInOrganization, UserRole} from "../../../API";
@@ -47,6 +54,10 @@ const getRolesQuery = `query MyQuery($id: ID = "") {
   }
 }`;
 
+function getFullName(params: GridValueGetterParams) {
+    return `${params.row.firstName || ''} ${params.row.lastName || ''}`;
+}
+
 export default function OrganizationMembersTable() {
     const {user} = useAuth();
     const {organizationId} = useParams();
@@ -66,18 +77,35 @@ export default function OrganizationMembersTable() {
     }
     const columns: GridColDef[] = [
         {field: 'id', flex: 0.2, headerName: 'Id', hide: true},
-        {field: 'email', flex: 1, headerName: 'Email'},
+        {
+            field: 'email', flex: 1, headerName: 'Email',
+            minWidth: 100,
+
+        },
         {
             field: 'firstName',
             headerName: 'First Name',
             flex: 1,
-            editable: false
+            editable: false,
+            hide: true,
+            minWidth: 100,
+
         },
         {
             field: 'lastName',
             headerName: 'Last Name',
             flex: 1,
-            editable: false
+            hide: true,
+            editable: false,
+            minWidth: 100,
+
+        },
+        {
+            field: 'fullName',
+            headerName: 'Full name',
+            flex: 1,
+            minWidth: 100,
+            valueGetter: getFullName,
         },
         {
             field: 'roles',
@@ -140,6 +168,9 @@ export default function OrganizationMembersTable() {
                             allRoles: roles,
                         }
                     }) ?? []}
+                    components={{
+                        Toolbar: GridToolbar
+                    }}
                     disableSelectionOnClick
                     columns={columns}
                     loading={!members || !roles}

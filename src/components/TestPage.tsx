@@ -188,7 +188,7 @@ const TestPage = () => {
                 </LocalizationProvider>
 
                 <LoadingButton loading={loading} variant={'contained'} onClick={search}>Test</LoadingButton>
-                <LoadingButton variant={'contained'} onClick={async () => {
+{/*                <LoadingButton variant={'contained'} onClick={async () => {
                     setLoading(true);
                     const query1 =
                         `query MyQuery($id: ID = "16f21789-4fdb-4157-b9ba-1865e61e1915") {
@@ -225,7 +225,7 @@ const TestPage = () => {
                         }
                     }
                     setLoading(false);
-                }} loading={loading}>Function</LoadingButton>
+                }} loading={loading}>Function</LoadingButton>*/}
                 <TextareaAutosize minRows={5} value={value}></TextareaAutosize>
             </Stack>
         </Container>

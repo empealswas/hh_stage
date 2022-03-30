@@ -80,7 +80,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                 date: format(date ?? new Date(), 'yyyy-MM-dd'),
                 deliveredBy: getFieldProps('deliveredBy').value,
                 duration: sectionOption ? getFieldProps('duration').value : 15,
-                activity: sectionOption ? getFieldProps('activity').value :'Daily Mile',
+                activity: sectionOption ? getFieldProps('activity').value : 'Daily Mile',
                 rating: getFieldProps('rating').value,
                 notes: getFieldProps('notes').value,
             }
@@ -89,7 +89,17 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
     }
     const snackbar = useSnackbar();
     const [loading, setLoading] = useState(false);
-    const {errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid, resetForm} = formik;
+    const {
+        errors,
+        touched,
+        handleSubmit,
+        isSubmitting,
+        getFieldProps,
+        isValid,
+        resetForm,
+        handleChange,
+        values,
+    } = formik;
 
     const Settings = () => {
         if (sectionOption) {
@@ -107,20 +117,21 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                             }}
                         />
                     </LocalizationProvider>
-                <FormControl>
-                    <InputLabel id="demo-simple-delivered-by-label">Delivered By</InputLabel>
-                    <Select
-                        labelId="demo-simple-delivered-by-label"
-                        id="demo-simple-select"
-                        label="Delivered By"
-                        {...getFieldProps('deliveredBy')}
-                        disabled={sectionOption.DeliveredBy?.length === 1}
-                        error={Boolean(errors.deliveredBy)}
-                    >
-                        {sectionOption.DeliveredBy?.filter(value => !!value).sort((a: any, b: any) => a.localeCompare(b)).map((value: any) => <MenuItem
-                            value={value} key={value}>{value}</MenuItem>)}
-                    </Select>
-                </FormControl>
+                    <FormControl>
+                        <InputLabel id="demo-simple-delivered-by-label">Delivered By</InputLabel>
+                        <Select
+                            labelId="demo-simple-delivered-by-label"
+                            id="demo-simple-select"
+                            label="Delivered By"
+                            {...getFieldProps('deliveredBy')}
+                            disabled={sectionOption.DeliveredBy?.length === 1}
+                            error={Boolean(errors.deliveredBy)}
+                        >
+                            {sectionOption.DeliveredBy?.filter(value => !!value).sort((a: any, b: any) => a.localeCompare(b)).map((value: any) =>
+                                <MenuItem
+                                    value={value} key={value}>{value}</MenuItem>)}
+                        </Select>
+                    </FormControl>
                     <FormControl>
                         <InputLabel id="demo-simple-activity-label">Activity</InputLabel>
                         <Select
@@ -131,8 +142,9 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                             {...getFieldProps('activity')}
                             error={Boolean(errors.activity)}
                         >
-                            {sectionOption.Activities?.filter(value => !!value).sort((a: any, b: any) => a.localeCompare(b)).map((value: any) => <MenuItem
-                                value={value} key={value}>{value}</MenuItem>)}
+                            {sectionOption.Activities?.filter(value => !!value).sort((a: any, b: any) => a.localeCompare(b)).map((value: any) =>
+                                <MenuItem
+                                    value={value} key={value}>{value}</MenuItem>)}
                         </Select>
                     </FormControl>
                     <FormControl>
@@ -146,8 +158,9 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
 
                             error={Boolean(errors.duration)}
                         >
-                            {sectionOption.Durations?.filter(value => !!value).sort((a: any, b: any) => a - b).map((value: any) => <MenuItem
-                                value={value} key={value}>{value}</MenuItem>)}
+                            {sectionOption.Durations?.filter(value => !!value).sort((a: any, b: any) => a - b).map((value: any) =>
+                                <MenuItem
+                                    value={value} key={value}>{value}</MenuItem>)}
                         </Select>
                     </FormControl>
                     <div>
@@ -171,7 +184,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                             onChange={(newValue) => {
                                 setDate(newValue);
                             }}
-                         />
+                        />
                     </LocalizationProvider>
                     {/*<input type={'date'}  onChange={event => console.log(event)} style={{maxWidth: 200, fontSize: '20px'}}*/}
                     {/*       aria-errormessage={'error'}/>*/}
@@ -206,14 +219,14 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
             <Typography textAlign={'center'} variant={'h2'} sx={{mb: 15}}>Attendance Sheet</Typography>
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Settings/>
-                        <LoadingButton
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            loading={loading}
-                        >
-                            Update Record
-                        </LoadingButton>
+                <LoadingButton
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    loading={loading}
+                >
+                    Update Record
+                </LoadingButton>
             </Form>
         </FormikProvider>
     );

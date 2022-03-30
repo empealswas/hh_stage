@@ -7,9 +7,10 @@
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TestPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TestPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/LessonItemsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/LessonItemsGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/UserMoreMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/UserMoreMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetailsForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/lesson/attendance/LessonDetailsForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembers.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationMembersTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/member/MembersTabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/MembersTabs.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +165,8 @@
       <workItem from="1648207126209" duration="4636000" />
       <workItem from="1648217438504" duration="595000" />
       <workItem from="1648477111555" duration="669000" />
-      <workItem from="1648569242184" duration="2525000" />
+      <workItem from="1648569242184" duration="5245000" />
+      <workItem from="1648627476638" duration="3310000" />
     </task>
     <servers />
   </component>
