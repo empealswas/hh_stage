@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {FormControl, InputLabel, MenuItem, Rating, Select, Stack, TextField, Typography} from "@mui/material";
+import {
+    Checkbox,
+    FormControl, FormControlLabel,
+    FormGroup,
+    InputLabel,
+    MenuItem,
+    Rating,
+    Select,
+    Stack, Switch,
+    TextField,
+    Typography
+} from "@mui/material";
 import {Form, FormikContextType, FormikProvider, useFormik} from "formik";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -33,6 +44,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
             .nullable(),
         rating: Yup.number().min(1).max(5)
             .nullable(),
+        isCompleted: Yup.boolean()
     });
 
     useEffect(() => {
@@ -50,6 +62,8 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
             'rating': lessonRecord.rating,
             'duration': lessonRecord.duration,
             'activity': lessonRecord.activity,
+            'isCompleted': lessonRecord.isCompleted ?? false,
+
         })
         if (lessonRecord.date) {
             setDate(parseISO(lessonRecord.date));
@@ -61,7 +75,8 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
             notes: lessonRecord.notes,
             rating: lessonRecord.rating,
             duration: lessonRecord.duration,
-            activity: lessonRecord.activity
+            activity: lessonRecord.activity,
+            isCompleted: lessonRecord.isCompleted ?? false
         },
 
         validationSchema: RegisterSchema,
@@ -83,6 +98,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                 activity: sectionOption ? getFieldProps('activity').value : 'Daily Mile',
                 rating: getFieldProps('rating').value,
                 notes: getFieldProps('notes').value,
+                isCompleted: getFieldProps('isCompleted').value,
             }
         }));
         console.log('Update Lesson Record', result)
@@ -100,12 +116,16 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
         handleChange,
         values,
     } = formik;
-
+    console.log(getFieldProps('isCompleted'));
     const Settings = () => {
         if (sectionOption) {
             console.log(sectionOption.DeliveredBy)
             return (<>
                 <Stack direction={{xs: 'column', sm: 'column'}} spacing={2}>
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox sx={{ '& .MuiSvgIcon-root': { fontSize: 40 } }} checked={getFieldProps('isCompleted').value} {...getFieldProps('isCompleted')}/>} label="Completed"/>
+
+                    </FormGroup>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                             label="Date"
@@ -171,6 +191,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                     </div>
                 </Stack>
             </>)
+                ;
         }
         return (<>
                 <Stack direction='row' spacing={2}>

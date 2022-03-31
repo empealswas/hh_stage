@@ -150,6 +150,7 @@ type PELessonRecord @model @auth(rules: [{allow: public, provider: iam}, {allow:
     activity: String @index(name: "lessonByDate", queryField: "lessonByDate", sortKeyFields: ["date"])
     rating: Int
     notes: String
+    isCompleted: Boolean
     classroomID: ID @index(name: "byClassroom")
     Classroom: Classroom @belongsTo(fields: ["classroomID"])
     lessonID: ID @index(name: "byLesson")

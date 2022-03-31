@@ -700,6 +700,7 @@ export const getPELessonRecord = /* GraphQL */ `
       activity
       rating
       notes
+      isCompleted
       classroomID
       Classroom {
         id
@@ -740,6 +741,7 @@ export const listPELessonRecords = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt
@@ -775,6 +777,7 @@ export const lessonRecordByName = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt
@@ -810,6 +813,7 @@ export const lessonByDate = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt
@@ -1168,6 +1172,7 @@ export const getAttendance = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt

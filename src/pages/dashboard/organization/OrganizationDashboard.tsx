@@ -37,7 +37,7 @@ const query = `query MyQuery($id: ID = "") {
       items {
         id
         name
-        LessonRecords(limit: 10000) {
+        LessonRecords(limit: 100000, filter: {isCompleted: {eq: true}}) {
           items {
             date
             id
@@ -63,7 +63,7 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
       items {
         id
         name
-        LessonRecords(limit: 100000, filter: {date: {gt: $gt, lt: $lt}}) {
+        LessonRecords(limit: 100000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
           items {
             date
             id
@@ -260,7 +260,7 @@ const OrganizationDashboard = () => {
 
             qualityData.push(qualityAmount);
             totalParticipants += lessonRecords?.reduce((total: any, value: any) => total + value?.Attendances?.items?.length ?? 0, 0)
-            totalDuration += lessonRecords?.reduce((total: any, value: any) => total + value?.duration ?? 0, 0)
+            totalDuration += lessonRecords?.reduce((total: any, value: any) => total + (value?.duration ?? 0) * (value.Attendances?.items?.length), 0)
             totalQuality += lessonRecords?.reduce((total: any, value: any) => total + value?.rating ?? 0, 0)
             participants.push(amountOfParticipants);
             durationsData.push(durations);

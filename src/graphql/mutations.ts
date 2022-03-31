@@ -1420,6 +1420,7 @@ export const createPELessonRecord = /* GraphQL */ `
       activity
       rating
       notes
+      isCompleted
       classroomID
       Classroom {
         id
@@ -1470,6 +1471,7 @@ export const updatePELessonRecord = /* GraphQL */ `
       activity
       rating
       notes
+      isCompleted
       classroomID
       Classroom {
         id
@@ -1520,6 +1522,7 @@ export const deletePELessonRecord = /* GraphQL */ `
       activity
       rating
       notes
+      isCompleted
       classroomID
       Classroom {
         id
@@ -2386,6 +2389,7 @@ export const createAttendance = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt
@@ -2445,6 +2449,7 @@ export const updateAttendance = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt
@@ -2504,6 +2509,7 @@ export const deleteAttendance = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt

@@ -18,6 +18,7 @@ const query = `query MyQuery($id: ID = "", $classroomId: ID = "", $teacherId: ID
                 duration
                 deliveredBy
                 date
+                isCompleted
                 classroomID
                 activity
                 rating

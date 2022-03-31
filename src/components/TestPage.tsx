@@ -191,14 +191,14 @@ const TestPage = () => {
 {/*                <LoadingButton variant={'contained'} onClick={async () => {
                     setLoading(true);
                     const query1 =
-                        `query MyQuery($id: ID = "16f21789-4fdb-4157-b9ba-1865e61e1915") {
+                        `query MyQuery($id: ID = "873687be-3c7d-4517-853b-5a909b56c8f4") {
   getOrganization(id: $id) {
     members(limit: 100000) {
       items {
         id
       }
     }
-    Classrooms(filter: {id: {eq: "f92ce805-fd78-40f0-af4a-ba08c0122f0d"}}) {
+    Classrooms {
       items {
         members(limit: 10000) {
           items {
@@ -212,16 +212,18 @@ const TestPage = () => {
 }
 `
                     const result: any = await API.graphql(graphqlOperation(query1));
-                    for (const item of result.data.getOrganization?.Classrooms.items[0].members.items) {
-                        if (result.data.getOrganization.members.items.find((member: any) => member.id === item.userInOrganizationID) === undefined) {
-                            console.log("ITEM", item.userInOrganizationID);
-                            const deleted = await API.graphql(graphqlOperation(deleteUserInOrganizationInClassroom, {
-                                input: {
-                                    id: item.id
-                                }
-                            }))
-                            console.log(deleted);
+                    for (const classroom of result.data.getOrganization?.Classrooms.items) {
+                        for (const item of classroom.members.items) {
+                            if (result.data.getOrganization.members.items.find((member: any) => member.id === item.userInOrganizationID) === undefined) {
+                                console.log("ITEM", item.userInOrganizationID);
+                                const deleted = await API.graphql(graphqlOperation(deleteUserInOrganizationInClassroom, {
+                                    input: {
+                                        id: item.id
+                                    }
+                                }))
+                                console.log(deleted);
 
+                            }
                         }
                     }
                     setLoading(false);

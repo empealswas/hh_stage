@@ -350,7 +350,7 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
 
     return (
         <>
-            {classroomData &&
+{/*            {classroomData &&
                 <LoadingButton loading={completeLessonLoading} color={classroomData.completed ? 'info' : 'success'} style={{marginBottom: 15}}
                         onClick={async () => {
                             setCompleteLessonLoading(true);
@@ -366,7 +366,7 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                         }
                         }
                                variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</LoadingButton>
-            }
+            }*/}
             {(selectedClassroom && lessonId) &&
                 <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}
                                setLessonRecord={setLessonRecord}/>

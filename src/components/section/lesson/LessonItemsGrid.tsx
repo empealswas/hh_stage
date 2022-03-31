@@ -34,6 +34,15 @@ const getClassroomQuery = `query MyQuery($id: ID = "") {
   }
 }
 `
+const complete = `query MyQuery($classroomId: ID = "", $lessonId: ID = "") {
+  listPELessonRecords(limit: 1000000000, filter: {classroomID: {eq: $classroomId}, lessonID: {eq: $lessonId}}) {
+    items {
+      id
+      isCompleted
+    }
+  }
+}
+`
 type LessonComplete = {
     lesson: Lesson,
     completed: boolean
@@ -52,6 +61,7 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                         id: userInOrganization?.organizations?.items[0]?.id,
                     })));
                     const classrooms = result.data?.getUserInOrganization?.classrooms?.items?.map((item: any) => item.classroom);
+                    console.log('Classrooms', classrooms);
                     if (classrooms.length == 0) {
                         return;
                     }
@@ -59,16 +69,15 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                     await Promise.all(lessons.sort((a, b) => a.title?.localeCompare(b.title ?? '') as number).map(async (lesson: Lesson, index: number) => {
                         const completedArray: boolean[] = [];
                         for (const classroom of classrooms) {
-                            const result: any = await API.graphql(graphqlOperation(classroomCompleteQuery, {
-                                classroom: classroom.id,
-                                lesson: lesson.id
+                            const result: any = await API.graphql(graphqlOperation(complete, {
+                                classroomId: classroom.id,
+                                lessonId: lesson.id
                             }));
-                            console.log(result.data.listClassroomLessons.items)
-                            if (result.data.listClassroomLessons.items.length == 0) {
+                            console.log('Result', result.data.listPELessonRecords.items);
+                            if (result.data.listPELessonRecords.items.length == 0) {
                                 completedArray.push(false);
                             }else{
-
-                            completedArray.push(result.data.listClassroomLessons.items[0].completed);
+                            completedArray.push(result.data.listPELessonRecords.items[0].isCompleted ?? false);
                             }
                         }
                             lessonsComplete.push({lesson: lesson, completed: completedArray.every(value => value)});
