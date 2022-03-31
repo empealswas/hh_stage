@@ -18,8 +18,8 @@ import useAuth from "../../../../../hooks/useAuth";
 
 // ----------------------------------------------------------------------
 
-const CHART_HEIGHT = 372;
-const LEGEND_HEIGHT = 72;
+const CHART_HEIGHT = 700;
+const LEGEND_HEIGHT = 200;
 
 
 // ----------------------------------------------------------------------
@@ -27,7 +27,7 @@ const LEGEND_HEIGHT = 72;
 const CHART_DATA = [6, 4, 6, 8];
 const ChartWrapperStyle = styled('div')(({theme}) => ({
     height: CHART_HEIGHT,
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(0),
     '& .apexcharts-canvas svg': {height: CHART_HEIGHT},
     '& .apexcharts-canvas svg,.apexcharts-canvas foreignObject': {
         overflow: 'visible'
@@ -104,7 +104,7 @@ export default function PupilActivitiesChart() {
             for (let key in activities) {
                 if (key !== null) {
                     let value = activities[key];
-                    chartData.push(value / all);
+                    chartData.push(value );
                 }
             }
             setData({
@@ -122,17 +122,17 @@ export default function PupilActivitiesChart() {
     if (!data) {
         return (<ActivtityChartSkeleton/>);
     }
-
-
+    console.log("Series", data.series);
     const chartOptions: any = merge(BaseOptionChart(), {
 
         labels: data.names,
         legend: {floating: true, horizontalAlign: 'center'},
         dataLabels: {enabled: true, dropShadow: {enabled: false}},
+
         tooltip: {
             fillSeriesColor: false,
             y: {
-                formatter: (seriesName: any) => fPercent(seriesName * 100),
+                formatter: (seriesName: any) => seriesName,
                 title: {
                     formatter: (seriesName: any) => {
                         if (seriesName === 'null') {
@@ -144,17 +144,24 @@ export default function PupilActivitiesChart() {
             }
         },
         plotOptions: {
-            pie: {donut: {labels: {show: false}}}
-        }
+            bar: {
+                barHeight: '100%',
+                distributed: true,
+                horizontal: true,
+                dataLabels: {
+                    position: 'bottom'
+                },
+            }
+        },
     });
 
     return (
         <Card>
             <CardHeader title="Activities" subheader={"All time activity"}/>
             <ChartWrapperStyle dir="ltr">
-                <ReactApexChart type="pie"
-                                series={data.series}
-                                options={chartOptions} height={300}/>
+                <ReactApexChart type="bar"
+                                series={[{data: data.series}]}
+                                options={chartOptions} height={500}/>
             </ChartWrapperStyle>
         </Card>
     );

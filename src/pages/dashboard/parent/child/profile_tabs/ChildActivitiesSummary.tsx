@@ -62,10 +62,10 @@ const ChildActivitiesSummary = (props: {user: User}) => {
                         <StepsChart userId={props.user.id}/>
                     </Grid>
                     <Grid item xs={12} md={12} lg={12}>
-                        <PupilActivitiesChart/>
+                        <SleepChart/>
                     </Grid>
                     <Grid item xs={12} md={12} lg={12}>
-                        <SleepChart/>
+                        <PupilActivitiesChart/>
                     </Grid>
                 </Grid>
             </SleepDataContext.Provider>

@@ -415,13 +415,13 @@ const OrganizationDashboard = () => {
                             <ActivtityChartSkeleton/>
                         }
                     </Grid>
-                    <Grid item xs={12}>
+{/*                    <Grid item xs={12}>
                         {organization ?
                             <ActivityOrganizationLineChart organization={organization}/>
                             :
                             <ActivtityChartSkeleton/>
                         }
-                    </Grid>
+                    </Grid>*/}
 
                     {/*          <Grid item xs={12} md={6} lg={8}>
             <AnalyticsWebsiteVisits />
