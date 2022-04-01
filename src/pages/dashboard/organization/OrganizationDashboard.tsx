@@ -122,6 +122,7 @@ const OrganizationDashboard = () => {
     const [participants, setParticipants] = useState<number | null>(null);
 
     const handleChange = (event: SelectChangeEvent) => {
+
         if (!event.target.value) {
             setSelectedClassroom(null);
             return;
@@ -140,7 +141,7 @@ const OrganizationDashboard = () => {
                 setEndDate(new Date());
                 break;
             case 'term':
-                setStartDate(subMonths(new Date(), 4));
+                setStartDate(subMonths(new Date(), 3));
                 setEndDate(new Date());
                 break;
             case 'year':
@@ -282,7 +283,6 @@ const OrganizationDashboard = () => {
                 <Typography variant="h4" sx={{mb: 5}}>
                     Hi, {user?.firstName}, welcome back!
                 </Typography>
-
                 <Grid container spacing={3}>
                     {classrooms &&
                         <Grid item xs={12}>
@@ -317,7 +317,7 @@ const OrganizationDashboard = () => {
                                         </MenuItem>
                                         <MenuItem value={'week'}>7 Days</MenuItem>
                                         <MenuItem value={'month'}>30 Days</MenuItem>
-                                        <MenuItem value={'term'}>4 Months</MenuItem>
+                                        <MenuItem value={'term'}>3 Months</MenuItem>
                                         <MenuItem value={'year'}>1 Year</MenuItem>
                                     </Select>
                                 </FormControl>

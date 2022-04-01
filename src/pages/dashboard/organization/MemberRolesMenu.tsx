@@ -23,6 +23,7 @@ import {useTheme} from "@mui/material/styles";
 import {API, graphqlOperation} from "aws-amplify";
 import {createRolesOfUser, deleteRolesOfUser} from "../../../graphql/mutations";
 import {UserMoreMenu} from "../../../sections/@dashboard/user/list";
+import Scrollbar from "../../../components/Scrollbar";
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ export default function MemberRolesMenu({id, roles, allRoles, updateUsers}: Prop
 
     return (
         <>
-            <Tooltip title={'Roles'} >
+            <Tooltip title={'Roles'}>
                 <IconButton onClick={handleOpen}>
                     <Iconify icon={'mdi:account'} width={20} height={20}/>
                 </IconButton>
@@ -65,55 +66,56 @@ export default function MemberRolesMenu({id, roles, allRoles, updateUsers}: Prop
                 transformOrigin={{vertical: 'top', horizontal: 'right'}}
                 arrow="right-top"
                 sx={{
-                    mt: -1,
-                    width: 160,
-                    background: 'background.neutral',
+                    mt: -1.5,
                     '& .MuiMenuItem-root': {px: 1, typography: 'body2', borderRadius: 0.75},
+                    width: 360, p: 0, ml: 0.75,
                 }}
             >
-                <Container>
-                    <FormGroup>
-                        {allRoles?.map(value =>
-                            <FormControlLabel
-                                key={value.id}
-                                onChange={async (event, checked) => {
-                                    if (checked) {
-                                        const result: any = await API.graphql(graphqlOperation(createRolesOfUser, {
-                                            input: {
-                                                userInOrganizationID: id,
-                                                userRoleID: value.id,
-                                            }
-                                        }))
-                                        /*                                     setAddedRoles(prevState => {
-                                                                                 const copy = [...prevState];
-                                                                                 copy.push(result.data.createRolesOfUser);
-                                                                                 return copy;
-                                                                             })*/
-                                        console.log(result);
-                                    } else {
-                                        const idToDelete = roles.find(role => role.userRole.id === value.id)?.id;
-                                        console.log(idToDelete)
-                                        if (idToDelete) {
-                                            const result: any = await API.graphql(graphqlOperation(deleteRolesOfUser, {
+                <Scrollbar sx={{height: {xs: 340}}}>
+                    <Container>
+                        <FormGroup>
+                            {allRoles?.map(value =>
+                                <FormControlLabel
+                                    key={value.id}
+                                    onChange={async (event, checked) => {
+                                        if (checked) {
+                                            const result: any = await API.graphql(graphqlOperation(createRolesOfUser, {
                                                 input: {
-                                                    id: idToDelete,
+                                                    userInOrganizationID: id,
+                                                    userRoleID: value.id,
                                                 }
-                                            }));
-                                            /*                            setAddedRoles(prevState => {
-                                                                            const copy = [...prevState];
-                                                                            return copy.filter(value1 => value1.id !== result.data.deleteRolesOfUser);
-                                                                        })
-                                                                        console.log(result);*/
+                                            }))
+                                            /*                                     setAddedRoles(prevState => {
+                                                                                     const copy = [...prevState];
+                                                                                     copy.push(result.data.createRolesOfUser);
+                                                                                     return copy;
+                                                                                 })*/
+                                            console.log(result);
+                                        } else {
+                                            const idToDelete = roles.find(role => role.userRole.id === value.id)?.id;
+                                            console.log(idToDelete)
+                                            if (idToDelete) {
+                                                const result: any = await API.graphql(graphqlOperation(deleteRolesOfUser, {
+                                                    input: {
+                                                        id: idToDelete,
+                                                    }
+                                                }));
+                                                /*                            setAddedRoles(prevState => {
+                                                                                const copy = [...prevState];
+                                                                                return copy.filter(value1 => value1.id !== result.data.deleteRolesOfUser);
+                                                                            })
+                                                                            console.log(result);*/
+                                            }
                                         }
-                                    }
-                                }}
-                                control={<Checkbox
-                                    defaultChecked={!!roles.find(role => role.userRole.id === value.id)}/>}
-                                label={String(value.name)}
-                            />)}
+                                    }}
+                                    control={<Checkbox
+                                        defaultChecked={!!roles.find(role => role.userRole.id === value.id)}/>}
+                                    label={String(value.name)}
+                                />)}
 
-                    </FormGroup>
-                </Container>
+                        </FormGroup>
+                    </Container>
+                </Scrollbar>
             </MenuPopover>
         </>
     );

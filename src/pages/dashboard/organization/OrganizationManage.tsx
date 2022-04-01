@@ -49,8 +49,7 @@ const OrganizationManage = () => {
                 <HeaderBreadcrumbs
                     heading="Organization"
                     links={[
-                        { name: 'Dashboard', href: PATH_DASHBOARD.root },
-                        { name: 'Organization', href: `${PATH_DASHBOARD.root}/organization/${organizationId}` },
+                        { name: 'Organization Content', href: `${PATH_DASHBOARD.root}/organization/${organizationId}` },
                         { name: 'Organization Manage' },
                     ]}
                 />

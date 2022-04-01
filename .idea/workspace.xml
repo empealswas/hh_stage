@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/header/NotificationsPopover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/header/NotificationsPopover.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/MemberRolesMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/MemberRolesMenu.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/ChildActivitiesSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/PupilActivitiesChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/PupilActivitiesChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationManage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationManage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +169,11 @@
       <workItem from="1648627476638" duration="3310000" />
       <workItem from="1648648364428" duration="8233000" />
       <workItem from="1648717843097" duration="4983000" />
-      <workItem from="1648754351468" duration="786000" />
+      <workItem from="1648754351468" duration="966000" />
+      <workItem from="1648816385470" duration="254000" />
+      <workItem from="1648816931121" duration="824000" />
+      <workItem from="1648820643129" duration="291000" />
+      <workItem from="1648828481984" duration="1935000" />
     </task>
     <servers />
   </component>

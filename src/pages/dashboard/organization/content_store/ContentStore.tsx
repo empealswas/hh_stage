@@ -10,7 +10,7 @@ import {
     FormGroup,
     Grid,
     IconButton,
-    Link, Stack, Tooltip,
+    Link, Stack, TextField, Tooltip,
     Typography
 } from "@mui/material";
 import CardSkeleton from "../../../../components/skeleton/CardSkeleton";
@@ -33,6 +33,7 @@ import cssStyles from "../../../../utils/cssStyles";
 import {styled} from "@mui/material/styles";
 import {getUser} from "../../../../graphql/queries";
 import useAuth from "../../../../hooks/useAuth";
+import Scrollbar from "../../../../components/Scrollbar";
 
 
 const query = `query MyQuery {
@@ -151,7 +152,8 @@ const ContentStore = () => {
             <>
                 {sectionsToDisplay?.sort((a, b) => a.name?.localeCompare(b.name ?? '') ?? 0).map((value: Section, index: number) => (
                     <Grid key={value.id} item lg={4} md={4} sm={6} xs={12}>
-                        <SectionCard ownerOrganization={value?.OrganizationOwner as Organization} linkTo={''} imagePath={value?.ImagePreview?.key} title={value.name ?? ''}
+                        <SectionCard ownerOrganization={value?.OrganizationOwner as Organization} linkTo={''}
+                                     imagePath={value?.ImagePreview?.key} title={value.name ?? ''}
                                      sectionId={value.id} organizations={organizations}
                                      updateOrganizations={getOrganizationsAsync}/>
                     </Grid>
@@ -180,7 +182,7 @@ function MoreMenuButton(props: ActivityCardProps) {
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     const [open, setOpen] = useState<HTMLElement | null>(null);
-
+    const [filterByName, setFilterByName] = useState('');
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
         setOpen(event.currentTarget);
     };
@@ -212,46 +214,53 @@ function MoreMenuButton(props: ActivityCardProps) {
                 transformOrigin={{vertical: 'top', horizontal: 'right'}}
                 arrow="right-top"
                 sx={{
-                    mt: -0.5,
+                    mt: 1.5,
                     '& .MuiMenuItem-root': {px: 1, typography: 'body2', borderRadius: 0.75},
+                    width: 360, p: 4, ml: 0.75,
                 }}
             >
-                <Container>
-                    <FormGroup>
+                <Stack direction={'column'} spacing={2}>
+                    <TextField id="outlined-basic" label="Search" variant="outlined" value={filterByName}
+                               onChange={event => setFilterByName(event.target.value)}/>
 
-                        {props.organizations?.map(value =>
-                            <>
-                            <FormControlLabel
-                                key={value.id}
-                                onChange={async (event, checked) => {
-                                    if (checked) {
-                                        API.graphql(graphqlOperation(createSectionFromContentStore, {
-                                            input: {
-                                                organizationID: value.id,
-                                                sectionID: props.sectionId,
+                    <Scrollbar sx={{height: {xs: 340}}}>
+                        <FormGroup>
+
+                            {props.organizations?.filter(value => value.name?.toLowerCase().includes(filterByName.toLowerCase())).map(value =>
+                                <>
+                                    <FormControlLabel
+                                        key={value.id}
+                                        onChange={async (event, checked) => {
+                                            if (checked) {
+                                                API.graphql(graphqlOperation(createSectionFromContentStore, {
+                                                    input: {
+                                                        organizationID: value.id,
+                                                        sectionID: props.sectionId,
+                                                    }
+                                                }))
+                                            } else {
+                                                value.SectionsFromContentStore?.items.forEach(section => {
+                                                    API.graphql(graphqlOperation(deleteSectionFromContentStore, {
+                                                        input: {
+                                                            id: section?.id,
+                                                        }
+                                                    }))
+                                                })
                                             }
-                                        }))
-                                    }else{
-                                        value.SectionsFromContentStore?.items.forEach(section => {
-                                            API.graphql(graphqlOperation(deleteSectionFromContentStore, {
-                                                input: {
-                                                    id: section?.id,
-                                                }
-                                            }))
-                                        })
-                                    }
-                                }}
-                                control={<Checkbox
-                                    defaultChecked={!!value.SectionsFromContentStore?.items.find(section => section?.sectionID === props.sectionId)}/>}
-                                label={String(value.name)}
-                            />
+                                        }}
+                                        control={<Checkbox
+                                            defaultChecked={!!value.SectionsFromContentStore?.items.find(section => section?.sectionID === props.sectionId)}/>}
+                                        label={String(value.name)}
+                                    />
 
-                            </>
-                        )}
+                                </>
+                            )}
 
 
-                    </FormGroup>
-                </Container>
+                        </FormGroup>
+                    </Scrollbar>
+                </Stack>
+
             </MenuPopover>
         </>
     );
