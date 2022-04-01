@@ -5,6 +5,8 @@ import { initReactI18next } from 'react-i18next';
 import enLocales from './en.json';
 import deLocales from './de.json';
 import frLocales from './fr.json';
+import gaLocales from './ga.json';
+import ukLocales from './uk.json';
 
 // ----------------------------------------------------------------------
 
@@ -15,7 +17,9 @@ i18n
     resources: {
       en: { translations: enLocales },
       de: { translations: deLocales },
-      fr: { translations: frLocales }
+      fr: { translations: frLocales },
+        ga: {translations: gaLocales},
+        uk: {translations: ukLocales},
     },
     lng: localStorage.getItem('i18nextLng') || 'en',
     fallbackLng: 'en',

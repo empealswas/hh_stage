@@ -1,36 +1,14 @@
-import {sentenceCase} from 'change-case';
-import {useState} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 // @mui
 import {useTheme} from '@mui/material/styles';
-import {
-    Card,
-    Table,
-    Avatar,
-    Button,
-    Checkbox,
-    TableRow,
-    TableBody,
-    TableCell,
-    Container,
-    Typography,
-    TableContainer,
-    TablePagination, Stack, CardContent,
-} from '@mui/material';
+import {Button, Card, CardContent, Container, Stack, Typography,} from '@mui/material';
 import Iconify from "../../../../components/Iconify";
-import {UserListHead, UserListToolbar, UserMoreMenu} from "../../../../sections/@dashboard/user/list";
-import Label from "../../../../components/Label";
 import useSettings from "../../../../hooks/useSettings";
 import Page from "../../../../components/Page";
 import {PATH_DASHBOARD} from "../../../../routes/paths";
-import SearchNotFound from "../../../../components/SearchNotFound";
-import {UserManager} from "../../../../@types/user";
-import _mock, {_userList} from "../../../../_mock";
-import HeaderBreadcrumbs from "../../../../components/HeaderBreadcrumbs";
-import Scrollbar from "../../../../components/Scrollbar";
-import {randomInArray} from "../../../../_mock/funcs";
 import OrganizationsTable from "../../user/OrganizationsTable";
 import useAuth from "../../../../hooks/useAuth";
+import useLocales from "../../../../hooks/useLocales";
 // routes
 // hooks
 // @types
@@ -55,6 +33,7 @@ export default function OrganizationsList() {
 
     const {themeStretch} = useSettings();
     const {user} = useAuth();
+    const {translate} = useLocales();
     if (user?.isAdmin) {
         return (
             <Page title="User: Organization">
@@ -62,7 +41,7 @@ export default function OrganizationsList() {
 
                     <Stack sx={{mb: 2}} justifyContent={{sx: 'center', md: 'space-between'}}
                            direction={{sx: 'column', md: 'row'}}>
-                        <Typography variant={'h4'}>Your organizations</Typography>
+                        <Typography variant={'h4'}>{translate('Your Organizations')}</Typography>
                         <Button
                             variant="contained"
                             component={RouterLink}

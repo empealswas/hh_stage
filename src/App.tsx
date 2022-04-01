@@ -26,6 +26,7 @@ Amplify.register(API);
 export default function App() {
     const {user} = useAuth();
     return (
+
         <ThemeProvider>
             <ThemeColorPresets>
                 <ThemeLocalization>

@@ -5,12 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/icons/ireland_national_icon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/i18n.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/locales/ga.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/locales/uk.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/header/NotificationsPopover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/header/NotificationsPopover.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/MemberRolesMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/MemberRolesMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationManage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationManage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/content_store/ContentStore.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/nav-section/vertical/NavItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/nav-section/vertical/NavItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/nav-section/vertical/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/nav-section/vertical/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useLocales.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useLocales.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/header/AccountPopover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/header/AccountPopover.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/header/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/en.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/locales/i18n.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/i18n.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/OrganizationsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/OrganizationsList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +63,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/pages/dashboard/organization/activity" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/locales" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -59,6 +71,7 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettier.import.notification.dismissed" value="true" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="ts.external.directory.path" value="C:\Projects\Work\Healthy-Habits-Content\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -73,13 +86,14 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\locales" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\public\locales\de" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\activity" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\sections\auth\reset-password" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\user\organization" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\member" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\public\icons" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson\attendance" />
@@ -174,6 +188,7 @@
       <workItem from="1648816931121" duration="824000" />
       <workItem from="1648820643129" duration="291000" />
       <workItem from="1648828481984" duration="1935000" />
+      <workItem from="1648837224777" duration="5757000" />
     </task>
     <servers />
   </component>

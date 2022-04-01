@@ -6,7 +6,7 @@ import SvgIconStyle from '../../../components/SvgIconStyle';
 import Iconify from "../../../components/Iconify";
 
 // ----------------------------------------------------------------------
-
+import i18n from '../../../locales/i18n';
 const getIcon = (name: string) => (
     <SvgIconStyle src={`/icons/${name}.svg`} sx={{width: 1, height: 1}}/>
 );
@@ -42,10 +42,10 @@ const navConfig = [
         ],
     },
     {
-        subheader: 'organizations',
+        subheader: 'Organizations',
         items: [
             {
-                title: 'Your organizations',
+                title: 'Your Organizations',
                 path: PATH_DASHBOARD.general.organization,
                 icon: <Iconify icon={'eos-icons:admin-outlined'} sx={{width: 20, height: 20}}/>
             },

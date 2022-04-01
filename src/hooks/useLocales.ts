@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 // @mui
 import { enUS, deDE, frFR,  } from '@mui/material/locale';
-
+import "../../public/icons/ireland_national_icon.svg"
 // ----------------------------------------------------------------------
 
 const LANGS = [
@@ -15,9 +15,15 @@ const LANGS = [
     label: 'Irish',
     value: 'ga',
     systemValue: enUS,
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Ireland.svg',
+    icon: 'https://www.svgrepo.com/show/241267/ireland.svg',
   },
   {
+    label: 'Ukrainian',
+    value: 'uk',
+    systemValue: enUS,
+    icon: 'https://www.svgrepo.com/show/33561/ukraine.svg',
+  },
+/*  {
     label: 'German',
     value: 'de',
     systemValue: deDE,
@@ -28,7 +34,7 @@ const LANGS = [
     value: 'fr',
     systemValue: frFR,
     icon: 'https://minimal-assets-api.vercel.app/assets/icons/ic_flag_fr.svg',
-  },
+  },*/
 ];
 
 export default function useLocales() {
