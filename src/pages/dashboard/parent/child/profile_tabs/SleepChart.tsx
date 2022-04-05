@@ -164,7 +164,7 @@ export default function SleepChart() {
     );
     return (
         <Card>
-            <CardHeader title="Today's Sleep" subheader={format(new Date(), 'MMMM')}/>
+            <CardHeader title="Sleep" subheader={format(new Date(), 'MMMM')}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart series={[
                     {

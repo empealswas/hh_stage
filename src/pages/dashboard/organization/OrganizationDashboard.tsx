@@ -38,14 +38,14 @@ const query = `query MyQuery($id: ID = "") {
       items {
         id
         name
-        LessonRecords(limit: 100000, filter: {isCompleted: {eq: true}}) {
+        LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
           items {
             date
             id
             duration
             activity
             rating
-            Attendances(limit: 100000, filter: {present: {eq: true}}) {
+            Attendances(limit: 10000000, filter: {present: {eq: true}}) {
               items {
                 id
                 wasRewarded
@@ -72,14 +72,14 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
       items {
         id
         name
-        LessonRecords(limit: 100000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
+        LessonRecords(limit: 10000000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
           items {
             date
             id
             duration
             activity
             rating
-            Attendances(filter: {present: {eq: true}}, limit: 100000) {
+            Attendances(filter: {present: {eq: true}}, limit: 10000000) {
               items {
                 id
                 wasRewarded
@@ -98,7 +98,6 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
       }
     }
   }
-}
 `
 const participantsQuery = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -255,6 +254,7 @@ const OrganizationDashboard = () => {
         const groupByUser: any = collect(lessonRecords?.flatMap(lessonRecord => lessonRecord?.Attendances?.items))
             .groupBy((item: any) => item?.userInOrganizationAttendancesId)
             .all();
+        console.log('group', groupByUser);
         const usersByTrophies = [];
         for (const name in groupByUser) {
             let userCredentials = groupByUser[name].items[0].UserInOrganization.user;
@@ -263,10 +263,10 @@ const OrganizationDashboard = () => {
                 attendances: groupByUser[name].items.filter((item: any) => item?.wasRewarded ?? false),
             })
         }
-        values.usersByRewards = usersByTrophies.sort(a => a.attendances.length).reverse().slice(0, 5);
+        console.log(usersByTrophies);
+        values.usersByRewards = usersByTrophies.sort((a, b) =>  b.attendances.length - a.attendances.length).slice(0, 5);
 
-        console.log(values.usersByRewards);
-        console.log("Group by user", groupByUser);
+        console.log("Users" ,values.usersByRewards);
 
         console.log(groupByDate)
         const trainingSessionsData = [];

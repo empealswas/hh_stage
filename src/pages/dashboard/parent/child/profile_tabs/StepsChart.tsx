@@ -102,7 +102,7 @@ export default function StepsChart(props: { userId: string }) {
     });
     return (
         <Card>
-            <CardHeader title="Today's Steps" subheader={format(new Date(), 'MMMM')}/>
+            <CardHeader title="Steps" subheader={format(new Date(), 'MMMM')}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart type="line" series={[{
                     data: terraData?.data?.map(value => value.distance_data.steps) ?? [], name: 'Number of Steps',
