@@ -16,12 +16,12 @@ import CardSkeleton from "../../../components/skeleton/CardSkeleton";
 import useSettings from 'src/hooks/useSettings';
 import useAuth from "../../../hooks/useAuth";
 import AnalyticsWidgetSummary from 'src/sections/@dashboard/general/analytics/AnalyticsWidgetSummary';
-import {Classroom, Lesson, Organization, PELessonRecord, UserInOrganization} from "../../../API";
+import {Attendance, Classroom, Lesson, Organization, PELessonRecord, UserInOrganization} from "../../../API";
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import ActivityOrganizationBarchart from "./dashboard/ActivityOrganizationBarchart";
 import ActivtityChartSkeleton from "../../../components/skeleton/ActivtityChartSkeleton";
-import {collect} from "collect.js";
+import {collect, Collection} from "collect.js";
 import ActivityOrganizationLineChart from "./dashboard/ActivityOrganizationLineChart";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -30,6 +30,7 @@ import {compareAsc, format, parseISO, subDays, subMonths, subYears} from "date-f
 import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
+import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
 
 const query = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -47,6 +48,14 @@ const query = `query MyQuery($id: ID = "") {
             Attendances(limit: 100000, filter: {present: {eq: true}}) {
               items {
                 id
+                wasRewarded
+                userInOrganizationAttendancesId
+                UserInOrganization {
+                  user {
+                    lastName
+                    firstName
+                  }
+                }
               }
             }
           }
@@ -73,6 +82,15 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
             Attendances(filter: {present: {eq: true}}, limit: 100000) {
               items {
                 id
+                wasRewarded
+                userInOrganizationAttendancesId
+                UserInOrganization {
+                  user {
+                    lastName
+                    firstName
+                  }
+                }
+                }
               }
             }
           }
@@ -108,6 +126,7 @@ type DashboardValues = {
     totalDuration?: number;
     totalTrainingQuality?: number;
     qualityData?: number[];
+    usersByRewards?: any[];
 }
 const OrganizationDashboard = () => {
     const {user} = useAuth();
@@ -233,6 +252,22 @@ const OrganizationDashboard = () => {
             return values;
         }
         const groupByDate: any = collect(lessonRecords).groupBy(item => item?.date).all();
+        const groupByUser: any = collect(lessonRecords?.flatMap(lessonRecord => lessonRecord?.Attendances?.items))
+            .groupBy((item: any) => item?.userInOrganizationAttendancesId)
+            .all();
+        const usersByTrophies = [];
+        for (const name in groupByUser) {
+            let userCredentials = groupByUser[name].items[0].UserInOrganization.user;
+            usersByTrophies.push({
+                user: userCredentials?.firstName + " " + userCredentials?.lastName,
+                attendances: groupByUser[name].items.filter((item: any) => item?.wasRewarded ?? false),
+            })
+        }
+        values.usersByRewards = usersByTrophies.sort(a => a.attendances.length).reverse().slice(0, 5);
+
+        console.log(values.usersByRewards);
+        console.log("Group by user", groupByUser);
+
         console.log(groupByDate)
         const trainingSessionsData = [];
         const participants = [];
@@ -325,8 +360,8 @@ const OrganizationDashboard = () => {
                                     <DatePicker
                                         label="Start Date"
                                         // @ts-ignore
-                                        renderInput={(params) => <TextField                                         style={{minWidth: 200}}
-                                                                                                                    {...params} />}
+                                        renderInput={(params) => <TextField style={{minWidth: 200}}
+                                                                            {...params} />}
                                         value={startDate}
                                         onChange={(newValue) => {
                                             setStartDate(newValue);
@@ -337,7 +372,7 @@ const OrganizationDashboard = () => {
                                     <DatePicker
                                         label="End Date"
                                         // @ts-ignore
-                                        renderInput={(params) => <TextField  style={{minWidth: 200}} {...params} />}
+                                        renderInput={(params) => <TextField style={{minWidth: 200}} {...params} />}
                                         value={endDate}
                                         onChange={(newValue) => {
                                             setEndDate(newValue);
@@ -415,7 +450,15 @@ const OrganizationDashboard = () => {
                             <ActivtityChartSkeleton/>
                         }
                     </Grid>
-{/*                    <Grid item xs={12}>
+                    <Grid item xs={12}>
+                        {organization && dashboardValues.usersByRewards ?
+                            <TopUsersByRewardsBarchart data={dashboardValues.usersByRewards}/>
+                            :
+                            <ActivtityChartSkeleton/>
+                        }
+                    </Grid>
+
+                    {/*                    <Grid item xs={12}>
                         {organization ?
                             <ActivityOrganizationLineChart organization={organization}/>
                             :

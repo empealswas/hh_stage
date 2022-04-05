@@ -19,7 +19,7 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
     async function  followRegistrationLink() {
         const data = {
             reference_id: props.user.id,
-            providers: "FITBIT, GOOGLE, GARMIN, APPLE, OURA, SUUNTO",
+            providers: "FITBIT, GOOGLE, GARMIN, OURA, SUUNTO",
             auth_success_redirect_url: window.location.href,
             auth_failure_redirect_url: window.location.href,
             language: "EN",

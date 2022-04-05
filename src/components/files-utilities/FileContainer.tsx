@@ -78,7 +78,7 @@ const FileContainer = (props: Props) => {
                 <Link color={'inherit'} onClick={()=>{
                     window.open(linkToFile, '_blank')
                 }} >
-                    <Typography variant="subtitle1">{fileName}</Typography>
+                    <Typography  variant="subtitle1">{fileName.substring(0, 40)}</Typography>
                 <Typography variant="body2" sx={{opacity: 0.72}}>
                     {file.createdAt}
                 </Typography>

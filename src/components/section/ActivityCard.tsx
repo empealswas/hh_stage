@@ -72,7 +72,7 @@ export default function ActivityCard(props: ActivityCardProps) {
                     <CaptionStyle>
                         <div>
                             <Typography variant="subtitle1">{title}</Typography>
-                            <Typography variant="body2" textAlign={'center'} sx={{opacity: 0.72}}>
+                            <Typography  variant="body2" textAlign={'center'} sx={{opacity: 0.72}}>
                                 {/*{fDate('10/20/2022')}*/}
                             </Typography>
                         </div>

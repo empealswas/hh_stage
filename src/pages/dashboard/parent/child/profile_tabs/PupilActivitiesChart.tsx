@@ -127,7 +127,7 @@ export default function PupilActivitiesChart() {
 
         labels: data.names,
         legend: {floating: true, horizontalAlign: 'center'},
-        dataLabels: {enabled: true, dropShadow: {enabled: false}},
+        // dataLabels: {enabled: true, dropShadow: {enabled: false}},
 
         tooltip: {
             fillSeriesColor: false,
@@ -138,9 +138,23 @@ export default function PupilActivitiesChart() {
                         if (seriesName === 'null') {
                             return 'Undefined';
                         }
-                        return `${seriesName}`;
+                        return `Minutes of activity`;
                     }
                 }
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            textAnchor: 'start',
+            style: {
+                colors: ['#fff']
+            },
+            formatter: function (val : any, opt: any) {
+                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+            },
+            offsetX: 0,
+            dropShadow: {
+                enabled: true
             }
         },
         plotOptions: {
