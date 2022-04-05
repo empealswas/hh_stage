@@ -5,7 +5,7 @@ import { PATH_DASHBOARD } from './routes/paths';
 // API
 // ----------------------------------------------------------------------
 
-export const HOST_API = process.env.REACT_APP_HOST_API_KEY || '';
+export const HOST_API = process.env.REACT_APP_HOST_API_KEY || 'https://minimal-assets-api.vercel.app';
 
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
