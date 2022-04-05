@@ -137,7 +137,7 @@ export default function Router() {
 
                     ],
                 },
-                /*                {
+/*                                {
                                     path: 'blog',
                                     children: [
                                         {element: <Navigate to="/dashboard/blog/posts" replace/>, index: true},
@@ -163,9 +163,9 @@ export default function Router() {
                                         {path: 'new', element: <Chat/>},
                                         {path: ':conversationKey', element: <Chat/>},
                                     ],
-                                },
+                                },*/
                                 {path: 'calendar', element: <Calendar/>},
-                                {path: 'kanban', element: <Kanban/>},*/
+                                {path: 'kanban', element: <Kanban/>},
             ],
         },
 

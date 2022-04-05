@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationDashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/SleepChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/SleepChart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/StepsChart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/activity/ActivityWidgets.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +178,7 @@
       <workItem from="1649097148216" duration="1088000" />
       <workItem from="1649145732143" duration="6252000" />
       <workItem from="1649153427090" duration="2384000" />
+      <workItem from="1649179504469" duration="170000" />
     </task>
     <servers />
   </component>
