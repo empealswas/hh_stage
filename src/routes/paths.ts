@@ -58,6 +58,7 @@ export const PATH_DASHBOARD = {
     conversation: path(ROOTS_DASHBOARD, '/chat/:conversationKey'),
   },
   calendar: path(ROOTS_DASHBOARD, '/calendar'),
+  feedback: path(ROOTS_DASHBOARD, '/feedback'),
   kanban: path(ROOTS_DASHBOARD, '/kanban'),
   user: {
     root: path(ROOTS_DASHBOARD, '/user'),

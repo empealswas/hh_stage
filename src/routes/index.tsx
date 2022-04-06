@@ -18,6 +18,7 @@ import OrganizationManage from 'src/pages/dashboard/organization/OrganizationMan
 import OrganizationOutlet from "../pages/dashboard/organization/OrganizationOutlet";
 import ContentStore from "../pages/dashboard/organization/content_store/ContentStore";
 import TestPage from "../components/TestPage";
+import Feedback from "../components/feedback/Feedback";
 
 // ----------------------------------------------------------------------
 
@@ -165,6 +166,7 @@ export default function Router() {
                                     ],
                                 },*/
                                 {path: 'calendar', element: <Calendar/>},
+                                {path: 'feedback', element: <Feedback/>},
                                 {path: 'kanban', element: <Kanban/>},
             ],
         },

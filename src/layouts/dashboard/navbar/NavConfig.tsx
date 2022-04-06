@@ -124,6 +124,7 @@ const navConfig = [
         },
         { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },*/
         { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
+        { title: 'feedback', path: PATH_DASHBOARD.feedback, icon: ICONS.dashboard },
 /*        {
           title: 'kanban',
           path: PATH_DASHBOARD.kanban,
