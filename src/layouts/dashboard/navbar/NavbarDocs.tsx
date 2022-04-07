@@ -29,7 +29,7 @@ export default function NavbarDocs() {
         </Typography>
       </div>
 
-      <Button href={'https://healthy-habits.hellonext.co/'} target="_blank" rel="noopener" variant="contained">
+      <Button href={'https://healthcare-analytics.hellonext.co'} target="_blank" rel="noopener" variant="contained">
         Feedback
       </Button>
     </Stack>

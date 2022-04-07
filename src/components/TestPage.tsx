@@ -15,10 +15,10 @@ import {LoadingButton, LocalizationProvider} from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import {API, graphqlOperation} from "aws-amplify";
-import {listUsers} from "../graphql/queries";
+import {listOrganizations, listUsers} from "../graphql/queries";
 import {Section, User} from "../API";
 import {format, parseISO} from "date-fns";
-import {deleteUserInOrganizationInClassroom, updateSection} from "../graphql/mutations";
+import {deleteUserInOrganizationInClassroom, updateOrganization, updateSection} from "../graphql/mutations";
 
 const query = `query MyQuery {
   listSections(filter: {isPlacedInContentStore: {eq: true}}, limit: 100000) {
@@ -190,42 +190,43 @@ const TestPage = () => {
                 <LoadingButton loading={loading} variant={'contained'} onClick={search}>Test</LoadingButton>
 {/*                <LoadingButton variant={'contained'} onClick={async () => {
                     setLoading(true);
-                    const query1 =
-                        `query MyQuery($id: ID = "873687be-3c7d-4517-853b-5a909b56c8f4") {
-  getOrganization(id: $id) {
-    members(limit: 100000) {
-      items {
-        id
-      }
-    }
-    Classrooms {
-      items {
-        members(limit: 10000) {
-          items {
-            id
-            userInOrganizationID
-          }
-        }
-      }
-    }
-  }
-}
-`
-                    const result: any = await API.graphql(graphqlOperation(query1));
-                    for (const classroom of result.data.getOrganization?.Classrooms.items) {
-                        for (const item of classroom.members.items) {
-                            if (result.data.getOrganization.members.items.find((member: any) => member.id === item.userInOrganizationID) === undefined) {
-                                console.log("ITEM", item.userInOrganizationID);
-                                const deleted = await API.graphql(graphqlOperation(deleteUserInOrganizationInClassroom, {
-                                    input: {
-                                        id: item.id
-                                    }
-                                }))
-                                console.log(deleted);
 
-                            }
+                                        const query1 =
+                                            `query MyQuery($id: ID = "873687be-3c7d-4517-853b-5a909b56c8f4") {
+                      getOrganization(id: $id) {
+                        members(limit: 100000) {
+                          items {
+                            id
+                          }
                         }
+                        Classrooms {
+                          items {
+                            members(limit: 10000) {
+                              items {
+                                id
+                                userInOrganizationID
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
+                    `
+                                        const result: any = await API.graphql(graphqlOperation(query1));
+                                        for (const classroom of result.data.getOrganization?.Classrooms.items) {
+                                            for (const item of classroom.members.items) {
+                                                if (result.data.getOrganization.members.items.find((member: any) => member.id === item.userInOrganizationID) === undefined) {
+                                                    console.log("ITEM", item.userInOrganizationID);
+                                                    const deleted = await API.graphql(graphqlOperation(deleteUserInOrganizationInClassroom, {
+                                                        input: {
+                                                            id: item.id
+                                                        }
+                                                    }))
+                                                    console.log(deleted);
+
+                                                }
+                                            }
+                                        }
                     setLoading(false);
                 }} loading={loading}>Function</LoadingButton>*/}
                 <TextareaAutosize minRows={5} value={value}></TextareaAutosize>

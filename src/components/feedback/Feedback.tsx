@@ -2,7 +2,14 @@ import React from 'react';
 
 const Feedback = () => {
     return (
-            <iframe width={'100%'} height={'200%'} src="https://healthy-habits.hellonext.co/" />
+        <>
+        <iframe style={{
+            border: "0px",
+            height: "100vh",
+            width: "100%",
+        }} src='https://healthcare-analytics.hellonext.co/embed/b/feedback'/>
+        </>
+
     );
 };
 
