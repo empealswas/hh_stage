@@ -27,7 +27,7 @@ import {Classroom, Organization, Pupil, User, UserInOrganization} from "../../..
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import {getWearablesData, TerraWearables} from "../../../apiFunctions/apiFunctions";
-import {format, parseISO, subDays} from "date-fns";
+import {format, parseISO, subDays, subMonths, subYears} from "date-fns";
 import StepsActivityChart from "./activity/StepsActivityChart";
 import SleepActivityChart from "./activity/SleepActivityChart";
 import UsersDetailsAccordion from "./activity/UsersDetailsAccordion";
@@ -68,7 +68,31 @@ const ActivityDashboard = () => {
     const [selectedClassroom, setSelectedClassroom] = React.useState<Classroom | null>(null);
     const [startDate, setStartDate] = React.useState<Date | null>(null);
     const [endDate, setEndDate] = React.useState<Date | null>(null);
-
+    const [selectedPeriod, setSelectedPeriod] = useState('none');
+    const handleSelectedPeriodChange = (event: SelectChangeEvent) => {
+        setSelectedPeriod(event.target.value as string);
+        switch (event.target.value) {
+            case 'week':
+                setStartDate(subDays(new Date(), 7));
+                setEndDate(new Date());
+                break;
+            case 'month':
+                setStartDate(subDays(new Date(), 30));
+                setEndDate(new Date());
+                break;
+            case 'term':
+                setStartDate(subMonths(new Date(), 3));
+                setEndDate(new Date());
+                break;
+            case 'year':
+                setStartDate(subYears(new Date(), 1));
+                setEndDate(new Date());
+                break;
+            case 'none':
+                setStartDate(null);
+                setEndDate(null);
+        }
+    };
     const handleChange = (event: SelectChangeEvent) => {
         if (!event.target.value) {
             setSelectedClassroom(null);
@@ -184,11 +208,30 @@ const ActivityDashboard = () => {
                                                                           value={item.id}>{item.name}</MenuItem>)}
                                     </Select>
                                 </FormControl>
+                                <FormControl sx={{minWidth: 150}}>
+                                <InputLabel id="demo-simple-select-label">Period</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={selectedPeriod}
+                                    label="Period"
+                                    onChange={handleSelectedPeriodChange}
+                                >
+                                    <MenuItem value="none">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={'week'}>7 Days</MenuItem>
+                                    <MenuItem value={'month'}>30 Days</MenuItem>
+                                    <MenuItem value={'term'}>3 Months</MenuItem>
+                                    <MenuItem value={'year'}>1 Year</MenuItem>
+                                </Select>
+                            </FormControl>
+
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
                                         label="Start Date"
                                         // @ts-ignore
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => <TextField {...params} style={{minWidth: 200}} />}
                                         value={startDate}
                                         onChange={(newValue) => {
                                             setStartDate(newValue);
@@ -199,7 +242,7 @@ const ActivityDashboard = () => {
                                     <DatePicker
                                         label="End Date"
                                         // @ts-ignore
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => <TextField {...params} style={{minWidth: 200}} />}
                                         value={endDate}
                                         onChange={(newValue) => {
                                             setEndDate(newValue);
