@@ -74,7 +74,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }: Props)
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Logo />
-            { !isCollapse &&
+            { !isCollapse && !collapseHover &&
             <Typography variant={'h5'} color={theme.palette.primary.main}>Healthy Habits</Typography>
             }
 

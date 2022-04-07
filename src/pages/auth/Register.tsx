@@ -84,7 +84,7 @@ export default function Register() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Manage the job more effectively with Minimal
+              Manage the job more effectively with Healthy Habits
             </Typography>
             <Image
               alt="register"
@@ -98,10 +98,10 @@ export default function Register() {
             <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Get started absolutely free.
+                  Get started now!
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>
-                  Free forever. No credit card needed.
+                  Takes only a few minutes to register.
                 </Typography>
               </Box>
               <Tooltip title={capitalCase(method)}>
@@ -118,7 +118,7 @@ export default function Register() {
             <RegisterForm />
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
+              By registering, I agree to Healthy Habits&nbsp;
               <Link underline="always" color="text.primary" href="#">
                 Terms of Service
               </Link>

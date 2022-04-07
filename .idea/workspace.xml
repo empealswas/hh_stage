@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/ActivityDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/ActivityDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/section/SectionGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavbarVertical.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavbarVertical.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/UnifiedUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/UnifiedUser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/Register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/Register.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/PupilActivitiesChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/parent/child/profile_tabs/PupilActivitiesChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/user/OrganizationsGrid.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,6 +189,8 @@
       <workItem from="1649329950847" duration="2344000" />
       <workItem from="1649338403649" duration="1275000" />
       <workItem from="1649346660612" duration="200000" />
+      <workItem from="1649352048706" duration="753000" />
+      <workItem from="1649353192007" duration="723000" />
     </task>
     <servers />
   </component>

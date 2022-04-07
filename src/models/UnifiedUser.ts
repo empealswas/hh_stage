@@ -22,9 +22,9 @@ export class UnifiedUser extends User {
                     subheader: 'admins',
                     items: [
                         {
-                            title: 'Test',
+                            title: 'Test Page',
                             path: PATH_DASHBOARD.general.test,
-                            icon: ICONS.admin
+                            icon: ICONS.analytics
                         }
 
                     ]
@@ -39,7 +39,10 @@ export class UnifiedUser extends User {
     }
 
     getRole(): string {
-        return 'User'
+        if (this.isAdmin) {
+            return "Admin";
+        }
+        return 'User';
     }
 
 }

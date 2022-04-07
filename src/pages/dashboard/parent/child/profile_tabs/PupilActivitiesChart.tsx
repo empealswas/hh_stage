@@ -25,21 +25,7 @@ const LEGEND_HEIGHT = 200;
 // ----------------------------------------------------------------------
 
 const CHART_DATA = [6, 4, 6, 8];
-const ChartWrapperStyle = styled('div')(({theme}) => ({
-    height: CHART_HEIGHT,
-    marginTop: theme.spacing(0),
-    '& .apexcharts-canvas svg': {height: CHART_HEIGHT},
-    '& .apexcharts-canvas svg,.apexcharts-canvas foreignObject': {
-        overflow: 'visible'
-    },
-    '& .apexcharts-legend': {
-        height: LEGEND_HEIGHT,
-        alignContent: 'center',
-        position: 'relative !important',
-        borderTop: `solid 1px ${theme.palette.divider}`,
-        top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`
-    }
-}));
+
 const activityQuery = `query MyQuery($id: ID = "") {
   getUser(id: $id) {
     organizations {
@@ -65,6 +51,8 @@ export default function PupilActivitiesChart() {
     const {user} = useAuth();
     // const [activities, setActivities] = useState<{name: string, durationInMinutes: number}[] | null>(null);
     const [data, setData] = useState<{names: string[], series: number[]}| null>(null);
+
+
     useEffect(() => {
         const fetchData = async () => {
             setData(null);
@@ -122,6 +110,22 @@ export default function PupilActivitiesChart() {
     if (!data) {
         return (<ActivtityChartSkeleton/>);
     }
+    const extraHeight = data.series.length * 20;
+    const ChartWrapperStyle = styled('div')(({theme}) => ({
+        height: CHART_HEIGHT + extraHeight,
+        marginTop: theme.spacing(0),
+        '& .apexcharts-canvas svg': {height: CHART_HEIGHT + extraHeight},
+        '& .apexcharts-canvas svg,.apexcharts-canvas foreignObject': {
+            overflow: 'visible'
+        },
+        '& .apexcharts-legend': {
+            height: LEGEND_HEIGHT,
+            alignContent: 'center',
+            position: 'relative !important',
+            borderTop: `solid 1px ${theme.palette.divider}`,
+            top: `calc(${CHART_HEIGHT + extraHeight - LEGEND_HEIGHT}px) !important`
+        }
+    }));
     console.log("Series", data.series);
     const chartOptions: any = merge(BaseOptionChart(), {
 
@@ -175,7 +179,7 @@ export default function PupilActivitiesChart() {
             <ChartWrapperStyle dir="ltr">
                 <ReactApexChart type="bar"
                                 series={[{data: data.series}]}
-                                options={chartOptions} height={500}/>
+                                options={chartOptions} height={500 + extraHeight}/>
             </ChartWrapperStyle>
         </Card>
     );
