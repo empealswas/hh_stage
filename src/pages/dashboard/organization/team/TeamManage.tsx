@@ -466,17 +466,7 @@ const TeamManage = () => {
                     return usersInThatTeam?.find((pupil: any) => pupil.id === params.id) === undefined;
                 }}
                 componentsProps={{}}
-                onCellEditCommit={(params, event, details) => {
-                    // const attendanceOfPupil = usersInThatTeam?.find(pupil => pupil.id === params.id) as AttendanceOfPupil;
-                    // console.log(attendanceOfPupil);
-                    // console.log(params)
-                    // API.graphql(graphqlOperation(updateAttendance, {
-                    //     input: {
-                    //         id: attendanceOfPupil.attendanceId,
-                    //         [params.field]: params.value
-                    //     }
-                    // }))
-                }}
+
                 checkboxSelection
                 disableSelectionOnClick
             />

@@ -12,7 +12,7 @@ import {updateUserInOrganization} from "../../../../graphql/mutations";
 
 const query = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    members(filter: {status: {eq: WAITING_FOR_USER_TO_APPROVE}}) {
+    members(limit: 1000000, filter: {status: {eq: WAITING_FOR_USER_TO_APPROVE}}) {
       items {
         id
         user {
