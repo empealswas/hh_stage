@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationMembersSentRequest.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationMembersSentRequest.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationRequestJoin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationRequestJoin.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/team/TeamManage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,6 +186,8 @@
       <workItem from="1649346660612" duration="200000" />
       <workItem from="1649352048706" duration="753000" />
       <workItem from="1649353192007" duration="723000" />
+      <workItem from="1649704607660" duration="889000" />
+      <workItem from="1649707598830" duration="540000" />
     </task>
     <servers />
   </component>
