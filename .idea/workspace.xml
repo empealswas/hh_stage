@@ -5,10 +5,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/dashboard/navbar/NavConfig.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/ActivityDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/ActivityDashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/bg_card.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/bg_gradient.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_cn.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_de.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_en.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_fr.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_kr.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_sa.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_us.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/flags/ic_flag_vn.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_analytics.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_banking.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_blog.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_booking.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_calendar.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_cart.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_chat.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_dashboard.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_ecommerce.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_invoice.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_kanban.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_mail.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_menu_item.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/icons/navbar/ic_user.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_components.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_dashboard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_empty_cart.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_empty_content.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_empty_mail.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_invite.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_login.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/illustrations/illustration_register.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/overlay.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/assets/placeholder.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/illustration_403.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/illustration_background.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icon_plan_free.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/icon_plan_free.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icon_plan_premium.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/icon_plan_premium.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icon_plan_starter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/icon_plan_starter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/icon_sent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/icon_sent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_404.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_404.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_500.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_500.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_booking.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_booking.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_checkin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_checkin.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_checkout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_checkout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_coming_soon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_coming_soon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_doc.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_doc.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_maintenance.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_maintenance.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_motivation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_motivation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_order_complete.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_order_complete.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_seo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_seo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/illustration_upload.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/illustration_upload.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/Register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/Register.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +101,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/locales" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -72,11 +124,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\public" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\assets" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\locales" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\public\locales\de" />
       <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\activity" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\sections\auth\reset-password" />
-      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\Work\Healthy-Habits-Content\public\icons" />

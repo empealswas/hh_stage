@@ -87,8 +87,10 @@ export default function Register() {
               Manage the job more effectively with Minimal
             </Typography>
             <Image
-              alt="register"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_register.png"
+                visibleByDefault
+                disabledEffect
+                alt="register"
+                src="/assets/illustrations/illustration_register.png"
             />
           </SectionStyle>
         )}

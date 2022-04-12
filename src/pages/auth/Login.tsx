@@ -127,8 +127,10 @@ export default function Login() {
               Hi, Welcome Back
             </Typography>
             <Image
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
-              alt="login"
+                visibleByDefault
+                disabledEffect
+                src="/assets/illustrations/illustration_login.png"
+                alt="login"
             />
           </SectionStyle>
         )}
@@ -138,7 +140,7 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Healthy Habits
+                  Sign in to HealthGainz
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
               </Box>
