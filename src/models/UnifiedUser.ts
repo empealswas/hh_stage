@@ -22,7 +22,7 @@ export class UnifiedUser extends User {
                     subheader: 'admins',
                     items: [
                         {
-                            title: 'Test',
+                            title: 'Terra Test',
                             path: PATH_DASHBOARD.general.test,
                             icon: ICONS.admin
                         }

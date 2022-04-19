@@ -23,7 +23,7 @@ const OrganizationMembers = () => {
                 <InviteMemberDialog/>
             </Stack>
 
-                    <MembersTabs/>
+            <MembersTabs/>
         </Container>
     );
 };
