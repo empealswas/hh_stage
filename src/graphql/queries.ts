@@ -18,6 +18,9 @@ export const getUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
+      interventions {
+        nextToken
+      }
       terraId
       provider
       phoneNumber
@@ -49,6 +52,58 @@ export const listUsers = /* GraphQL */ `
         address
         city
         zipCode
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserIntervention = /* GraphQL */ `
+  query GetUserIntervention($id: ID!) {
+    getUserIntervention(id: $id) {
+      id
+      userID
+      User {
+        id
+        firstName
+        lastName
+        email
+        terraId
+        provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
+        createdAt
+        updatedAt
+      }
+      message
+      feedbackMessageFromUser
+      rating
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserInterventions = /* GraphQL */ `
+  query ListUserInterventions(
+    $filter: ModelUserInterventionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserInterventions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        message
+        feedbackMessageFromUser
+        rating
         createdAt
         updatedAt
       }
