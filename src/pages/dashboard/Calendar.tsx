@@ -159,13 +159,14 @@ export default function Calendar() {
     dispatch(closeModal());
   };
 
+  //moreLink="https://fullcalendar.io/docs/react" - was in HeaderBreadcrumbs below
+
   return (
     <Page title="Calendar">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <HeaderBreadcrumbs
           heading="Calendar"
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Calendar' }]}
-          moreLink="https://fullcalendar.io/docs/react"
           action={
             <Button
               variant="contained"
