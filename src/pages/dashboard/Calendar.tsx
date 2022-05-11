@@ -61,7 +61,7 @@ export default function Calendar() {
   const { events, isOpenModal, selectedRange } = useSelector((state) => state.calendar);
 
   useEffect(() => {
-    //dispatch(getEvents());
+    dispatch(getEvents());
   }, [dispatch]);
 
   useEffect(() => {
@@ -165,7 +165,7 @@ export default function Calendar() {
         <HeaderBreadcrumbs
           heading="Calendar"
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Calendar' }]}
-          //moreLink="https://fullcalendar.io/docs/react"
+          moreLink="https://fullcalendar.io/docs/react"
           action={
             <Button
               variant="contained"
