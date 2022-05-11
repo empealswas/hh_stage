@@ -21,9 +21,6 @@ export const createUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
-      interventions {
-        nextToken
-      }
       terraId
       provider
       phoneNumber
@@ -53,9 +50,6 @@ export const updateUser = /* GraphQL */ `
         nextToken
       }
       ownedOrganizations {
-        nextToken
-      }
-      interventions {
         nextToken
       }
       terraId
@@ -89,9 +83,6 @@ export const deleteUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
-      interventions {
-        nextToken
-      }
       terraId
       provider
       phoneNumber
@@ -99,99 +90,6 @@ export const deleteUser = /* GraphQL */ `
       address
       city
       zipCode
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createUserIntervention = /* GraphQL */ `
-  mutation CreateUserIntervention(
-    $input: CreateUserInterventionInput!
-    $condition: ModelUserInterventionConditionInput
-  ) {
-    createUserIntervention(input: $input, condition: $condition) {
-      id
-      userID
-      User {
-        id
-        firstName
-        lastName
-        email
-        terraId
-        provider
-        phoneNumber
-        country
-        address
-        city
-        zipCode
-        createdAt
-        updatedAt
-      }
-      message
-      feedbackMessageFromUser
-      rating
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateUserIntervention = /* GraphQL */ `
-  mutation UpdateUserIntervention(
-    $input: UpdateUserInterventionInput!
-    $condition: ModelUserInterventionConditionInput
-  ) {
-    updateUserIntervention(input: $input, condition: $condition) {
-      id
-      userID
-      User {
-        id
-        firstName
-        lastName
-        email
-        terraId
-        provider
-        phoneNumber
-        country
-        address
-        city
-        zipCode
-        createdAt
-        updatedAt
-      }
-      message
-      feedbackMessageFromUser
-      rating
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUserIntervention = /* GraphQL */ `
-  mutation DeleteUserIntervention(
-    $input: DeleteUserInterventionInput!
-    $condition: ModelUserInterventionConditionInput
-  ) {
-    deleteUserIntervention(input: $input, condition: $condition) {
-      id
-      userID
-      User {
-        id
-        firstName
-        lastName
-        email
-        terraId
-        provider
-        phoneNumber
-        country
-        address
-        city
-        zipCode
-        createdAt
-        updatedAt
-      }
-      message
-      feedbackMessageFromUser
-      rating
       createdAt
       updatedAt
     }

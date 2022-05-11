@@ -7,7 +7,6 @@ type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, p
     dependants: [DependantGuardian] @hasMany
     organizations: [UserInOrganization] @hasMany(indexName: "byUser", fields: ["id"])
     ownedOrganizations: [Organization] @hasMany
-    interventions: [UserIntervention] @hasMany(indexName: "byUser", fields: ["id"])
     terraId: String
     provider: String
     phoneNumber: String,
@@ -15,22 +14,7 @@ type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, p
     address: String,
     city: String,
     zipCode: String,
-
 }
-
-type UserIntervention
-@model
-@auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}])
-{
-    id: ID!
-    userID: ID! @index(name: "byUser", sortKeyFields: ["createdAt"])
-    User: User @belongsTo(fields: ["userID"])
-    message: String
-    feedbackMessageFromUser: String
-    rating: Int
-    createdAt: AWSDateTime! @index(name: "byDate")
-}
-
 
 
 type DependantGuardian @model @auth(rules: [{allow: public, provider: iam}, {allow: public, provider: apiKey}, {allow: private}]) {

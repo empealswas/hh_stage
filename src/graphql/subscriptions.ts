@@ -18,9 +18,6 @@ export const onCreateUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
-      interventions {
-        nextToken
-      }
       terraId
       provider
       phoneNumber
@@ -47,9 +44,6 @@ export const onUpdateUser = /* GraphQL */ `
         nextToken
       }
       ownedOrganizations {
-        nextToken
-      }
-      interventions {
         nextToken
       }
       terraId
@@ -80,9 +74,6 @@ export const onDeleteUser = /* GraphQL */ `
       ownedOrganizations {
         nextToken
       }
-      interventions {
-        nextToken
-      }
       terraId
       provider
       phoneNumber
@@ -90,90 +81,6 @@ export const onDeleteUser = /* GraphQL */ `
       address
       city
       zipCode
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateUserIntervention = /* GraphQL */ `
-  subscription OnCreateUserIntervention {
-    onCreateUserIntervention {
-      id
-      userID
-      User {
-        id
-        firstName
-        lastName
-        email
-        terraId
-        provider
-        phoneNumber
-        country
-        address
-        city
-        zipCode
-        createdAt
-        updatedAt
-      }
-      message
-      feedbackMessageFromUser
-      rating
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateUserIntervention = /* GraphQL */ `
-  subscription OnUpdateUserIntervention {
-    onUpdateUserIntervention {
-      id
-      userID
-      User {
-        id
-        firstName
-        lastName
-        email
-        terraId
-        provider
-        phoneNumber
-        country
-        address
-        city
-        zipCode
-        createdAt
-        updatedAt
-      }
-      message
-      feedbackMessageFromUser
-      rating
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteUserIntervention = /* GraphQL */ `
-  subscription OnDeleteUserIntervention {
-    onDeleteUserIntervention {
-      id
-      userID
-      User {
-        id
-        firstName
-        lastName
-        email
-        terraId
-        provider
-        phoneNumber
-        country
-        address
-        city
-        zipCode
-        createdAt
-        updatedAt
-      }
-      message
-      feedbackMessageFromUser
-      rating
       createdAt
       updatedAt
     }

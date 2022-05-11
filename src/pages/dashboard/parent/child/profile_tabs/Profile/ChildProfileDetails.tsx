@@ -27,7 +27,7 @@ export default function ChildProfileDetails({child}: Props) {
 
             <Grid item xs={12} md={8}>
                 <Stack spacing={3}>
-                  <InterventionsList user={child}/>
+                  {/*<InterventionsList pupil={child}/>*/}
                 </Stack>
             </Grid>
         </Grid>

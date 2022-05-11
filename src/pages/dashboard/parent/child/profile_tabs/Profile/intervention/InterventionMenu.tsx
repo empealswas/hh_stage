@@ -4,11 +4,11 @@ import {Box, Card, IconButton, Menu, Stack, TextField, Typography} from "@mui/ma
 import {LoadingButton, Rating} from "@mui/lab";
 import {API, graphqlOperation} from "aws-amplify";
 import useAuth from "../../../../../../../hooks/useAuth";
-import {Intervention, UpdateUserInterventionInput, UserIntervention} from "../../../../../../../API";
-import {createParentInterventionFeedback, updateUserIntervention} from "../../../../../../../graphql/mutations";
+import {Intervention} from "../../../../../../../API";
+import {createParentInterventionFeedback} from "../../../../../../../graphql/mutations";
 import Iconify from "../../../../../../../components/Iconify";
 
-const InterventionMenu = (props: { intervention: UserIntervention }) => {
+const InterventionMenu = (props: { intervention: Intervention }) => {
     const {intervention} = {...props}
     const [open, setOpen] = useState(null);
     const [feedbackSent, setFeedbackSent] = useState(false);
@@ -26,14 +26,14 @@ const InterventionMenu = (props: { intervention: UserIntervention }) => {
     const sendFeedback = async () => {
         setLoading(true);
         console.log(intervention)
-        const input: UpdateUserInterventionInput = {
-            id: intervention.id,
-            rating: rating,
-            feedbackMessageFromUser: comment,
-        }
-        const result: any = await API.graphql(graphqlOperation(updateUserIntervention, {input}));
-        console.log(result);
-
+        await API.graphql(graphqlOperation(createParentInterventionFeedback, {
+            input: {
+                interventionID: intervention.id,
+                parentID: user?.email,
+                comment: comment,
+                rating: rating
+            }
+        }))
         setFeedbackSent(true);
         setLoading(false);
     }
@@ -44,7 +44,7 @@ const InterventionMenu = (props: { intervention: UserIntervention }) => {
                 disableRipple
                 onClick={handleOpen}
             >
-                <Iconify icon={'fluent:person-feedback-24-regular'} color={'action'}/>
+                <Iconify icon={'mdi:message-alert-outline'} color={'action'}/>
             </IconButton>
             <Menu
                 keepMounted
@@ -54,7 +54,7 @@ const InterventionMenu = (props: { intervention: UserIntervention }) => {
                 anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
                 transformOrigin={{vertical: 'top', horizontal: 'center'}}
             >
-                {( feedbackSent) ?
+                {(!!intervention.InterventionFeedback?.items[0] || feedbackSent) ?
                     <Stack alignItems={'center'} sx={{margin: 2}} spacing={2} direction={'column'}>
                         <Iconify fontSize={'30px'} icon={'mdi:check-bold'} color={'green'}/>
                         <Typography>Thanks for the feedback!</Typography>

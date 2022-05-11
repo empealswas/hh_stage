@@ -81,7 +81,6 @@ export type User = {
   dependants?: ModelDependantGuardianConnection | null,
   organizations?: ModelUserInOrganizationConnection | null,
   ownedOrganizations?: ModelOrganizationConnection | null,
-  interventions?: ModelUserInterventionConnection | null,
   terraId?: string | null,
   provider?: string | null,
   phoneNumber?: string | null,
@@ -772,24 +771,6 @@ export type ModelOrganizationConnection = {
   nextToken?: string | null,
 };
 
-export type ModelUserInterventionConnection = {
-  __typename: "ModelUserInterventionConnection",
-  items:  Array<UserIntervention | null >,
-  nextToken?: string | null,
-};
-
-export type UserIntervention = {
-  __typename: "UserIntervention",
-  id: string,
-  userID: string,
-  User?: User | null,
-  message?: string | null,
-  feedbackMessageFromUser?: string | null,
-  rating?: number | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
 export type UpdateUserInput = {
   id: string,
   firstName?: string | null,
@@ -808,24 +789,16 @@ export type DeleteUserInput = {
   id: string,
 };
 
-export type CreateUserInterventionInput = {
+export type CreateDependantGuardianInput = {
   id?: string | null,
-  userID: string,
-  message?: string | null,
-  feedbackMessageFromUser?: string | null,
-  rating?: number | null,
-  createdAt?: string | null,
+  userDependantsId?: string | null,
 };
 
-export type ModelUserInterventionConditionInput = {
-  userID?: ModelIDInput | null,
-  message?: ModelStringInput | null,
-  feedbackMessageFromUser?: ModelStringInput | null,
-  rating?: ModelIntInput | null,
-  createdAt?: ModelStringInput | null,
-  and?: Array< ModelUserInterventionConditionInput | null > | null,
-  or?: Array< ModelUserInterventionConditionInput | null > | null,
-  not?: ModelUserInterventionConditionInput | null,
+export type ModelDependantGuardianConditionInput = {
+  and?: Array< ModelDependantGuardianConditionInput | null > | null,
+  or?: Array< ModelDependantGuardianConditionInput | null > | null,
+  not?: ModelDependantGuardianConditionInput | null,
+  userDependantsId?: ModelIDInput | null,
 };
 
 export type ModelIDInput = {
@@ -842,43 +815,6 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type UpdateUserInterventionInput = {
-  id: string,
-  userID?: string | null,
-  message?: string | null,
-  feedbackMessageFromUser?: string | null,
-  rating?: number | null,
-  createdAt?: string | null,
-};
-
-export type DeleteUserInterventionInput = {
-  id: string,
-};
-
-export type CreateDependantGuardianInput = {
-  id?: string | null,
-  userDependantsId?: string | null,
-};
-
-export type ModelDependantGuardianConditionInput = {
-  and?: Array< ModelDependantGuardianConditionInput | null > | null,
-  or?: Array< ModelDependantGuardianConditionInput | null > | null,
-  not?: ModelDependantGuardianConditionInput | null,
-  userDependantsId?: ModelIDInput | null,
 };
 
 export type UpdateDependantGuardianInput = {
@@ -1063,6 +999,18 @@ export type ModelSectionFromContentStoreConditionInput = {
   and?: Array< ModelSectionFromContentStoreConditionInput | null > | null,
   or?: Array< ModelSectionFromContentStoreConditionInput | null > | null,
   not?: ModelSectionFromContentStoreConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateSectionFromContentStoreInput = {
@@ -1996,18 +1944,6 @@ export type ModelUserConnection = {
   nextToken?: string | null,
 };
 
-export type ModelUserInterventionFilterInput = {
-  id?: ModelIDInput | null,
-  userID?: ModelIDInput | null,
-  message?: ModelStringInput | null,
-  feedbackMessageFromUser?: ModelStringInput | null,
-  rating?: ModelIntInput | null,
-  createdAt?: ModelStringInput | null,
-  and?: Array< ModelUserInterventionFilterInput | null > | null,
-  or?: Array< ModelUserInterventionFilterInput | null > | null,
-  not?: ModelUserInterventionFilterInput | null,
-};
-
 export type ModelDependantGuardianFilterInput = {
   and?: Array< ModelDependantGuardianFilterInput | null > | null,
   or?: Array< ModelDependantGuardianFilterInput | null > | null,
@@ -2452,10 +2388,6 @@ export type CreateUserMutation = {
       __typename: "ModelOrganizationConnection",
       nextToken?: string | null,
     } | null,
-    interventions?:  {
-      __typename: "ModelUserInterventionConnection",
-      nextToken?: string | null,
-    } | null,
     terraId?: string | null,
     provider?: string | null,
     phoneNumber?: string | null,
@@ -2490,10 +2422,6 @@ export type UpdateUserMutation = {
     } | null,
     ownedOrganizations?:  {
       __typename: "ModelOrganizationConnection",
-      nextToken?: string | null,
-    } | null,
-    interventions?:  {
-      __typename: "ModelUserInterventionConnection",
       nextToken?: string | null,
     } | null,
     terraId?: string | null,
@@ -2532,10 +2460,6 @@ export type DeleteUserMutation = {
       __typename: "ModelOrganizationConnection",
       nextToken?: string | null,
     } | null,
-    interventions?:  {
-      __typename: "ModelUserInterventionConnection",
-      nextToken?: string | null,
-    } | null,
     terraId?: string | null,
     provider?: string | null,
     phoneNumber?: string | null,
@@ -2543,108 +2467,6 @@ export type DeleteUserMutation = {
     address?: string | null,
     city?: string | null,
     zipCode?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateUserInterventionMutationVariables = {
-  input: CreateUserInterventionInput,
-  condition?: ModelUserInterventionConditionInput | null,
-};
-
-export type CreateUserInterventionMutation = {
-  createUserIntervention?:  {
-    __typename: "UserIntervention",
-    id: string,
-    userID: string,
-    User?:  {
-      __typename: "User",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      terraId?: string | null,
-      provider?: string | null,
-      phoneNumber?: string | null,
-      country?: string | null,
-      address?: string | null,
-      city?: string | null,
-      zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    message?: string | null,
-    feedbackMessageFromUser?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateUserInterventionMutationVariables = {
-  input: UpdateUserInterventionInput,
-  condition?: ModelUserInterventionConditionInput | null,
-};
-
-export type UpdateUserInterventionMutation = {
-  updateUserIntervention?:  {
-    __typename: "UserIntervention",
-    id: string,
-    userID: string,
-    User?:  {
-      __typename: "User",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      terraId?: string | null,
-      provider?: string | null,
-      phoneNumber?: string | null,
-      country?: string | null,
-      address?: string | null,
-      city?: string | null,
-      zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    message?: string | null,
-    feedbackMessageFromUser?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteUserInterventionMutationVariables = {
-  input: DeleteUserInterventionInput,
-  condition?: ModelUserInterventionConditionInput | null,
-};
-
-export type DeleteUserInterventionMutation = {
-  deleteUserIntervention?:  {
-    __typename: "UserIntervention",
-    id: string,
-    userID: string,
-    User?:  {
-      __typename: "User",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      terraId?: string | null,
-      provider?: string | null,
-      phoneNumber?: string | null,
-      country?: string | null,
-      address?: string | null,
-      city?: string | null,
-      zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    message?: string | null,
-    feedbackMessageFromUser?: string | null,
-    rating?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -7278,10 +7100,6 @@ export type GetUserQuery = {
       __typename: "ModelOrganizationConnection",
       nextToken?: string | null,
     } | null,
-    interventions?:  {
-      __typename: "ModelUserInterventionConnection",
-      nextToken?: string | null,
-    } | null,
     terraId?: string | null,
     provider?: string | null,
     phoneNumber?: string | null,
@@ -7316,62 +7134,6 @@ export type ListUsersQuery = {
       address?: string | null,
       city?: string | null,
       zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetUserInterventionQueryVariables = {
-  id: string,
-};
-
-export type GetUserInterventionQuery = {
-  getUserIntervention?:  {
-    __typename: "UserIntervention",
-    id: string,
-    userID: string,
-    User?:  {
-      __typename: "User",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      terraId?: string | null,
-      provider?: string | null,
-      phoneNumber?: string | null,
-      country?: string | null,
-      address?: string | null,
-      city?: string | null,
-      zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    message?: string | null,
-    feedbackMessageFromUser?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListUserInterventionsQueryVariables = {
-  filter?: ModelUserInterventionFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListUserInterventionsQuery = {
-  listUserInterventions?:  {
-    __typename: "ModelUserInterventionConnection",
-    items:  Array< {
-      __typename: "UserIntervention",
-      id: string,
-      userID: string,
-      message?: string | null,
-      feedbackMessageFromUser?: string | null,
-      rating?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -9538,10 +9300,6 @@ export type OnCreateUserSubscription = {
       __typename: "ModelOrganizationConnection",
       nextToken?: string | null,
     } | null,
-    interventions?:  {
-      __typename: "ModelUserInterventionConnection",
-      nextToken?: string | null,
-    } | null,
     terraId?: string | null,
     provider?: string | null,
     phoneNumber?: string | null,
@@ -9571,10 +9329,6 @@ export type OnUpdateUserSubscription = {
     } | null,
     ownedOrganizations?:  {
       __typename: "ModelOrganizationConnection",
-      nextToken?: string | null,
-    } | null,
-    interventions?:  {
-      __typename: "ModelUserInterventionConnection",
       nextToken?: string | null,
     } | null,
     terraId?: string | null,
@@ -9608,10 +9362,6 @@ export type OnDeleteUserSubscription = {
       __typename: "ModelOrganizationConnection",
       nextToken?: string | null,
     } | null,
-    interventions?:  {
-      __typename: "ModelUserInterventionConnection",
-      nextToken?: string | null,
-    } | null,
     terraId?: string | null,
     provider?: string | null,
     phoneNumber?: string | null,
@@ -9619,93 +9369,6 @@ export type OnDeleteUserSubscription = {
     address?: string | null,
     city?: string | null,
     zipCode?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateUserInterventionSubscription = {
-  onCreateUserIntervention?:  {
-    __typename: "UserIntervention",
-    id: string,
-    userID: string,
-    User?:  {
-      __typename: "User",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      terraId?: string | null,
-      provider?: string | null,
-      phoneNumber?: string | null,
-      country?: string | null,
-      address?: string | null,
-      city?: string | null,
-      zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    message?: string | null,
-    feedbackMessageFromUser?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateUserInterventionSubscription = {
-  onUpdateUserIntervention?:  {
-    __typename: "UserIntervention",
-    id: string,
-    userID: string,
-    User?:  {
-      __typename: "User",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      terraId?: string | null,
-      provider?: string | null,
-      phoneNumber?: string | null,
-      country?: string | null,
-      address?: string | null,
-      city?: string | null,
-      zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    message?: string | null,
-    feedbackMessageFromUser?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteUserInterventionSubscription = {
-  onDeleteUserIntervention?:  {
-    __typename: "UserIntervention",
-    id: string,
-    userID: string,
-    User?:  {
-      __typename: "User",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      terraId?: string | null,
-      provider?: string | null,
-      phoneNumber?: string | null,
-      country?: string | null,
-      address?: string | null,
-      city?: string | null,
-      zipCode?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    message?: string | null,
-    feedbackMessageFromUser?: string | null,
-    rating?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,

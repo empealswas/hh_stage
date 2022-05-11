@@ -6,23 +6,21 @@ import {
     CardContent,
     CardHeader,
     Container,
-    Grid, IconButton,
+    Grid,
     Skeleton,
     Stack,
     Typography
 } from "@mui/material";
-import {API, graphqlOperation} from "aws-amplify";
-import {parseISO} from "date-fns";
-import React, {useContext, useEffect, useState} from 'react';
+import { API, graphqlOperation } from "aws-amplify";
+import { parseISO } from "date-fns";
+import React, { useContext, useEffect, useState } from 'react';
 import {useTheme} from "@mui/material/styles";
-import {CreateInterventionInput, Intervention, Pupil, User, UserIntervention} from "../../../../../../../API";
+import {Intervention, Pupil} from "../../../../../../../API";
 import useAuth from "../../../../../../../hooks/useAuth";
-import {onCreateIntervention, onCreateUserIntervention} from "../../../../../../../graphql/subscriptions";
+import {onCreateIntervention} from "../../../../../../../graphql/subscriptions";
 import InterventionMenu from "./InterventionMenu";
 import {ShopProductSort} from "../../../../../../../sections/@dashboard/e-commerce/shop";
 import ProductSort from "./ProductSort";
-import Iconify from "../../../../../../../components/Iconify";
-import CardSkeleton from "../../../../../../../components/skeleton/CardSkeleton";
 
 
 const getFirstInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = ASC) {
@@ -66,86 +64,71 @@ const getNextInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelS
   }
 }
 `
-
-const getInterventionsQuery = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = DESC, $nextToken: String = null) {
-  getUser(id: $id) {
-    interventions(sortDirection: $sortDirection, limit: 5, nextToken: $nextToken) {
-      items {
-        id
-        message
-        createdAt
-      }
-      nextToken
-    }
-  }
-}`
-
-const onCreateSubscription = `subscription MySubscription {
-  onCreateUserIntervention {
-    message
-    userID
-    id
-  }
-}
-`
-const InterventionsList = ({user}: { user: User }) => {
-    const [interventions, setInterventions] = useState<UserIntervention[] >([]);
-    const [loading, setLoading] = useState(true);
+const InterventionsList = (props: { pupil: Pupil }) => {
+    const [interventions, setInterventions] = useState<Intervention[] | null>(null);
+    const [loading, setLoading] = useState(false);
     const [sortFilter, setSortFilter] = useState('newest');
     let nextToken = ''
 
     const theme = useTheme();
     console.log(theme);
-    const getInterventions = async () => {
-        setLoading(true);
-        const createIntervention: any = {
-            id: user.id,
-        }
-        if (nextToken) {
-            createIntervention.nextToken = nextToken;
-        }
-        createIntervention.sortDirection = sortFilter === 'newest' ? "DESC" : "ASC";
-        const result: any = await API.graphql(graphqlOperation(getInterventionsQuery, createIntervention));
 
+    
+    const loadInterventions = async () => {
+        setLoading(true)
+        const result: any = await API.graphql(graphqlOperation(getNextInterventions, {
+            id: props.pupil.id,
+            nextToken: nextToken,
+            sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
+        }));
+        nextToken = result.data.getPupil.Interventions.nextToken
         setInterventions(prevState => {
-            let newArray = [...prevState, ...result.data.getUser.interventions?.items];
-            console.log(newArray);
-            return newArray;
+            if (prevState) {
+                return [...prevState, ...result.data.getPupil.Interventions.items];
+            } else {
+                return result.data.getPupil.Interventions.items
+            }
         });
-        nextToken = result.data.getUser?.interventions?.nextToken;
-        setLoading(false);
+        setLoading(false)
+
     }
     useEffect(() => {
-        setInterventions([]);
-        nextToken = '';
+        const getInterventions = async () => {
+            setInterventions(null)
+            const result: any = await API.graphql(graphqlOperation(getFirstInterventions, {
+                id: props.pupil.id,
+                sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
+            }));
+            nextToken = result.data.getPupil.Interventions.nextToken;
+
+            setInterventions(result.data.getPupil.Interventions.items);
+            console.log(nextToken);
+            // console.log(result.data.getPupil.Interventions.items)
+        }
         getInterventions();
         return () => {
 
         };
-    }, [sortFilter]);
+    }, [sortFilter, props.pupil]);
 
     useEffect(() => {
 
-        getInterventions();
-        return () => {
-
-        };
-    }, []);
-    useEffect(() => {
-
-        const subscription: any = API.graphql(graphqlOperation(onCreateSubscription));
+        const subscription: any = API.graphql(graphqlOperation(onCreateIntervention));
         const onInterventionAddedSubscription: any = subscription.subscribe({
             next: (result: any) => {
-                console.log('Value', result.value);
-                const intervention: UserIntervention = result.value.data.onCreateUserIntervention;
-                console.log('Intervention', intervention);
+                console.log(result);
+                console.log(result.value.data)
+                const intervention: Intervention = result.value.data.onCreateIntervention;
                 if (!intervention) {
                     return;
                 }
-                if (intervention.userID !== user.id) {
+                if (intervention.pupilID !== props.pupil.id) {
                     return;
                 }
                 setInterventions(prevState => {
+                    if (!prevState) {
+                        return [intervention];
+                    }
                     const prev = prevState.filter(value => value.id !== intervention.id);
                     prev.unshift(intervention);
                     return prev;
@@ -155,96 +138,39 @@ const InterventionsList = ({user}: { user: User }) => {
         return (() => {
             onInterventionAddedSubscription.unsubscribe();
         })
-    }, [])
-
-    /*        const loadInterventions = async () => {
-                setLoading(true)
-                const result: any = await API.graphql(graphqlOperation(getNextInterventions, {
-                    id: props.pupil.id,
-                    nextToken: nextToken,
-                    sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
-                }));
-                nextToken = result.data.getPupil.Interventions.nextToken
-                setInterventions(prevState => {
-                    if (prevState) {
-                        return [...prevState, ...result.data.getPupil.Interventions.items];
-                    } else {
-                        return result.data.getPupil.Interventions.items
-                    }
-                });
-                setLoading(false)
-
-            }
-            useEffect(() => {
-                const getInterventions = async () => {
-                    setInterventions(null)
-                    const result: any = await API.graphql(graphqlOperation(getFirstInterventions, {
-                        id: props.pupil.id,
-                        sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
-                    }));
-                    nextToken = result.data.getPupil.Interventions.nextToken;
-
-                    setInterventions(result.data.getPupil.Interventions.items);
-                    console.log(nextToken);
-                    // console.log(result.data.getPupil.Interventions.items)
-                }
-                getInterventions();
-                return () => {
-
-                };
-            }, [sortFilter, props.pupil]);
-
-            useEffect(() => {
-
-                const subscription: any = API.graphql(graphqlOperation(onCreateIntervention));
-                const onInterventionAddedSubscription: any = subscription.subscribe({
-                    next: (result: any) => {
-                        console.log(result);
-                        console.log(result.value.data)
-                        const intervention: Intervention = result.value.data.onCreateIntervention;
-                        if (!intervention) {
-                            return;
-                        }
-                        if (intervention.pupilID !== props.pupil.id) {
-                            return;
-                        }
-                        setInterventions(prevState => {
-                            if (!prevState) {
-                                return [intervention];
-                            }
-                            const prev = prevState.filter(value => value.id !== intervention.id);
-                            prev.unshift(intervention);
-                            return prev;
-                        })
-                    }
-                })
-                return (() => {
-                    onInterventionAddedSubscription.unsubscribe();
-                })
-            }, [props.pupil])
-            */
-
-
+    }, [props.pupil])
     window.addEventListener("scroll", handleScroll);
 
     function handleScroll() {
         // console.log('schrollHeight', document.documentElement.scrollHeight);
         // console.log('scrollTop', document.documentElement.scrollTop);
-        var isAtBottom = document.documentElement.scrollHeight - 20 - document.documentElement.scrollTop <= document.documentElement.clientHeight;
+        var isAtBottom = document.documentElement.scrollHeight - 10 - document.documentElement.scrollTop <= document.documentElement.clientHeight;
         console.log(isAtBottom)
-        console.log(nextToken);
-        console.log("Loading", loading);
-
         if (isAtBottom && nextToken && !loading) {
             console.log('loading')
             console.log(nextToken)
-            getInterventions();
-
+        
+            setLoading(true);
+            loadInterventions().then(res => setLoading(false));
         }
 
     }
 
     const Interventios = () => {
+        if (!interventions) {
+            return (
+                <>
+                    <Skeleton height={300}/>
+                    <Skeleton height={300}/>
+                </>
+            );
+        }
+        if (interventions.length === 0) {
+            return (
+                <Typography variant={'h6'} textAlign={'center'}>Here will be displayed achievements and highlights of your
+                    child school
+                    life.</Typography>);
+        }
 
         return (
             <>
@@ -252,23 +178,16 @@ const InterventionsList = ({user}: { user: User }) => {
                     return (
                         <Card key={value.id}>
                             <CardHeader title={'Intervention'}
-                                        subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`}/>
+                                subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`} />
                             <CardContent>
                                 <Typography variant={'body1'}>{value.message}</Typography>
                             </CardContent>
-                            <CardActions style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                <InterventionMenu intervention={value}/>
+                            <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <InterventionMenu intervention={value} />
                             </CardActions>
                         </Card>
                     );
                 })}
-                {loading &&
-                    <>
-                        {[0, 1, 2, 3].map(value =>
-                            <CardSkeleton key={value} height={"250px"}/>
-                        )}
-                    </>
-                }
             </>
         );
     }
@@ -283,30 +202,21 @@ const InterventionsList = ({user}: { user: User }) => {
                             <CardContent>
                                 <Typography textAlign={'center'} variant={'h3'}>Interventions</Typography>
                                 <Stack direction={'column'} spacing={2}>
-                                    <ProductSort setSortFilter={setSortFilter} sortFilter={sortFilter}/>
+                                    <ProductSort setSortFilter={setSortFilter} sortFilter={sortFilter} />
+                                    {/*<ShopProductSort/>*/}
                                 </Stack>
                             </CardContent>
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                         <Stack direction={'column'} spacing={3}>
-                            {/*                            <Card>
-                                <CardHeader title={'Intervention'}></CardHeader>
-                                <CardContent>
-                                    <Typography>
-                                        Some test intervention message.
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <IconButton>
-                                        <Iconify sx={{height: 40, width: 40}}
-                                                 icon={'fluent:person-feedback-24-regular'}/>
-                                    </IconButton>
-                                </CardActions>
-                            </Card>*/}
-                            <Interventios/>
-
-
+                            <Interventios />
+                            {loading &&
+                                <>
+                                    <Skeleton height={300}/>
+                                    <Skeleton height={300}/>
+                                </>
+                            }
                         </Stack>
                     </Grid>
                 </Grid>
