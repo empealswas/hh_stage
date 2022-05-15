@@ -9,9 +9,12 @@ import {Alert} from "@mui/material";
 
 const getUserInOrganizationQuery = `query MyQuery($id: ID = "", $eq: ID = "") {
   getOrganization(id: $id) {
-    members(filter: {userID: {eq: $eq}}) {
+    members(limit: 10000000, filter: {userID: {eq: $eq}}) {
       items {
         id
+        user {
+          id
+        }
         classrooms {
           items {
             id
@@ -35,8 +38,7 @@ const getUserInOrganizationQuery = `query MyQuery($id: ID = "", $eq: ID = "") {
       }
     }
   }
-}
-`
+}`;
 const getRolesQuery = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
     roles {
