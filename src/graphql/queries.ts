@@ -2,6 +2,462 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      firstName
+      lastName
+      email
+      dependants {
+        nextToken
+      }
+      organizations {
+        nextToken
+      }
+      ownedOrganizations {
+        nextToken
+      }
+      terraId
+      provider
+      phoneNumber
+      country
+      address
+      city
+      zipCode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        lastName
+        email
+        terraId
+        provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDependantGuardian = /* GraphQL */ `
+  query GetDependantGuardian($id: ID!) {
+    getDependantGuardian(id: $id) {
+      guardian {
+        id
+        firstName
+        lastName
+        email
+        terraId
+        provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
+        createdAt
+        updatedAt
+      }
+      dependant {
+        id
+        firstName
+        lastName
+        email
+        terraId
+        provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
+        createdAt
+        updatedAt
+      }
+      id
+      createdAt
+      updatedAt
+      userDependantsId
+    }
+  }
+`;
+export const listDependantGuardians = /* GraphQL */ `
+  query ListDependantGuardians(
+    $filter: ModelDependantGuardianFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDependantGuardians(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        updatedAt
+        userDependantsId
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserInOrganization = /* GraphQL */ `
+  query GetUserInOrganization($id: ID!) {
+    getUserInOrganization(id: $id) {
+      userID
+      organizationID
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        terraId
+        provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
+        createdAt
+        updatedAt
+      }
+      status
+      roles {
+        nextToken
+      }
+      classrooms {
+        nextToken
+      }
+      Attendances {
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserInOrganizations = /* GraphQL */ `
+  query ListUserInOrganizations(
+    $filter: ModelUserInOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserInOrganizations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        userID
+        organizationID
+        status
+        id
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserRole = /* GraphQL */ `
+  query GetUserRole($id: ID!) {
+    getUserRole(id: $id) {
+      id
+      name
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      users {
+        nextToken
+      }
+      permissions {
+        canAccessAttendanceSheet
+        canCreateLesson
+        canRateLessons
+        canDeleteLessons
+        canUpdateLesson
+        canUploadContent
+        canViewContent
+        canCreateSection
+        canDeleteSection
+        canUpdateSection
+        canViewDashboard
+        canManageOrganization
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
+      sectionAvailableForThatRole {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      organizationRolesId
+      sectionFromContentStoreRolesThatCanAccessId
+      userRolePermissionsId
+    }
+  }
+`;
+export const listUserRoles = /* GraphQL */ `
+  query ListUserRoles(
+    $filter: ModelUserRoleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserRoles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
+        userRolePermissionsId
+      }
+      nextToken
+    }
+  }
+`;
+export const getRolePermissions = /* GraphQL */ `
+  query GetRolePermissions($id: ID!) {
+    getRolePermissions(id: $id) {
+      role {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
+        userRolePermissionsId
+      }
+      canAccessAttendanceSheet
+      canCreateLesson
+      canRateLessons
+      canDeleteLessons
+      canUpdateLesson
+      canUploadContent
+      canViewContent
+      canCreateSection
+      canDeleteSection
+      canUpdateSection
+      canViewDashboard
+      canManageOrganization
+      id
+      createdAt
+      updatedAt
+      rolePermissionsRoleId
+    }
+  }
+`;
+export const listRolePermissions = /* GraphQL */ `
+  query ListRolePermissions(
+    $filter: ModelRolePermissionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRolePermissions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        canAccessAttendanceSheet
+        canCreateLesson
+        canRateLessons
+        canDeleteLessons
+        canUpdateLesson
+        canUploadContent
+        canViewContent
+        canCreateSection
+        canDeleteSection
+        canUpdateSection
+        canViewDashboard
+        canManageOrganization
+        id
+        createdAt
+        updatedAt
+        rolePermissionsRoleId
+      }
+      nextToken
+    }
+  }
+`;
+export const getOrganization = /* GraphQL */ `
+  query GetOrganization($id: ID!) {
+    getOrganization(id: $id) {
+      id
+      name
+      owner {
+        id
+        firstName
+        lastName
+        email
+        terraId
+        provider
+        phoneNumber
+        country
+        address
+        city
+        zipCode
+        createdAt
+        updatedAt
+      }
+      Principals {
+        nextToken
+      }
+      WaitingForAcceptPupils {
+        nextToken
+      }
+      AcceptedPupils {
+        nextToken
+      }
+      Sections {
+        nextToken
+      }
+      SectionsFromContentStore {
+        nextToken
+      }
+      Teachers {
+        nextToken
+      }
+      Classrooms {
+        nextToken
+      }
+      members {
+        nextToken
+      }
+      roles {
+        nextToken
+      }
+      isPublic
+      type
+      logo {
+        id
+        key
+        region
+        bucket
+        lessonID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      userOwnedOrganizationsId
+      organizationLogoId
+    }
+  }
+`;
+export const listOrganizations = /* GraphQL */ `
+  query ListOrganizations(
+    $filter: ModelOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      nextToken
+    }
+  }
+`;
+export const getSectionFromContentStore = /* GraphQL */ `
+  query GetSectionFromContentStore($id: ID!) {
+    getSectionFromContentStore(id: $id) {
+      sectionID
+      organizationID
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      section {
+        id
+        name
+        isPlacedInContentStore
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      rolesThatCanAccess {
+        nextToken
+      }
+      score
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSectionFromContentStores = /* GraphQL */ `
+  query ListSectionFromContentStores(
+    $filter: ModelSectionFromContentStoreFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSectionFromContentStores(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        sectionID
+        organizationID
+        score
+        id
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getFile = /* GraphQL */ `
   query GetFile($id: ID!) {
     getFile(id: $id) {
@@ -40,14 +496,32 @@ export const getSection = /* GraphQL */ `
     getSection(id: $id) {
       id
       name
+      isPlacedInContentStore
       parentID
+      organizationID
       ParentSection {
         id
         name
+        isPlacedInContentStore
         parentID
+        organizationID
         imagePreviewID
         createdAt
         updatedAt
+        sectionSectionOptionsId
+      }
+      OrganizationOwner {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      OrganizationsFromContentStore {
+        nextToken
       }
       Lessons {
         nextToken
@@ -62,8 +536,21 @@ export const getSection = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      SectionOptions {
+        id
+        Activities
+        Durations
+        DeliveredBy
+        createdAt
+        updatedAt
+        sectionOptionsSectionId
+      }
+      rolesThatCanAccess {
+        nextToken
+      }
       createdAt
       updatedAt
+      sectionSectionOptionsId
     }
   }
 `;
@@ -77,10 +564,13 @@ export const listSections = /* GraphQL */ `
       items {
         id
         name
+        isPlacedInContentStore
         parentID
+        organizationID
         imagePreviewID
         createdAt
         updatedAt
+        sectionSectionOptionsId
       }
       nextToken
     }
@@ -96,10 +586,16 @@ export const getLesson = /* GraphQL */ `
       Section {
         id
         name
+        isPlacedInContentStore
         parentID
+        organizationID
         imagePreviewID
         createdAt
         updatedAt
+        sectionSectionOptionsId
+      }
+      LessonsRecords {
+        nextToken
       }
       terms {
         nextToken
@@ -115,9 +611,6 @@ export const getLesson = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      LessonsRecords {
-        nextToken
-      }
     }
   }
 `;
@@ -140,16 +633,206 @@ export const listLessons = /* GraphQL */ `
     }
   }
 `;
+export const getSectionOptions = /* GraphQL */ `
+  query GetSectionOptions($id: ID!) {
+    getSectionOptions(id: $id) {
+      id
+      Section {
+        id
+        name
+        isPlacedInContentStore
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      Activities
+      Durations
+      DeliveredBy
+      createdAt
+      updatedAt
+      sectionOptionsSectionId
+    }
+  }
+`;
+export const listSectionOptions = /* GraphQL */ `
+  query ListSectionOptions(
+    $filter: ModelSectionOptionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSectionOptions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        Activities
+        Durations
+        DeliveredBy
+        createdAt
+        updatedAt
+        sectionOptionsSectionId
+      }
+      nextToken
+    }
+  }
+`;
+export const getPELessonRecord = /* GraphQL */ `
+  query GetPELessonRecord($id: ID!) {
+    getPELessonRecord(id: $id) {
+      id
+      teacherID
+      Teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      Attendances {
+        nextToken
+      }
+      date
+      deliveredBy
+      duration
+      activity
+      rating
+      notes
+      isCompleted
+      classroomID
+      Classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
+      }
+      lessonID
+      Lesson {
+        id
+        title
+        description
+        sectionID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPELessonRecords = /* GraphQL */ `
+  query ListPELessonRecords(
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPELessonRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        isCompleted
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const lessonRecordByName = /* GraphQL */ `
+  query LessonRecordByName(
+    $date: AWSDate!
+    $id: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    lessonRecordByName(
+      date: $date
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        isCompleted
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const lessonByDate = /* GraphQL */ `
+  query LessonByDate(
+    $activity: String!
+    $date: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPELessonRecordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    lessonByDate(
+      activity: $activity
+      date: $date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        teacherID
+        date
+        deliveredBy
+        duration
+        activity
+        rating
+        notes
+        isCompleted
+        classroomID
+        lessonID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getSchoolHouse = /* GraphQL */ `
   query GetSchoolHouse($id: ID!) {
     getSchoolHouse(id: $id) {
       id
       name
-      createdAt
-      updatedAt
       Pupils {
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -183,6 +866,7 @@ export const getClassroomLesson = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       Lesson {
         id
@@ -242,6 +926,16 @@ export const getClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      Organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
       yearGroupID
       yearGroup {
         id
@@ -249,8 +943,15 @@ export const getClassroom = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      members {
+        nextToken
+      }
+      LessonRecords {
+        nextToken
+      }
       createdAt
       updatedAt
+      organizationClassroomsId
     }
   }
 `;
@@ -268,6 +969,7 @@ export const listClassrooms = /* GraphQL */ `
         yearGroupID
         createdAt
         updatedAt
+        organizationClassroomsId
       }
       nextToken
     }
@@ -279,24 +981,29 @@ export const getPupilOrganizationRequest = /* GraphQL */ `
       id
       pupilID
       organizationID
-      createdAt
-      updatedAt
-      organization {
-        id
-        name
-        type
-        createdAt
-        updatedAt
-      }
       pupil {
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
         updatedAt
       }
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -328,24 +1035,29 @@ export const getPupilOrganizationAccepted = /* GraphQL */ `
       id
       pupilID
       organizationID
-      createdAt
-      updatedAt
-      organization {
-        id
-        name
-        type
-        createdAt
-        updatedAt
-      }
       pupil {
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
         updatedAt
       }
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -385,14 +1097,14 @@ export const getSchool = /* GraphQL */ `
       Principals {
         nextToken
       }
+      Pupils {
+        nextToken
+      }
       classrooms {
         nextToken
       }
       createdAt
       updatedAt
-      Pupils {
-        nextToken
-      }
     }
   }
 `;
@@ -424,6 +1136,25 @@ export const getAttendance = /* GraphQL */ `
       wasRewarded
       pupilID
       lessonID
+      Pupil {
+        id
+        firstName
+        lastName
+        terraId
+        provider
+        schoolID
+        schoolHouseID
+        createdAt
+        updatedAt
+      }
+      UserInOrganization {
+        userID
+        organizationID
+        status
+        id
+        createdAt
+        updatedAt
+      }
       Lesson {
         id
         title
@@ -432,9 +1163,6 @@ export const getAttendance = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      lessonRecordID
-      createdAt
-      updatedAt
       lessonRecord {
         id
         teacherID
@@ -444,20 +1172,16 @@ export const getAttendance = /* GraphQL */ `
         activity
         rating
         notes
+        isCompleted
         classroomID
         lessonID
         createdAt
         updatedAt
       }
-      Pupil {
-        id
-        firstName
-        lastName
-        schoolID
-        schoolHouseID
-        createdAt
-        updatedAt
-      }
+      lessonRecordID
+      createdAt
+      updatedAt
+      userInOrganizationAttendancesId
     }
   }
 `;
@@ -477,6 +1201,39 @@ export const listAttendances = /* GraphQL */ `
         lessonRecordID
         createdAt
         updatedAt
+        userInOrganizationAttendancesId
+      }
+      nextToken
+    }
+  }
+`;
+export const attendanceByLessonRecordID = /* GraphQL */ `
+  query AttendanceByLessonRecordID(
+    $id: ID!
+    $lessonRecordID: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelAttendanceFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    attendanceByLessonRecordID(
+      id: $id
+      lessonRecordID: $lessonRecordID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        present
+        wasRewarded
+        pupilID
+        lessonID
+        lessonRecordID
+        createdAt
+        updatedAt
+        userInOrganizationAttendancesId
       }
       nextToken
     }
@@ -640,11 +1397,11 @@ export const getParent = /* GraphQL */ `
       children {
         nextToken
       }
-      createdAt
-      updatedAt
       InterventionFeedback {
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -685,15 +1442,18 @@ export const getPrincipal = /* GraphQL */ `
         updatedAt
       }
       organizationID
-      createdAt
-      updatedAt
       Organization {
         id
         name
+        isPublic
         type
         createdAt
         updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -732,6 +1492,9 @@ export const getTeacher = /* GraphQL */ `
       LessonTeacher {
         nextToken
       }
+      Organizations {
+        nextToken
+      }
       School {
         id
         name
@@ -766,121 +1529,14 @@ export const listTeachers = /* GraphQL */ `
     }
   }
 `;
-export const getPELessonRecord = /* GraphQL */ `
-  query GetPELessonRecord($id: ID!) {
-    getPELessonRecord(id: $id) {
-      id
-      teacherID
-      Teacher {
-        id
-        firstName
-        lastName
-        email
-        schoolID
-        createdAt
-        updatedAt
-      }
-      Attendances {
-        nextToken
-      }
-      date
-      deliveredBy
-      duration
-      activity
-      rating
-      notes
-      classroomID
-      Classroom {
-        id
-        name
-        schoolID
-        yearGroupID
-        createdAt
-        updatedAt
-      }
-      lessonID
-      Lesson {
-        id
-        title
-        description
-        sectionID
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listPELessonRecords = /* GraphQL */ `
-  query ListPELessonRecords(
-    $filter: ModelPELessonRecordFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPELessonRecords(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        teacherID
-        date
-        deliveredBy
-        duration
-        activity
-        rating
-        notes
-        classroomID
-        lessonID
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getOrganization = /* GraphQL */ `
-  query GetOrganization($id: ID!) {
-    getOrganization(id: $id) {
-      id
-      name
-      Principals {
-        nextToken
-      }
-      WaitingForAcceptPupils {
-        nextToken
-      }
-      AcceptedPupils {
-        nextToken
-      }
-      type
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listOrganizations = /* GraphQL */ `
-  query ListOrganizations(
-    $filter: ModelOrganizationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        type
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getPupil = /* GraphQL */ `
   query GetPupil($id: ID!) {
     getPupil(id: $id) {
       id
       firstName
       lastName
+      terraId
+      provider
       Attendances {
         nextToken
       }
@@ -913,11 +1569,11 @@ export const getPupil = /* GraphQL */ `
       parents {
         nextToken
       }
-      createdAt
-      updatedAt
       Interventions {
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -932,6 +1588,8 @@ export const listPupils = /* GraphQL */ `
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
@@ -946,21 +1604,24 @@ export const getIntervention = /* GraphQL */ `
     getIntervention(id: $id) {
       id
       pupilID
-      message
-      createdAt
-      updatedAt
       Pupil {
         id
         firstName
         lastName
+        terraId
+        provider
         schoolID
         schoolHouseID
         createdAt
         updatedAt
       }
+      message
+      viewed
       InterventionFeedback {
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -975,6 +1636,7 @@ export const listInterventions = /* GraphQL */ `
         id
         pupilID
         message
+        viewed
         createdAt
         updatedAt
       }
@@ -982,30 +1644,32 @@ export const listInterventions = /* GraphQL */ `
     }
   }
 `;
-export const searchInterventions = /* GraphQL */ `
-  query SearchInterventions(
-    $filter: SearchableInterventionFilterInput
-    $sort: SearchableInterventionSortInput
+export const interventionByPupilByDate = /* GraphQL */ `
+  query InterventionByPupilByDate(
+    $pupilID: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelInterventionFilterInput
     $limit: Int
     $nextToken: String
-    $from: Int
   ) {
-    searchInterventions(
+    interventionByPupilByDate(
+      pupilID: $pupilID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
       filter: $filter
-      sort: $sort
       limit: $limit
       nextToken: $nextToken
-      from: $from
     ) {
       items {
         id
         pupilID
         message
+        viewed
         createdAt
         updatedAt
       }
       nextToken
-      total
     }
   }
 `;
@@ -1023,17 +1687,18 @@ export const getParentInterventionFeedback = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      comment
-      rating
-      createdAt
-      updatedAt
       Intervention {
         id
         pupilID
         message
+        viewed
         createdAt
         updatedAt
       }
+      comment
+      rating
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -1054,6 +1719,207 @@ export const listParentInterventionFeedbacks = /* GraphQL */ `
         interventionID
         comment
         rating
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getRolesOfUser = /* GraphQL */ `
+  query GetRolesOfUser($id: ID!) {
+    getRolesOfUser(id: $id) {
+      id
+      userInOrganizationID
+      userRoleID
+      userInOrganization {
+        userID
+        organizationID
+        status
+        id
+        createdAt
+        updatedAt
+      }
+      userRole {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
+        userRolePermissionsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listRolesOfUsers = /* GraphQL */ `
+  query ListRolesOfUsers(
+    $filter: ModelRolesOfUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRolesOfUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userInOrganizationID
+        userRoleID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserInOrganizationInClassroom = /* GraphQL */ `
+  query GetUserInOrganizationInClassroom($id: ID!) {
+    getUserInOrganizationInClassroom(id: $id) {
+      id
+      userInOrganizationID
+      classroomID
+      userInOrganization {
+        userID
+        organizationID
+        status
+        id
+        createdAt
+        updatedAt
+      }
+      classroom {
+        id
+        name
+        schoolID
+        yearGroupID
+        createdAt
+        updatedAt
+        organizationClassroomsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserInOrganizationInClassrooms = /* GraphQL */ `
+  query ListUserInOrganizationInClassrooms(
+    $filter: ModelUserInOrganizationInClassroomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserInOrganizationInClassrooms(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userInOrganizationID
+        classroomID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getRolesThatCanAccess = /* GraphQL */ `
+  query GetRolesThatCanAccess($id: ID!) {
+    getRolesThatCanAccess(id: $id) {
+      id
+      userRoleID
+      sectionID
+      userRole {
+        id
+        name
+        createdAt
+        updatedAt
+        organizationRolesId
+        sectionFromContentStoreRolesThatCanAccessId
+        userRolePermissionsId
+      }
+      section {
+        id
+        name
+        isPlacedInContentStore
+        parentID
+        organizationID
+        imagePreviewID
+        createdAt
+        updatedAt
+        sectionSectionOptionsId
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listRolesThatCanAccesses = /* GraphQL */ `
+  query ListRolesThatCanAccesses(
+    $filter: ModelRolesThatCanAccessFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRolesThatCanAccesses(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userRoleID
+        sectionID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getTeacherOrganziation = /* GraphQL */ `
+  query GetTeacherOrganziation($id: ID!) {
+    getTeacherOrganziation(id: $id) {
+      id
+      organizationID
+      teacherID
+      organization {
+        id
+        name
+        isPublic
+        type
+        createdAt
+        updatedAt
+        userOwnedOrganizationsId
+        organizationLogoId
+      }
+      teacher {
+        id
+        firstName
+        lastName
+        email
+        schoolID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTeacherOrganziations = /* GraphQL */ `
+  query ListTeacherOrganziations(
+    $filter: ModelTeacherOrganziationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTeacherOrganziations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        organizationID
+        teacherID
         createdAt
         updatedAt
       }

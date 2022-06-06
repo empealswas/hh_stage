@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authhealthyhabitsv24aea1e5f"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "keyDescription": ""
+      },
+      {
+        "mode": "AWS_IAM"
+      }
+    ],
+    "conflictResolution": {},
+    "apiName": "HealthyHabitsV2GraphQlApi",
+    "gqlSchemaPath": "C:\\Projects\\Work\\Healthy-Habits-Content\\amplify\\backend\\api\\HealthyHabitsV2GraphQlApi\\schema.graphql"
+  }
+}

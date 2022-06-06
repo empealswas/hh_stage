@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationRequestJoin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/organization/member/OrganizationRequestJoin.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="240ykFGN0ZHAlYVCttCQa0dQPXK" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/locales" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettier.import.notification.dismissed" value="true" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="ts.external.directory.path" value="C:\Projects\Work\Healthy-Habits-Content\node_modules\typescript\lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.rcb.reactComponents" value="false" />
+        <entry key="com.haulmont.rcb.reactInspector" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\locales" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\public\locales\de" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\activity" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\sections\auth\reset-password" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\public\icons" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization\team" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\pages\dashboard\organization" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\src\components\section\lesson\attendance" />
+      <recent name="C:\Projects\Work\Healthy-Habits-Content\public\static" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8fda1eda-a476-4bab-bf7a-0ff0607ed70a" name="Changes" comment="" />
+      <created>1642781940164</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1642781940164</updated>
+      <workItem from="1642781946390" duration="2974000" />
+      <workItem from="1642855995536" duration="24160000" />
+      <workItem from="1642954858797" duration="14659000" />
+      <workItem from="1643018506455" duration="210000" />
+      <workItem from="1643019128944" duration="68000" />
+      <workItem from="1643019582935" duration="2991000" />
+      <workItem from="1643024563155" duration="529000" />
+      <workItem from="1643111366067" duration="1572000" />
+      <workItem from="1643113846381" duration="11785000" />
+      <workItem from="1643192392570" duration="17669000" />
+      <workItem from="1643369630101" duration="5709000" />
+      <workItem from="1643623949722" duration="5057000" />
+      <workItem from="1643722417579" duration="9221000" />
+      <workItem from="1643736958058" duration="9074000" />
+      <workItem from="1643816467383" duration="3209000" />
+      <workItem from="1643830022277" duration="10755000" />
+      <workItem from="1643881952544" duration="15127000" />
+      <workItem from="1643909731015" duration="2272000" />
+      <workItem from="1643973365490" duration="3823000" />
+      <workItem from="1643977661917" duration="1868000" />
+      <workItem from="1643986340797" duration="20403000" />
+      <workItem from="1644149827115" duration="16705000" />
+      <workItem from="1644186840426" duration="6202000" />
+      <workItem from="1644223464881" duration="1732000" />
+      <workItem from="1644320908378" duration="4231000" />
+      <workItem from="1644329927992" duration="10891000" />
+      <workItem from="1644352950991" duration="5645000" />
+      <workItem from="1644400797141" duration="7882000" />
+      <workItem from="1644440750582" duration="6512000" />
+      <workItem from="1644485284448" duration="2271000" />
+      <workItem from="1644755577068" duration="10743000" />
+      <workItem from="1644777016596" duration="12301000" />
+      <workItem from="1644838336301" duration="9175000" />
+      <workItem from="1644924499767" duration="7636000" />
+      <workItem from="1645002016943" duration="4327000" />
+      <workItem from="1645008088969" duration="3773000" />
+      <workItem from="1645018554623" duration="1510000" />
+      <workItem from="1645443882075" duration="10448000" />
+      <workItem from="1645523464737" duration="3793000" />
+      <workItem from="1645536988363" duration="1432000" />
+      <workItem from="1646152881986" duration="4181000" />
+      <workItem from="1646219738958" duration="10351000" />
+      <workItem from="1646308131748" duration="7672000" />
+      <workItem from="1646392035510" duration="7054000" />
+      <workItem from="1646571982136" duration="1089000" />
+      <workItem from="1646648815029" duration="3992000" />
+      <workItem from="1646662116008" duration="1875000" />
+      <workItem from="1646664529886" duration="5431000" />
+      <workItem from="1646759742530" duration="1101000" />
+      <workItem from="1646902850118" duration="6898000" />
+      <workItem from="1647005666227" duration="900000" />
+      <workItem from="1647171319803" duration="16000" />
+      <workItem from="1647196269249" duration="1000" />
+      <workItem from="1647255522422" duration="3899000" />
+      <workItem from="1647285316843" duration="2231000" />
+      <workItem from="1647355005870" duration="3560000" />
+      <workItem from="1647370095579" duration="326000" />
+      <workItem from="1647443747129" duration="5285000" />
+      <workItem from="1647597310002" duration="2842000" />
+      <workItem from="1647860347694" duration="3272000" />
+      <workItem from="1647939136079" duration="3103000" />
+      <workItem from="1647968773872" duration="3385000" />
+      <workItem from="1647981506795" duration="4929000" />
+      <workItem from="1648042240700" duration="3665000" />
+      <workItem from="1648105151439" duration="55000" />
+      <workItem from="1648126669600" duration="3720000" />
+      <workItem from="1648142108584" duration="2567000" />
+      <workItem from="1648192452565" duration="3404000" />
+      <workItem from="1648207126209" duration="4636000" />
+      <workItem from="1648217438504" duration="595000" />
+      <workItem from="1648477111555" duration="669000" />
+      <workItem from="1648569242184" duration="5245000" />
+      <workItem from="1648627476638" duration="3310000" />
+      <workItem from="1648648364428" duration="8233000" />
+      <workItem from="1648717843097" duration="4983000" />
+      <workItem from="1648754351468" duration="966000" />
+      <workItem from="1648816385470" duration="254000" />
+      <workItem from="1648816931121" duration="824000" />
+      <workItem from="1648820643129" duration="291000" />
+      <workItem from="1648828481984" duration="1935000" />
+      <workItem from="1648837224777" duration="5927000" />
+      <workItem from="1648896174852" duration="486000" />
+      <workItem from="1649097148216" duration="1088000" />
+      <workItem from="1649145732143" duration="6252000" />
+      <workItem from="1649153427090" duration="2384000" />
+      <workItem from="1649179504469" duration="2557000" />
+      <workItem from="1649239137516" duration="764000" />
+      <workItem from="1649242191070" duration="736000" />
+      <workItem from="1649244800735" duration="184000" />
+      <workItem from="1649329950847" duration="2344000" />
+      <workItem from="1649338403649" duration="1275000" />
+      <workItem from="1649346660612" duration="200000" />
+      <workItem from="1649352048706" duration="753000" />
+      <workItem from="1649353192007" duration="723000" />
+      <workItem from="1649704607660" duration="889000" />
+      <workItem from="1649707598830" duration="540000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/pages/dashboard/organization/OrganizationsGrid.tsx</url>
+          <line>141</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/section/lesson/LessonsGridSection.tsx</url>
+          <line>23</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/section/lesson/attendance/AttendanceSheetTable.tsx</url>
+          <line>341</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

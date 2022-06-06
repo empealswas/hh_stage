@@ -2,22 +2,34 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateFileInput = {
+export type CreateUserInput = {
   id?: string | null,
-  key?: string | null,
-  region?: string | null,
-  bucket?: string | null,
-  lessonID?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
+  phoneNumber?: string | null,
+  country?: string | null,
+  address?: string | null,
+  city?: string | null,
+  zipCode?: string | null,
 };
 
-export type ModelFileConditionInput = {
-  key?: ModelStringInput | null,
-  region?: ModelStringInput | null,
-  bucket?: ModelStringInput | null,
-  lessonID?: ModelIDInput | null,
-  and?: Array< ModelFileConditionInput | null > | null,
-  or?: Array< ModelFileConditionInput | null > | null,
-  not?: ModelFileConditionInput | null,
+export type ModelUserConditionInput = {
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  terraId?: ModelStringInput | null,
+  provider?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  address?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  zipCode?: ModelStringInput | null,
+  and?: Array< ModelUserConditionInput | null > | null,
+  or?: Array< ModelUserConditionInput | null > | null,
+  not?: ModelUserConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -60,20 +72,373 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
+export type User = {
+  __typename: "User",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  dependants?: ModelDependantGuardianConnection | null,
+  organizations?: ModelUserInOrganizationConnection | null,
+  ownedOrganizations?: ModelOrganizationConnection | null,
+  terraId?: string | null,
+  provider?: string | null,
+  phoneNumber?: string | null,
+  country?: string | null,
+  address?: string | null,
+  city?: string | null,
+  zipCode?: string | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelDependantGuardianConnection = {
+  __typename: "ModelDependantGuardianConnection",
+  items:  Array<DependantGuardian | null >,
+  nextToken?: string | null,
+};
+
+export type DependantGuardian = {
+  __typename: "DependantGuardian",
+  guardian: User,
+  dependant: User,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  userDependantsId?: string | null,
+};
+
+export type ModelUserInOrganizationConnection = {
+  __typename: "ModelUserInOrganizationConnection",
+  items:  Array<UserInOrganization | null >,
+  nextToken?: string | null,
+};
+
+export type UserInOrganization = {
+  __typename: "UserInOrganization",
+  userID?: string | null,
+  organizationID?: string | null,
+  organization?: Organization | null,
+  user?: User | null,
+  status: UserInOrganizationStatus,
+  roles?: ModelRolesOfUserConnection | null,
+  classrooms?: ModelUserInOrganizationInClassroomConnection | null,
+  Attendances?: ModelAttendanceConnection | null,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Organization = {
+  __typename: "Organization",
+  id: string,
+  name?: string | null,
+  owner: User,
+  Principals?: ModelPrincipalConnection | null,
+  WaitingForAcceptPupils?: ModelPupilOrganizationRequestConnection | null,
+  AcceptedPupils?: ModelPupilOrganizationAcceptedConnection | null,
+  Sections?: ModelSectionConnection | null,
+  SectionsFromContentStore?: ModelSectionFromContentStoreConnection | null,
+  Teachers?: ModelTeacherOrganziationConnection | null,
+  Classrooms?: ModelClassroomConnection | null,
+  members?: ModelUserInOrganizationConnection | null,
+  roles?: ModelUserRoleConnection | null,
+  isPublic: boolean,
+  type?: string | null,
+  logo?: File | null,
+  createdAt: string,
+  updatedAt: string,
+  userOwnedOrganizationsId?: string | null,
+  organizationLogoId?: string | null,
+};
+
+export type ModelPrincipalConnection = {
+  __typename: "ModelPrincipalConnection",
+  items:  Array<Principal | null >,
+  nextToken?: string | null,
+};
+
+export type Principal = {
+  __typename: "Principal",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+  School?: School | null,
+  organizationID?: string | null,
+  Organization?: Organization | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type School = {
+  __typename: "School",
+  id: string,
+  name?: string | null,
+  country?: string | null,
+  region?: string | null,
+  principal?: string | null,
+  Teachers?: ModelTeacherConnection | null,
+  Principals?: ModelPrincipalConnection | null,
+  Pupils?: ModelPupilConnection | null,
+  classrooms?: ModelClassroomConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelTeacherConnection = {
+  __typename: "ModelTeacherConnection",
+  items:  Array<Teacher | null >,
+  nextToken?: string | null,
+};
+
+export type Teacher = {
+  __typename: "Teacher",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  schoolID?: string | null,
+  classrooms?: ModelTeacherClassroomConnection | null,
+  LessonTeacher?: ModelLessonTeacherConnection | null,
+  Organizations?: ModelTeacherOrganziationConnection | null,
+  School?: School | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelTeacherClassroomConnection = {
+  __typename: "ModelTeacherClassroomConnection",
+  items:  Array<TeacherClassroom | null >,
+  nextToken?: string | null,
+};
+
+export type TeacherClassroom = {
+  __typename: "TeacherClassroom",
+  id: string,
+  teacherID: string,
+  classroomID: string,
+  teacher: Teacher,
+  classroom: Classroom,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Classroom = {
+  __typename: "Classroom",
+  id: string,
+  name?: string | null,
+  teachers?: ModelTeacherClassroomConnection | null,
+  pupils?: ModelPupilClassroomConnection | null,
+  schoolID?: string | null,
+  school?: School | null,
+  Organization?: Organization | null,
+  yearGroupID?: string | null,
+  yearGroup?: Curriculum | null,
+  members?: ModelUserInOrganizationInClassroomConnection | null,
+  LessonRecords?: ModelPELessonRecordConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  organizationClassroomsId?: string | null,
+};
+
+export type ModelPupilClassroomConnection = {
+  __typename: "ModelPupilClassroomConnection",
+  items:  Array<PupilClassroom | null >,
+  nextToken?: string | null,
+};
+
+export type PupilClassroom = {
+  __typename: "PupilClassroom",
+  id: string,
+  pupilID: string,
+  classroomID: string,
+  pupil: Pupil,
+  classroom: Classroom,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Pupil = {
+  __typename: "Pupil",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
+  Attendances?: ModelAttendanceConnection | null,
+  classrooms?: ModelPupilClassroomConnection | null,
+  Organizations?: ModelPupilOrganizationAcceptedConnection | null,
+  OrganizationsRequests?: ModelPupilOrganizationRequestConnection | null,
+  schoolID?: string | null,
+  schoolHouseID?: string | null,
+  schoolHouse?: SchoolHouse | null,
+  school?: School | null,
+  parents?: ModelPupilParentConnection | null,
+  Interventions?: ModelInterventionConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelAttendanceConnection = {
+  __typename: "ModelAttendanceConnection",
+  items:  Array<Attendance | null >,
+  nextToken?: string | null,
+};
+
+export type Attendance = {
+  __typename: "Attendance",
+  id: string,
+  present?: boolean | null,
+  wasRewarded?: boolean | null,
+  pupilID?: string | null,
+  lessonID?: string | null,
+  Pupil?: Pupil | null,
+  UserInOrganization: UserInOrganization,
+  Lesson?: Lesson | null,
+  lessonRecord?: PELessonRecord | null,
+  lessonRecordID?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  userInOrganizationAttendancesId?: string | null,
+};
+
+export type Lesson = {
+  __typename: "Lesson",
+  id: string,
+  title?: string | null,
+  description?: string | null,
+  sectionID?: string | null,
+  Section?: Section | null,
+  LessonsRecords?: ModelPELessonRecordConnection | null,
+  terms?: ModelTermLessonConnection | null,
+  Attendances?: ModelAttendanceConnection | null,
+  Files?: ModelFileConnection | null,
+  LessonTeacher?: ModelLessonTeacherConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Section = {
+  __typename: "Section",
+  id: string,
+  name?: string | null,
+  isPlacedInContentStore?: boolean | null,
+  parentID?: string | null,
+  organizationID?: string | null,
+  ParentSection?: Section | null,
+  OrganizationOwner?: Organization | null,
+  OrganizationsFromContentStore?: ModelSectionFromContentStoreConnection | null,
+  Lessons?: ModelLessonConnection | null,
+  imagePreviewID?: string | null,
+  ImagePreview?: File | null,
+  SectionOptions?: SectionOptions | null,
+  rolesThatCanAccess?: ModelRolesThatCanAccessConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  sectionSectionOptionsId?: string | null,
+};
+
+export type ModelSectionFromContentStoreConnection = {
+  __typename: "ModelSectionFromContentStoreConnection",
+  items:  Array<SectionFromContentStore | null >,
+  nextToken?: string | null,
+};
+
+export type SectionFromContentStore = {
+  __typename: "SectionFromContentStore",
+  sectionID?: string | null,
+  organizationID?: string | null,
+  organization: Organization,
+  section: Section,
+  rolesThatCanAccess?: ModelUserRoleConnection | null,
+  score?: number | null,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelUserRoleConnection = {
+  __typename: "ModelUserRoleConnection",
+  items:  Array<UserRole | null >,
+  nextToken?: string | null,
+};
+
+export type UserRole = {
+  __typename: "UserRole",
+  id: string,
+  name: string,
+  organization: Organization,
+  users?: ModelRolesOfUserConnection | null,
+  permissions?: RolePermissions | null,
+  sectionAvailableForThatRole?: ModelRolesThatCanAccessConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  organizationRolesId?: string | null,
+  sectionFromContentStoreRolesThatCanAccessId?: string | null,
+  userRolePermissionsId?: string | null,
+};
+
+export type ModelRolesOfUserConnection = {
+  __typename: "ModelRolesOfUserConnection",
+  items:  Array<RolesOfUser | null >,
+  nextToken?: string | null,
+};
+
+export type RolesOfUser = {
+  __typename: "RolesOfUser",
+  id: string,
+  userInOrganizationID: string,
+  userRoleID: string,
+  userInOrganization: UserInOrganization,
+  userRole: UserRole,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type RolePermissions = {
+  __typename: "RolePermissions",
+  role?: UserRole | null,
+  canAccessAttendanceSheet?: boolean | null,
+  canCreateLesson?: boolean | null,
+  canRateLessons?: boolean | null,
+  canDeleteLessons?: boolean | null,
+  canUpdateLesson?: boolean | null,
+  canUploadContent?: boolean | null,
+  canViewContent?: boolean | null,
+  canCreateSection?: boolean | null,
+  canDeleteSection?: boolean | null,
+  canUpdateSection?: boolean | null,
+  canViewDashboard?: boolean | null,
+  canManageOrganization?: boolean | null,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  rolePermissionsRoleId?: string | null,
+};
+
+export type ModelRolesThatCanAccessConnection = {
+  __typename: "ModelRolesThatCanAccessConnection",
+  items:  Array<RolesThatCanAccess | null >,
+  nextToken?: string | null,
+};
+
+export type RolesThatCanAccess = {
+  __typename: "RolesThatCanAccess",
+  id: string,
+  userRoleID: string,
+  sectionID: string,
+  userRole: UserRole,
+  section: Section,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelLessonConnection = {
+  __typename: "ModelLessonConnection",
+  items:  Array<Lesson | null >,
+  nextToken?: string | null,
 };
 
 export type File = {
@@ -87,72 +452,48 @@ export type File = {
   updatedAt: string,
 };
 
-export type UpdateFileInput = {
+export type SectionOptions = {
+  __typename: "SectionOptions",
   id: string,
-  key?: string | null,
-  region?: string | null,
-  bucket?: string | null,
-  lessonID?: string | null,
-};
-
-export type DeleteFileInput = {
-  id: string,
-};
-
-export type CreateSectionInput = {
-  id?: string | null,
-  name?: string | null,
-  parentID?: string | null,
-  imagePreviewID?: string | null,
-};
-
-export type ModelSectionConditionInput = {
-  name?: ModelStringInput | null,
-  parentID?: ModelIDInput | null,
-  imagePreviewID?: ModelIDInput | null,
-  and?: Array< ModelSectionConditionInput | null > | null,
-  or?: Array< ModelSectionConditionInput | null > | null,
-  not?: ModelSectionConditionInput | null,
-};
-
-export type Section = {
-  __typename: "Section",
-  id: string,
-  name?: string | null,
-  parentID?: string | null,
-  ParentSection?: Section | null,
-  Lessons?: ModelLessonConnection | null,
-  imagePreviewID?: string | null,
-  ImagePreview?: File | null,
+  Section?: Section | null,
+  Activities?: Array< string | null > | null,
+  Durations?: Array< number | null > | null,
+  DeliveredBy?: Array< string | null > | null,
   createdAt: string,
   updatedAt: string,
+  sectionOptionsSectionId?: string | null,
 };
 
-export type ModelLessonConnection = {
-  __typename: "ModelLessonConnection",
-  items:  Array<Lesson >,
+export type ModelPELessonRecordConnection = {
+  __typename: "ModelPELessonRecordConnection",
+  items:  Array<PELessonRecord | null >,
   nextToken?: string | null,
 };
 
-export type Lesson = {
-  __typename: "Lesson",
+export type PELessonRecord = {
+  __typename: "PELessonRecord",
   id: string,
-  title?: string | null,
-  description?: string | null,
-  sectionID?: string | null,
-  Section?: Section | null,
-  terms?: ModelTermLessonConnection | null,
+  teacherID?: string | null,
+  Teacher?: Teacher | null,
   Attendances?: ModelAttendanceConnection | null,
-  Files?: ModelFileConnection | null,
-  LessonTeacher?: ModelLessonTeacherConnection | null,
+  date: string,
+  deliveredBy?: string | null,
+  duration?: number | null,
+  activity?: string | null,
+  rating?: number | null,
+  notes?: string | null,
+  isCompleted?: boolean | null,
+  classroomID?: string | null,
+  Classroom?: Classroom | null,
+  lessonID?: string | null,
+  Lesson?: Lesson | null,
   createdAt: string,
   updatedAt: string,
-  LessonsRecords?: ModelPELessonRecordConnection | null,
 };
 
 export type ModelTermLessonConnection = {
   __typename: "ModelTermLessonConnection",
-  items:  Array<TermLesson >,
+  items:  Array<TermLesson | null >,
   nextToken?: string | null,
 };
 
@@ -181,7 +522,7 @@ export type Term = {
 
 export type ModelSubjectTermConnection = {
   __typename: "ModelSubjectTermConnection",
-  items:  Array<SubjectTerm >,
+  items:  Array<SubjectTerm | null >,
   nextToken?: string | null,
 };
 
@@ -208,7 +549,7 @@ export type Subject = {
 
 export type ModelCurriculumSubjectConnection = {
   __typename: "ModelCurriculumSubjectConnection",
-  items:  Array<CurriculumSubject >,
+  items:  Array<CurriculumSubject | null >,
   nextToken?: string | null,
 };
 
@@ -232,304 +573,15 @@ export type Curriculum = {
   updatedAt: string,
 };
 
-export type ModelAttendanceConnection = {
-  __typename: "ModelAttendanceConnection",
-  items:  Array<Attendance >,
-  nextToken?: string | null,
-};
-
-export type Attendance = {
-  __typename: "Attendance",
-  id: string,
-  present?: boolean | null,
-  wasRewarded?: boolean | null,
-  pupilID?: string | null,
-  lessonID?: string | null,
-  Lesson?: Lesson | null,
-  lessonRecordID?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  lessonRecord?: PELessonRecord | null,
-  Pupil?: Pupil | null,
-};
-
-export type PELessonRecord = {
-  __typename: "PELessonRecord",
-  id: string,
-  teacherID?: string | null,
-  Teacher?: Teacher | null,
-  Attendances?: ModelAttendanceConnection | null,
-  date?: string | null,
-  deliveredBy?: string | null,
-  duration?: number | null,
-  activity?: string | null,
-  rating?: number | null,
-  notes?: string | null,
-  classroomID?: string | null,
-  Classroom?: Classroom | null,
-  lessonID?: string | null,
-  Lesson?: Lesson | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type Teacher = {
-  __typename: "Teacher",
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  email?: string | null,
-  schoolID?: string | null,
-  classrooms?: ModelTeacherClassroomConnection | null,
-  LessonTeacher?: ModelLessonTeacherConnection | null,
-  School?: School | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelTeacherClassroomConnection = {
-  __typename: "ModelTeacherClassroomConnection",
-  items:  Array<TeacherClassroom >,
-  nextToken?: string | null,
-};
-
-export type TeacherClassroom = {
-  __typename: "TeacherClassroom",
-  id: string,
-  teacherID: string,
-  classroomID: string,
-  teacher: Teacher,
-  classroom: Classroom,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type Classroom = {
-  __typename: "Classroom",
-  id: string,
-  name?: string | null,
-  teachers?: ModelTeacherClassroomConnection | null,
-  pupils?: ModelPupilClassroomConnection | null,
-  schoolID?: string | null,
-  school?: School | null,
-  yearGroupID?: string | null,
-  yearGroup?: Curriculum | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelPupilClassroomConnection = {
-  __typename: "ModelPupilClassroomConnection",
-  items:  Array<PupilClassroom >,
-  nextToken?: string | null,
-};
-
-export type PupilClassroom = {
-  __typename: "PupilClassroom",
-  id: string,
-  pupilID: string,
-  classroomID: string,
-  classroom: Classroom,
-  createdAt: string,
-  updatedAt: string,
-  pupil: Pupil,
-};
-
-export type Pupil = {
-  __typename: "Pupil",
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  Attendances?: ModelAttendanceConnection | null,
-  classrooms?: ModelPupilClassroomConnection | null,
-  Organizations?: ModelPupilOrganizationAcceptedConnection | null,
-  OrganizationsRequests?: ModelPupilOrganizationRequestConnection | null,
-  schoolID?: string | null,
-  schoolHouseID?: string | null,
-  schoolHouse?: SchoolHouse | null,
-  school?: School | null,
-  parents?: ModelPupilParentConnection | null,
-  createdAt: string,
-  updatedAt: string,
-  Interventions?: ModelInterventionConnection | null,
-};
-
-export type ModelPupilOrganizationAcceptedConnection = {
-  __typename: "ModelPupilOrganizationAcceptedConnection",
-  items:  Array<PupilOrganizationAccepted >,
-  nextToken?: string | null,
-};
-
-export type PupilOrganizationAccepted = {
-  __typename: "PupilOrganizationAccepted",
-  id: string,
-  pupilID: string,
-  organizationID: string,
-  createdAt: string,
-  updatedAt: string,
-  organization: Organization,
-  pupil: Pupil,
-};
-
-export type Organization = {
-  __typename: "Organization",
-  id: string,
-  name?: string | null,
-  Principals?: ModelPrincipalConnection | null,
-  WaitingForAcceptPupils?: ModelPupilOrganizationRequestConnection | null,
-  AcceptedPupils?: ModelPupilOrganizationAcceptedConnection | null,
-  type?: string | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelPrincipalConnection = {
-  __typename: "ModelPrincipalConnection",
-  items:  Array<Principal >,
-  nextToken?: string | null,
-};
-
-export type Principal = {
-  __typename: "Principal",
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  email?: string | null,
-  schoolID?: string | null,
-  School?: School | null,
-  organizationID?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  Organization?: Organization | null,
-};
-
-export type School = {
-  __typename: "School",
-  id: string,
-  name?: string | null,
-  country?: string | null,
-  region?: string | null,
-  principal?: string | null,
-  Teachers?: ModelTeacherConnection | null,
-  Principals?: ModelPrincipalConnection | null,
-  classrooms?: ModelClassroomConnection | null,
-  createdAt: string,
-  updatedAt: string,
-  Pupils?: ModelPupilConnection | null,
-};
-
-export type ModelTeacherConnection = {
-  __typename: "ModelTeacherConnection",
-  items:  Array<Teacher >,
-  nextToken?: string | null,
-};
-
-export type ModelClassroomConnection = {
-  __typename: "ModelClassroomConnection",
-  items:  Array<Classroom >,
-  nextToken?: string | null,
-};
-
-export type ModelPupilConnection = {
-  __typename: "ModelPupilConnection",
-  items:  Array<Pupil >,
-  nextToken?: string | null,
-};
-
-export type ModelPupilOrganizationRequestConnection = {
-  __typename: "ModelPupilOrganizationRequestConnection",
-  items:  Array<PupilOrganizationRequest >,
-  nextToken?: string | null,
-};
-
-export type PupilOrganizationRequest = {
-  __typename: "PupilOrganizationRequest",
-  id: string,
-  pupilID: string,
-  organizationID: string,
-  createdAt: string,
-  updatedAt: string,
-  organization: Organization,
-  pupil: Pupil,
-};
-
-export type SchoolHouse = {
-  __typename: "SchoolHouse",
-  id: string,
-  name?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  Pupils?: ModelPupilConnection | null,
-};
-
-export type ModelPupilParentConnection = {
-  __typename: "ModelPupilParentConnection",
-  items:  Array<PupilParent >,
-  nextToken?: string | null,
-};
-
-export type PupilParent = {
-  __typename: "PupilParent",
-  id: string,
-  pupilID: string,
-  parentID: string,
-  Parent: Parent,
-  createdAt: string,
-  updatedAt: string,
-  Pupil: Pupil,
-};
-
-export type Parent = {
-  __typename: "Parent",
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  email?: string | null,
-  children?: ModelPupilParentConnection | null,
-  createdAt: string,
-  updatedAt: string,
-  InterventionFeedback?: ModelParentInterventionFeedbackConnection | null,
-};
-
-export type ModelParentInterventionFeedbackConnection = {
-  __typename: "ModelParentInterventionFeedbackConnection",
-  items:  Array<ParentInterventionFeedback >,
-  nextToken?: string | null,
-};
-
-export type ParentInterventionFeedback = {
-  __typename: "ParentInterventionFeedback",
-  id: string,
-  parentID: string,
-  interventionID: string,
-  Parent: Parent,
-  comment?: string | null,
-  rating?: number | null,
-  createdAt: string,
-  updatedAt: string,
-  Intervention: Intervention,
-};
-
-export type Intervention = {
-  __typename: "Intervention",
-  id: string,
-  pupilID: string,
-  message?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  Pupil?: Pupil | null,
-  InterventionFeedback?: ModelParentInterventionFeedbackConnection | null,
-};
-
-export type ModelInterventionConnection = {
-  __typename: "ModelInterventionConnection",
-  items:  Array<Intervention >,
+export type ModelFileConnection = {
+  __typename: "ModelFileConnection",
+  items:  Array<File | null >,
   nextToken?: string | null,
 };
 
 export type ModelLessonTeacherConnection = {
   __typename: "ModelLessonTeacherConnection",
-  items:  Array<LessonTeacher >,
+  items:  Array<LessonTeacher | null >,
   nextToken?: string | null,
 };
 
@@ -545,23 +597,493 @@ export type LessonTeacher = {
   updatedAt: string,
 };
 
-export type ModelFileConnection = {
-  __typename: "ModelFileConnection",
-  items:  Array<File >,
+export type ModelPupilOrganizationAcceptedConnection = {
+  __typename: "ModelPupilOrganizationAcceptedConnection",
+  items:  Array<PupilOrganizationAccepted | null >,
   nextToken?: string | null,
 };
 
-export type ModelPELessonRecordConnection = {
-  __typename: "ModelPELessonRecordConnection",
-  items:  Array<PELessonRecord >,
+export type PupilOrganizationAccepted = {
+  __typename: "PupilOrganizationAccepted",
+  id: string,
+  pupilID: string,
+  organizationID: string,
+  pupil: Pupil,
+  organization: Organization,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelPupilOrganizationRequestConnection = {
+  __typename: "ModelPupilOrganizationRequestConnection",
+  items:  Array<PupilOrganizationRequest | null >,
   nextToken?: string | null,
+};
+
+export type PupilOrganizationRequest = {
+  __typename: "PupilOrganizationRequest",
+  id: string,
+  pupilID: string,
+  organizationID: string,
+  pupil: Pupil,
+  organization: Organization,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type SchoolHouse = {
+  __typename: "SchoolHouse",
+  id: string,
+  name?: string | null,
+  Pupils?: ModelPupilConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelPupilConnection = {
+  __typename: "ModelPupilConnection",
+  items:  Array<Pupil | null >,
+  nextToken?: string | null,
+};
+
+export type ModelPupilParentConnection = {
+  __typename: "ModelPupilParentConnection",
+  items:  Array<PupilParent | null >,
+  nextToken?: string | null,
+};
+
+export type PupilParent = {
+  __typename: "PupilParent",
+  id: string,
+  pupilID: string,
+  parentID: string,
+  Parent: Parent,
+  Pupil: Pupil,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Parent = {
+  __typename: "Parent",
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  children?: ModelPupilParentConnection | null,
+  InterventionFeedback?: ModelParentInterventionFeedbackConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelParentInterventionFeedbackConnection = {
+  __typename: "ModelParentInterventionFeedbackConnection",
+  items:  Array<ParentInterventionFeedback | null >,
+  nextToken?: string | null,
+};
+
+export type ParentInterventionFeedback = {
+  __typename: "ParentInterventionFeedback",
+  id: string,
+  parentID: string,
+  interventionID: string,
+  Parent: Parent,
+  Intervention: Intervention,
+  comment?: string | null,
+  rating?: number | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type Intervention = {
+  __typename: "Intervention",
+  id: string,
+  pupilID: string,
+  Pupil?: Pupil | null,
+  message?: string | null,
+  viewed?: boolean | null,
+  InterventionFeedback?: ModelParentInterventionFeedbackConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelInterventionConnection = {
+  __typename: "ModelInterventionConnection",
+  items:  Array<Intervention | null >,
+  nextToken?: string | null,
+};
+
+export type ModelUserInOrganizationInClassroomConnection = {
+  __typename: "ModelUserInOrganizationInClassroomConnection",
+  items:  Array<UserInOrganizationInClassroom | null >,
+  nextToken?: string | null,
+};
+
+export type UserInOrganizationInClassroom = {
+  __typename: "UserInOrganizationInClassroom",
+  id: string,
+  userInOrganizationID: string,
+  classroomID: string,
+  userInOrganization: UserInOrganization,
+  classroom: Classroom,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelTeacherOrganziationConnection = {
+  __typename: "ModelTeacherOrganziationConnection",
+  items:  Array<TeacherOrganziation | null >,
+  nextToken?: string | null,
+};
+
+export type TeacherOrganziation = {
+  __typename: "TeacherOrganziation",
+  id: string,
+  organizationID: string,
+  teacherID: string,
+  organization: Organization,
+  teacher: Teacher,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelClassroomConnection = {
+  __typename: "ModelClassroomConnection",
+  items:  Array<Classroom | null >,
+  nextToken?: string | null,
+};
+
+export type ModelSectionConnection = {
+  __typename: "ModelSectionConnection",
+  items:  Array<Section | null >,
+  nextToken?: string | null,
+};
+
+export enum UserInOrganizationStatus {
+  ACCEPTED = "ACCEPTED",
+  WAITING_FOR_ORGANIZATION_TO_APPROVE = "WAITING_FOR_ORGANIZATION_TO_APPROVE",
+  WAITING_FOR_USER_TO_APPROVE = "WAITING_FOR_USER_TO_APPROVE",
+}
+
+
+export type ModelOrganizationConnection = {
+  __typename: "ModelOrganizationConnection",
+  items:  Array<Organization | null >,
+  nextToken?: string | null,
+};
+
+export type UpdateUserInput = {
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  email?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
+  phoneNumber?: string | null,
+  country?: string | null,
+  address?: string | null,
+  city?: string | null,
+  zipCode?: string | null,
+};
+
+export type DeleteUserInput = {
+  id: string,
+};
+
+export type CreateDependantGuardianInput = {
+  id?: string | null,
+  userDependantsId?: string | null,
+};
+
+export type ModelDependantGuardianConditionInput = {
+  and?: Array< ModelDependantGuardianConditionInput | null > | null,
+  or?: Array< ModelDependantGuardianConditionInput | null > | null,
+  not?: ModelDependantGuardianConditionInput | null,
+  userDependantsId?: ModelIDInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type UpdateDependantGuardianInput = {
+  id: string,
+  userDependantsId?: string | null,
+};
+
+export type DeleteDependantGuardianInput = {
+  id: string,
+};
+
+export type CreateUserInOrganizationInput = {
+  userID?: string | null,
+  organizationID?: string | null,
+  status: UserInOrganizationStatus,
+  id?: string | null,
+};
+
+export type ModelUserInOrganizationConditionInput = {
+  userID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  status?: ModelUserInOrganizationStatusInput | null,
+  and?: Array< ModelUserInOrganizationConditionInput | null > | null,
+  or?: Array< ModelUserInOrganizationConditionInput | null > | null,
+  not?: ModelUserInOrganizationConditionInput | null,
+};
+
+export type ModelUserInOrganizationStatusInput = {
+  eq?: UserInOrganizationStatus | null,
+  ne?: UserInOrganizationStatus | null,
+};
+
+export type UpdateUserInOrganizationInput = {
+  userID?: string | null,
+  organizationID?: string | null,
+  status?: UserInOrganizationStatus | null,
+  id: string,
+};
+
+export type DeleteUserInOrganizationInput = {
+  id: string,
+};
+
+export type CreateUserRoleInput = {
+  id?: string | null,
+  name: string,
+  organizationRolesId?: string | null,
+  sectionFromContentStoreRolesThatCanAccessId?: string | null,
+  userRolePermissionsId?: string | null,
+};
+
+export type ModelUserRoleConditionInput = {
+  name?: ModelStringInput | null,
+  and?: Array< ModelUserRoleConditionInput | null > | null,
+  or?: Array< ModelUserRoleConditionInput | null > | null,
+  not?: ModelUserRoleConditionInput | null,
+  organizationRolesId?: ModelIDInput | null,
+  sectionFromContentStoreRolesThatCanAccessId?: ModelIDInput | null,
+  userRolePermissionsId?: ModelIDInput | null,
+};
+
+export type UpdateUserRoleInput = {
+  id: string,
+  name?: string | null,
+  organizationRolesId?: string | null,
+  sectionFromContentStoreRolesThatCanAccessId?: string | null,
+  userRolePermissionsId?: string | null,
+};
+
+export type DeleteUserRoleInput = {
+  id: string,
+};
+
+export type CreateRolePermissionsInput = {
+  canAccessAttendanceSheet?: boolean | null,
+  canCreateLesson?: boolean | null,
+  canRateLessons?: boolean | null,
+  canDeleteLessons?: boolean | null,
+  canUpdateLesson?: boolean | null,
+  canUploadContent?: boolean | null,
+  canViewContent?: boolean | null,
+  canCreateSection?: boolean | null,
+  canDeleteSection?: boolean | null,
+  canUpdateSection?: boolean | null,
+  canViewDashboard?: boolean | null,
+  canManageOrganization?: boolean | null,
+  id?: string | null,
+  rolePermissionsRoleId?: string | null,
+};
+
+export type ModelRolePermissionsConditionInput = {
+  canAccessAttendanceSheet?: ModelBooleanInput | null,
+  canCreateLesson?: ModelBooleanInput | null,
+  canRateLessons?: ModelBooleanInput | null,
+  canDeleteLessons?: ModelBooleanInput | null,
+  canUpdateLesson?: ModelBooleanInput | null,
+  canUploadContent?: ModelBooleanInput | null,
+  canViewContent?: ModelBooleanInput | null,
+  canCreateSection?: ModelBooleanInput | null,
+  canDeleteSection?: ModelBooleanInput | null,
+  canUpdateSection?: ModelBooleanInput | null,
+  canViewDashboard?: ModelBooleanInput | null,
+  canManageOrganization?: ModelBooleanInput | null,
+  and?: Array< ModelRolePermissionsConditionInput | null > | null,
+  or?: Array< ModelRolePermissionsConditionInput | null > | null,
+  not?: ModelRolePermissionsConditionInput | null,
+  rolePermissionsRoleId?: ModelIDInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateRolePermissionsInput = {
+  canAccessAttendanceSheet?: boolean | null,
+  canCreateLesson?: boolean | null,
+  canRateLessons?: boolean | null,
+  canDeleteLessons?: boolean | null,
+  canUpdateLesson?: boolean | null,
+  canUploadContent?: boolean | null,
+  canViewContent?: boolean | null,
+  canCreateSection?: boolean | null,
+  canDeleteSection?: boolean | null,
+  canUpdateSection?: boolean | null,
+  canViewDashboard?: boolean | null,
+  canManageOrganization?: boolean | null,
+  id: string,
+  rolePermissionsRoleId?: string | null,
+};
+
+export type DeleteRolePermissionsInput = {
+  id: string,
+};
+
+export type CreateOrganizationInput = {
+  id?: string | null,
+  name?: string | null,
+  isPublic: boolean,
+  type?: string | null,
+  userOwnedOrganizationsId?: string | null,
+  organizationLogoId?: string | null,
+};
+
+export type ModelOrganizationConditionInput = {
+  name?: ModelStringInput | null,
+  isPublic?: ModelBooleanInput | null,
+  type?: ModelStringInput | null,
+  and?: Array< ModelOrganizationConditionInput | null > | null,
+  or?: Array< ModelOrganizationConditionInput | null > | null,
+  not?: ModelOrganizationConditionInput | null,
+  userOwnedOrganizationsId?: ModelIDInput | null,
+  organizationLogoId?: ModelIDInput | null,
+};
+
+export type UpdateOrganizationInput = {
+  id: string,
+  name?: string | null,
+  isPublic?: boolean | null,
+  type?: string | null,
+  userOwnedOrganizationsId?: string | null,
+  organizationLogoId?: string | null,
+};
+
+export type DeleteOrganizationInput = {
+  id: string,
+};
+
+export type CreateSectionFromContentStoreInput = {
+  sectionID?: string | null,
+  organizationID?: string | null,
+  score?: number | null,
+  id?: string | null,
+};
+
+export type ModelSectionFromContentStoreConditionInput = {
+  sectionID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  score?: ModelIntInput | null,
+  and?: Array< ModelSectionFromContentStoreConditionInput | null > | null,
+  or?: Array< ModelSectionFromContentStoreConditionInput | null > | null,
+  not?: ModelSectionFromContentStoreConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateSectionFromContentStoreInput = {
+  sectionID?: string | null,
+  organizationID?: string | null,
+  score?: number | null,
+  id: string,
+};
+
+export type DeleteSectionFromContentStoreInput = {
+  id: string,
+};
+
+export type CreateFileInput = {
+  id?: string | null,
+  key?: string | null,
+  region?: string | null,
+  bucket?: string | null,
+  lessonID?: string | null,
+};
+
+export type ModelFileConditionInput = {
+  key?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  bucket?: ModelStringInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelFileConditionInput | null > | null,
+  or?: Array< ModelFileConditionInput | null > | null,
+  not?: ModelFileConditionInput | null,
+};
+
+export type UpdateFileInput = {
+  id: string,
+  key?: string | null,
+  region?: string | null,
+  bucket?: string | null,
+  lessonID?: string | null,
+};
+
+export type DeleteFileInput = {
+  id: string,
+};
+
+export type CreateSectionInput = {
+  id?: string | null,
+  name?: string | null,
+  isPlacedInContentStore?: boolean | null,
+  parentID?: string | null,
+  organizationID?: string | null,
+  imagePreviewID?: string | null,
+  sectionSectionOptionsId?: string | null,
+};
+
+export type ModelSectionConditionInput = {
+  name?: ModelStringInput | null,
+  isPlacedInContentStore?: ModelBooleanInput | null,
+  parentID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  imagePreviewID?: ModelIDInput | null,
+  and?: Array< ModelSectionConditionInput | null > | null,
+  or?: Array< ModelSectionConditionInput | null > | null,
+  not?: ModelSectionConditionInput | null,
+  sectionSectionOptionsId?: ModelIDInput | null,
 };
 
 export type UpdateSectionInput = {
   id: string,
   name?: string | null,
+  isPlacedInContentStore?: boolean | null,
   parentID?: string | null,
+  organizationID?: string | null,
   imagePreviewID?: string | null,
+  sectionSectionOptionsId?: string | null,
 };
 
 export type DeleteSectionInput = {
@@ -592,6 +1114,84 @@ export type UpdateLessonInput = {
 };
 
 export type DeleteLessonInput = {
+  id: string,
+};
+
+export type CreateSectionOptionsInput = {
+  id?: string | null,
+  Activities?: Array< string | null > | null,
+  Durations?: Array< number | null > | null,
+  DeliveredBy?: Array< string | null > | null,
+  sectionOptionsSectionId?: string | null,
+};
+
+export type ModelSectionOptionsConditionInput = {
+  Activities?: ModelStringInput | null,
+  Durations?: ModelIntInput | null,
+  DeliveredBy?: ModelStringInput | null,
+  and?: Array< ModelSectionOptionsConditionInput | null > | null,
+  or?: Array< ModelSectionOptionsConditionInput | null > | null,
+  not?: ModelSectionOptionsConditionInput | null,
+  sectionOptionsSectionId?: ModelIDInput | null,
+};
+
+export type UpdateSectionOptionsInput = {
+  id: string,
+  Activities?: Array< string | null > | null,
+  Durations?: Array< number | null > | null,
+  DeliveredBy?: Array< string | null > | null,
+  sectionOptionsSectionId?: string | null,
+};
+
+export type DeleteSectionOptionsInput = {
+  id: string,
+};
+
+export type CreatePELessonRecordInput = {
+  id?: string | null,
+  teacherID?: string | null,
+  date: string,
+  deliveredBy?: string | null,
+  duration?: number | null,
+  activity?: string | null,
+  rating?: number | null,
+  notes?: string | null,
+  isCompleted?: boolean | null,
+  classroomID?: string | null,
+  lessonID?: string | null,
+};
+
+export type ModelPELessonRecordConditionInput = {
+  teacherID?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  deliveredBy?: ModelStringInput | null,
+  duration?: ModelIntInput | null,
+  activity?: ModelStringInput | null,
+  rating?: ModelIntInput | null,
+  notes?: ModelStringInput | null,
+  isCompleted?: ModelBooleanInput | null,
+  classroomID?: ModelIDInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelPELessonRecordConditionInput | null > | null,
+  or?: Array< ModelPELessonRecordConditionInput | null > | null,
+  not?: ModelPELessonRecordConditionInput | null,
+};
+
+export type UpdatePELessonRecordInput = {
+  id: string,
+  teacherID?: string | null,
+  date?: string | null,
+  deliveredBy?: string | null,
+  duration?: number | null,
+  activity?: string | null,
+  rating?: number | null,
+  notes?: string | null,
+  isCompleted?: boolean | null,
+  classroomID?: string | null,
+  lessonID?: string | null,
+};
+
+export type DeletePELessonRecordInput = {
   id: string,
 };
 
@@ -632,13 +1232,6 @@ export type ModelClassroomLessonConditionInput = {
   not?: ModelClassroomLessonConditionInput | null,
 };
 
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
 export type ClassroomLesson = {
   __typename: "ClassroomLesson",
   id: string,
@@ -667,6 +1260,7 @@ export type CreateClassroomInput = {
   name?: string | null,
   schoolID?: string | null,
   yearGroupID?: string | null,
+  organizationClassroomsId?: string | null,
 };
 
 export type ModelClassroomConditionInput = {
@@ -676,6 +1270,7 @@ export type ModelClassroomConditionInput = {
   and?: Array< ModelClassroomConditionInput | null > | null,
   or?: Array< ModelClassroomConditionInput | null > | null,
   not?: ModelClassroomConditionInput | null,
+  organizationClassroomsId?: ModelIDInput | null,
 };
 
 export type UpdateClassroomInput = {
@@ -683,6 +1278,7 @@ export type UpdateClassroomInput = {
   name?: string | null,
   schoolID?: string | null,
   yearGroupID?: string | null,
+  organizationClassroomsId?: string | null,
 };
 
 export type DeleteClassroomInput = {
@@ -822,6 +1418,7 @@ export type CreateAttendanceInput = {
   pupilID?: string | null,
   lessonID?: string | null,
   lessonRecordID?: string | null,
+  userInOrganizationAttendancesId?: string | null,
 };
 
 export type ModelAttendanceConditionInput = {
@@ -833,6 +1430,7 @@ export type ModelAttendanceConditionInput = {
   and?: Array< ModelAttendanceConditionInput | null > | null,
   or?: Array< ModelAttendanceConditionInput | null > | null,
   not?: ModelAttendanceConditionInput | null,
+  userInOrganizationAttendancesId?: ModelIDInput | null,
 };
 
 export type UpdateAttendanceInput = {
@@ -842,6 +1440,7 @@ export type UpdateAttendanceInput = {
   pupilID?: string | null,
   lessonID?: string | null,
   lessonRecordID?: string | null,
+  userInOrganizationAttendancesId?: string | null,
 };
 
 export type DeleteAttendanceInput = {
@@ -862,18 +1461,6 @@ export type ModelLessonTeacherConditionInput = {
   and?: Array< ModelLessonTeacherConditionInput | null > | null,
   or?: Array< ModelLessonTeacherConditionInput | null > | null,
   not?: ModelLessonTeacherConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateLessonTeacherInput = {
@@ -1070,6 +1657,102 @@ export type DeleteTeacherInput = {
   id: string,
 };
 
+export type CreatePupilInput = {
+  id?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
+  schoolID?: string | null,
+  schoolHouseID?: string | null,
+};
+
+export type ModelPupilConditionInput = {
+  firstName?: ModelStringInput | null,
+  lastName?: ModelStringInput | null,
+  terraId?: ModelStringInput | null,
+  provider?: ModelStringInput | null,
+  schoolID?: ModelIDInput | null,
+  schoolHouseID?: ModelIDInput | null,
+  and?: Array< ModelPupilConditionInput | null > | null,
+  or?: Array< ModelPupilConditionInput | null > | null,
+  not?: ModelPupilConditionInput | null,
+};
+
+export type UpdatePupilInput = {
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
+  terraId?: string | null,
+  provider?: string | null,
+  schoolID?: string | null,
+  schoolHouseID?: string | null,
+};
+
+export type DeletePupilInput = {
+  id: string,
+};
+
+export type CreateInterventionInput = {
+  id?: string | null,
+  pupilID: string,
+  message?: string | null,
+  viewed?: boolean | null,
+  createdAt?: string | null,
+};
+
+export type ModelInterventionConditionInput = {
+  pupilID?: ModelIDInput | null,
+  message?: ModelStringInput | null,
+  viewed?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelInterventionConditionInput | null > | null,
+  or?: Array< ModelInterventionConditionInput | null > | null,
+  not?: ModelInterventionConditionInput | null,
+};
+
+export type UpdateInterventionInput = {
+  id: string,
+  pupilID?: string | null,
+  message?: string | null,
+  viewed?: boolean | null,
+  createdAt?: string | null,
+};
+
+export type DeleteInterventionInput = {
+  id: string,
+};
+
+export type CreateParentInterventionFeedbackInput = {
+  id?: string | null,
+  parentID: string,
+  interventionID: string,
+  comment?: string | null,
+  rating?: number | null,
+};
+
+export type ModelParentInterventionFeedbackConditionInput = {
+  parentID?: ModelIDInput | null,
+  interventionID?: ModelIDInput | null,
+  comment?: ModelStringInput | null,
+  rating?: ModelIntInput | null,
+  and?: Array< ModelParentInterventionFeedbackConditionInput | null > | null,
+  or?: Array< ModelParentInterventionFeedbackConditionInput | null > | null,
+  not?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type UpdateParentInterventionFeedbackInput = {
+  id: string,
+  parentID?: string | null,
+  interventionID?: string | null,
+  comment?: string | null,
+  rating?: number | null,
+};
+
+export type DeleteParentInterventionFeedbackInput = {
+  id: string,
+};
+
 export type CreateSubjectTermInput = {
   id?: string | null,
   subjectID: string,
@@ -1142,160 +1825,196 @@ export type DeleteCurriculumSubjectInput = {
   id: string,
 };
 
-export type CreatePELessonRecordInput = {
+export type CreateRolesOfUserInput = {
   id?: string | null,
-  teacherID?: string | null,
-  date?: string | null,
-  deliveredBy?: string | null,
-  duration?: number | null,
-  activity?: string | null,
-  rating?: number | null,
-  notes?: string | null,
-  classroomID?: string | null,
-  lessonID?: string | null,
+  userInOrganizationID: string,
+  userRoleID: string,
 };
 
-export type ModelPELessonRecordConditionInput = {
-  teacherID?: ModelIDInput | null,
-  date?: ModelStringInput | null,
-  deliveredBy?: ModelStringInput | null,
-  duration?: ModelIntInput | null,
-  activity?: ModelStringInput | null,
-  rating?: ModelIntInput | null,
-  notes?: ModelStringInput | null,
+export type ModelRolesOfUserConditionInput = {
+  userInOrganizationID?: ModelIDInput | null,
+  userRoleID?: ModelIDInput | null,
+  and?: Array< ModelRolesOfUserConditionInput | null > | null,
+  or?: Array< ModelRolesOfUserConditionInput | null > | null,
+  not?: ModelRolesOfUserConditionInput | null,
+};
+
+export type UpdateRolesOfUserInput = {
+  id: string,
+  userInOrganizationID?: string | null,
+  userRoleID?: string | null,
+};
+
+export type DeleteRolesOfUserInput = {
+  id: string,
+};
+
+export type CreateUserInOrganizationInClassroomInput = {
+  id?: string | null,
+  userInOrganizationID: string,
+  classroomID: string,
+};
+
+export type ModelUserInOrganizationInClassroomConditionInput = {
+  userInOrganizationID?: ModelIDInput | null,
   classroomID?: ModelIDInput | null,
-  lessonID?: ModelIDInput | null,
-  and?: Array< ModelPELessonRecordConditionInput | null > | null,
-  or?: Array< ModelPELessonRecordConditionInput | null > | null,
-  not?: ModelPELessonRecordConditionInput | null,
+  and?: Array< ModelUserInOrganizationInClassroomConditionInput | null > | null,
+  or?: Array< ModelUserInOrganizationInClassroomConditionInput | null > | null,
+  not?: ModelUserInOrganizationInClassroomConditionInput | null,
 };
 
-export type UpdatePELessonRecordInput = {
+export type UpdateUserInOrganizationInClassroomInput = {
   id: string,
-  teacherID?: string | null,
-  date?: string | null,
-  deliveredBy?: string | null,
-  duration?: number | null,
-  activity?: string | null,
-  rating?: number | null,
-  notes?: string | null,
+  userInOrganizationID?: string | null,
   classroomID?: string | null,
-  lessonID?: string | null,
 };
 
-export type DeletePELessonRecordInput = {
+export type DeleteUserInOrganizationInClassroomInput = {
   id: string,
 };
 
-export type CreateOrganizationInput = {
+export type CreateRolesThatCanAccessInput = {
   id?: string | null,
-  name?: string | null,
-  type?: string | null,
+  userRoleID: string,
+  sectionID: string,
 };
 
-export type ModelOrganizationConditionInput = {
-  name?: ModelStringInput | null,
-  type?: ModelStringInput | null,
-  and?: Array< ModelOrganizationConditionInput | null > | null,
-  or?: Array< ModelOrganizationConditionInput | null > | null,
-  not?: ModelOrganizationConditionInput | null,
+export type ModelRolesThatCanAccessConditionInput = {
+  userRoleID?: ModelIDInput | null,
+  sectionID?: ModelIDInput | null,
+  and?: Array< ModelRolesThatCanAccessConditionInput | null > | null,
+  or?: Array< ModelRolesThatCanAccessConditionInput | null > | null,
+  not?: ModelRolesThatCanAccessConditionInput | null,
 };
 
-export type UpdateOrganizationInput = {
+export type UpdateRolesThatCanAccessInput = {
   id: string,
-  name?: string | null,
-  type?: string | null,
+  userRoleID?: string | null,
+  sectionID?: string | null,
 };
 
-export type DeleteOrganizationInput = {
+export type DeleteRolesThatCanAccessInput = {
   id: string,
 };
 
-export type CreatePupilInput = {
+export type CreateTeacherOrganziationInput = {
   id?: string | null,
-  firstName?: string | null,
-  lastName?: string | null,
-  schoolID?: string | null,
-  schoolHouseID?: string | null,
+  organizationID: string,
+  teacherID: string,
 };
 
-export type ModelPupilConditionInput = {
+export type ModelTeacherOrganziationConditionInput = {
+  organizationID?: ModelIDInput | null,
+  teacherID?: ModelIDInput | null,
+  and?: Array< ModelTeacherOrganziationConditionInput | null > | null,
+  or?: Array< ModelTeacherOrganziationConditionInput | null > | null,
+  not?: ModelTeacherOrganziationConditionInput | null,
+};
+
+export type UpdateTeacherOrganziationInput = {
+  id: string,
+  organizationID?: string | null,
+  teacherID?: string | null,
+};
+
+export type DeleteTeacherOrganziationInput = {
+  id: string,
+};
+
+export type ModelUserFilterInput = {
+  id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
-  schoolID?: ModelIDInput | null,
-  schoolHouseID?: ModelIDInput | null,
-  and?: Array< ModelPupilConditionInput | null > | null,
-  or?: Array< ModelPupilConditionInput | null > | null,
-  not?: ModelPupilConditionInput | null,
+  email?: ModelStringInput | null,
+  terraId?: ModelStringInput | null,
+  provider?: ModelStringInput | null,
+  phoneNumber?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  address?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  zipCode?: ModelStringInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
 };
 
-export type UpdatePupilInput = {
-  id: string,
-  firstName?: string | null,
-  lastName?: string | null,
-  schoolID?: string | null,
-  schoolHouseID?: string | null,
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
 };
 
-export type DeletePupilInput = {
-  id: string,
+export type ModelDependantGuardianFilterInput = {
+  and?: Array< ModelDependantGuardianFilterInput | null > | null,
+  or?: Array< ModelDependantGuardianFilterInput | null > | null,
+  not?: ModelDependantGuardianFilterInput | null,
+  userDependantsId?: ModelIDInput | null,
 };
 
-export type CreateInterventionInput = {
-  id?: string | null,
-  pupilID: string,
-  message?: string | null,
-  createdAt?: string | null,
+export type ModelUserInOrganizationFilterInput = {
+  userID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  status?: ModelUserInOrganizationStatusInput | null,
+  and?: Array< ModelUserInOrganizationFilterInput | null > | null,
+  or?: Array< ModelUserInOrganizationFilterInput | null > | null,
+  not?: ModelUserInOrganizationFilterInput | null,
 };
 
-export type ModelInterventionConditionInput = {
-  pupilID?: ModelIDInput | null,
-  message?: ModelStringInput | null,
-  createdAt?: ModelStringInput | null,
-  and?: Array< ModelInterventionConditionInput | null > | null,
-  or?: Array< ModelInterventionConditionInput | null > | null,
-  not?: ModelInterventionConditionInput | null,
+export type ModelUserRoleFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelUserRoleFilterInput | null > | null,
+  or?: Array< ModelUserRoleFilterInput | null > | null,
+  not?: ModelUserRoleFilterInput | null,
+  organizationRolesId?: ModelIDInput | null,
+  sectionFromContentStoreRolesThatCanAccessId?: ModelIDInput | null,
+  userRolePermissionsId?: ModelIDInput | null,
 };
 
-export type UpdateInterventionInput = {
-  id: string,
-  pupilID?: string | null,
-  message?: string | null,
-  createdAt?: string | null,
+export type ModelRolePermissionsFilterInput = {
+  canAccessAttendanceSheet?: ModelBooleanInput | null,
+  canCreateLesson?: ModelBooleanInput | null,
+  canRateLessons?: ModelBooleanInput | null,
+  canDeleteLessons?: ModelBooleanInput | null,
+  canUpdateLesson?: ModelBooleanInput | null,
+  canUploadContent?: ModelBooleanInput | null,
+  canViewContent?: ModelBooleanInput | null,
+  canCreateSection?: ModelBooleanInput | null,
+  canDeleteSection?: ModelBooleanInput | null,
+  canUpdateSection?: ModelBooleanInput | null,
+  canViewDashboard?: ModelBooleanInput | null,
+  canManageOrganization?: ModelBooleanInput | null,
+  and?: Array< ModelRolePermissionsFilterInput | null > | null,
+  or?: Array< ModelRolePermissionsFilterInput | null > | null,
+  not?: ModelRolePermissionsFilterInput | null,
+  rolePermissionsRoleId?: ModelIDInput | null,
 };
 
-export type DeleteInterventionInput = {
-  id: string,
+export type ModelRolePermissionsConnection = {
+  __typename: "ModelRolePermissionsConnection",
+  items:  Array<RolePermissions | null >,
+  nextToken?: string | null,
 };
 
-export type CreateParentInterventionFeedbackInput = {
-  id?: string | null,
-  parentID: string,
-  interventionID: string,
-  comment?: string | null,
-  rating?: number | null,
+export type ModelOrganizationFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  isPublic?: ModelBooleanInput | null,
+  type?: ModelStringInput | null,
+  and?: Array< ModelOrganizationFilterInput | null > | null,
+  or?: Array< ModelOrganizationFilterInput | null > | null,
+  not?: ModelOrganizationFilterInput | null,
+  userOwnedOrganizationsId?: ModelIDInput | null,
+  organizationLogoId?: ModelIDInput | null,
 };
 
-export type ModelParentInterventionFeedbackConditionInput = {
-  parentID?: ModelIDInput | null,
-  interventionID?: ModelIDInput | null,
-  comment?: ModelStringInput | null,
-  rating?: ModelIntInput | null,
-  and?: Array< ModelParentInterventionFeedbackConditionInput | null > | null,
-  or?: Array< ModelParentInterventionFeedbackConditionInput | null > | null,
-  not?: ModelParentInterventionFeedbackConditionInput | null,
-};
-
-export type UpdateParentInterventionFeedbackInput = {
-  id: string,
-  parentID?: string | null,
-  interventionID?: string | null,
-  comment?: string | null,
-  rating?: number | null,
-};
-
-export type DeleteParentInterventionFeedbackInput = {
-  id: string,
+export type ModelSectionFromContentStoreFilterInput = {
+  sectionID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  score?: ModelIntInput | null,
+  and?: Array< ModelSectionFromContentStoreFilterInput | null > | null,
+  or?: Array< ModelSectionFromContentStoreFilterInput | null > | null,
+  not?: ModelSectionFromContentStoreFilterInput | null,
 };
 
 export type ModelFileFilterInput = {
@@ -1312,17 +2031,14 @@ export type ModelFileFilterInput = {
 export type ModelSectionFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
+  isPlacedInContentStore?: ModelBooleanInput | null,
   parentID?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
   imagePreviewID?: ModelIDInput | null,
   and?: Array< ModelSectionFilterInput | null > | null,
   or?: Array< ModelSectionFilterInput | null > | null,
   not?: ModelSectionFilterInput | null,
-};
-
-export type ModelSectionConnection = {
-  __typename: "ModelSectionConnection",
-  items:  Array<Section >,
-  nextToken?: string | null,
+  sectionSectionOptionsId?: ModelIDInput | null,
 };
 
 export type ModelLessonFilterInput = {
@@ -1335,6 +2051,66 @@ export type ModelLessonFilterInput = {
   not?: ModelLessonFilterInput | null,
 };
 
+export type ModelSectionOptionsFilterInput = {
+  id?: ModelIDInput | null,
+  Activities?: ModelStringInput | null,
+  Durations?: ModelIntInput | null,
+  DeliveredBy?: ModelStringInput | null,
+  and?: Array< ModelSectionOptionsFilterInput | null > | null,
+  or?: Array< ModelSectionOptionsFilterInput | null > | null,
+  not?: ModelSectionOptionsFilterInput | null,
+  sectionOptionsSectionId?: ModelIDInput | null,
+};
+
+export type ModelSectionOptionsConnection = {
+  __typename: "ModelSectionOptionsConnection",
+  items:  Array<SectionOptions | null >,
+  nextToken?: string | null,
+};
+
+export type ModelPELessonRecordFilterInput = {
+  id?: ModelIDInput | null,
+  teacherID?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  deliveredBy?: ModelStringInput | null,
+  duration?: ModelIntInput | null,
+  activity?: ModelStringInput | null,
+  rating?: ModelIntInput | null,
+  notes?: ModelStringInput | null,
+  isCompleted?: ModelBooleanInput | null,
+  classroomID?: ModelIDInput | null,
+  lessonID?: ModelIDInput | null,
+  and?: Array< ModelPELessonRecordFilterInput | null > | null,
+  or?: Array< ModelPELessonRecordFilterInput | null > | null,
+  not?: ModelPELessonRecordFilterInput | null,
+};
+
+export type ModelIDKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
 export type ModelSchoolHouseFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -1345,7 +2121,7 @@ export type ModelSchoolHouseFilterInput = {
 
 export type ModelSchoolHouseConnection = {
   __typename: "ModelSchoolHouseConnection",
-  items:  Array<SchoolHouse >,
+  items:  Array<SchoolHouse | null >,
   nextToken?: string | null,
 };
 
@@ -1361,7 +2137,7 @@ export type ModelClassroomLessonFilterInput = {
 
 export type ModelClassroomLessonConnection = {
   __typename: "ModelClassroomLessonConnection",
-  items:  Array<ClassroomLesson >,
+  items:  Array<ClassroomLesson | null >,
   nextToken?: string | null,
 };
 
@@ -1373,6 +2149,7 @@ export type ModelClassroomFilterInput = {
   and?: Array< ModelClassroomFilterInput | null > | null,
   or?: Array< ModelClassroomFilterInput | null > | null,
   not?: ModelClassroomFilterInput | null,
+  organizationClassroomsId?: ModelIDInput | null,
 };
 
 export type ModelPupilOrganizationRequestFilterInput = {
@@ -1406,7 +2183,7 @@ export type ModelSchoolFilterInput = {
 
 export type ModelSchoolConnection = {
   __typename: "ModelSchoolConnection",
-  items:  Array<School >,
+  items:  Array<School | null >,
   nextToken?: string | null,
 };
 
@@ -1420,6 +2197,7 @@ export type ModelAttendanceFilterInput = {
   and?: Array< ModelAttendanceFilterInput | null > | null,
   or?: Array< ModelAttendanceFilterInput | null > | null,
   not?: ModelAttendanceFilterInput | null,
+  userInOrganizationAttendancesId?: ModelIDInput | null,
 };
 
 export type ModelLessonTeacherFilterInput = {
@@ -1444,7 +2222,7 @@ export type ModelTermFilterInput = {
 
 export type ModelTermConnection = {
   __typename: "ModelTermConnection",
-  items:  Array<Term >,
+  items:  Array<Term | null >,
   nextToken?: string | null,
 };
 
@@ -1458,7 +2236,7 @@ export type ModelSubjectFilterInput = {
 
 export type ModelSubjectConnection = {
   __typename: "ModelSubjectConnection",
-  items:  Array<Subject >,
+  items:  Array<Subject | null >,
   nextToken?: string | null,
 };
 
@@ -1472,7 +2250,7 @@ export type ModelCurriculumFilterInput = {
 
 export type ModelCurriculumConnection = {
   __typename: "ModelCurriculumConnection",
-  items:  Array<Curriculum >,
+  items:  Array<Curriculum | null >,
   nextToken?: string | null,
 };
 
@@ -1488,7 +2266,7 @@ export type ModelParentFilterInput = {
 
 export type ModelParentConnection = {
   __typename: "ModelParentConnection",
-  items:  Array<Parent >,
+  items:  Array<Parent | null >,
   nextToken?: string | null,
 };
 
@@ -1515,41 +2293,12 @@ export type ModelTeacherFilterInput = {
   not?: ModelTeacherFilterInput | null,
 };
 
-export type ModelPELessonRecordFilterInput = {
-  id?: ModelIDInput | null,
-  teacherID?: ModelIDInput | null,
-  date?: ModelStringInput | null,
-  deliveredBy?: ModelStringInput | null,
-  duration?: ModelIntInput | null,
-  activity?: ModelStringInput | null,
-  rating?: ModelIntInput | null,
-  notes?: ModelStringInput | null,
-  classroomID?: ModelIDInput | null,
-  lessonID?: ModelIDInput | null,
-  and?: Array< ModelPELessonRecordFilterInput | null > | null,
-  or?: Array< ModelPELessonRecordFilterInput | null > | null,
-  not?: ModelPELessonRecordFilterInput | null,
-};
-
-export type ModelOrganizationFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  type?: ModelStringInput | null,
-  and?: Array< ModelOrganizationFilterInput | null > | null,
-  or?: Array< ModelOrganizationFilterInput | null > | null,
-  not?: ModelOrganizationFilterInput | null,
-};
-
-export type ModelOrganizationConnection = {
-  __typename: "ModelOrganizationConnection",
-  items:  Array<Organization >,
-  nextToken?: string | null,
-};
-
 export type ModelPupilFilterInput = {
   id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
+  terraId?: ModelStringInput | null,
+  provider?: ModelStringInput | null,
   schoolID?: ModelIDInput | null,
   schoolHouseID?: ModelIDInput | null,
   and?: Array< ModelPupilFilterInput | null > | null,
@@ -1561,80 +2310,11 @@ export type ModelInterventionFilterInput = {
   id?: ModelIDInput | null,
   pupilID?: ModelIDInput | null,
   message?: ModelStringInput | null,
+  viewed?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
   and?: Array< ModelInterventionFilterInput | null > | null,
   or?: Array< ModelInterventionFilterInput | null > | null,
   not?: ModelInterventionFilterInput | null,
-};
-
-export type SearchableInterventionFilterInput = {
-  id?: SearchableIDFilterInput | null,
-  pupilID?: SearchableIDFilterInput | null,
-  message?: SearchableStringFilterInput | null,
-  createdAt?: SearchableStringFilterInput | null,
-  and?: Array< SearchableInterventionFilterInput | null > | null,
-  or?: Array< SearchableInterventionFilterInput | null > | null,
-  not?: SearchableInterventionFilterInput | null,
-};
-
-export type SearchableIDFilterInput = {
-  ne?: string | null,
-  gt?: string | null,
-  lt?: string | null,
-  gte?: string | null,
-  lte?: string | null,
-  eq?: string | null,
-  match?: string | null,
-  matchPhrase?: string | null,
-  matchPhrasePrefix?: string | null,
-  multiMatch?: string | null,
-  exists?: boolean | null,
-  wildcard?: string | null,
-  regexp?: string | null,
-  range?: Array< string | null > | null,
-};
-
-export type SearchableStringFilterInput = {
-  ne?: string | null,
-  gt?: string | null,
-  lt?: string | null,
-  gte?: string | null,
-  lte?: string | null,
-  eq?: string | null,
-  match?: string | null,
-  matchPhrase?: string | null,
-  matchPhrasePrefix?: string | null,
-  multiMatch?: string | null,
-  exists?: boolean | null,
-  wildcard?: string | null,
-  regexp?: string | null,
-  range?: Array< string | null > | null,
-};
-
-export type SearchableInterventionSortInput = {
-  field?: SearchableInterventionSortableFields | null,
-  direction?: SearchableSortDirection | null,
-};
-
-export enum SearchableInterventionSortableFields {
-  id = "id",
-  pupilID = "pupilID",
-  message = "message",
-  createdAt = "createdAt",
-}
-
-
-export enum SearchableSortDirection {
-  asc = "asc",
-  desc = "desc",
-}
-
-
-export type SearchableInterventionConnection = {
-  __typename: "SearchableInterventionConnection",
-  items:  Array<Intervention >,
-  nextToken?: string | null,
-  total?: number | null,
 };
 
 export type ModelParentInterventionFeedbackFilterInput = {
@@ -1646,6 +2326,1113 @@ export type ModelParentInterventionFeedbackFilterInput = {
   and?: Array< ModelParentInterventionFeedbackFilterInput | null > | null,
   or?: Array< ModelParentInterventionFeedbackFilterInput | null > | null,
   not?: ModelParentInterventionFeedbackFilterInput | null,
+};
+
+export type ModelRolesOfUserFilterInput = {
+  id?: ModelIDInput | null,
+  userInOrganizationID?: ModelIDInput | null,
+  userRoleID?: ModelIDInput | null,
+  and?: Array< ModelRolesOfUserFilterInput | null > | null,
+  or?: Array< ModelRolesOfUserFilterInput | null > | null,
+  not?: ModelRolesOfUserFilterInput | null,
+};
+
+export type ModelUserInOrganizationInClassroomFilterInput = {
+  id?: ModelIDInput | null,
+  userInOrganizationID?: ModelIDInput | null,
+  classroomID?: ModelIDInput | null,
+  and?: Array< ModelUserInOrganizationInClassroomFilterInput | null > | null,
+  or?: Array< ModelUserInOrganizationInClassroomFilterInput | null > | null,
+  not?: ModelUserInOrganizationInClassroomFilterInput | null,
+};
+
+export type ModelRolesThatCanAccessFilterInput = {
+  id?: ModelIDInput | null,
+  userRoleID?: ModelIDInput | null,
+  sectionID?: ModelIDInput | null,
+  and?: Array< ModelRolesThatCanAccessFilterInput | null > | null,
+  or?: Array< ModelRolesThatCanAccessFilterInput | null > | null,
+  not?: ModelRolesThatCanAccessFilterInput | null,
+};
+
+export type ModelTeacherOrganziationFilterInput = {
+  id?: ModelIDInput | null,
+  organizationID?: ModelIDInput | null,
+  teacherID?: ModelIDInput | null,
+  and?: Array< ModelTeacherOrganziationFilterInput | null > | null,
+  or?: Array< ModelTeacherOrganziationFilterInput | null > | null,
+  not?: ModelTeacherOrganziationFilterInput | null,
+};
+
+export type CreateUserMutationVariables = {
+  input: CreateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type CreateUserMutation = {
+  createUser?:  {
+    __typename: "User",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    dependants?:  {
+      __typename: "ModelDependantGuardianConnection",
+      nextToken?: string | null,
+    } | null,
+    organizations?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    ownedOrganizations?:  {
+      __typename: "ModelOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    terraId?: string | null,
+    provider?: string | null,
+    phoneNumber?: string | null,
+    country?: string | null,
+    address?: string | null,
+    city?: string | null,
+    zipCode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserMutationVariables = {
+  input: UpdateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type UpdateUserMutation = {
+  updateUser?:  {
+    __typename: "User",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    dependants?:  {
+      __typename: "ModelDependantGuardianConnection",
+      nextToken?: string | null,
+    } | null,
+    organizations?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    ownedOrganizations?:  {
+      __typename: "ModelOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    terraId?: string | null,
+    provider?: string | null,
+    phoneNumber?: string | null,
+    country?: string | null,
+    address?: string | null,
+    city?: string | null,
+    zipCode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserMutationVariables = {
+  input: DeleteUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type DeleteUserMutation = {
+  deleteUser?:  {
+    __typename: "User",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    dependants?:  {
+      __typename: "ModelDependantGuardianConnection",
+      nextToken?: string | null,
+    } | null,
+    organizations?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    ownedOrganizations?:  {
+      __typename: "ModelOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    terraId?: string | null,
+    provider?: string | null,
+    phoneNumber?: string | null,
+    country?: string | null,
+    address?: string | null,
+    city?: string | null,
+    zipCode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateDependantGuardianMutationVariables = {
+  input: CreateDependantGuardianInput,
+  condition?: ModelDependantGuardianConditionInput | null,
+};
+
+export type CreateDependantGuardianMutation = {
+  createDependantGuardian?:  {
+    __typename: "DependantGuardian",
+    guardian:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dependant:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    userDependantsId?: string | null,
+  } | null,
+};
+
+export type UpdateDependantGuardianMutationVariables = {
+  input: UpdateDependantGuardianInput,
+  condition?: ModelDependantGuardianConditionInput | null,
+};
+
+export type UpdateDependantGuardianMutation = {
+  updateDependantGuardian?:  {
+    __typename: "DependantGuardian",
+    guardian:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dependant:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    userDependantsId?: string | null,
+  } | null,
+};
+
+export type DeleteDependantGuardianMutationVariables = {
+  input: DeleteDependantGuardianInput,
+  condition?: ModelDependantGuardianConditionInput | null,
+};
+
+export type DeleteDependantGuardianMutation = {
+  deleteDependantGuardian?:  {
+    __typename: "DependantGuardian",
+    guardian:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dependant:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    userDependantsId?: string | null,
+  } | null,
+};
+
+export type CreateUserInOrganizationMutationVariables = {
+  input: CreateUserInOrganizationInput,
+  condition?: ModelUserInOrganizationConditionInput | null,
+};
+
+export type CreateUserInOrganizationMutation = {
+  createUserInOrganization?:  {
+    __typename: "UserInOrganization",
+    userID?: string | null,
+    organizationID?: string | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: UserInOrganizationStatus,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserInOrganizationMutationVariables = {
+  input: UpdateUserInOrganizationInput,
+  condition?: ModelUserInOrganizationConditionInput | null,
+};
+
+export type UpdateUserInOrganizationMutation = {
+  updateUserInOrganization?:  {
+    __typename: "UserInOrganization",
+    userID?: string | null,
+    organizationID?: string | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: UserInOrganizationStatus,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserInOrganizationMutationVariables = {
+  input: DeleteUserInOrganizationInput,
+  condition?: ModelUserInOrganizationConditionInput | null,
+};
+
+export type DeleteUserInOrganizationMutation = {
+  deleteUserInOrganization?:  {
+    __typename: "UserInOrganization",
+    userID?: string | null,
+    organizationID?: string | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: UserInOrganizationStatus,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUserRoleMutationVariables = {
+  input: CreateUserRoleInput,
+  condition?: ModelUserRoleConditionInput | null,
+};
+
+export type CreateUserRoleMutation = {
+  createUserRole?:  {
+    __typename: "UserRole",
+    id: string,
+    name: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
+    sectionAvailableForThatRole?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    organizationRolesId?: string | null,
+    sectionFromContentStoreRolesThatCanAccessId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type UpdateUserRoleMutationVariables = {
+  input: UpdateUserRoleInput,
+  condition?: ModelUserRoleConditionInput | null,
+};
+
+export type UpdateUserRoleMutation = {
+  updateUserRole?:  {
+    __typename: "UserRole",
+    id: string,
+    name: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
+    sectionAvailableForThatRole?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    organizationRolesId?: string | null,
+    sectionFromContentStoreRolesThatCanAccessId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type DeleteUserRoleMutationVariables = {
+  input: DeleteUserRoleInput,
+  condition?: ModelUserRoleConditionInput | null,
+};
+
+export type DeleteUserRoleMutation = {
+  deleteUserRole?:  {
+    __typename: "UserRole",
+    id: string,
+    name: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
+    sectionAvailableForThatRole?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    organizationRolesId?: string | null,
+    sectionFromContentStoreRolesThatCanAccessId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type CreateRolePermissionsMutationVariables = {
+  input: CreateRolePermissionsInput,
+  condition?: ModelRolePermissionsConditionInput | null,
+};
+
+export type CreateRolePermissionsMutation = {
+  createRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canCreateLesson?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    canUpdateLesson?: boolean | null,
+    canUploadContent?: boolean | null,
+    canViewContent?: boolean | null,
+    canCreateSection?: boolean | null,
+    canDeleteSection?: boolean | null,
+    canUpdateSection?: boolean | null,
+    canViewDashboard?: boolean | null,
+    canManageOrganization?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type UpdateRolePermissionsMutationVariables = {
+  input: UpdateRolePermissionsInput,
+  condition?: ModelRolePermissionsConditionInput | null,
+};
+
+export type UpdateRolePermissionsMutation = {
+  updateRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canCreateLesson?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    canUpdateLesson?: boolean | null,
+    canUploadContent?: boolean | null,
+    canViewContent?: boolean | null,
+    canCreateSection?: boolean | null,
+    canDeleteSection?: boolean | null,
+    canUpdateSection?: boolean | null,
+    canViewDashboard?: boolean | null,
+    canManageOrganization?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type DeleteRolePermissionsMutationVariables = {
+  input: DeleteRolePermissionsInput,
+  condition?: ModelRolePermissionsConditionInput | null,
+};
+
+export type DeleteRolePermissionsMutation = {
+  deleteRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canCreateLesson?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    canUpdateLesson?: boolean | null,
+    canUploadContent?: boolean | null,
+    canViewContent?: boolean | null,
+    canCreateSection?: boolean | null,
+    canDeleteSection?: boolean | null,
+    canUpdateSection?: boolean | null,
+    canViewDashboard?: boolean | null,
+    canManageOrganization?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type CreateOrganizationMutationVariables = {
+  input: CreateOrganizationInput,
+  condition?: ModelOrganizationConditionInput | null,
+};
+
+export type CreateOrganizationMutation = {
+  createOrganization?:  {
+    __typename: "Organization",
+    id: string,
+    name?: string | null,
+    owner:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    Sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    SectionsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
+    } | null,
+    Teachers?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    isPublic: boolean,
+    type?: string | null,
+    logo?:  {
+      __typename: "File",
+      id: string,
+      key?: string | null,
+      region?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    userOwnedOrganizationsId?: string | null,
+    organizationLogoId?: string | null,
+  } | null,
+};
+
+export type UpdateOrganizationMutationVariables = {
+  input: UpdateOrganizationInput,
+  condition?: ModelOrganizationConditionInput | null,
+};
+
+export type UpdateOrganizationMutation = {
+  updateOrganization?:  {
+    __typename: "Organization",
+    id: string,
+    name?: string | null,
+    owner:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    Sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    SectionsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
+    } | null,
+    Teachers?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    isPublic: boolean,
+    type?: string | null,
+    logo?:  {
+      __typename: "File",
+      id: string,
+      key?: string | null,
+      region?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    userOwnedOrganizationsId?: string | null,
+    organizationLogoId?: string | null,
+  } | null,
+};
+
+export type DeleteOrganizationMutationVariables = {
+  input: DeleteOrganizationInput,
+  condition?: ModelOrganizationConditionInput | null,
+};
+
+export type DeleteOrganizationMutation = {
+  deleteOrganization?:  {
+    __typename: "Organization",
+    id: string,
+    name?: string | null,
+    owner:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    Sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    SectionsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
+    } | null,
+    Teachers?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    isPublic: boolean,
+    type?: string | null,
+    logo?:  {
+      __typename: "File",
+      id: string,
+      key?: string | null,
+      region?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    userOwnedOrganizationsId?: string | null,
+    organizationLogoId?: string | null,
+  } | null,
+};
+
+export type CreateSectionFromContentStoreMutationVariables = {
+  input: CreateSectionFromContentStoreInput,
+  condition?: ModelSectionFromContentStoreConditionInput | null,
+};
+
+export type CreateSectionFromContentStoreMutation = {
+  createSectionFromContentStore?:  {
+    __typename: "SectionFromContentStore",
+    sectionID?: string | null,
+    organizationID?: string | null,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    rolesThatCanAccess?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    score?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateSectionFromContentStoreMutationVariables = {
+  input: UpdateSectionFromContentStoreInput,
+  condition?: ModelSectionFromContentStoreConditionInput | null,
+};
+
+export type UpdateSectionFromContentStoreMutation = {
+  updateSectionFromContentStore?:  {
+    __typename: "SectionFromContentStore",
+    sectionID?: string | null,
+    organizationID?: string | null,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    rolesThatCanAccess?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    score?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteSectionFromContentStoreMutationVariables = {
+  input: DeleteSectionFromContentStoreInput,
+  condition?: ModelSectionFromContentStoreConditionInput | null,
+};
+
+export type DeleteSectionFromContentStoreMutation = {
+  deleteSectionFromContentStore?:  {
+    __typename: "SectionFromContentStore",
+    sectionID?: string | null,
+    organizationID?: string | null,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    rolesThatCanAccess?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    score?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
 };
 
 export type CreateFileMutationVariables = {
@@ -1712,15 +3499,35 @@ export type CreateSectionMutation = {
     __typename: "Section",
     id: string,
     name?: string | null,
+    isPlacedInContentStore?: boolean | null,
     parentID?: string | null,
+    organizationID?: string | null,
     ParentSection?:  {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    OrganizationOwner?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    OrganizationsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
     } | null,
     Lessons?:  {
       __typename: "ModelLessonConnection",
@@ -1737,8 +3544,23 @@ export type CreateSectionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    SectionOptions?:  {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null,
+    rolesThatCanAccess?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    sectionSectionOptionsId?: string | null,
   } | null,
 };
 
@@ -1752,15 +3574,35 @@ export type UpdateSectionMutation = {
     __typename: "Section",
     id: string,
     name?: string | null,
+    isPlacedInContentStore?: boolean | null,
     parentID?: string | null,
+    organizationID?: string | null,
     ParentSection?:  {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    OrganizationOwner?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    OrganizationsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
     } | null,
     Lessons?:  {
       __typename: "ModelLessonConnection",
@@ -1777,8 +3619,23 @@ export type UpdateSectionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    SectionOptions?:  {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null,
+    rolesThatCanAccess?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    sectionSectionOptionsId?: string | null,
   } | null,
 };
 
@@ -1792,15 +3649,35 @@ export type DeleteSectionMutation = {
     __typename: "Section",
     id: string,
     name?: string | null,
+    isPlacedInContentStore?: boolean | null,
     parentID?: string | null,
+    organizationID?: string | null,
     ParentSection?:  {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    OrganizationOwner?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    OrganizationsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
     } | null,
     Lessons?:  {
       __typename: "ModelLessonConnection",
@@ -1817,8 +3694,23 @@ export type DeleteSectionMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    SectionOptions?:  {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null,
+    rolesThatCanAccess?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    sectionSectionOptionsId?: string | null,
   } | null,
 };
 
@@ -1838,10 +3730,17 @@ export type CreateLessonMutation = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
     } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
@@ -1861,10 +3760,6 @@ export type CreateLessonMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -1884,10 +3779,17 @@ export type UpdateLessonMutation = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
     } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
@@ -1907,10 +3809,6 @@ export type UpdateLessonMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -1930,10 +3828,17 @@ export type DeleteLessonMutation = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
     } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
@@ -1953,10 +3858,267 @@ export type DeleteLessonMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
+  } | null,
+};
+
+export type CreateSectionOptionsMutationVariables = {
+  input: CreateSectionOptionsInput,
+  condition?: ModelSectionOptionsConditionInput | null,
+};
+
+export type CreateSectionOptionsMutation = {
+  createSectionOptions?:  {
+    __typename: "SectionOptions",
+    id: string,
+    Section?:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    Activities?: Array< string | null > | null,
+    Durations?: Array< number | null > | null,
+    DeliveredBy?: Array< string | null > | null,
+    createdAt: string,
+    updatedAt: string,
+    sectionOptionsSectionId?: string | null,
+  } | null,
+};
+
+export type UpdateSectionOptionsMutationVariables = {
+  input: UpdateSectionOptionsInput,
+  condition?: ModelSectionOptionsConditionInput | null,
+};
+
+export type UpdateSectionOptionsMutation = {
+  updateSectionOptions?:  {
+    __typename: "SectionOptions",
+    id: string,
+    Section?:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    Activities?: Array< string | null > | null,
+    Durations?: Array< number | null > | null,
+    DeliveredBy?: Array< string | null > | null,
+    createdAt: string,
+    updatedAt: string,
+    sectionOptionsSectionId?: string | null,
+  } | null,
+};
+
+export type DeleteSectionOptionsMutationVariables = {
+  input: DeleteSectionOptionsInput,
+  condition?: ModelSectionOptionsConditionInput | null,
+};
+
+export type DeleteSectionOptionsMutation = {
+  deleteSectionOptions?:  {
+    __typename: "SectionOptions",
+    id: string,
+    Section?:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    Activities?: Array< string | null > | null,
+    Durations?: Array< number | null > | null,
+    DeliveredBy?: Array< string | null > | null,
+    createdAt: string,
+    updatedAt: string,
+    sectionOptionsSectionId?: string | null,
+  } | null,
+};
+
+export type CreatePELessonRecordMutationVariables = {
+  input: CreatePELessonRecordInput,
+  condition?: ModelPELessonRecordConditionInput | null,
+};
+
+export type CreatePELessonRecordMutation = {
+  createPELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
     } | null,
+    date: string,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    isCompleted?: boolean | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePELessonRecordMutationVariables = {
+  input: UpdatePELessonRecordInput,
+  condition?: ModelPELessonRecordConditionInput | null,
+};
+
+export type UpdatePELessonRecordMutation = {
+  updatePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date: string,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    isCompleted?: boolean | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePELessonRecordMutationVariables = {
+  input: DeletePELessonRecordInput,
+  condition?: ModelPELessonRecordConditionInput | null,
+};
+
+export type DeletePELessonRecordMutation = {
+  deletePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date: string,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    isCompleted?: boolean | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1970,12 +4132,12 @@ export type CreateSchoolHouseMutation = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1989,12 +4151,12 @@ export type UpdateSchoolHouseMutation = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2008,12 +4170,12 @@ export type DeleteSchoolHouseMutation = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2036,6 +4198,7 @@ export type CreateClassroomLessonMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -2071,6 +4234,7 @@ export type UpdateClassroomLessonMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -2106,6 +4270,7 @@ export type DeleteClassroomLessonMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -2151,6 +4316,17 @@ export type CreateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -2159,8 +4335,17 @@ export type CreateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    LessonRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -2193,6 +4378,17 @@ export type UpdateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -2201,8 +4397,17 @@ export type UpdateClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    LessonRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -2235,6 +4440,17 @@ export type DeleteClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -2243,8 +4459,17 @@ export type DeleteClassroomMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    LessonRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -2277,6 +4502,7 @@ export type CreateTeacherClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2312,6 +4538,7 @@ export type UpdateTeacherClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2347,6 +4574,7 @@ export type DeleteTeacherClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -2364,6 +4592,18 @@ export type CreatePupilClassroomMutation = {
     id: string,
     pupilID: string,
     classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -2372,19 +4612,10 @@ export type CreatePupilClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
   } | null,
 };
 
@@ -2399,6 +4630,18 @@ export type UpdatePupilClassroomMutation = {
     id: string,
     pupilID: string,
     classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -2407,19 +4650,10 @@ export type UpdatePupilClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
   } | null,
 };
 
@@ -2434,6 +4668,18 @@ export type DeletePupilClassroomMutation = {
     id: string,
     pupilID: string,
     classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -2442,19 +4688,10 @@ export type DeletePupilClassroomMutation = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
   } | null,
 };
 
@@ -2469,26 +4706,31 @@ export type CreatePupilOrganizationRequestMutation = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2503,26 +4745,31 @@ export type UpdatePupilOrganizationRequestMutation = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2537,26 +4784,31 @@ export type DeletePupilOrganizationRequestMutation = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2571,26 +4823,31 @@ export type CreatePupilOrganizationAcceptedMutation = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2605,26 +4862,31 @@ export type UpdatePupilOrganizationAcceptedMutation = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2639,26 +4901,31 @@ export type DeletePupilOrganizationAcceptedMutation = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2683,16 +4950,16 @@ export type CreateSchoolMutation = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -2717,16 +4984,16 @@ export type UpdateSchoolMutation = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -2751,16 +5018,16 @@ export type DeleteSchoolMutation = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -2777,6 +5044,27 @@ export type CreateAttendanceMutation = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    UserInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -2786,34 +5074,26 @@ export type CreateAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
       teacherID?: string | null,
-      date?: string | null,
+      date: string,
       deliveredBy?: string | null,
       duration?: number | null,
       activity?: string | null,
       rating?: number | null,
       notes?: string | null,
+      isCompleted?: boolean | null,
       classroomID?: string | null,
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    userInOrganizationAttendancesId?: string | null,
   } | null,
 };
 
@@ -2830,6 +5110,27 @@ export type UpdateAttendanceMutation = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    UserInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -2839,34 +5140,26 @@ export type UpdateAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
       teacherID?: string | null,
-      date?: string | null,
+      date: string,
       deliveredBy?: string | null,
       duration?: number | null,
       activity?: string | null,
       rating?: number | null,
       notes?: string | null,
+      isCompleted?: boolean | null,
       classroomID?: string | null,
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    userInOrganizationAttendancesId?: string | null,
   } | null,
 };
 
@@ -2883,6 +5176,27 @@ export type DeleteAttendanceMutation = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    UserInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -2892,34 +5206,26 @@ export type DeleteAttendanceMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
       teacherID?: string | null,
-      date?: string | null,
+      date: string,
       deliveredBy?: string | null,
       duration?: number | null,
       activity?: string | null,
       rating?: number | null,
       notes?: string | null,
+      isCompleted?: boolean | null,
       classroomID?: string | null,
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    userInOrganizationAttendancesId?: string | null,
   } | null,
 };
 
@@ -3248,12 +5554,12 @@ export type CreateParentMutation = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3273,12 +5579,12 @@ export type UpdateParentMutation = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3298,12 +5604,12 @@ export type DeleteParentMutation = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3327,18 +5633,20 @@ export type CreatePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3362,18 +5670,20 @@ export type UpdatePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3397,18 +5707,20 @@ export type DeletePupilParentMutation = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3436,16 +5748,19 @@ export type CreatePrincipalMutation = {
       updatedAt: string,
     } | null,
     organizationID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
       type?: string | null,
       createdAt: string,
       updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3473,16 +5788,19 @@ export type UpdatePrincipalMutation = {
       updatedAt: string,
     } | null,
     organizationID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
       type?: string | null,
       createdAt: string,
       updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3510,16 +5828,19 @@ export type DeletePrincipalMutation = {
       updatedAt: string,
     } | null,
     organizationID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
       type?: string | null,
       createdAt: string,
       updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -3542,6 +5863,10 @@ export type CreateTeacherMutation = {
     } | null,
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelTeacherOrganziationConnection",
       nextToken?: string | null,
     } | null,
     School?:  {
@@ -3580,6 +5905,10 @@ export type UpdateTeacherMutation = {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Organizations?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
     School?:  {
       __typename: "School",
       id: string,
@@ -3616,6 +5945,10 @@ export type DeleteTeacherMutation = {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Organizations?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
     School?:  {
       __typename: "School",
       id: string,
@@ -3626,6 +5959,396 @@ export type DeleteTeacherMutation = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreatePupilMutationVariables = {
+  input: CreatePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type CreatePupilMutation = {
+  createPupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdatePupilMutationVariables = {
+  input: UpdatePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type UpdatePupilMutation = {
+  updatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeletePupilMutationVariables = {
+  input: DeletePupilInput,
+  condition?: ModelPupilConditionInput | null,
+};
+
+export type DeletePupilMutation = {
+  deletePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateInterventionMutationVariables = {
+  input: CreateInterventionInput,
+  condition?: ModelInterventionConditionInput | null,
+};
+
+export type CreateInterventionMutation = {
+  createIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    message?: string | null,
+    viewed?: boolean | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateInterventionMutationVariables = {
+  input: UpdateInterventionInput,
+  condition?: ModelInterventionConditionInput | null,
+};
+
+export type UpdateInterventionMutation = {
+  updateIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    message?: string | null,
+    viewed?: boolean | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteInterventionMutationVariables = {
+  input: DeleteInterventionInput,
+  condition?: ModelInterventionConditionInput | null,
+};
+
+export type DeleteInterventionMutation = {
+  deleteIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    message?: string | null,
+    viewed?: boolean | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateParentInterventionFeedbackMutationVariables = {
+  input: CreateParentInterventionFeedbackInput,
+  condition?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type CreateParentInterventionFeedbackMutation = {
+  createParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      viewed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateParentInterventionFeedbackMutationVariables = {
+  input: UpdateParentInterventionFeedbackInput,
+  condition?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type UpdateParentInterventionFeedbackMutation = {
+  updateParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      viewed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteParentInterventionFeedbackMutationVariables = {
+  input: DeleteParentInterventionFeedbackInput,
+  condition?: ModelParentInterventionFeedbackConditionInput | null,
+};
+
+export type DeleteParentInterventionFeedbackMutation = {
+  deleteParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      viewed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -3919,17 +6642,353 @@ export type DeleteCurriculumSubjectMutation = {
   } | null,
 };
 
-export type CreatePELessonRecordMutationVariables = {
-  input: CreatePELessonRecordInput,
-  condition?: ModelPELessonRecordConditionInput | null,
+export type CreateRolesOfUserMutationVariables = {
+  input: CreateRolesOfUserInput,
+  condition?: ModelRolesOfUserConditionInput | null,
 };
 
-export type CreatePELessonRecordMutation = {
-  createPELessonRecord?:  {
-    __typename: "PELessonRecord",
+export type CreateRolesOfUserMutation = {
+  createRolesOfUser?:  {
+    __typename: "RolesOfUser",
     id: string,
-    teacherID?: string | null,
-    Teacher?:  {
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateRolesOfUserMutationVariables = {
+  input: UpdateRolesOfUserInput,
+  condition?: ModelRolesOfUserConditionInput | null,
+};
+
+export type UpdateRolesOfUserMutation = {
+  updateRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteRolesOfUserMutationVariables = {
+  input: DeleteRolesOfUserInput,
+  condition?: ModelRolesOfUserConditionInput | null,
+};
+
+export type DeleteRolesOfUserMutation = {
+  deleteRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUserInOrganizationInClassroomMutationVariables = {
+  input: CreateUserInOrganizationInClassroomInput,
+  condition?: ModelUserInOrganizationInClassroomConditionInput | null,
+};
+
+export type CreateUserInOrganizationInClassroomMutation = {
+  createUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserInOrganizationInClassroomMutationVariables = {
+  input: UpdateUserInOrganizationInClassroomInput,
+  condition?: ModelUserInOrganizationInClassroomConditionInput | null,
+};
+
+export type UpdateUserInOrganizationInClassroomMutation = {
+  updateUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserInOrganizationInClassroomMutationVariables = {
+  input: DeleteUserInOrganizationInClassroomInput,
+  condition?: ModelUserInOrganizationInClassroomConditionInput | null,
+};
+
+export type DeleteUserInOrganizationInClassroomMutation = {
+  deleteUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateRolesThatCanAccessMutationVariables = {
+  input: CreateRolesThatCanAccessInput,
+  condition?: ModelRolesThatCanAccessConditionInput | null,
+};
+
+export type CreateRolesThatCanAccessMutation = {
+  createRolesThatCanAccess?:  {
+    __typename: "RolesThatCanAccess",
+    id: string,
+    userRoleID: string,
+    sectionID: string,
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateRolesThatCanAccessMutationVariables = {
+  input: UpdateRolesThatCanAccessInput,
+  condition?: ModelRolesThatCanAccessConditionInput | null,
+};
+
+export type UpdateRolesThatCanAccessMutation = {
+  updateRolesThatCanAccess?:  {
+    __typename: "RolesThatCanAccess",
+    id: string,
+    userRoleID: string,
+    sectionID: string,
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteRolesThatCanAccessMutationVariables = {
+  input: DeleteRolesThatCanAccessInput,
+  condition?: ModelRolesThatCanAccessConditionInput | null,
+};
+
+export type DeleteRolesThatCanAccessMutation = {
+  deleteRolesThatCanAccess?:  {
+    __typename: "RolesThatCanAccess",
+    id: string,
+    userRoleID: string,
+    sectionID: string,
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTeacherOrganziationMutationVariables = {
+  input: CreateTeacherOrganziationInput,
+  condition?: ModelTeacherOrganziationConditionInput | null,
+};
+
+export type CreateTeacherOrganziationMutation = {
+  createTeacherOrganziation?:  {
+    __typename: "TeacherOrganziation",
+    id: string,
+    organizationID: string,
+    teacherID: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    teacher:  {
       __typename: "Teacher",
       id: string,
       firstName?: string | null,
@@ -3938,53 +6997,35 @@ export type CreatePELessonRecordMutation = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type UpdatePELessonRecordMutationVariables = {
-  input: UpdatePELessonRecordInput,
-  condition?: ModelPELessonRecordConditionInput | null,
+export type UpdateTeacherOrganziationMutationVariables = {
+  input: UpdateTeacherOrganziationInput,
+  condition?: ModelTeacherOrganziationConditionInput | null,
 };
 
-export type UpdatePELessonRecordMutation = {
-  updatePELessonRecord?:  {
-    __typename: "PELessonRecord",
+export type UpdateTeacherOrganziationMutation = {
+  updateTeacherOrganziation?:  {
+    __typename: "TeacherOrganziation",
     id: string,
-    teacherID?: string | null,
-    Teacher?:  {
+    organizationID: string,
+    teacherID: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    teacher:  {
       __typename: "Teacher",
       id: string,
       firstName?: string | null,
@@ -3993,53 +7034,35 @@ export type UpdatePELessonRecordMutation = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type DeletePELessonRecordMutationVariables = {
-  input: DeletePELessonRecordInput,
-  condition?: ModelPELessonRecordConditionInput | null,
+export type DeleteTeacherOrganziationMutationVariables = {
+  input: DeleteTeacherOrganziationInput,
+  condition?: ModelTeacherOrganziationConditionInput | null,
 };
 
-export type DeletePELessonRecordMutation = {
-  deletePELessonRecord?:  {
-    __typename: "PELessonRecord",
+export type DeleteTeacherOrganziationMutation = {
+  deleteTeacherOrganziation?:  {
+    __typename: "TeacherOrganziation",
     id: string,
-    teacherID?: string | null,
-    Teacher?:  {
+    organizationID: string,
+    teacherID: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    teacher:  {
       __typename: "Teacher",
       id: string,
       firstName?: string | null,
@@ -4048,52 +7071,390 @@ export type DeletePELessonRecordMutation = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type CreateOrganizationMutationVariables = {
-  input: CreateOrganizationInput,
-  condition?: ModelOrganizationConditionInput | null,
+export type GetUserQueryVariables = {
+  id: string,
 };
 
-export type CreateOrganizationMutation = {
-  createOrganization?:  {
+export type GetUserQuery = {
+  getUser?:  {
+    __typename: "User",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    dependants?:  {
+      __typename: "ModelDependantGuardianConnection",
+      nextToken?: string | null,
+    } | null,
+    organizations?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    ownedOrganizations?:  {
+      __typename: "ModelOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    terraId?: string | null,
+    provider?: string | null,
+    phoneNumber?: string | null,
+    country?: string | null,
+    address?: string | null,
+    city?: string | null,
+    zipCode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUsersQueryVariables = {
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUsersQuery = {
+  listUsers?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetDependantGuardianQueryVariables = {
+  id: string,
+};
+
+export type GetDependantGuardianQuery = {
+  getDependantGuardian?:  {
+    __typename: "DependantGuardian",
+    guardian:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dependant:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    userDependantsId?: string | null,
+  } | null,
+};
+
+export type ListDependantGuardiansQueryVariables = {
+  filter?: ModelDependantGuardianFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListDependantGuardiansQuery = {
+  listDependantGuardians?:  {
+    __typename: "ModelDependantGuardianConnection",
+    items:  Array< {
+      __typename: "DependantGuardian",
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      userDependantsId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserInOrganizationQueryVariables = {
+  id: string,
+};
+
+export type GetUserInOrganizationQuery = {
+  getUserInOrganization?:  {
+    __typename: "UserInOrganization",
+    userID?: string | null,
+    organizationID?: string | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: UserInOrganizationStatus,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUserInOrganizationsQueryVariables = {
+  filter?: ModelUserInOrganizationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserInOrganizationsQuery = {
+  listUserInOrganizations?:  {
+    __typename: "ModelUserInOrganizationConnection",
+    items:  Array< {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserRoleQueryVariables = {
+  id: string,
+};
+
+export type GetUserRoleQuery = {
+  getUserRole?:  {
+    __typename: "UserRole",
+    id: string,
+    name: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
+    sectionAvailableForThatRole?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    organizationRolesId?: string | null,
+    sectionFromContentStoreRolesThatCanAccessId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type ListUserRolesQueryVariables = {
+  filter?: ModelUserRoleFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserRolesQuery = {
+  listUserRoles?:  {
+    __typename: "ModelUserRoleConnection",
+    items:  Array< {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetRolePermissionsQueryVariables = {
+  id: string,
+};
+
+export type GetRolePermissionsQuery = {
+  getRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canCreateLesson?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    canUpdateLesson?: boolean | null,
+    canUploadContent?: boolean | null,
+    canViewContent?: boolean | null,
+    canCreateSection?: boolean | null,
+    canDeleteSection?: boolean | null,
+    canUpdateSection?: boolean | null,
+    canViewDashboard?: boolean | null,
+    canManageOrganization?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type ListRolePermissionsQueryVariables = {
+  filter?: ModelRolePermissionsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRolePermissionsQuery = {
+  listRolePermissions?:  {
+    __typename: "ModelRolePermissionsConnection",
+    items:  Array< {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetOrganizationQueryVariables = {
+  id: string,
+};
+
+export type GetOrganizationQuery = {
+  getOrganization?:  {
     __typename: "Organization",
     id: string,
     name?: string | null,
+    owner:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     Principals?:  {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
@@ -4106,437 +7467,135 @@ export type CreateOrganizationMutation = {
       __typename: "ModelPupilOrganizationAcceptedConnection",
       nextToken?: string | null,
     } | null,
+    Sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    SectionsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
+    } | null,
+    Teachers?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    isPublic: boolean,
     type?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateOrganizationMutationVariables = {
-  input: UpdateOrganizationInput,
-  condition?: ModelOrganizationConditionInput | null,
-};
-
-export type UpdateOrganizationMutation = {
-  updateOrganization?:  {
-    __typename: "Organization",
-    id: string,
-    name?: string | null,
-    Principals?:  {
-      __typename: "ModelPrincipalConnection",
-      nextToken?: string | null,
-    } | null,
-    WaitingForAcceptPupils?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    AcceptedPupils?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    type?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteOrganizationMutationVariables = {
-  input: DeleteOrganizationInput,
-  condition?: ModelOrganizationConditionInput | null,
-};
-
-export type DeleteOrganizationMutation = {
-  deleteOrganization?:  {
-    __typename: "Organization",
-    id: string,
-    name?: string | null,
-    Principals?:  {
-      __typename: "ModelPrincipalConnection",
-      nextToken?: string | null,
-    } | null,
-    WaitingForAcceptPupils?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    AcceptedPupils?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    type?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreatePupilMutationVariables = {
-  input: CreatePupilInput,
-  condition?: ModelPupilConditionInput | null,
-};
-
-export type CreatePupilMutation = {
-  createPupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    Organizations?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    OrganizationsRequests?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
+    logo?:  {
+      __typename: "File",
       id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
+      key?: string | null,
       region?: string | null,
-      principal?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
-    Interventions?:  {
-      __typename: "ModelInterventionConnection",
-      nextToken?: string | null,
-    } | null,
+    userOwnedOrganizationsId?: string | null,
+    organizationLogoId?: string | null,
   } | null,
 };
 
-export type UpdatePupilMutationVariables = {
-  input: UpdatePupilInput,
-  condition?: ModelPupilConditionInput | null,
+export type ListOrganizationsQueryVariables = {
+  filter?: ModelOrganizationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type UpdatePupilMutation = {
-  updatePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    Organizations?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    OrganizationsRequests?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
+export type ListOrganizationsQuery = {
+  listOrganizations?:  {
+    __typename: "ModelOrganizationConnection",
+    items:  Array< {
+      __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSectionFromContentStoreQueryVariables = {
+  id: string,
+};
+
+export type GetSectionFromContentStoreQuery = {
+  getSectionFromContentStore?:  {
+    __typename: "SectionFromContentStore",
+    sectionID?: string | null,
+    organizationID?: string | null,
+    organization:  {
+      __typename: "Organization",
       id: string,
       name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
+      isPublic: boolean,
+      type?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    Interventions?:  {
-      __typename: "ModelInterventionConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type DeletePupilMutationVariables = {
-  input: DeletePupilInput,
-  condition?: ModelPupilConditionInput | null,
-};
-
-export type DeletePupilMutation = {
-  deletePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    Organizations?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    OrganizationsRequests?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
+      sectionSectionOptionsId?: string | null,
+    },
+    rolesThatCanAccess?:  {
+      __typename: "ModelUserRoleConnection",
       nextToken?: string | null,
     } | null,
+    score?: number | null,
+    id: string,
     createdAt: string,
     updatedAt: string,
-    Interventions?:  {
-      __typename: "ModelInterventionConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
-export type CreateInterventionMutationVariables = {
-  input: CreateInterventionInput,
-  condition?: ModelInterventionConditionInput | null,
+export type ListSectionFromContentStoresQueryVariables = {
+  filter?: ModelSectionFromContentStoreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type CreateInterventionMutation = {
-  createIntervention?:  {
-    __typename: "Intervention",
-    id: string,
-    pupilID: string,
-    message?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    Pupil?:  {
-      __typename: "Pupil",
+export type ListSectionFromContentStoresQuery = {
+  listSectionFromContentStores?:  {
+    __typename: "ModelSectionFromContentStoreConnection",
+    items:  Array< {
+      __typename: "SectionFromContentStore",
+      sectionID?: string | null,
+      organizationID?: string | null,
+      score?: number | null,
       id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    InterventionFeedback?:  {
-      __typename: "ModelParentInterventionFeedbackConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type UpdateInterventionMutationVariables = {
-  input: UpdateInterventionInput,
-  condition?: ModelInterventionConditionInput | null,
-};
-
-export type UpdateInterventionMutation = {
-  updateIntervention?:  {
-    __typename: "Intervention",
-    id: string,
-    pupilID: string,
-    message?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    InterventionFeedback?:  {
-      __typename: "ModelParentInterventionFeedbackConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type DeleteInterventionMutationVariables = {
-  input: DeleteInterventionInput,
-  condition?: ModelInterventionConditionInput | null,
-};
-
-export type DeleteInterventionMutation = {
-  deleteIntervention?:  {
-    __typename: "Intervention",
-    id: string,
-    pupilID: string,
-    message?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    InterventionFeedback?:  {
-      __typename: "ModelParentInterventionFeedbackConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type CreateParentInterventionFeedbackMutationVariables = {
-  input: CreateParentInterventionFeedbackInput,
-  condition?: ModelParentInterventionFeedbackConditionInput | null,
-};
-
-export type CreateParentInterventionFeedbackMutation = {
-  createParentInterventionFeedback?:  {
-    __typename: "ParentInterventionFeedback",
-    id: string,
-    parentID: string,
-    interventionID: string,
-    Parent:  {
-      __typename: "Parent",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    comment?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-    Intervention:  {
-      __typename: "Intervention",
-      id: string,
-      pupilID: string,
-      message?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-  } | null,
-};
-
-export type UpdateParentInterventionFeedbackMutationVariables = {
-  input: UpdateParentInterventionFeedbackInput,
-  condition?: ModelParentInterventionFeedbackConditionInput | null,
-};
-
-export type UpdateParentInterventionFeedbackMutation = {
-  updateParentInterventionFeedback?:  {
-    __typename: "ParentInterventionFeedback",
-    id: string,
-    parentID: string,
-    interventionID: string,
-    Parent:  {
-      __typename: "Parent",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    comment?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-    Intervention:  {
-      __typename: "Intervention",
-      id: string,
-      pupilID: string,
-      message?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-  } | null,
-};
-
-export type DeleteParentInterventionFeedbackMutationVariables = {
-  input: DeleteParentInterventionFeedbackInput,
-  condition?: ModelParentInterventionFeedbackConditionInput | null,
-};
-
-export type DeleteParentInterventionFeedbackMutation = {
-  deleteParentInterventionFeedback?:  {
-    __typename: "ParentInterventionFeedback",
-    id: string,
-    parentID: string,
-    interventionID: string,
-    Parent:  {
-      __typename: "Parent",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    comment?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-    Intervention:  {
-      __typename: "Intervention",
-      id: string,
-      pupilID: string,
-      message?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    } | null >,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -4575,7 +7634,7 @@ export type ListFilesQuery = {
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4589,15 +7648,35 @@ export type GetSectionQuery = {
     __typename: "Section",
     id: string,
     name?: string | null,
+    isPlacedInContentStore?: boolean | null,
     parentID?: string | null,
+    organizationID?: string | null,
     ParentSection?:  {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    OrganizationOwner?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    OrganizationsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
     } | null,
     Lessons?:  {
       __typename: "ModelLessonConnection",
@@ -4614,8 +7693,23 @@ export type GetSectionQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    SectionOptions?:  {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null,
+    rolesThatCanAccess?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    sectionSectionOptionsId?: string | null,
   } | null,
 };
 
@@ -4632,11 +7726,14 @@ export type ListSectionsQuery = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+      sectionSectionOptionsId?: string | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4656,10 +7753,17 @@ export type GetLessonQuery = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
     } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
@@ -4679,10 +7783,6 @@ export type GetLessonQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -4703,7 +7803,208 @@ export type ListLessonsQuery = {
       sectionID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSectionOptionsQueryVariables = {
+  id: string,
+};
+
+export type GetSectionOptionsQuery = {
+  getSectionOptions?:  {
+    __typename: "SectionOptions",
+    id: string,
+    Section?:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    Activities?: Array< string | null > | null,
+    Durations?: Array< number | null > | null,
+    DeliveredBy?: Array< string | null > | null,
+    createdAt: string,
+    updatedAt: string,
+    sectionOptionsSectionId?: string | null,
+  } | null,
+};
+
+export type ListSectionOptionsQueryVariables = {
+  filter?: ModelSectionOptionsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSectionOptionsQuery = {
+  listSectionOptions?:  {
+    __typename: "ModelSectionOptionsConnection",
+    items:  Array< {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetPELessonRecordQueryVariables = {
+  id: string,
+};
+
+export type GetPELessonRecordQuery = {
+  getPELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date: string,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    isCompleted?: boolean | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListPELessonRecordsQueryVariables = {
+  filter?: ModelPELessonRecordFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPELessonRecordsQuery = {
+  listPELessonRecords?:  {
+    __typename: "ModelPELessonRecordConnection",
+    items:  Array< {
+      __typename: "PELessonRecord",
+      id: string,
+      teacherID?: string | null,
+      date: string,
+      deliveredBy?: string | null,
+      duration?: number | null,
+      activity?: string | null,
+      rating?: number | null,
+      notes?: string | null,
+      isCompleted?: boolean | null,
+      classroomID?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type LessonRecordByNameQueryVariables = {
+  date: string,
+  id?: ModelIDKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelPELessonRecordFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type LessonRecordByNameQuery = {
+  lessonRecordByName?:  {
+    __typename: "ModelPELessonRecordConnection",
+    items:  Array< {
+      __typename: "PELessonRecord",
+      id: string,
+      teacherID?: string | null,
+      date: string,
+      deliveredBy?: string | null,
+      duration?: number | null,
+      activity?: string | null,
+      rating?: number | null,
+      notes?: string | null,
+      isCompleted?: boolean | null,
+      classroomID?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type LessonByDateQueryVariables = {
+  activity: string,
+  date?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelPELessonRecordFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type LessonByDateQuery = {
+  lessonByDate?:  {
+    __typename: "ModelPELessonRecordConnection",
+    items:  Array< {
+      __typename: "PELessonRecord",
+      id: string,
+      teacherID?: string | null,
+      date: string,
+      deliveredBy?: string | null,
+      duration?: number | null,
+      activity?: string | null,
+      rating?: number | null,
+      notes?: string | null,
+      isCompleted?: boolean | null,
+      classroomID?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4717,12 +8018,12 @@ export type GetSchoolHouseQuery = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -4741,7 +8042,7 @@ export type ListSchoolHousesQuery = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4764,6 +8065,7 @@ export type GetClassroomLessonQuery = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -4797,7 +8099,7 @@ export type ListClassroomLessonsQuery = {
       completed?: boolean | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4830,6 +8132,17 @@ export type GetClassroomQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -4838,8 +8151,17 @@ export type GetClassroomQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    LessonRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -4860,7 +8182,8 @@ export type ListClassroomsQuery = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+      organizationClassroomsId?: string | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4875,26 +8198,31 @@ export type GetPupilOrganizationRequestQuery = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -4914,7 +8242,7 @@ export type ListPupilOrganizationRequestsQuery = {
       organizationID: string,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4929,26 +8257,31 @@ export type GetPupilOrganizationAcceptedQuery = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -4968,7 +8301,7 @@ export type ListPupilOrganizationAcceptedsQuery = {
       organizationID: string,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4993,16 +8326,16 @@ export type GetSchoolQuery = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -5024,7 +8357,7 @@ export type ListSchoolsQuery = {
       principal?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5041,6 +8374,27 @@ export type GetAttendanceQuery = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    UserInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -5050,34 +8404,26 @@ export type GetAttendanceQuery = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
       teacherID?: string | null,
-      date?: string | null,
+      date: string,
       deliveredBy?: string | null,
       duration?: number | null,
       activity?: string | null,
       rating?: number | null,
       notes?: string | null,
+      isCompleted?: boolean | null,
       classroomID?: string | null,
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    userInOrganizationAttendancesId?: string | null,
   } | null,
 };
 
@@ -5100,7 +8446,36 @@ export type ListAttendancesQuery = {
       lessonRecordID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+      userInOrganizationAttendancesId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type AttendanceByLessonRecordIDQueryVariables = {
+  id: string,
+  lessonRecordID?: ModelIDKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelAttendanceFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type AttendanceByLessonRecordIDQuery = {
+  attendanceByLessonRecordID?:  {
+    __typename: "ModelAttendanceConnection",
+    items:  Array< {
+      __typename: "Attendance",
+      id: string,
+      present?: boolean | null,
+      wasRewarded?: boolean | null,
+      pupilID?: string | null,
+      lessonID?: string | null,
+      lessonRecordID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userInOrganizationAttendancesId?: string | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5157,7 +8532,7 @@ export type ListLessonTeachersQuery = {
       score?: number | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5203,7 +8578,7 @@ export type ListTermsQuery = {
       finishDate?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5245,7 +8620,7 @@ export type ListSubjectsQuery = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5283,7 +8658,7 @@ export type ListCurriculaQuery = {
       name?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5303,12 +8678,12 @@ export type GetParentQuery = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -5329,7 +8704,7 @@ export type ListParentsQuery = {
       email?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5357,16 +8732,19 @@ export type GetPrincipalQuery = {
       updatedAt: string,
     } | null,
     organizationID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
       type?: string | null,
       createdAt: string,
       updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -5389,7 +8767,7 @@ export type ListPrincipalsQuery = {
       organizationID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5412,6 +8790,10 @@ export type GetTeacherQuery = {
     } | null,
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelTeacherOrganziationConnection",
       nextToken?: string | null,
     } | null,
     School?:  {
@@ -5447,137 +8829,7 @@ export type ListTeachersQuery = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetPELessonRecordQueryVariables = {
-  id: string,
-};
-
-export type GetPELessonRecordQuery = {
-  getPELessonRecord?:  {
-    __typename: "PELessonRecord",
-    id: string,
-    teacherID?: string | null,
-    Teacher?:  {
-      __typename: "Teacher",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      schoolID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListPELessonRecordsQueryVariables = {
-  filter?: ModelPELessonRecordFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListPELessonRecordsQuery = {
-  listPELessonRecords?:  {
-    __typename: "ModelPELessonRecordConnection",
-    items:  Array< {
-      __typename: "PELessonRecord",
-      id: string,
-      teacherID?: string | null,
-      date?: string | null,
-      deliveredBy?: string | null,
-      duration?: number | null,
-      activity?: string | null,
-      rating?: number | null,
-      notes?: string | null,
-      classroomID?: string | null,
-      lessonID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetOrganizationQueryVariables = {
-  id: string,
-};
-
-export type GetOrganizationQuery = {
-  getOrganization?:  {
-    __typename: "Organization",
-    id: string,
-    name?: string | null,
-    Principals?:  {
-      __typename: "ModelPrincipalConnection",
-      nextToken?: string | null,
-    } | null,
-    WaitingForAcceptPupils?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    AcceptedPupils?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    type?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListOrganizationsQueryVariables = {
-  filter?: ModelOrganizationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListOrganizationsQuery = {
-  listOrganizations?:  {
-    __typename: "ModelOrganizationConnection",
-    items:  Array< {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5592,6 +8844,8 @@ export type GetPupilQuery = {
     id: string,
     firstName?: string | null,
     lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
     Attendances?:  {
       __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
@@ -5631,12 +8885,12 @@ export type GetPupilQuery = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     Interventions?:  {
       __typename: "ModelInterventionConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -5654,11 +8908,13 @@ export type ListPupilsQuery = {
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -5672,23 +8928,26 @@ export type GetInterventionQuery = {
     __typename: "Intervention",
     id: string,
     pupilID: string,
-    message?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupil?:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
+    message?: string | null,
+    viewed?: boolean | null,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -5706,34 +8965,36 @@ export type ListInterventionsQuery = {
       id: string,
       pupilID: string,
       message?: string | null,
+      viewed?: boolean | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
 
-export type SearchInterventionsQueryVariables = {
-  filter?: SearchableInterventionFilterInput | null,
-  sort?: SearchableInterventionSortInput | null,
+export type InterventionByPupilByDateQueryVariables = {
+  pupilID: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelInterventionFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
-  from?: number | null,
 };
 
-export type SearchInterventionsQuery = {
-  searchInterventions?:  {
-    __typename: "SearchableInterventionConnection",
+export type InterventionByPupilByDateQuery = {
+  interventionByPupilByDate?:  {
+    __typename: "ModelInterventionConnection",
     items:  Array< {
       __typename: "Intervention",
       id: string,
       pupilID: string,
       message?: string | null,
+      viewed?: boolean | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
-    total?: number | null,
   } | null,
 };
 
@@ -5756,18 +9017,19 @@ export type GetParentInterventionFeedbackQuery = {
       createdAt: string,
       updatedAt: string,
     },
-    comment?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
     Intervention:  {
       __typename: "Intervention",
       id: string,
       pupilID: string,
       message?: string | null,
+      viewed?: boolean | null,
       createdAt: string,
       updatedAt: string,
     },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -5789,8 +9051,1199 @@ export type ListParentInterventionFeedbacksQuery = {
       rating?: number | null,
       createdAt: string,
       updatedAt: string,
-    } >,
+    } | null >,
     nextToken?: string | null,
+  } | null,
+};
+
+export type GetRolesOfUserQueryVariables = {
+  id: string,
+};
+
+export type GetRolesOfUserQuery = {
+  getRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListRolesOfUsersQueryVariables = {
+  filter?: ModelRolesOfUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRolesOfUsersQuery = {
+  listRolesOfUsers?:  {
+    __typename: "ModelRolesOfUserConnection",
+    items:  Array< {
+      __typename: "RolesOfUser",
+      id: string,
+      userInOrganizationID: string,
+      userRoleID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserInOrganizationInClassroomQueryVariables = {
+  id: string,
+};
+
+export type GetUserInOrganizationInClassroomQuery = {
+  getUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUserInOrganizationInClassroomsQueryVariables = {
+  filter?: ModelUserInOrganizationInClassroomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserInOrganizationInClassroomsQuery = {
+  listUserInOrganizationInClassrooms?:  {
+    __typename: "ModelUserInOrganizationInClassroomConnection",
+    items:  Array< {
+      __typename: "UserInOrganizationInClassroom",
+      id: string,
+      userInOrganizationID: string,
+      classroomID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetRolesThatCanAccessQueryVariables = {
+  id: string,
+};
+
+export type GetRolesThatCanAccessQuery = {
+  getRolesThatCanAccess?:  {
+    __typename: "RolesThatCanAccess",
+    id: string,
+    userRoleID: string,
+    sectionID: string,
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListRolesThatCanAccessesQueryVariables = {
+  filter?: ModelRolesThatCanAccessFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRolesThatCanAccessesQuery = {
+  listRolesThatCanAccesses?:  {
+    __typename: "ModelRolesThatCanAccessConnection",
+    items:  Array< {
+      __typename: "RolesThatCanAccess",
+      id: string,
+      userRoleID: string,
+      sectionID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetTeacherOrganziationQueryVariables = {
+  id: string,
+};
+
+export type GetTeacherOrganziationQuery = {
+  getTeacherOrganziation?:  {
+    __typename: "TeacherOrganziation",
+    id: string,
+    organizationID: string,
+    teacherID: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    teacher:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTeacherOrganziationsQueryVariables = {
+  filter?: ModelTeacherOrganziationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTeacherOrganziationsQuery = {
+  listTeacherOrganziations?:  {
+    __typename: "ModelTeacherOrganziationConnection",
+    items:  Array< {
+      __typename: "TeacherOrganziation",
+      id: string,
+      organizationID: string,
+      teacherID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type OnCreateUserSubscription = {
+  onCreateUser?:  {
+    __typename: "User",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    dependants?:  {
+      __typename: "ModelDependantGuardianConnection",
+      nextToken?: string | null,
+    } | null,
+    organizations?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    ownedOrganizations?:  {
+      __typename: "ModelOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    terraId?: string | null,
+    provider?: string | null,
+    phoneNumber?: string | null,
+    country?: string | null,
+    address?: string | null,
+    city?: string | null,
+    zipCode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserSubscription = {
+  onUpdateUser?:  {
+    __typename: "User",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    dependants?:  {
+      __typename: "ModelDependantGuardianConnection",
+      nextToken?: string | null,
+    } | null,
+    organizations?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    ownedOrganizations?:  {
+      __typename: "ModelOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    terraId?: string | null,
+    provider?: string | null,
+    phoneNumber?: string | null,
+    country?: string | null,
+    address?: string | null,
+    city?: string | null,
+    zipCode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserSubscription = {
+  onDeleteUser?:  {
+    __typename: "User",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    email?: string | null,
+    dependants?:  {
+      __typename: "ModelDependantGuardianConnection",
+      nextToken?: string | null,
+    } | null,
+    organizations?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    ownedOrganizations?:  {
+      __typename: "ModelOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    terraId?: string | null,
+    provider?: string | null,
+    phoneNumber?: string | null,
+    country?: string | null,
+    address?: string | null,
+    city?: string | null,
+    zipCode?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateDependantGuardianSubscription = {
+  onCreateDependantGuardian?:  {
+    __typename: "DependantGuardian",
+    guardian:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dependant:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    userDependantsId?: string | null,
+  } | null,
+};
+
+export type OnUpdateDependantGuardianSubscription = {
+  onUpdateDependantGuardian?:  {
+    __typename: "DependantGuardian",
+    guardian:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dependant:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    userDependantsId?: string | null,
+  } | null,
+};
+
+export type OnDeleteDependantGuardianSubscription = {
+  onDeleteDependantGuardian?:  {
+    __typename: "DependantGuardian",
+    guardian:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    dependant:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    userDependantsId?: string | null,
+  } | null,
+};
+
+export type OnCreateUserInOrganizationSubscription = {
+  onCreateUserInOrganization?:  {
+    __typename: "UserInOrganization",
+    userID?: string | null,
+    organizationID?: string | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: UserInOrganizationStatus,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserInOrganizationSubscription = {
+  onUpdateUserInOrganization?:  {
+    __typename: "UserInOrganization",
+    userID?: string | null,
+    organizationID?: string | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: UserInOrganizationStatus,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserInOrganizationSubscription = {
+  onDeleteUserInOrganization?:  {
+    __typename: "UserInOrganization",
+    userID?: string | null,
+    organizationID?: string | null,
+    organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    user?:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    status: UserInOrganizationStatus,
+    roles?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserRoleSubscription = {
+  onCreateUserRole?:  {
+    __typename: "UserRole",
+    id: string,
+    name: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
+    sectionAvailableForThatRole?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    organizationRolesId?: string | null,
+    sectionFromContentStoreRolesThatCanAccessId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type OnUpdateUserRoleSubscription = {
+  onUpdateUserRole?:  {
+    __typename: "UserRole",
+    id: string,
+    name: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
+    sectionAvailableForThatRole?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    organizationRolesId?: string | null,
+    sectionFromContentStoreRolesThatCanAccessId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type OnDeleteUserRoleSubscription = {
+  onDeleteUserRole?:  {
+    __typename: "UserRole",
+    id: string,
+    name: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    users?:  {
+      __typename: "ModelRolesOfUserConnection",
+      nextToken?: string | null,
+    } | null,
+    permissions?:  {
+      __typename: "RolePermissions",
+      canAccessAttendanceSheet?: boolean | null,
+      canCreateLesson?: boolean | null,
+      canRateLessons?: boolean | null,
+      canDeleteLessons?: boolean | null,
+      canUpdateLesson?: boolean | null,
+      canUploadContent?: boolean | null,
+      canViewContent?: boolean | null,
+      canCreateSection?: boolean | null,
+      canDeleteSection?: boolean | null,
+      canUpdateSection?: boolean | null,
+      canViewDashboard?: boolean | null,
+      canManageOrganization?: boolean | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      rolePermissionsRoleId?: string | null,
+    } | null,
+    sectionAvailableForThatRole?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    organizationRolesId?: string | null,
+    sectionFromContentStoreRolesThatCanAccessId?: string | null,
+    userRolePermissionsId?: string | null,
+  } | null,
+};
+
+export type OnCreateRolePermissionsSubscription = {
+  onCreateRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canCreateLesson?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    canUpdateLesson?: boolean | null,
+    canUploadContent?: boolean | null,
+    canViewContent?: boolean | null,
+    canCreateSection?: boolean | null,
+    canDeleteSection?: boolean | null,
+    canUpdateSection?: boolean | null,
+    canViewDashboard?: boolean | null,
+    canManageOrganization?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type OnUpdateRolePermissionsSubscription = {
+  onUpdateRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canCreateLesson?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    canUpdateLesson?: boolean | null,
+    canUploadContent?: boolean | null,
+    canViewContent?: boolean | null,
+    canCreateSection?: boolean | null,
+    canDeleteSection?: boolean | null,
+    canUpdateSection?: boolean | null,
+    canViewDashboard?: boolean | null,
+    canManageOrganization?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type OnDeleteRolePermissionsSubscription = {
+  onDeleteRolePermissions?:  {
+    __typename: "RolePermissions",
+    role?:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    } | null,
+    canAccessAttendanceSheet?: boolean | null,
+    canCreateLesson?: boolean | null,
+    canRateLessons?: boolean | null,
+    canDeleteLessons?: boolean | null,
+    canUpdateLesson?: boolean | null,
+    canUploadContent?: boolean | null,
+    canViewContent?: boolean | null,
+    canCreateSection?: boolean | null,
+    canDeleteSection?: boolean | null,
+    canUpdateSection?: boolean | null,
+    canViewDashboard?: boolean | null,
+    canManageOrganization?: boolean | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rolePermissionsRoleId?: string | null,
+  } | null,
+};
+
+export type OnCreateOrganizationSubscription = {
+  onCreateOrganization?:  {
+    __typename: "Organization",
+    id: string,
+    name?: string | null,
+    owner:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    Sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    SectionsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
+    } | null,
+    Teachers?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    isPublic: boolean,
+    type?: string | null,
+    logo?:  {
+      __typename: "File",
+      id: string,
+      key?: string | null,
+      region?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    userOwnedOrganizationsId?: string | null,
+    organizationLogoId?: string | null,
+  } | null,
+};
+
+export type OnUpdateOrganizationSubscription = {
+  onUpdateOrganization?:  {
+    __typename: "Organization",
+    id: string,
+    name?: string | null,
+    owner:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    Sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    SectionsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
+    } | null,
+    Teachers?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    isPublic: boolean,
+    type?: string | null,
+    logo?:  {
+      __typename: "File",
+      id: string,
+      key?: string | null,
+      region?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    userOwnedOrganizationsId?: string | null,
+    organizationLogoId?: string | null,
+  } | null,
+};
+
+export type OnDeleteOrganizationSubscription = {
+  onDeleteOrganization?:  {
+    __typename: "Organization",
+    id: string,
+    name?: string | null,
+    owner:  {
+      __typename: "User",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      phoneNumber?: string | null,
+      country?: string | null,
+      address?: string | null,
+      city?: string | null,
+      zipCode?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Principals?:  {
+      __typename: "ModelPrincipalConnection",
+      nextToken?: string | null,
+    } | null,
+    WaitingForAcceptPupils?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    AcceptedPupils?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    Sections?:  {
+      __typename: "ModelSectionConnection",
+      nextToken?: string | null,
+    } | null,
+    SectionsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
+    } | null,
+    Teachers?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
+    Classrooms?:  {
+      __typename: "ModelClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationConnection",
+      nextToken?: string | null,
+    } | null,
+    roles?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    isPublic: boolean,
+    type?: string | null,
+    logo?:  {
+      __typename: "File",
+      id: string,
+      key?: string | null,
+      region?: string | null,
+      bucket?: string | null,
+      lessonID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    userOwnedOrganizationsId?: string | null,
+    organizationLogoId?: string | null,
+  } | null,
+};
+
+export type OnCreateSectionFromContentStoreSubscription = {
+  onCreateSectionFromContentStore?:  {
+    __typename: "SectionFromContentStore",
+    sectionID?: string | null,
+    organizationID?: string | null,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    rolesThatCanAccess?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    score?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateSectionFromContentStoreSubscription = {
+  onUpdateSectionFromContentStore?:  {
+    __typename: "SectionFromContentStore",
+    sectionID?: string | null,
+    organizationID?: string | null,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    rolesThatCanAccess?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    score?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteSectionFromContentStoreSubscription = {
+  onDeleteSectionFromContentStore?:  {
+    __typename: "SectionFromContentStore",
+    sectionID?: string | null,
+    organizationID?: string | null,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    rolesThatCanAccess?:  {
+      __typename: "ModelUserRoleConnection",
+      nextToken?: string | null,
+    } | null,
+    score?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -5838,15 +10291,35 @@ export type OnCreateSectionSubscription = {
     __typename: "Section",
     id: string,
     name?: string | null,
+    isPlacedInContentStore?: boolean | null,
     parentID?: string | null,
+    organizationID?: string | null,
     ParentSection?:  {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    OrganizationOwner?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    OrganizationsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
     } | null,
     Lessons?:  {
       __typename: "ModelLessonConnection",
@@ -5863,8 +10336,23 @@ export type OnCreateSectionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    SectionOptions?:  {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null,
+    rolesThatCanAccess?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    sectionSectionOptionsId?: string | null,
   } | null,
 };
 
@@ -5873,15 +10361,35 @@ export type OnUpdateSectionSubscription = {
     __typename: "Section",
     id: string,
     name?: string | null,
+    isPlacedInContentStore?: boolean | null,
     parentID?: string | null,
+    organizationID?: string | null,
     ParentSection?:  {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    OrganizationOwner?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    OrganizationsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
     } | null,
     Lessons?:  {
       __typename: "ModelLessonConnection",
@@ -5898,8 +10406,23 @@ export type OnUpdateSectionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    SectionOptions?:  {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null,
+    rolesThatCanAccess?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    sectionSectionOptionsId?: string | null,
   } | null,
 };
 
@@ -5908,15 +10431,35 @@ export type OnDeleteSectionSubscription = {
     __typename: "Section",
     id: string,
     name?: string | null,
+    isPlacedInContentStore?: boolean | null,
     parentID?: string | null,
+    organizationID?: string | null,
     ParentSection?:  {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    OrganizationOwner?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
+    OrganizationsFromContentStore?:  {
+      __typename: "ModelSectionFromContentStoreConnection",
+      nextToken?: string | null,
     } | null,
     Lessons?:  {
       __typename: "ModelLessonConnection",
@@ -5933,8 +10476,23 @@ export type OnDeleteSectionSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    SectionOptions?:  {
+      __typename: "SectionOptions",
+      id: string,
+      Activities?: Array< string | null > | null,
+      Durations?: Array< number | null > | null,
+      DeliveredBy?: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionOptionsSectionId?: string | null,
+    } | null,
+    rolesThatCanAccess?:  {
+      __typename: "ModelRolesThatCanAccessConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    sectionSectionOptionsId?: string | null,
   } | null,
 };
 
@@ -5949,10 +10507,17 @@ export type OnCreateLessonSubscription = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
     } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
@@ -5972,10 +10537,6 @@ export type OnCreateLessonSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -5990,10 +10551,17 @@ export type OnUpdateLessonSubscription = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
     } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
@@ -6013,10 +10581,6 @@ export type OnUpdateLessonSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -6031,10 +10595,17 @@ export type OnDeleteLessonSubscription = {
       __typename: "Section",
       id: string,
       name?: string | null,
+      isPlacedInContentStore?: boolean | null,
       parentID?: string | null,
+      organizationID?: string | null,
       imagePreviewID?: string | null,
       createdAt: string,
       updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    LessonsRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
     } | null,
     terms?:  {
       __typename: "ModelTermLessonConnection",
@@ -6054,10 +10625,237 @@ export type OnDeleteLessonSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    LessonsRecords?:  {
-      __typename: "ModelPELessonRecordConnection",
+  } | null,
+};
+
+export type OnCreateSectionOptionsSubscription = {
+  onCreateSectionOptions?:  {
+    __typename: "SectionOptions",
+    id: string,
+    Section?:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    Activities?: Array< string | null > | null,
+    Durations?: Array< number | null > | null,
+    DeliveredBy?: Array< string | null > | null,
+    createdAt: string,
+    updatedAt: string,
+    sectionOptionsSectionId?: string | null,
+  } | null,
+};
+
+export type OnUpdateSectionOptionsSubscription = {
+  onUpdateSectionOptions?:  {
+    __typename: "SectionOptions",
+    id: string,
+    Section?:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    Activities?: Array< string | null > | null,
+    Durations?: Array< number | null > | null,
+    DeliveredBy?: Array< string | null > | null,
+    createdAt: string,
+    updatedAt: string,
+    sectionOptionsSectionId?: string | null,
+  } | null,
+};
+
+export type OnDeleteSectionOptionsSubscription = {
+  onDeleteSectionOptions?:  {
+    __typename: "SectionOptions",
+    id: string,
+    Section?:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    } | null,
+    Activities?: Array< string | null > | null,
+    Durations?: Array< number | null > | null,
+    DeliveredBy?: Array< string | null > | null,
+    createdAt: string,
+    updatedAt: string,
+    sectionOptionsSectionId?: string | null,
+  } | null,
+};
+
+export type OnCreatePELessonRecordSubscription = {
+  onCreatePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
       nextToken?: string | null,
     } | null,
+    date: string,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    isCompleted?: boolean | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePELessonRecordSubscription = {
+  onUpdatePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date: string,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    isCompleted?: boolean | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePELessonRecordSubscription = {
+  onDeletePELessonRecord?:  {
+    __typename: "PELessonRecord",
+    id: string,
+    teacherID?: string | null,
+    Teacher?:  {
+      __typename: "Teacher",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      schoolID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    date: string,
+    deliveredBy?: string | null,
+    duration?: number | null,
+    activity?: string | null,
+    rating?: number | null,
+    notes?: string | null,
+    isCompleted?: boolean | null,
+    classroomID?: string | null,
+    Classroom?:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    } | null,
+    lessonID?: string | null,
+    Lesson?:  {
+      __typename: "Lesson",
+      id: string,
+      title?: string | null,
+      description?: string | null,
+      sectionID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6066,12 +10864,12 @@ export type OnCreateSchoolHouseSubscription = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6080,12 +10878,12 @@ export type OnUpdateSchoolHouseSubscription = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6094,12 +10892,12 @@ export type OnDeleteSchoolHouseSubscription = {
     __typename: "SchoolHouse",
     id: string,
     name?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Pupils?:  {
       __typename: "ModelPupilConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6117,6 +10915,7 @@ export type OnCreateClassroomLessonSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -6147,6 +10946,7 @@ export type OnUpdateClassroomLessonSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -6177,6 +10977,7 @@ export type OnDeleteClassroomLessonSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     } | null,
     Lesson?:  {
       __typename: "Lesson",
@@ -6217,6 +11018,17 @@ export type OnCreateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -6225,8 +11037,17 @@ export type OnCreateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    LessonRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -6254,6 +11075,17 @@ export type OnUpdateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -6262,8 +11094,17 @@ export type OnUpdateClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    LessonRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -6291,6 +11132,17 @@ export type OnDeleteClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    Organization?:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    } | null,
     yearGroupID?: string | null,
     yearGroup?:  {
       __typename: "Curriculum",
@@ -6299,8 +11151,17 @@ export type OnDeleteClassroomSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    members?:  {
+      __typename: "ModelUserInOrganizationInClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    LessonRecords?:  {
+      __typename: "ModelPELessonRecordConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    organizationClassroomsId?: string | null,
   } | null,
 };
 
@@ -6328,6 +11189,7 @@ export type OnCreateTeacherClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -6358,6 +11220,7 @@ export type OnUpdateTeacherClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -6388,6 +11251,7 @@ export type OnDeleteTeacherClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
@@ -6400,6 +11264,18 @@ export type OnCreatePupilClassroomSubscription = {
     id: string,
     pupilID: string,
     classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -6408,19 +11284,10 @@ export type OnCreatePupilClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
   } | null,
 };
 
@@ -6430,6 +11297,18 @@ export type OnUpdatePupilClassroomSubscription = {
     id: string,
     pupilID: string,
     classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -6438,19 +11317,10 @@ export type OnUpdatePupilClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
   } | null,
 };
 
@@ -6460,6 +11330,18 @@ export type OnDeletePupilClassroomSubscription = {
     id: string,
     pupilID: string,
     classroomID: string,
+    pupil:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     classroom:  {
       __typename: "Classroom",
       id: string,
@@ -6468,19 +11350,10 @@ export type OnDeletePupilClassroomSubscription = {
       yearGroupID?: string | null,
       createdAt: string,
       updatedAt: string,
+      organizationClassroomsId?: string | null,
     },
     createdAt: string,
     updatedAt: string,
-    pupil:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
   } | null,
 };
 
@@ -6490,26 +11363,31 @@ export type OnCreatePupilOrganizationRequestSubscription = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6519,26 +11397,31 @@ export type OnUpdatePupilOrganizationRequestSubscription = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6548,26 +11431,31 @@ export type OnDeletePupilOrganizationRequestSubscription = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6577,26 +11465,31 @@ export type OnCreatePupilOrganizationAcceptedSubscription = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6606,26 +11499,31 @@ export type OnUpdatePupilOrganizationAcceptedSubscription = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6635,26 +11533,31 @@ export type OnDeletePupilOrganizationAcceptedSubscription = {
     id: string,
     pupilID: string,
     organizationID: string,
-    createdAt: string,
-    updatedAt: string,
-    organization:  {
-      __typename: "Organization",
-      id: string,
-      name?: string | null,
-      type?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -6674,16 +11577,16 @@ export type OnCreateSchoolSubscription = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -6703,16 +11606,16 @@ export type OnUpdateSchoolSubscription = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -6732,16 +11635,16 @@ export type OnDeleteSchoolSubscription = {
       __typename: "ModelPrincipalConnection",
       nextToken?: string | null,
     } | null,
+    Pupils?:  {
+      __typename: "ModelPupilConnection",
+      nextToken?: string | null,
+    } | null,
     classrooms?:  {
       __typename: "ModelClassroomConnection",
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
-    Pupils?:  {
-      __typename: "ModelPupilConnection",
-      nextToken?: string | null,
-    } | null,
   } | null,
 };
 
@@ -6753,6 +11656,27 @@ export type OnCreateAttendanceSubscription = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    UserInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -6762,34 +11686,26 @@ export type OnCreateAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
       teacherID?: string | null,
-      date?: string | null,
+      date: string,
       deliveredBy?: string | null,
       duration?: number | null,
       activity?: string | null,
       rating?: number | null,
       notes?: string | null,
+      isCompleted?: boolean | null,
       classroomID?: string | null,
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    userInOrganizationAttendancesId?: string | null,
   } | null,
 };
 
@@ -6801,6 +11717,27 @@ export type OnUpdateAttendanceSubscription = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    UserInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -6810,34 +11747,26 @@ export type OnUpdateAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
       teacherID?: string | null,
-      date?: string | null,
+      date: string,
       deliveredBy?: string | null,
       duration?: number | null,
       activity?: string | null,
       rating?: number | null,
       notes?: string | null,
+      isCompleted?: boolean | null,
       classroomID?: string | null,
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    userInOrganizationAttendancesId?: string | null,
   } | null,
 };
 
@@ -6849,6 +11778,27 @@ export type OnDeleteAttendanceSubscription = {
     wasRewarded?: boolean | null,
     pupilID?: string | null,
     lessonID?: string | null,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    UserInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     Lesson?:  {
       __typename: "Lesson",
       id: string,
@@ -6858,34 +11808,26 @@ export type OnDeleteAttendanceSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
-    lessonRecordID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     lessonRecord?:  {
       __typename: "PELessonRecord",
       id: string,
       teacherID?: string | null,
-      date?: string | null,
+      date: string,
       deliveredBy?: string | null,
       duration?: number | null,
       activity?: string | null,
       rating?: number | null,
       notes?: string | null,
+      isCompleted?: boolean | null,
       classroomID?: string | null,
       lessonID?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    lessonRecordID?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    userInOrganizationAttendancesId?: string | null,
   } | null,
 };
 
@@ -7149,12 +12091,12 @@ export type OnCreateParentSubscription = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7169,12 +12111,12 @@ export type OnUpdateParentSubscription = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7189,12 +12131,12 @@ export type OnDeleteParentSubscription = {
       __typename: "ModelPupilParentConnection",
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
     InterventionFeedback?:  {
       __typename: "ModelParentInterventionFeedbackConnection",
       nextToken?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7213,18 +12155,20 @@ export type OnCreatePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7243,18 +12187,20 @@ export type OnUpdatePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7273,18 +12219,20 @@ export type OnDeletePupilParentSubscription = {
       createdAt: string,
       updatedAt: string,
     },
-    createdAt: string,
-    updatedAt: string,
     Pupil:  {
       __typename: "Pupil",
       id: string,
       firstName?: string | null,
       lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
       schoolID?: string | null,
       schoolHouseID?: string | null,
       createdAt: string,
       updatedAt: string,
     },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7307,16 +12255,19 @@ export type OnCreatePrincipalSubscription = {
       updatedAt: string,
     } | null,
     organizationID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
       type?: string | null,
       createdAt: string,
       updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7339,16 +12290,19 @@ export type OnUpdatePrincipalSubscription = {
       updatedAt: string,
     } | null,
     organizationID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
       type?: string | null,
       createdAt: string,
       updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7371,16 +12325,19 @@ export type OnDeletePrincipalSubscription = {
       updatedAt: string,
     } | null,
     organizationID?: string | null,
-    createdAt: string,
-    updatedAt: string,
     Organization?:  {
       __typename: "Organization",
       id: string,
       name?: string | null,
+      isPublic: boolean,
       type?: string | null,
       createdAt: string,
       updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -7398,6 +12355,10 @@ export type OnCreateTeacherSubscription = {
     } | null,
     LessonTeacher?:  {
       __typename: "ModelLessonTeacherConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelTeacherOrganziationConnection",
       nextToken?: string | null,
     } | null,
     School?:  {
@@ -7431,6 +12392,10 @@ export type OnUpdateTeacherSubscription = {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Organizations?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
     School?:  {
       __typename: "School",
       id: string,
@@ -7462,6 +12427,10 @@ export type OnDeleteTeacherSubscription = {
       __typename: "ModelLessonTeacherConnection",
       nextToken?: string | null,
     } | null,
+    Organizations?:  {
+      __typename: "ModelTeacherOrganziationConnection",
+      nextToken?: string | null,
+    } | null,
     School?:  {
       __typename: "School",
       id: string,
@@ -7472,6 +12441,351 @@ export type OnDeleteTeacherSubscription = {
       createdAt: string,
       updatedAt: string,
     } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreatePupilSubscription = {
+  onCreatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdatePupilSubscription = {
+  onUpdatePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeletePupilSubscription = {
+  onDeletePupil?:  {
+    __typename: "Pupil",
+    id: string,
+    firstName?: string | null,
+    lastName?: string | null,
+    terraId?: string | null,
+    provider?: string | null,
+    Attendances?:  {
+      __typename: "ModelAttendanceConnection",
+      nextToken?: string | null,
+    } | null,
+    classrooms?:  {
+      __typename: "ModelPupilClassroomConnection",
+      nextToken?: string | null,
+    } | null,
+    Organizations?:  {
+      __typename: "ModelPupilOrganizationAcceptedConnection",
+      nextToken?: string | null,
+    } | null,
+    OrganizationsRequests?:  {
+      __typename: "ModelPupilOrganizationRequestConnection",
+      nextToken?: string | null,
+    } | null,
+    schoolID?: string | null,
+    schoolHouseID?: string | null,
+    schoolHouse?:  {
+      __typename: "SchoolHouse",
+      id: string,
+      name?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    school?:  {
+      __typename: "School",
+      id: string,
+      name?: string | null,
+      country?: string | null,
+      region?: string | null,
+      principal?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    parents?:  {
+      __typename: "ModelPupilParentConnection",
+      nextToken?: string | null,
+    } | null,
+    Interventions?:  {
+      __typename: "ModelInterventionConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateInterventionSubscription = {
+  onCreateIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    message?: string | null,
+    viewed?: boolean | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateInterventionSubscription = {
+  onUpdateIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    message?: string | null,
+    viewed?: boolean | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteInterventionSubscription = {
+  onDeleteIntervention?:  {
+    __typename: "Intervention",
+    id: string,
+    pupilID: string,
+    Pupil?:  {
+      __typename: "Pupil",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      terraId?: string | null,
+      provider?: string | null,
+      schoolID?: string | null,
+      schoolHouseID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    message?: string | null,
+    viewed?: boolean | null,
+    InterventionFeedback?:  {
+      __typename: "ModelParentInterventionFeedbackConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateParentInterventionFeedbackSubscription = {
+  onCreateParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      viewed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateParentInterventionFeedbackSubscription = {
+  onUpdateParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      viewed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteParentInterventionFeedbackSubscription = {
+  onDeleteParentInterventionFeedback?:  {
+    __typename: "ParentInterventionFeedback",
+    id: string,
+    parentID: string,
+    interventionID: string,
+    Parent:  {
+      __typename: "Parent",
+      id: string,
+      firstName?: string | null,
+      lastName?: string | null,
+      email?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    Intervention:  {
+      __typename: "Intervention",
+      id: string,
+      pupilID: string,
+      message?: string | null,
+      viewed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    comment?: string | null,
+    rating?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -7720,12 +13034,303 @@ export type OnDeleteCurriculumSubjectSubscription = {
   } | null,
 };
 
-export type OnCreatePELessonRecordSubscription = {
-  onCreatePELessonRecord?:  {
-    __typename: "PELessonRecord",
+export type OnCreateRolesOfUserSubscription = {
+  onCreateRolesOfUser?:  {
+    __typename: "RolesOfUser",
     id: string,
-    teacherID?: string | null,
-    Teacher?:  {
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateRolesOfUserSubscription = {
+  onUpdateRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteRolesOfUserSubscription = {
+  onDeleteRolesOfUser?:  {
+    __typename: "RolesOfUser",
+    id: string,
+    userInOrganizationID: string,
+    userRoleID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserInOrganizationInClassroomSubscription = {
+  onCreateUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserInOrganizationInClassroomSubscription = {
+  onUpdateUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserInOrganizationInClassroomSubscription = {
+  onDeleteUserInOrganizationInClassroom?:  {
+    __typename: "UserInOrganizationInClassroom",
+    id: string,
+    userInOrganizationID: string,
+    classroomID: string,
+    userInOrganization:  {
+      __typename: "UserInOrganization",
+      userID?: string | null,
+      organizationID?: string | null,
+      status: UserInOrganizationStatus,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    classroom:  {
+      __typename: "Classroom",
+      id: string,
+      name?: string | null,
+      schoolID?: string | null,
+      yearGroupID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      organizationClassroomsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateRolesThatCanAccessSubscription = {
+  onCreateRolesThatCanAccess?:  {
+    __typename: "RolesThatCanAccess",
+    id: string,
+    userRoleID: string,
+    sectionID: string,
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateRolesThatCanAccessSubscription = {
+  onUpdateRolesThatCanAccess?:  {
+    __typename: "RolesThatCanAccess",
+    id: string,
+    userRoleID: string,
+    sectionID: string,
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteRolesThatCanAccessSubscription = {
+  onDeleteRolesThatCanAccess?:  {
+    __typename: "RolesThatCanAccess",
+    id: string,
+    userRoleID: string,
+    sectionID: string,
+    userRole:  {
+      __typename: "UserRole",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      organizationRolesId?: string | null,
+      sectionFromContentStoreRolesThatCanAccessId?: string | null,
+      userRolePermissionsId?: string | null,
+    },
+    section:  {
+      __typename: "Section",
+      id: string,
+      name?: string | null,
+      isPlacedInContentStore?: boolean | null,
+      parentID?: string | null,
+      organizationID?: string | null,
+      imagePreviewID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      sectionSectionOptionsId?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTeacherOrganziationSubscription = {
+  onCreateTeacherOrganziation?:  {
+    __typename: "TeacherOrganziation",
+    id: string,
+    organizationID: string,
+    teacherID: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    teacher:  {
       __typename: "Teacher",
       id: string,
       firstName?: string | null,
@@ -7734,48 +13339,30 @@ export type OnCreatePELessonRecordSubscription = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUpdatePELessonRecordSubscription = {
-  onUpdatePELessonRecord?:  {
-    __typename: "PELessonRecord",
+export type OnUpdateTeacherOrganziationSubscription = {
+  onUpdateTeacherOrganziation?:  {
+    __typename: "TeacherOrganziation",
     id: string,
-    teacherID?: string | null,
-    Teacher?:  {
+    organizationID: string,
+    teacherID: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    teacher:  {
       __typename: "Teacher",
       id: string,
       firstName?: string | null,
@@ -7784,48 +13371,30 @@ export type OnUpdatePELessonRecordSubscription = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnDeletePELessonRecordSubscription = {
-  onDeletePELessonRecord?:  {
-    __typename: "PELessonRecord",
+export type OnDeleteTeacherOrganziationSubscription = {
+  onDeleteTeacherOrganziation?:  {
+    __typename: "TeacherOrganziation",
     id: string,
-    teacherID?: string | null,
-    Teacher?:  {
+    organizationID: string,
+    teacherID: string,
+    organization:  {
+      __typename: "Organization",
+      id: string,
+      name?: string | null,
+      isPublic: boolean,
+      type?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedOrganizationsId?: string | null,
+      organizationLogoId?: string | null,
+    },
+    teacher:  {
       __typename: "Teacher",
       id: string,
       firstName?: string | null,
@@ -7834,434 +13403,8 @@ export type OnDeletePELessonRecordSubscription = {
       schoolID?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    date?: string | null,
-    deliveredBy?: string | null,
-    duration?: number | null,
-    activity?: string | null,
-    rating?: number | null,
-    notes?: string | null,
-    classroomID?: string | null,
-    Classroom?:  {
-      __typename: "Classroom",
-      id: string,
-      name?: string | null,
-      schoolID?: string | null,
-      yearGroupID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    lessonID?: string | null,
-    Lesson?:  {
-      __typename: "Lesson",
-      id: string,
-      title?: string | null,
-      description?: string | null,
-      sectionID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateOrganizationSubscription = {
-  onCreateOrganization?:  {
-    __typename: "Organization",
-    id: string,
-    name?: string | null,
-    Principals?:  {
-      __typename: "ModelPrincipalConnection",
-      nextToken?: string | null,
-    } | null,
-    WaitingForAcceptPupils?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    AcceptedPupils?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    type?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateOrganizationSubscription = {
-  onUpdateOrganization?:  {
-    __typename: "Organization",
-    id: string,
-    name?: string | null,
-    Principals?:  {
-      __typename: "ModelPrincipalConnection",
-      nextToken?: string | null,
-    } | null,
-    WaitingForAcceptPupils?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    AcceptedPupils?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    type?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteOrganizationSubscription = {
-  onDeleteOrganization?:  {
-    __typename: "Organization",
-    id: string,
-    name?: string | null,
-    Principals?:  {
-      __typename: "ModelPrincipalConnection",
-      nextToken?: string | null,
-    } | null,
-    WaitingForAcceptPupils?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    AcceptedPupils?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    type?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreatePupilSubscription = {
-  onCreatePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    Organizations?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    OrganizationsRequests?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    Interventions?:  {
-      __typename: "ModelInterventionConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnUpdatePupilSubscription = {
-  onUpdatePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    Organizations?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    OrganizationsRequests?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    Interventions?:  {
-      __typename: "ModelInterventionConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnDeletePupilSubscription = {
-  onDeletePupil?:  {
-    __typename: "Pupil",
-    id: string,
-    firstName?: string | null,
-    lastName?: string | null,
-    Attendances?:  {
-      __typename: "ModelAttendanceConnection",
-      nextToken?: string | null,
-    } | null,
-    classrooms?:  {
-      __typename: "ModelPupilClassroomConnection",
-      nextToken?: string | null,
-    } | null,
-    Organizations?:  {
-      __typename: "ModelPupilOrganizationAcceptedConnection",
-      nextToken?: string | null,
-    } | null,
-    OrganizationsRequests?:  {
-      __typename: "ModelPupilOrganizationRequestConnection",
-      nextToken?: string | null,
-    } | null,
-    schoolID?: string | null,
-    schoolHouseID?: string | null,
-    schoolHouse?:  {
-      __typename: "SchoolHouse",
-      id: string,
-      name?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    school?:  {
-      __typename: "School",
-      id: string,
-      name?: string | null,
-      country?: string | null,
-      region?: string | null,
-      principal?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    parents?:  {
-      __typename: "ModelPupilParentConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    Interventions?:  {
-      __typename: "ModelInterventionConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnCreateInterventionSubscription = {
-  onCreateIntervention?:  {
-    __typename: "Intervention",
-    id: string,
-    pupilID: string,
-    message?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    InterventionFeedback?:  {
-      __typename: "ModelParentInterventionFeedbackConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnUpdateInterventionSubscription = {
-  onUpdateIntervention?:  {
-    __typename: "Intervention",
-    id: string,
-    pupilID: string,
-    message?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    InterventionFeedback?:  {
-      __typename: "ModelParentInterventionFeedbackConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnDeleteInterventionSubscription = {
-  onDeleteIntervention?:  {
-    __typename: "Intervention",
-    id: string,
-    pupilID: string,
-    message?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    Pupil?:  {
-      __typename: "Pupil",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      schoolID?: string | null,
-      schoolHouseID?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    InterventionFeedback?:  {
-      __typename: "ModelParentInterventionFeedbackConnection",
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnCreateParentInterventionFeedbackSubscription = {
-  onCreateParentInterventionFeedback?:  {
-    __typename: "ParentInterventionFeedback",
-    id: string,
-    parentID: string,
-    interventionID: string,
-    Parent:  {
-      __typename: "Parent",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      createdAt: string,
-      updatedAt: string,
     },
-    comment?: string | null,
-    rating?: number | null,
     createdAt: string,
     updatedAt: string,
-    Intervention:  {
-      __typename: "Intervention",
-      id: string,
-      pupilID: string,
-      message?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-  } | null,
-};
-
-export type OnUpdateParentInterventionFeedbackSubscription = {
-  onUpdateParentInterventionFeedback?:  {
-    __typename: "ParentInterventionFeedback",
-    id: string,
-    parentID: string,
-    interventionID: string,
-    Parent:  {
-      __typename: "Parent",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    comment?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-    Intervention:  {
-      __typename: "Intervention",
-      id: string,
-      pupilID: string,
-      message?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-  } | null,
-};
-
-export type OnDeleteParentInterventionFeedbackSubscription = {
-  onDeleteParentInterventionFeedback?:  {
-    __typename: "ParentInterventionFeedback",
-    id: string,
-    parentID: string,
-    interventionID: string,
-    Parent:  {
-      __typename: "Parent",
-      id: string,
-      firstName?: string | null,
-      lastName?: string | null,
-      email?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    comment?: string | null,
-    rating?: number | null,
-    createdAt: string,
-    updatedAt: string,
-    Intervention:  {
-      __typename: "Intervention",
-      id: string,
-      pupilID: string,
-      message?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    },
   } | null,
 };

@@ -13,6 +13,7 @@ exports.handler = (event, context, callback) => {
         UserPoolId: process.env.AUTH_HEALTHYHABITSV24AEA1E5F_USERPOOLID, /* required */
         Username: body.email /* required */
     };
+
     cognito.adminConfirmSignUp(confirmParams, function(err, data) {
         if (err) console.log(err, err.stack); // an error occurred
         // Return to Amazon Cognito

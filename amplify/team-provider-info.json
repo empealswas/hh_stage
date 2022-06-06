@@ -15,11 +15,11 @@
       "function": {
         "healthyLambdaApi": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/healthyLambdaApi-572f386967494f774c6a-build.zip"
+          "s3Key": "amplify-builds/healthyLambdaApi-67392f48464643513135-build.zip"
         },
         "RemoveFileFromS3Bucket": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/RemoveFileFromS3Bucket-69303749774350524654-build.zip"
+          "s3Key": "amplify-builds/RemoveFileFromS3Bucket-596a625678594f544634-build.zip"
         },
         "AddInterventionForPupil": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
@@ -31,7 +31,15 @@
         },
         "ConfirmOrganization": {
           "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
-          "s3Key": "amplify-builds/ConfirmOrganization-6138374c542f48526f2b-build.zip"
+          "s3Key": "amplify-builds/ConfirmOrganization-6a38666e586d6a5a3645-build.zip"
+        },
+        "RemoveSections": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/RemoveSections-436f6f59366a7a387741-build.zip"
+        },
+        "updateTerraId": {
+          "deploymentBucketName": "amplify-healthyhabitsv2-dev-205646-deployment",
+          "s3Key": "amplify-builds/updateTerraId-4b724d6a767143444c38-build.zip"
         }
       },
       "auth": {

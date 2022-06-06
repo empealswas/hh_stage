@@ -13,6 +13,7 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "api": {
         "HealthyHabitsV2GraphQlApi": {
+            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         },
@@ -48,6 +49,18 @@ export type AmplifyDependentResourcesAttributes = {
             "LambdaExecutionRole": "string"
         },
         "ConfirmOrganization": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
+        },
+        "RemoveSections": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
+        },
+        "updateTerraId": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",

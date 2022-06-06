@@ -2,22 +2,24 @@ import {Admin} from "./Admin";
 import {Teacher} from "./Teacher";
 import {Principal} from "./Principal";
 import {Parent} from "./Parent";
-import {User} from "./User";
 import {Organization} from "./Organization";
+import {User} from "./User";
+import {UnifiedUser} from "./UnifiedUser";
 
-export function createUser(userData: any) {
+export function createUser(userData: any, attributes: any): User | null {
     const userRoles = userData.signInUserSession.accessToken.payload['cognito:groups'];
-    if (userRoles.includes('Admins')) {
-        return new Admin(userData.attributes.email);
-    }else if (userRoles.includes('Teachers')) {
-        return new Teacher(userData.attributes.email);
+    console.log(attributes);
+    if (userRoles.includes('Teachers')) {
+        return new Teacher(attributes.email);
     }else if (userRoles.includes('Principals')) {
-        return new Principal(userData.attributes.email);
+        return new Principal(attributes.email);
     }else if (userRoles.includes('Parents')) {
-        return new Parent(userData.attributes.email);
+        return new Parent(attributes.email);
     }else if (userRoles.includes('Organizations')) {
-        return new Organization(userData.attributes.email);
+        return new Organization(attributes.email);
+    } else if (userRoles.includes('Users')) {
+        return new UnifiedUser(attributes.email, !!userRoles.includes('Admins'));
     }
-    return new User(userData.attributes.email);
 
+    return null;
 }

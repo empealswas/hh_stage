@@ -6,17 +6,21 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
-
+//TEST
 const aws = require('aws-sdk')
+const axios = require('axios');
+const webpush = require('web-push');
 const lambda = new aws.Lambda({
     region: 'eu-west-2'
 })
 const s3 = new aws.S3();
 const dynamoDB = new aws.DynamoDB();
+
 var express = require('express')
 var bodyParser = require('body-parser')
-var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
-
+var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const { response } = require('express');
+webpush.setVapidDetails('mailto:hlib@healthcareinsafehands.com', process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY);
 // declare a new express app
 var app = express()
 app.use(bodyParser.json())
@@ -30,13 +34,18 @@ app.use(function (req, res, next) {
 });
 
 
-/**********************
- * Example get method *
- **********************/
+app.post('/subscribe', (req, res) =>{
+    const subscription = req.body;
+    res.status(201).json({});
+    const payload = JSON.stringify({
+        title: 'Push Test',
+    })
+    webpush.sendNotification(subscription, payload).catch(err => console.error(err));
+});
 
 app.get('/api', function (req, res) {
     // Add your code here
-    res.json({success: 'get call succeed!', url: req.url});
+    res.json({ success: 'get call succeed!', url: req.url });
 });
 
 
@@ -50,7 +59,7 @@ app.get('/api/getUrlToObject', function (req, res) {
         Key: name,
         Expires: 10000
     });
-    res.json({success: 'got url', url: gotURl});
+    res.json({ success: 'got url', url: gotURl });
 });
 app.get('/api/listUnconfirmedOrganizations', function (req, res) {
     return lambda.invoke({
@@ -59,24 +68,144 @@ app.get('/api/listUnconfirmedOrganizations', function (req, res) {
         Payload: JSON.stringify({}) // pass params
     }, function (error, data) {
         if (error) {
-            res.json({error: error, users: []})
+            res.json({ error: error, users: [] })
         }
         if (data.Payload) {
-            res.json({success: 'returned', users: data.Payload})
+            res.json({ success: 'returned', users: data.Payload })
         }
     });
 });
+app.get('/api/userInfo', async function(req, res){
+    const userId = req.query.user_id;
+    console.log('User Id', userId)
+    var config = {
+        method: 'get',
+        url: `https://api.tryterra.co/v2/userInfo?user_id=${userId}`,
+        headers: {
+            'dev-id': 'healthcare-analytics-aT9uvuscoO',
+            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
+            'Content-Type': 'application/json'
+        },
+    };
 
+    try{
+        const response = await axios(config);
+        const result = response.data;
+        res.json({status: 'success', data: result})
+    } catch (error) {
+        console.error(error);
+        res.json({status: 'error', data: null})
+    }
+
+
+
+})
+app.post('/api/getActivity',  function (req, res) {
+    console.log(req);
+    console.log(req.body);
+    const { terraId, start_date, end_date } = { ...req.body }
+
+    var config = {
+        method: 'get',
+        url: `https://api.tryterra.co/v2/daily?user_id=${terraId}&start_date=${start_date}&end_date=${end_date}&to_webhook=false`,
+        headers: {
+            'dev-id': 'healthcare-analytics-aT9uvuscoO',
+            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
+            'Content-Type': 'application/json'
+        },
+    };
+    axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            res.json({data: response.data});
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.json({data: null});
+        });
+});
+
+app.post('/api/wearables',  function (req, res) {
+    console.log(req);
+    console.log('BODY', req.body);
+    console.log('here');
+    var config = {
+        method: 'post',
+        url: process.env.TerraApiEndpoint,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: req.body,
+    };
+    axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            res.json({data: response.data});
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.json({data: null});
+        });
+});
+
+
+
+app.post('/api/getSleep',  function (req, res) {
+    console.log(req);
+    console.log(req.body);
+    const { terraId, start_date, end_date } = { ...req.body }
+
+    var config = {
+        method: 'get',
+        url: `https://api.tryterra.co/v2/sleep?user_id=${terraId}&start_date=${start_date}&end_date=${end_date}&to_webhook=false`,
+        headers: {
+            'dev-id': 'healthcare-analytics-aT9uvuscoO',
+            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
+            'Content-Type': 'application/json'
+        },
+    };
+    axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            res.json({data: response.data});
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.json({data: null});
+        });
+});
+app.post('/api/getTerraLink',  function (req, res) {
+    console.log(req.body);
+    const config = {
+        method: 'post',
+        url: 'https://api.tryterra.co/v2/auth/generateWidgetSession',
+        headers: {
+            'dev-id': 'healthcare-analytics-aT9uvuscoO',
+            'x-api-key': 'EEDzs5LZjl6wgsmrPh7Bn3An0MF2HiZG9OxKIwSc',
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(req.body),
+    };
+    axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            res.json({url: response.data.url});
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.json({data: null});
+        })
+});
 
 app.get('/api/getAverage', async function (req, res) {
     const statement = `select * from "Attendance-z3pgonvfxjgxjbgblzjkb3kvv4-dev"`
-    const results = await dynamoDB.executeStatement({Statement: statement}).promise();
-    res.json({success: 'got url', result: results});
+    const results = await dynamoDB.executeStatement({ Statement: statement }).promise();
+    res.json({ success: 'got url', result: results });
 });
 
 app.post('/api', function (req, res) {
     // Add your code here
-    res.json({success: 'post call succeed!', url: req.url, body: req.body})
+    res.json({ success: 'post call succeed!', url: req.url, body: req.body })
 });
 
 app.post('/api/addTeacher', (req, res) => {
@@ -93,32 +222,56 @@ app.post('/api/addTeacher', (req, res) => {
         Payload: JSON.stringify(event) // pass params
     }, function (error, data) {
         if (error) {
-            res.json({error: error, url: req.url})
+            res.json({ error: error, url: req.url })
         }
         if (data.Payload) {
-            res.json({success: 'teacher added', url: req.url})
+            res.json({ success: 'teacher added', url: req.url })
         }
     });
 })
+app.post('/api/addTeacherOrganization', (req, res) => {
+    const event = {
+        body: {
+            ...req.body,
+            type: 'TEACHER'
+        }
+    }
+    console.log('event' + event)
+    return lambda.invoke({
+        FunctionName: 'addUserToOrganizationHH',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(event) // pass params
+    }, function (error, data) {
+        if (error) {
+            res.json({ error: error, url: req.url })
+        }
+        if (data.Payload) {
+            res.json({ success: 'teacher added', url: req.url })
+        }
+    });
+})
+
+
+
 app.post('/api/confirmOrganization', (req, res) => {
     const event = {
         body: {
             ...req.body,
         }
     }
-    console.log('event',event);
+    console.log('event', event);
     return lambda.invoke({
         FunctionName: 'ConfirmOrganization-dev',
         InvocationType: 'RequestResponse',
         Payload: JSON.stringify(event) // pass params
     }, function (error, data) {
         if (error) {
-            res.json({error: error, url: req.url})
+            res.json({ error: error, url: req.url })
         }
         if (data) {
-        if (data.Payload) {
-            res.json({success: 'teacher added', url: req.url});
-        }
+            if (data.Payload) {
+                res.json({ success: 'teacher added', url: req.url });
+            }
         }
     });
 })
@@ -136,13 +289,14 @@ app.post('/api/addParent', (req, res) => {
         Payload: JSON.stringify(event) // pass params
     }, function (error, data) {
         if (error) {
-            res.json({error: error, url: req.url})
+            res.json({ error: error, url: req.url })
         }
         if (data.Payload) {
-            res.json({success: 'parent added', url: req.url})
+            res.json({ success: 'parent added', url: req.url })
         }
     });
 })
+
 app.post('/api/addPrincipal', (req, res) => {
     const event = {
         body: {
@@ -157,10 +311,10 @@ app.post('/api/addPrincipal', (req, res) => {
         Payload: JSON.stringify(event) // pass params
     }, function (error, data) {
         if (error) {
-            res.json({error: error, url: req.url})
+            res.json({ error: error, url: req.url })
         }
         if (data.Payload) {
-            res.json({success: 'parent added', url: req.url})
+            res.json({ success: 'parent added', url: req.url })
         }
     });
 })
@@ -174,10 +328,10 @@ app.post('/api/resendTeacherInvitation', (req, res) => {
         Payload: JSON.stringify(event) // pass params
     }, function (error, data) {
         if (error) {
-            res.json({error: error, url: req.url})
+            res.json({ error: error, url: req.url })
         }
         if (data?.Payload) {
-            res.json({success: 'Invite is resent', url: req.url})
+            res.json({ success: 'Invite is resent', url: req.url })
         }
     });
 })
@@ -189,12 +343,12 @@ app.post('/api/resendTeacherInvitation', (req, res) => {
 
 app.put('/api', function (req, res) {
     // Add your code here
-    res.json({success: 'put call succeed!', url: req.url, body: req.body})
+    res.json({ success: 'put call succeed!', url: req.url, body: req.body })
 });
 
 app.put('/api/*', function (req, res) {
     // Add your code here
-    res.json({success: 'put call succeed!', url: req.url, body: req.body})
+    res.json({ success: 'put call succeed!', url: req.url, body: req.body })
 });
 
 /****************************
@@ -203,11 +357,11 @@ app.put('/api/*', function (req, res) {
 
 app.delete('/api', function (req, res) {
     // Add your code here
-    res.json({success: 'delete call succeed!', url: req.url});
+    res.json({ success: 'delete call succeed!', url: req.url });
 });
 
 app.delete('/api/deleteFile/:id', function (req, res) {
-    const {id} = req.params;
+    const { id } = req.params;
     const event = {
         body: {
             id: id
@@ -220,17 +374,17 @@ app.delete('/api/deleteFile/:id', function (req, res) {
         Payload: JSON.stringify(event) // pass params
     }, function (error, data) {
         if (error) {
-            res.json({error: error, url: req.url})
+            res.json({ error: error, url: req.url })
         }
         if (data?.Payload) {
-            res.json({success: 'File deleted', url: req.url})
+            res.json({ success: 'File deleted', url: req.url })
         }
     });
 });
 
 app.delete('/api/*', function (req, res) {
     // Add your code here
-    res.json({success: 'delete call succeed!', url: req.url});
+    res.json({ success: 'delete call succeed!', url: req.url });
 });
 
 app.listen(3000, function () {
