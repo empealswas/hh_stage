@@ -31,6 +31,8 @@ import ChildProfileCover from "./ChildProfileCover";
 import ConnectToWearableDeviceButton from "./wearable/ConnectToWearableDeviceButton";
 import OrganizationsGrid from "../../organization/OrganizationsGrid";
 
+import InterventionsList from './profile_tabs/Profile/intervention/InterventionsList';
+
 // ----------------------------------------------------------------------
 
 const TabsWrapperStyle = styled('div')(({theme}) => ({
@@ -105,11 +107,16 @@ export default function UserProfile() {
             icon: <Iconify icon={'eva:activity-fill'} width={20} height={20}/>,
             component: fetchedUser ? <ChildActivitiesSummary user={fetchedUser}/> : <></>,
         },
-            {
-              value: 'profile',
-              icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
-              component: fetchedUser ? <ChildProfileDetails child={fetchedUser}/> : <></>,
-            },
+        {
+            value: 'profile',
+            icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+            component: fetchedUser ? <ChildProfileDetails child={fetchedUser}/> : <></>,
+        },
+        {
+            value: 'interventions',
+            icon: <Iconify icon={'eva:activity-fill'} width={20} height={20}/>,
+            component: fetchedUser ? <InterventionsList user={fetchedUser}/> : <></>,
+        },
 
     ];
 
