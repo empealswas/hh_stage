@@ -131,7 +131,8 @@ app.post('/api/wearables',  function (req, res) {
     console.log('here');
     var config = {
         method: 'post',
-        url: process.env.TerraApiEndpoint,
+        url: process.env.TerraAnalyticsEndpoint,
+        //url: process.env.TerraApiEndpoint,
         headers: {
             'Content-Type': 'application/json',
         },
@@ -386,6 +387,29 @@ app.delete('/api/*', function (req, res) {
     // Add your code here
     res.json({ success: 'delete call succeed!', url: req.url });
 });
+
+
+
+
+app.get('/api/interventions', async function (req, res) {
+    const id = req.query.id;
+    var config = {
+        method: 'get',
+        url: `http://hh-intervention-microservice-new.eu-west-2.elasticbeanstalk.com/interventionslist/${id}`
+    };
+    try {
+        const response = await axios(config);
+        const result = response.data;
+        res.json({status: 'success', data: result})
+    }
+    catch (error) {
+        console.error(error);
+        res.json({status: 'error', data: null})
+    }
+});
+
+
+
 
 app.listen(3000, function () {
     console.log("App started")
