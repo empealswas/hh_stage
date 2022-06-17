@@ -706,19 +706,6 @@ export type Intervention = {
   updatedAt: string,
 };
 
-export type UserIntervention = {
-  //id: string,
-  intervention_id: number,
-  //userID: string,
-  //User?: User | null,
-  //message?: string | null,
-  Message: string,
-  //feedbackMessageFromUser?: string | null,
-  //rating?: number | null,
-  //createdAt: string,
-  datetime_value: string
-};
-
 export type ModelInterventionConnection = {
   __typename: "ModelInterventionConnection",
   items:  Array<Intervention | null >,
