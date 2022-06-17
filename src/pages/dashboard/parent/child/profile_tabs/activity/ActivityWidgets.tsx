@@ -44,8 +44,6 @@ const ActivityWidgets = () => {
     const theme = useTheme();
     const [averageData, setAverageData] = useState<any>(null);
 
-    const [activeData, setActiveData] = useState<any>(null);
-
     useEffect(() => {
         const getAverage = async () => {
             setAverageData(null);
@@ -74,28 +72,11 @@ const ActivityWidgets = () => {
             const wearableData: any = await getWearablesData(data);
             setAverageData(wearableData?.data ?? []);
         }
+        getAverage();
+        return () => {
 
-        const getActiveData = async () => {
-            setActiveData(null);
-            var data: TerraWearables = {
-                "idList": ["e97d163d-af4a-4b77-a3f4-7fbb64fb0a42"],
-                "grouping": "user",
-                "category": "daily",
-                "subtype": "activity",
-                "period": "day",
-                "startDate": format(new Date(), 'yyyy-MM-dd'),
-                "endDate": format(new Date(), 'yyyy-MM-dd'),
-                "returnType": "total"
-            };
-            const wearableData: any = await getWearablesData(data);
-            setActiveData(wearableData?.data ?? []);
         };
-
-        //getAverage();
-        getActiveData();
-        return () => {};
     }, []);
-
     return (
         <>
             <Grid item xs={12} md={4}>
@@ -120,7 +101,6 @@ const ActivityWidgets = () => {
                     <CardSkeleton/>
                 }
             </Grid>
-            {/*
             <Grid item xs={12} md={4}>
                 {averageData ?
                     <ActivityWidgetSummary title={"Average Steps of your team"}
@@ -132,29 +112,7 @@ const ActivityWidgets = () => {
                     <CardSkeleton/>
                 }
             </Grid>
-            */}
-            <Grid item xs={12} md={4}>
-                {activeData ?
-                    <ActivityWidgetSummary title={"Todays' sedentary minutes"}
-                                           total={0}
-                                           percent={0}
-                                           chartColor={theme.palette.chart.red[0]}
-                                           chartData={[]}/>
-                    :
-                    <CardSkeleton/>
-                }
-            </Grid>
-            <Grid item xs={12} md={4}>
-                {activeData ?
-                    <ActivityWidgetSummary title={"Todays' active minutes"}
-                                           total={activeData[activeData?.length - 1]?.value ?? 0}
-                                           percent={0}
-                                           chartColor={theme.palette.chart.red[0]}
-                                           chartData={[]}/>
-                    :
-                    <CardSkeleton/>
-                }
-            </Grid>
+
 
         </>
     );
