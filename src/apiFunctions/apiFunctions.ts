@@ -3,6 +3,7 @@ import {API} from "aws-amplify";
 import {ResendTeacherInvitation} from "./DTO/ResendTeacherInvitation";
 import {PupilActivityRequest} from "./DTO/PupilActivityRequest";
 import {result} from "lodash";
+import {format} from "date-fns";
 
 const apiName = 'HealthyHabitsV2API'
 
@@ -163,5 +164,50 @@ export async function genUrlOfThumbnailOfFile(fileName: string) {
 export async function deleteFileById(id: string) {
 
     const result = await API.del(apiName, `/api/deleteFile/${id}`, {})
+    return result;
+}
+
+export async function getActivityMinutes(id: any, date: any, name: any) {
+    const result = await API.get(apiName, '/api/activityminutes', {
+         queryStringParameters: {
+             id: id,
+             date: format(date, "yyyy-MM-dd"),
+             name: name
+         }
+    });
+    return result;
+}
+
+export async function getDailySteps(id: any, date: any, name: any) {
+    const result = await API.get(apiName, '/api/dailysteps', {
+         queryStringParameters: {
+             id: id,
+             date: format(date, "yyyy-MM-dd"),
+             name: name
+         }
+    });
+    return result;
+}
+
+export async function getSleepDuration(id: any, date: any, name: any) {
+    const result = await API.get(apiName, '/api/sleepduration', {
+         queryStringParameters: {
+             id: id,
+             date: format(date, "yyyy-MM-dd"),
+             name: name
+         }
+    });
+    return result;
+}
+
+export async function getWeeklyAvgSteps(id: any, date1: any, date2: any, name: any) {
+    const result = await API.get(apiName, '/api/weeklyavgsteps', {
+         queryStringParameters: {
+             id: id,
+             date1: format(date1, "yyyy-MM-dd"),
+             date2: format(date2, "yyyy-MM-dd"),
+             name: name
+         }
+    });
     return result;
 }

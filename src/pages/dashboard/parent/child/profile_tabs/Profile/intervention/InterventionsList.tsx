@@ -1,223 +1,149 @@
-// import FilterListIcon from '@mui/icons-material/FilterList';
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    CardHeader,
-    Container,
-    Grid,
-    Skeleton,
-    Stack,
-    Typography
-} from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, Container, Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { API, graphqlOperation } from "aws-amplify";
-import { parseISO } from "date-fns";
+import { parseISO, subDays } from "date-fns";
 import React, { useContext, useEffect, useState } from 'react';
 import {useTheme} from "@mui/material/styles";
-import {Intervention, Pupil} from "../../../../../../../API";
+import {Intervention, User} from "../../../../../../../API";
 import useAuth from "../../../../../../../hooks/useAuth";
 import {onCreateIntervention} from "../../../../../../../graphql/subscriptions";
 import InterventionMenu from "./InterventionMenu";
 import {ShopProductSort} from "../../../../../../../sections/@dashboard/e-commerce/shop";
 import ProductSort from "./ProductSort";
+import CardSkeleton from "../../../../../../../components/skeleton/CardSkeleton";
+import { getActivityMinutes, getDailySteps, getSleepDuration, getWeeklyAvgSteps } from "../../../../../../../apiFunctions/apiFunctions";
 
+const InterventionsList = (props: { user: User }) => {
 
-const getFirstInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = ASC) {
-  getPupil(id: $id) {
-    Interventions(sortDirection: $sortDirection, limit: 5) {
-      items {
-        id
-        message
-        createdAt
-        InterventionFeedback {
-          items {
-            comment
-            createdAt
-            id
-            rating
-          }
-        }
-      }
-      nextToken
-    }
-  }
-}
-`
-const getNextInterventions = `query MyQuery($id: ID = "", $sortDirection: ModelSortDirection = ASC, $nextToken: String = "") {
-  getPupil(id: $id) {
-    Interventions(sortDirection: $sortDirection, limit: 10, nextToken: $nextToken) {
-      items {
-        message
-        createdAt
-        InterventionFeedback {
-          items {
-            comment
-            createdAt
-            id
-            rating
-          }
-        }
-      }
-      nextToken
-    }
-  }
-}
-`
-const InterventionsList = (props: { pupil: Pupil }) => {
-    const [interventions, setInterventions] = useState<Intervention[] | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [sortFilter, setSortFilter] = useState('newest');
-    let nextToken = ''
+    const [activityMinutes, setActivityMinutes] = useState<any>(null);
+    const [dailySteps, setDailySteps] = useState<any>(null);
+    const [sleepDuration, setSleepDuration] = useState<any>(null);
+    const [weeklyAvgSteps, setWeeklyAvgSteps] = useState<any>(null);
 
     const theme = useTheme();
     console.log(theme);
 
-    
+    /*
+    const loadActivityMinutes = async () => {
+        setActivityMinutes(null);
+        const result = await getActivityMinutes(props.user.terraId, new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setActivityMinutes(result.data);
+        }
+    };
+
+    const loadDailySteps = async () => {
+        setDailySteps(null);
+        const result = await getDailySteps(props.user.terraId, new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setDailySteps(result.data);
+        }
+    };
+
+    const loadSleepDuration = async () => {
+        setSleepDuration(null);
+        const result = await getSleepDuration(props.user.terraId, new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setSleepDuration(result.data);
+        }
+    };
+
+    const loadWeeklyAvgSteps = async () => {
+        setWeeklyAvgSteps(null);
+        const result = await getWeeklyAvgSteps(props.user.terraId, subDays(new Date(), 7), new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setWeeklyAvgSteps(result.data);
+        }
+    };
+    */
+
     const loadInterventions = async () => {
-        setLoading(true)
-        const result: any = await API.graphql(graphqlOperation(getNextInterventions, {
-            id: props.pupil.id,
-            nextToken: nextToken,
-            sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
-        }));
-        nextToken = result.data.getPupil.Interventions.nextToken
-        setInterventions(prevState => {
-            if (prevState) {
-                return [...prevState, ...result.data.getPupil.Interventions.items];
-            } else {
-                return result.data.getPupil.Interventions.items
-            }
-        });
-        setLoading(false)
 
-    }
-    useEffect(() => {
-        const getInterventions = async () => {
-            setInterventions(null)
-            const result: any = await API.graphql(graphqlOperation(getFirstInterventions, {
-                id: props.pupil.id,
-                sortDirection: sortFilter === 'newest' ? 'DESC' : 'ASC'
-            }));
-            nextToken = result.data.getPupil.Interventions.nextToken;
-
-            setInterventions(result.data.getPupil.Interventions.items);
-            console.log(nextToken);
-            // console.log(result.data.getPupil.Interventions.items)
+        setActivityMinutes(null);
+        let result = await getActivityMinutes(props.user.terraId, new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setActivityMinutes(result.data);
         }
-        getInterventions();
-        return () => {
 
-        };
-    }, [sortFilter, props.pupil]);
+        setDailySteps(null);
+        result = await getDailySteps(props.user.terraId, new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setDailySteps(result.data);
+        }
+
+        setSleepDuration(null);
+        result = await getSleepDuration(props.user.terraId, new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setSleepDuration(result.data);
+        }
+
+        setWeeklyAvgSteps(null);
+        result = await getWeeklyAvgSteps(props.user.terraId, subDays(new Date(), 7), new Date(), props.user.firstName);
+        if (result.status == "success") {
+            setWeeklyAvgSteps(result.data);
+        }
+
+    };
 
     useEffect(() => {
-
-        const subscription: any = API.graphql(graphqlOperation(onCreateIntervention));
-        const onInterventionAddedSubscription: any = subscription.subscribe({
-            next: (result: any) => {
-                console.log(result);
-                console.log(result.value.data)
-                const intervention: Intervention = result.value.data.onCreateIntervention;
-                if (!intervention) {
-                    return;
-                }
-                if (intervention.pupilID !== props.pupil.id) {
-                    return;
-                }
-                setInterventions(prevState => {
-                    if (!prevState) {
-                        return [intervention];
-                    }
-                    const prev = prevState.filter(value => value.id !== intervention.id);
-                    prev.unshift(intervention);
-                    return prev;
-                })
-            }
-        })
-        return (() => {
-            onInterventionAddedSubscription.unsubscribe();
-        })
-    }, [props.pupil])
-    window.addEventListener("scroll", handleScroll);
-
-    function handleScroll() {
-        // console.log('schrollHeight', document.documentElement.scrollHeight);
-        // console.log('scrollTop', document.documentElement.scrollTop);
-        var isAtBottom = document.documentElement.scrollHeight - 10 - document.documentElement.scrollTop <= document.documentElement.clientHeight;
-        console.log(isAtBottom)
-        if (isAtBottom && nextToken && !loading) {
-            console.log('loading')
-            console.log(nextToken)
-        
-            setLoading(true);
-            loadInterventions().then(res => setLoading(false));
-        }
-
-    }
-
-    const Interventios = () => {
-        if (!interventions) {
-            return (
-                <>
-                    <Skeleton height={300}/>
-                    <Skeleton height={300}/>
-                </>
-            );
-        }
-        if (interventions.length === 0) {
-            return (
-                <Typography variant={'h6'} textAlign={'center'}>Here will be displayed achievements and highlights of your
-                    child school
-                    life.</Typography>);
-        }
-
-        return (
-            <>
-                {interventions?.map(value => {
-                    return (
-                        <Card key={value.id}>
-                            <CardHeader title={'Intervention'}
-                                subheader={`${parseISO(value.createdAt).toLocaleDateString()} ${parseISO(value.createdAt).toLocaleTimeString()}`} />
-                            <CardContent>
-                                <Typography variant={'body1'}>{value.message}</Typography>
-                            </CardContent>
-                            <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <InterventionMenu intervention={value} />
-                            </CardActions>
-                        </Card>
-                    );
-                })}
-            </>
-        );
-    }
-
+        //loadActivityMinutes();
+        //loadDailySteps();
+        //loadSleepDuration();
+        //loadWeeklyAvgSteps();
+        loadInterventions();
+        return () => {};
+    }, [props.user]);
 
     return (
         <div>
             <>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
-                        <Card>
-                            <CardContent>
-                                <Typography textAlign={'center'} variant={'h3'}>Interventions</Typography>
-                                <Stack direction={'column'} spacing={2}>
-                                    <ProductSort setSortFilter={setSortFilter} sortFilter={sortFilter} />
-                                    {/*<ShopProductSort/>*/}
-                                </Stack>
-                            </CardContent>
-                        </Card>
+                        { activityMinutes != null ?
+                            <Card>
+                                <CardHeader title={'Activity Minutes'} subheader={new Date(activityMinutes.DateRequested).toLocaleDateString()} />
+                                <CardContent>
+                                    <Typography variant={'body1'}>{activityMinutes.InterventionMessage}</Typography>
+                                </CardContent>
+                            </Card>
+                            :
+                            <CardSkeleton />
+                        }
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
-                        <Stack direction={'column'} spacing={3}>
-                            <Interventios />
-                            {loading &&
-                                <>
-                                    <Skeleton height={300}/>
-                                    <Skeleton height={300}/>
-                                </>
-                            }
-                        </Stack>
+                        { dailySteps != null ?
+                            <Card>
+                                <CardHeader title={'Daily Steps'} subheader={new Date(dailySteps.RequestedDate).toLocaleDateString()} />
+                                <CardContent>
+                                    <Typography variant={'body1'}>{dailySteps.InterventionMessage}</Typography>
+                                </CardContent>
+                            </Card>
+                            :
+                            <CardSkeleton />
+                        }
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                        { sleepDuration != null ?
+                            <Card>
+                                <CardHeader title={'Sleep Duration'} subheader={new Date(sleepDuration.DateRequested).toLocaleDateString()} />
+                                <CardContent>
+                                    <Typography variant={'body1'}>{sleepDuration.InterventionMessages}</Typography>
+                                </CardContent>
+                            </Card>
+                            :
+                            <CardSkeleton />
+                        }
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                        { weeklyAvgSteps != null ?
+                            <Card>
+                                <CardHeader title={'Daily Average Steps'} subheader={new Date(weeklyAvgSteps.WeekStartDate).toLocaleDateString() + " - " + new Date(weeklyAvgSteps.CurrentDate).toLocaleDateString()} />
+                                <CardContent>
+                                    <Typography variant={'body1'}>{weeklyAvgSteps.InterventionMessage}</Typography>
+                                </CardContent>
+                            </Card>
+                            :
+                            <CardSkeleton />
+                        }
                     </Grid>
                 </Grid>
             </>

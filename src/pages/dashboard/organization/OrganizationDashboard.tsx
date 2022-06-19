@@ -10,7 +10,10 @@ import {
     SelectChangeEvent,
     Stack,
     TextField,
-    Typography
+    Typography,
+    Card,
+    CardHeader,
+    CardContent
 } from "@mui/material";
 import CardSkeleton from "../../../components/skeleton/CardSkeleton";
 import useSettings from 'src/hooks/useSettings';
@@ -387,6 +390,8 @@ const OrganizationDashboard = () => {
                             </Stack>
                         </Grid>
                     }
+
+                    {/*
                     <Grid item xs={12} sm={6} md={6} lg={3}>
                         {organization ?
                             <BankingWidgetSummary
@@ -442,6 +447,23 @@ const OrganizationDashboard = () => {
                             <CardSkeleton height={'300px'}/>
                         }
                     </Grid>
+                    */}
+
+                    <Grid item xs={12} sm={6} md={6} lg={3}>
+                        {organization ?
+                            <Card>
+                                <CardHeader title={'Number of Members'} />
+                                <CardContent>
+                                    <Typography variant={'h1'}>{0}</Typography>
+                                </CardContent>
+                            </Card>
+                            :
+                            <CardSkeleton height={'300px'}/>
+                        }
+                    </Grid>
+
+
+
 
                     <Grid item xs={12}>
                         {organization ?

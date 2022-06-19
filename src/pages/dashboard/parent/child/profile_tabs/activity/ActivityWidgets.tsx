@@ -101,6 +101,8 @@ const ActivityWidgets = () => {
                     <CardSkeleton/>
                 }
             </Grid>
+
+            {/*
             <Grid item xs={12} md={4}>
                 {averageData ?
                     <ActivityWidgetSummary title={"Average Steps of your team"}
@@ -112,7 +114,7 @@ const ActivityWidgets = () => {
                     <CardSkeleton/>
                 }
             </Grid>
-
+            */}
 
         </>
     );
