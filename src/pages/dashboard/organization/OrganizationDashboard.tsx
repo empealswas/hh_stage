@@ -1,20 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Page from "../../../components/Page";
-import {
-    Container,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Stack,
-    TextField,
-    Typography,
-    Card,
-    CardHeader,
-    CardContent
-} from "@mui/material";
+import {Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, Card, CardContent} from "@mui/material";
 import CardSkeleton from "../../../components/skeleton/CardSkeleton";
 import useSettings from 'src/hooks/useSettings';
 import useAuth from "../../../hooks/useAuth";
@@ -35,12 +21,28 @@ import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking
 import {values} from "lodash";
 import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
 
-const query = `query MyQuery($id: ID = "") {
+const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
     Classrooms {
       items {
         id
         name
+      }
+    }
+  }
+}`;
+
+const queryAllClassroomsWithAllLessons = `query MyQuery($id: ID = "") {
+  getOrganization(id: $id) {
+    Classrooms {
+      items {
+        id
+        name
+        members {
+          items {
+            id
+          }
+        }
         LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
           items {
             date
@@ -66,15 +68,57 @@ const query = `query MyQuery($id: ID = "") {
       }
     }
   }
-}
-`
+}`;
 
-const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = "", $lt: String = "") {
+const queryClassroomWithAllLessons = `query MyQuery($id: ID = "", $cid: ID = "") {
+  getOrganization(id: $id) {
+    Classrooms(limit: 1000000, filter: {id: {eq: $cid}}) {
+      items {
+        id
+        name
+        members {
+          items {
+            id
+          }
+        }
+        LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
+          items {
+            date
+            id
+            duration
+            activity
+            rating
+            Attendances(limit: 10000000, filter: {present: {eq: true}}) {
+              items {
+                id
+                wasRewarded
+                userInOrganizationAttendancesId
+                UserInOrganization {
+                  user {
+                    lastName
+                    firstName
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+
+const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $gt: String = "", $lt: String = "") {
   getOrganization(id: $id) {
     Classrooms(sortDirection: ASC) {
       items {
         id
         name
+        members {
+          items {
+            id
+          }
+        }
         LessonRecords(limit: 10000000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
           items {
             date
@@ -93,6 +137,43 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
                     firstName
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+
+const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid: ID = "", $gt: String = "", $lt: String = "") {
+  getOrganization(id: $id) {
+    Classrooms(sortDirection: ASC, limit: 1000000, filter: {id: {eq: $cid}}) {
+      items {
+        id
+        name
+        members {
+          items {
+            id
+          }
+        }
+        LessonRecords(limit: 10000000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
+          items {
+            date
+            id
+            duration
+            activity
+            rating
+            Attendances(filter: {present: {eq: true}}, limit: 10000000) {
+              items {
+                id
+                wasRewarded
+                userInOrganizationAttendancesId
+                UserInOrganization {
+                  user {
+                    lastName
+                    firstName
+                  }
                 }
               }
             }
@@ -101,55 +182,84 @@ const advancedQueryAllClassrooms = `query MyQuery($id: ID = "", $gt: String = ""
       }
     }
   }
-`
-const participantsQuery = `query MyQuery($id: ID = "") {
-  getOrganization(id: $id) {
-    members(limit: 10000000) {
-      items {
-        Attendances(limit: 1) {
-          items {
-            present
-            Lesson {
-              id
-            }
-          }
-        }
-      }
-    }
-  }
-}
+}`
 
-`
-type DashboardValues = {
-    trainingSessionsData?: number[];
-    participantsData?: number[];
-    totalParticipants?: number;
-    durationData?: number[];
-    totalDuration?: number;
-    totalTrainingQuality?: number;
-    qualityData?: number[];
-    usersByRewards?: any[];
-}
 const OrganizationDashboard = () => {
-    const {user} = useAuth();
+
     const {themeStretch} = useSettings();
-    const [organization, setOrganization] = useState<Organization | null>(null);
-    const [classrooms, setClassrooms] = useState<Classroom[] | null>(null);
+    const {user} = useAuth();
     const {organizationId} = useParams();
+    const [organization, setOrganization] = useState<Organization | null>(null);
+    const [selectableClassrooms, setSelectableClassrooms] = useState<Classroom[] | null>(null);
+
     const [selectedClassroom, setSelectedClassroom] = React.useState<Classroom | null>(null);
+    const [selectedPeriod, setSelectedPeriod] = useState('none');
     const [startDate, setStartDate] = React.useState<Date | null>(null);
     const [endDate, setEndDate] = React.useState<Date | null>(null);
-    const [selectedPeriod, setSelectedPeriod] = useState('none');
-    const [participants, setParticipants] = useState<number | null>(null);
 
-    const handleChange = (event: SelectChangeEvent) => {
+    const [numberOfMembers, setNumberOfMembers] = useState<number | null>(null);
+    const [numberOfActivities, setNumberOfActivities] = useState<number | null>(null);
+    const [totalActivityTime, setTotalActivityTime] = useState<number | null>(null);
+    const [achieving60MinsPerDay, setAchieving60MinsPerDay] = useState<number | null>(null);
+    const [averageDailySleep, setAverageDailySleep] = useState<number | null>(null);
+    const [averageSedentaryTime, setAverageSedentaryTime] = useState<number | null>(null);
 
-        if (!event.target.value) {
-            setSelectedClassroom(null);
-            return;
-        }
-        setSelectedClassroom(classrooms?.find(item => item.id === event.target.value as string) ?? null)
+    const getOrganizationAsync = async () => {
+        setOrganization(null);
+        const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
+        setOrganization(result.data.getOrganization);
+        setSelectableClassrooms(result.data.getOrganization?.Classrooms?.items);
     };
+
+    const reset = () => {
+        setSelectedClassroom(null);
+        setSelectedPeriod('none');
+        setStartDate(null);
+        setEndDate(null);
+        setNumberOfMembers(null);
+        setNumberOfActivities(null);
+        setTotalActivityTime(null);
+        setAchieving60MinsPerDay(null);
+        setAverageDailySleep(null);
+        setAverageSedentaryTime(null);
+    };
+
+    const setDashboardValues = (classrooms: Classroom[]) => {
+        if (classrooms != null) {
+
+            // set number of members (sum the number of members in each class)
+            let memberSum = 0;
+            classrooms.forEach((classroom: any) => memberSum += classroom.members.items.length);
+            setNumberOfMembers(memberSum);
+
+            // set number of activities (sum the number of PELessonRecords in each class)
+            let activitiesSum = 0;
+            classrooms.forEach((classroom: any) => activitiesSum += classroom.LessonRecords.items.length);
+            setNumberOfActivities(activitiesSum);
+
+            //set total activity time (sum the duration * attendances in each PELessonRecord in each class)
+            let totalActivityTimeSum = 0;
+            classrooms.forEach((classroom: any) => {
+                let lessonRecords = classroom.LessonRecords.items;
+                lessonRecords.forEach((lessonRecord: any) => {
+                    totalActivityTimeSum += lessonRecord.duration * lessonRecord.Attendances.items.length;
+                });
+            });
+            setTotalActivityTime(totalActivityTimeSum);
+
+            // set achieving 60mins per day
+            setAchieving60MinsPerDay(0);
+            // set average daily sleep
+            setAverageDailySleep(0);
+            //set average sedentary time
+            setAverageSedentaryTime(0);
+        }
+    };
+
+    const handleClassroomChange = (event: SelectChangeEvent) => {
+        setSelectedClassroom(selectableClassrooms?.find(item => item.id === event.target.value as string) ?? null);
+    };
+
     const handleSelectedPeriodChange = (event: SelectChangeEvent) => {
         setSelectedPeriod(event.target.value as string);
         switch (event.target.value) {
@@ -174,146 +284,58 @@ const OrganizationDashboard = () => {
                 setEndDate(null);
         }
     };
-    const getResultWithFilters = async () => {
-        let organization: Organization;
-        setOrganization(null);
-        if (!startDate || !endDate) {
-            const result: any = await API.graphql(graphqlOperation(query, {id: organizationId}))
-            console.log(result)
-            if (selectedClassroom) {
-                organization = {
-                    ...result.data.getOrganization,
-                    Classrooms: {
-                        items: result.data.getOrganization?.Classrooms.items.filter((item: any) => item.id === selectedClassroom.id),
-                    },
-                };
-                console.log(organization);
-            } else {
-                organization = result.data.getOrganization;
-            }
-        } else {
-            const result: any = await API.graphql(graphqlOperation(advancedQueryAllClassrooms, {
-                id: organizationId,
-                gt: format(startDate, 'yyyy-MM-dd'),
-                lt: format(endDate, 'yyyy-MM-dd'),
 
-            }));
-            if (selectedClassroom) {
-                organization = {
-                    ...result.data.getOrganization,
-                    Classrooms: {
-                        items: result.data.getOrganization?.Classrooms.items.filter((item: any) => item.id === selectedClassroom.id),
-                    },
-                };
-                console.log(organization);
-            } else {
-                organization = result.data.getOrganization;
+    const applyButtonClick = async () => {
+        if (selectedClassroom == null) {
+            // all classrooms
+            if (!startDate || !endDate) {
+                // all lessons
+                const result: any = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
+                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
+            }
+            else {
+                // lessons in time period
+                const result: any = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
+                    id: organizationId,
+                    gt: format(startDate, 'yyyy-MM-dd'),
+                    lt: format(endDate, 'yyyy-MM-dd')
+                }));
+                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
             }
         }
-        setOrganization(organization);
+        else {
+            // get specific classroom
+            if (!startDate || !endDate) {
+                // all lessons
+                const result: any = await API.graphql(graphqlOperation(queryClassroomWithAllLessons, {
+                    id: organizationId,
+                    cid: selectedClassroom.id
+                }));
+                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
+            }
+            else {
+                // lessons in time period
+                const result: any = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
+                    id: organizationId,
+                    cid: selectedClassroom.id,
+                    gt: format(startDate, 'yyyy-MM-dd'),
+                    lt: format(endDate, 'yyyy-MM-dd')
+                }));
+                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
+            }
+        }
     };
-    const reset = async () => {
-        setSelectedClassroom(null);
-        setStartDate(null);
-        setEndDate(null);
+
+    const resetButtonClick = () => {
         getOrganizationAsync();
-    }
-    const getOrganizationAsync = async () => {
-        setOrganization(null);
-        const result: any = await API.graphql(graphqlOperation(query, {id: organizationId}))
-        console.log(result)
-        setOrganization(result.data.getOrganization);
-        setClassrooms(result.data.getOrganization?.Classrooms?.items);
-    }
+        reset();
+    };
+
     useEffect(() => {
-
         getOrganizationAsync();
-        const getParticipants = async () => {
-            const result: any = await API.graphql(graphqlOperation(participantsQuery, {
-                id: organizationId
-            }));
-            setParticipants(result.data.getOrganization?.members.items.filter((member: UserInOrganization) => member.Attendances?.items?.length ?? 0 > 0).length)
-        }
-        getParticipants();
-        return () => {
-
-        };
+        reset();
+        return () => {};
     }, [organizationId]);
-    const lessonRecords = organization?.Classrooms?.items
-        .flatMap(value => value?.LessonRecords?.items).sort((a, b) => {
-            if (!a || !b) {
-                return 0;
-            } else {
-                return compareAsc(parseISO(a?.date), parseISO(b?.date));
-            }
-        });
-
-    const dashboardValues: DashboardValues = useMemo(() => {
-        const values: DashboardValues = {};
-        if (!organization) {
-            return values;
-        }
-        const groupByDate: any = collect(lessonRecords).groupBy(item => item?.date).all();
-        const groupByUser: any = collect(lessonRecords?.flatMap(lessonRecord => lessonRecord?.Attendances?.items))
-            .groupBy((item: any) => item?.userInOrganizationAttendancesId)
-            .all();
-        console.log('group', groupByUser);
-        const usersByTrophies = [];
-        for (const name in groupByUser) {
-            let userCredentials = groupByUser[name].items[0].UserInOrganization.user;
-            usersByTrophies.push({
-                user: userCredentials?.firstName + " " + userCredentials?.lastName,
-                attendances: groupByUser[name].items.filter((item: any) => item?.wasRewarded ?? false),
-            })
-        }
-        console.log(usersByTrophies);
-        values.usersByRewards = usersByTrophies.sort((a, b) =>  b.attendances.length - a.attendances.length).slice(0, 5);
-
-        console.log("Users" ,values.usersByRewards);
-
-        console.log(groupByDate)
-        const trainingSessionsData = [];
-        const participants = [];
-        let totalParticipants = 0;
-        let totalDuration = 0;
-        const durationsData = [];
-        let totalQuality = 0;
-        const qualityData = [];
-
-        for (const amount in groupByDate) {
-
-            let lessonRecords: PELessonRecord[] = groupByDate[amount]?.items;
-            if (lessonRecords?.length) {
-                trainingSessionsData.push(lessonRecords?.length);
-            }
-            let amountOfParticipants = 0;
-            let durations = 0;
-            let qualityAmount = 0;
-
-            lessonRecords?.forEach((item: PELessonRecord) => {
-                amountOfParticipants += item?.Attendances?.items?.length ?? 0;
-                durations += item?.duration ?? 0;
-                qualityAmount += item?.rating ?? 0;
-            })
-            qualityAmount = (qualityAmount / lessonRecords?.length ?? 1) * 20;
-
-            qualityData.push(qualityAmount);
-            totalParticipants += lessonRecords?.reduce((total: any, value: any) => total + value?.Attendances?.items?.length ?? 0, 0)
-            totalDuration += lessonRecords?.reduce((total: any, value: any) => total + (value?.duration ?? 0) * (value.Attendances?.items?.length), 0)
-            totalQuality += lessonRecords?.reduce((total: any, value: any) => total + value?.rating ?? 0, 0)
-            participants.push(amountOfParticipants);
-            durationsData.push(durations);
-        }
-        values.totalTrainingQuality = totalQuality / (lessonRecords?.length ?? 1) * 20;
-        values.qualityData = qualityData;
-        values.totalDuration = totalDuration;
-        values.durationData = durationsData;
-        values.trainingSessionsData = trainingSessionsData;
-        values.totalParticipants = totalParticipants;
-        values.participantsData = participants;
-
-        return values;
-    }, [organization]);
 
     return (
         <Page title="General: Analytics">
@@ -322,7 +344,7 @@ const OrganizationDashboard = () => {
                     Hi, {user?.firstName}, welcome back!
                 </Typography>
                 <Grid container spacing={3}>
-                    {classrooms &&
+                    {selectableClassrooms &&
                         <Grid item xs={12}>
                             <Stack direction={{xs: 'column', sm: 'row'}} spacing={3}>
                                 <FormControl fullWidth>
@@ -330,15 +352,14 @@ const OrganizationDashboard = () => {
                                     <Select
                                         labelId="demo-simple-team-select"
                                         id="demo-simple-team-select-id"
-                                        value={selectedClassroom?.id ?? ''}
+                                        value={selectedClassroom?.id ?? "all"}
                                         label="Team"
-                                        onChange={handleChange}
+                                        onChange={handleClassroomChange}
                                     >
-                                        <MenuItem value="">
+                                        <MenuItem value="all">
                                             <em>All</em>
                                         </MenuItem>
-                                        {classrooms.map(item => <MenuItem key={item.id}
-                                                                          value={item.id}>{item.name}</MenuItem>)}
+                                        {selectableClassrooms?.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
                                     </Select>
                                 </FormControl>
                                 <FormControl sx={{minWidth: 150}}>
@@ -363,8 +384,7 @@ const OrganizationDashboard = () => {
                                     <DatePicker
                                         label="Start Date"
                                         // @ts-ignore
-                                        renderInput={(params) => <TextField style={{minWidth: 200}}
-                                                                            {...params} />}
+                                        renderInput={(params) => <TextField style={{minWidth: 200}} {...params} />}
                                         value={startDate}
                                         onChange={(newValue) => {
                                             setStartDate(newValue);
@@ -384,87 +404,100 @@ const OrganizationDashboard = () => {
 
                                 </LocalizationProvider>
                                 <LoadingButton loading={!organization} variant={'contained'}
-                                               onClick={getResultWithFilters}>Apply</LoadingButton>
+                                               onClick={applyButtonClick}>Apply</LoadingButton>
                                 <LoadingButton loading={!organization} variant={'contained'} color={'secondary'}
-                                               onClick={reset}>Reset</LoadingButton>
+                                               onClick={resetButtonClick}>Reset</LoadingButton>
                             </Stack>
                         </Grid>
                     }
 
+                    <Grid container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {numberOfMembers != null ?
+                                <Card style={{backgroundColor:'#77ff77'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Number of Members</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{numberOfMembers}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'300px'}/>
+                            }
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {numberOfActivities != null ?
+                                <Card style={{backgroundColor:'#77ff77'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Number of Activities</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{numberOfActivities}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'300px'}/>
+                            }
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {totalActivityTime != null ?
+                                <Card style={{backgroundColor:'#77ff77'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Total Activity Time</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{totalActivityTime + " mins"}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'300px'}/>
+                            }
+                        </Grid>
+
+                    </Grid>
+
+                    <Grid container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {achieving60MinsPerDay != null ?
+                                <Card style={{backgroundColor:'red'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{achieving60MinsPerDay + " %"}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'300px'}/>
+                            }
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {averageDailySleep != null ?
+                                <Card style={{backgroundColor:'red'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average Daily Sleep</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{averageDailySleep + " hrs"}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'300px'}/>
+                            }
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {averageSedentaryTime != null ?
+                                <Card style={{backgroundColor:'red'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average Sedentary Time</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{averageSedentaryTime + " hrs"}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'300px'}/>
+                            }
+                        </Grid>
+
+                    </Grid>
+
                     {/*
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
-                        {organization ?
-                            <BankingWidgetSummary
-                                title="Total Number of Activities"
-                                icon={'akar-icons:trophy'}
-                                percent={2.6}
-                                color={'warning'}
-                                total={lessonRecords?.length ?? 0}
-                                chartData={dashboardValues?.trainingSessionsData ?? []}
-                            />
-                            :
-                            <CardSkeleton height={'300px'}/>
-                        }
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
-                        {participants ?
-                            <BankingWidgetSummary
-                                title="Total Participants"
-                                icon={'ant-design:user-add-outlined'}
-                                percent={2.6}
-                                color={'info'}
-                                total={participants}
-                                chartData={dashboardValues?.participantsData ?? []}
-                            />
-                            :
-                            <CardSkeleton height={'300px'}/>
-                        }
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
-                        {organization ?
-                            <BankingWidgetSummary
-                                title="Total Minutes"
-                                icon={'bx:bx-time-five'}
-                                percent={2.6}
-                                total={dashboardValues?.totalDuration ?? 0}
-                                chartData={dashboardValues?.durationData ?? []}
-                            />
-                            :
-                            <CardSkeleton height={'300px'}/>
-                        }
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
-                        {organization ?
-                            <BankingWidgetSummary
-                                title="Training Quality(%)"
-                                icon={'akar-icons:star'}
-                                percent={2.6}
-                                color={'secondary'}
-                                total={dashboardValues?.totalTrainingQuality ?? 0}
-                                chartData={dashboardValues?.qualityData ?? []}
-                            />
-                            :
-                            <CardSkeleton height={'300px'}/>
-                        }
-                    </Grid>
-                    */}
-
-                    <Grid item xs={12} sm={6} md={6} lg={3}>
-                        {organization ?
-                            <Card>
-                                <CardHeader title={'Number of Members'} />
-                                <CardContent>
-                                    <Typography variant={'h1'}>{0}</Typography>
-                                </CardContent>
-                            </Card>
-                            :
-                            <CardSkeleton height={'300px'}/>
-                        }
-                    </Grid>
-
-
-
-
                     <Grid item xs={12}>
                         {organization ?
                             <ActivityOrganizationBarchart organization={organization}/>
@@ -479,46 +512,7 @@ const OrganizationDashboard = () => {
                             <ActivtityChartSkeleton/>
                         }
                     </Grid>
-
-                    {/*                    <Grid item xs={12}>
-                        {organization ?
-                            <ActivityOrganizationLineChart organization={organization}/>
-                            :
-                            <ActivtityChartSkeleton/>
-                        }
-                    </Grid>*/}
-
-                    {/*          <Grid item xs={12} md={6} lg={8}>
-            <AnalyticsWebsiteVisits />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AnalyticsCurrentVisits />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AnalyticsConversionRates />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AnalyticsCurrentSubject />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AnalyticsNewsUpdate />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AnalyticsOrderTimeline />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <AnalyticsTrafficBySite />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AnalyticsTasks />
-          </Grid>*/}
+                    */}
                 </Grid>
             </Container>
         </Page>
