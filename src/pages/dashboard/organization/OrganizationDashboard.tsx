@@ -189,7 +189,6 @@ const OrganizationDashboard = () => {
     const {themeStretch} = useSettings();
     const {user} = useAuth();
     const {organizationId} = useParams();
-    const [organization, setOrganization] = useState<Organization | null>(null);
     const [selectableClassrooms, setSelectableClassrooms] = useState<Classroom[] | null>(null);
 
     const [selectedClassroom, setSelectedClassroom] = React.useState<Classroom | null>(null);
@@ -203,40 +202,43 @@ const OrganizationDashboard = () => {
     const [achieving60MinsPerDay, setAchieving60MinsPerDay] = useState<number | null>(null);
     const [averageDailySleep, setAverageDailySleep] = useState<number | null>(null);
     const [averageSedentaryTime, setAverageSedentaryTime] = useState<number | null>(null);
+    const [organization, setOrganization] = useState<Organization | null>(null);
+    const [usersByRewards, setUsersByRewards] = useState<any[] | null>(null);
 
-    const getOrganizationAsync = async () => {
-        setOrganization(null);
+    const loadSelectableClassrooms = async () => {
         const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
-        setOrganization(result.data.getOrganization);
         setSelectableClassrooms(result.data.getOrganization?.Classrooms?.items);
     };
 
     const reset = () => {
+        setSelectableClassrooms(null);
+
         setSelectedClassroom(null);
         setSelectedPeriod('none');
         setStartDate(null);
         setEndDate(null);
+
         setNumberOfMembers(null);
         setNumberOfActivities(null);
         setTotalActivityTime(null);
         setAchieving60MinsPerDay(null);
         setAverageDailySleep(null);
         setAverageSedentaryTime(null);
+        setOrganization(null);
+        setUsersByRewards(null);
     };
 
-    const setDashboardValues = (classrooms: Classroom[]) => {
+    const setDashboardValues = (organization: Organization) => {
+        let classrooms: any[] | null = organization?.Classrooms?.items ?? null;
         if (classrooms != null) {
-
             // set number of members (sum the number of members in each class)
             let memberSum = 0;
             classrooms.forEach((classroom: any) => memberSum += classroom.members.items.length);
             setNumberOfMembers(memberSum);
-
             // set number of activities (sum the number of PELessonRecords in each class)
             let activitiesSum = 0;
             classrooms.forEach((classroom: any) => activitiesSum += classroom.LessonRecords.items.length);
             setNumberOfActivities(activitiesSum);
-
             //set total activity time (sum the duration * attendances in each PELessonRecord in each class)
             let totalActivityTimeSum = 0;
             classrooms.forEach((classroom: any) => {
@@ -246,13 +248,32 @@ const OrganizationDashboard = () => {
                 });
             });
             setTotalActivityTime(totalActivityTimeSum);
-
             // set achieving 60mins per day
             setAchieving60MinsPerDay(0);
             // set average daily sleep
             setAverageDailySleep(0);
             //set average sedentary time
             setAverageSedentaryTime(0);
+            // set organization (for pie chart)
+            setOrganization(organization);
+            // set users by rewards
+            const lessonRecords = classrooms.flatMap(value => value?.LessonRecords?.items).sort((a, b) => {
+                if (!a || !b) return 0;
+                else return compareAsc(parseISO(a?.date), parseISO(b?.date));
+            });
+            const groupByDate: any = collect(lessonRecords).groupBy(item => item?.date).all();
+            const groupByUser: any = collect(lessonRecords?.flatMap(lessonRecord => lessonRecord?.Attendances?.items))
+                .groupBy((item: any) => item?.userInOrganizationAttendancesId)
+                .all();
+            const usersByTrophies = [];
+            for (const name in groupByUser) {
+                let userCredentials = groupByUser[name].items[0].UserInOrganization.user;
+                usersByTrophies.push({
+                    user: userCredentials?.firstName + " " + userCredentials?.lastName,
+                    attendances: groupByUser[name].items.filter((item: any) => item?.wasRewarded ?? false)
+                });
+            }
+            setUsersByRewards(usersByTrophies.sort((a, b) =>  b.attendances.length - a.attendances.length).slice(0, 5));
         }
     };
 
@@ -291,7 +312,7 @@ const OrganizationDashboard = () => {
             if (!startDate || !endDate) {
                 // all lessons
                 const result: any = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
-                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
+                setDashboardValues(result.data.getOrganization);
             }
             else {
                 // lessons in time period
@@ -300,7 +321,7 @@ const OrganizationDashboard = () => {
                     gt: format(startDate, 'yyyy-MM-dd'),
                     lt: format(endDate, 'yyyy-MM-dd')
                 }));
-                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
+                setDashboardValues(result.data.getOrganization);
             }
         }
         else {
@@ -311,7 +332,7 @@ const OrganizationDashboard = () => {
                     id: organizationId,
                     cid: selectedClassroom.id
                 }));
-                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
+                setDashboardValues(result.data.getOrganization);
             }
             else {
                 // lessons in time period
@@ -321,19 +342,19 @@ const OrganizationDashboard = () => {
                     gt: format(startDate, 'yyyy-MM-dd'),
                     lt: format(endDate, 'yyyy-MM-dd')
                 }));
-                setDashboardValues(result.data.getOrganization?.Classrooms?.items ?? null);
+                setDashboardValues(result.data.getOrganization);
             }
         }
     };
 
     const resetButtonClick = () => {
-        getOrganizationAsync();
         reset();
+        loadSelectableClassrooms();
     };
 
     useEffect(() => {
-        getOrganizationAsync();
         reset();
+        loadSelectableClassrooms();
         return () => {};
     }, [organizationId]);
 
@@ -347,7 +368,7 @@ const OrganizationDashboard = () => {
                     {selectableClassrooms &&
                         <Grid item xs={12}>
                             <Stack direction={{xs: 'column', sm: 'row'}} spacing={3}>
-                                <FormControl fullWidth>
+                                <FormControl sx={{minWidth: 150}}>
                                     <InputLabel id="demo-simple-team-select">Team</InputLabel>
                                     <Select
                                         labelId="demo-simple-team-select"
@@ -403,15 +424,15 @@ const OrganizationDashboard = () => {
                                     />
 
                                 </LocalizationProvider>
-                                <LoadingButton loading={!organization} variant={'contained'}
+                                <LoadingButton loading={false} variant={'contained'}
                                                onClick={applyButtonClick}>Apply</LoadingButton>
-                                <LoadingButton loading={!organization} variant={'contained'} color={'secondary'}
+                                <LoadingButton loading={false} variant={'contained'} color={'secondary'}
                                                onClick={resetButtonClick}>Reset</LoadingButton>
                             </Stack>
                         </Grid>
                     }
 
-                    <Grid container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {numberOfMembers != null ?
@@ -454,7 +475,7 @@ const OrganizationDashboard = () => {
 
                     </Grid>
 
-                    <Grid container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {achieving60MinsPerDay != null ?
@@ -497,22 +518,22 @@ const OrganizationDashboard = () => {
 
                     </Grid>
 
-                    {/*
                     <Grid item xs={12}>
-                        {organization ?
+                        {organization != null ?
                             <ActivityOrganizationBarchart organization={organization}/>
                             :
                             <ActivtityChartSkeleton/>
                         }
                     </Grid>
+
                     <Grid item xs={12}>
-                        {organization && dashboardValues.usersByRewards ?
-                            <TopUsersByRewardsBarchart data={dashboardValues.usersByRewards}/>
+                        {usersByRewards != null ?
+                            <TopUsersByRewardsBarchart data={usersByRewards}/>
                             :
                             <ActivtityChartSkeleton/>
                         }
                     </Grid>
-                    */}
+
                 </Grid>
             </Container>
         </Page>
