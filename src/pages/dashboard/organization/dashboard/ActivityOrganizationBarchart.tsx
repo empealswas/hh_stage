@@ -56,7 +56,7 @@ const ActivityOrganizationBarchart = ({organization}: { organization: Organizati
 
         });
         return result.all();
-    }, []);
+    }, [organization]);
     const series: { name: string, data: number; } [] = [];
     console.log(items);
     const all = items.sum(item => (item?.duration ?? 0) * (item?.Attendances?.items?.length ?? 0)) as number;
