@@ -60,7 +60,6 @@ export async function getPupilActivity(params: PupilActivityRequest) {
 }
 
 export async function getWearablesData(params: TerraWearables) {
-
     const result = await API.post(apiName, '/api/wearables', {
         body: {...params}
     });
@@ -210,4 +209,73 @@ export async function getWeeklyAvgSteps(id: any, date1: any, date2: any, name: a
          }
     });
     return result;
+}
+
+export async function getAverageDailySleep(terraIds: any, startDate: any, endDate: any) {
+    let theStartDate = startDate;
+    let theEndDate = endDate;
+    if (!theStartDate || !theEndDate) {
+        theStartDate = new Date("1970-01-01");
+        theEndDate = new Date();
+    }
+    let requestBody = {
+        "idList": terraIds,
+        "grouping": "group",
+        "category": "sleep",
+        "subtype": "durationTotal",
+        "period": "millennium",
+        "startDate": format(theStartDate, "yyyy-MM-dd"),
+        "endDate": format(theEndDate, "yyyy-MM-dd"),
+        "returnType": "average"
+    };
+    const result = await API.post(apiName, '/api/wearables', {
+        body: {...requestBody}
+    });
+    return result?.data[0]?.value ?? 0;
+}
+
+export async function getAverageDailyActivity(terraIds: any, startDate: any, endDate: any) {
+    let theStartDate = startDate;
+    let theEndDate = endDate;
+    if (!theStartDate || !theEndDate) {
+        theStartDate = new Date("1970-01-01");
+        theEndDate = new Date();
+    }
+    let requestBody = {
+        "idList": terraIds,
+        "grouping": "group",
+        "category": "daily",
+        "subtype": "activity",
+        "period": "millennium",
+        "startDate": format(theStartDate, "yyyy-MM-dd"),
+        "endDate": format(theEndDate, "yyyy-MM-dd"),
+        "returnType": "average"
+    };
+    const result = await API.post(apiName, '/api/wearables', {
+        body: {...requestBody}
+    });
+    return result?.data[0]?.value ?? 0;
+}
+
+export async function getAverageDailySteps(terraIds: any, startDate: any, endDate: any) {
+    let theStartDate = startDate;
+    let theEndDate = endDate;
+    if (!theStartDate || !theEndDate) {
+        theStartDate = new Date("1970-01-01");
+        theEndDate = new Date();
+    }
+    let requestBody = {
+        "idList": terraIds,
+        "grouping": "user",
+        "category": "daily",
+        "subtype": "steps",
+        "period": "millennium",
+        "startDate": format(theStartDate, "yyyy-MM-dd"),
+        "endDate": format(theEndDate, "yyyy-MM-dd"),
+        "returnType": "average"
+    };
+    const result = await API.post(apiName, '/api/wearables', {
+        body: {...requestBody}
+    });
+    return result?.data ?? [];
 }

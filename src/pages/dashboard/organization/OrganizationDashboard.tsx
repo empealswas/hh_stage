@@ -20,6 +20,7 @@ import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
 import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
+import { getAverageDailySleep, getAverageDailyActivity, getAverageDailySteps } from "../../../apiFunctions/apiFunctions";
 
 const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -41,6 +42,11 @@ const queryAllClassroomsWithAllLessons = `query MyQuery($id: ID = "") {
         members {
           items {
             id
+            userInOrganization {
+              user {
+                terraId
+              }
+            }
           }
         }
         LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
@@ -79,6 +85,11 @@ const queryClassroomWithAllLessons = `query MyQuery($id: ID = "", $cid: ID = "")
         members {
           items {
             id
+            userInOrganization {
+              user {
+                terraId
+              }
+            }
           }
         }
         LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
@@ -117,6 +128,11 @@ const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $
         members {
           items {
             id
+            userInOrganization {
+              user {
+                terraId
+              }
+            }
           }
         }
         LessonRecords(limit: 10000000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
@@ -155,6 +171,11 @@ const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid:
         members {
           items {
             id
+            userInOrganization {
+              user {
+                terraId
+              }
+            }
           }
         }
         LessonRecords(limit: 10000000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
@@ -195,8 +216,13 @@ const OrganizationDashboard = () => {
     const [selectedPeriod, setSelectedPeriod] = useState('none');
     const [startDate, setStartDate] = React.useState<Date | null>(null);
     const [endDate, setEndDate] = React.useState<Date | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const [organization, setOrganization] = useState<Organization | null>(null);
+
+    const [averageDailySleep, setAverageDailySleep] = useState<number | null>(null);
+    const [averageSedentaryTime, setAverageSedentaryTime] = useState<number | null>(null);
+    const [achievingStepsTarget, setAchievingStepsTarget] = useState<number | null>(null);
 
     const loadSelectableClassrooms = async () => {
         const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
@@ -210,7 +236,24 @@ const OrganizationDashboard = () => {
         setSelectedPeriod('none');
         setStartDate(null);
         setEndDate(null);
+        setLoading(false);
         setOrganization(null);
+        setAverageDailySleep(null);
+        setAverageSedentaryTime(null);
+        setAchievingStepsTarget(null);
+    };
+
+    const terraIdsForClassrooms = (organization: Organization) => {
+        let terraIds: any[] = [];
+        let classrooms: any[] = organization?.Classrooms?.items ?? [];
+        classrooms.forEach((classroom: any) => {
+            let members = classroom.members.items;
+            members.forEach((member: any) => {
+                let terraId = member.userInOrganization.user.terraId;
+                if (terraId != null) terraIds.push(terraId);
+            });
+        });
+        return terraIds;
     };
 
     const numberOfMembers = () => {
@@ -240,18 +283,6 @@ const OrganizationDashboard = () => {
             });
         });
         return totalActivityTimeSum;
-    };
-
-    const achieving60MinsPerDay = () => {
-        return 0;
-    };
-
-    const averageDailySleep = () => {
-        return 0;
-    };
-
-    const averageSedentaryTime = () => {
-        return 0;
     };
 
     const usersByRewards = () => {
@@ -305,44 +336,55 @@ const OrganizationDashboard = () => {
     };
 
     const applyButtonClick = async () => {
+        setLoading(true);
+        let result: any = null;
         if (selectedClassroom == null) {
             // all classrooms
             if (!startDate || !endDate) {
-                // all lessons
-                const result: any = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
-                setOrganization(result.data.getOrganization);
+                // all time
+                result = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
             }
             else {
-                // lessons in time period
-                const result: any = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
+                // time period
+                result = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
                     id: organizationId,
                     gt: format(startDate, 'yyyy-MM-dd'),
                     lt: format(endDate, 'yyyy-MM-dd')
                 }));
-                setOrganization(result.data.getOrganization);
             }
         }
         else {
-            // get specific classroom
+            // specific classroom
             if (!startDate || !endDate) {
-                // all lessons
-                const result: any = await API.graphql(graphqlOperation(queryClassroomWithAllLessons, {
+                // all time
+                result = await API.graphql(graphqlOperation(queryClassroomWithAllLessons, {
                     id: organizationId,
                     cid: selectedClassroom.id
                 }));
-                setOrganization(result.data.getOrganization);
             }
             else {
-                // lessons in time period
-                const result: any = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
+                // time period
+                result = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
                     id: organizationId,
                     cid: selectedClassroom.id,
                     gt: format(startDate, 'yyyy-MM-dd'),
                     lt: format(endDate, 'yyyy-MM-dd')
                 }));
-                setOrganization(result.data.getOrganization);
             }
         }
+        let terraIds = terraIdsForClassrooms(result.data.getOrganization);
+        let theAverageDailySleep = await getAverageDailySleep(terraIds, startDate, endDate);
+        let theAverageDailyActivity = await getAverageDailyActivity(terraIds, startDate, endDate);
+        let theAverageDailySteps = await getAverageDailySteps(terraIds, startDate, endDate);
+        setAverageDailySleep(theAverageDailySleep / 3600);
+        setAverageSedentaryTime((86400 - theAverageDailySleep - theAverageDailyActivity) / 3600);
+        let achievedCount = 0;
+        theAverageDailySteps.forEach((item: any) => {
+            if (item.value >= 9000) achievedCount++;
+        });
+        setAchievingStepsTarget((achievedCount / theAverageDailySteps.length) * 100);
+        setOrganization(result.data.getOrganization);
+        setLoading(false);
     };
 
     const resetButtonClick = () => {
@@ -422,7 +464,7 @@ const OrganizationDashboard = () => {
                                     />
 
                                 </LocalizationProvider>
-                                <LoadingButton loading={false} variant={'contained'}
+                                <LoadingButton loading={loading} variant={'contained'}
                                                onClick={applyButtonClick}>Apply</LoadingButton>
                                 <LoadingButton loading={false} variant={'contained'} color={'secondary'}
                                                onClick={resetButtonClick}>Reset</LoadingButton>
@@ -434,7 +476,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#77ff77'}}>
+                                <Card style={{backgroundColor:'#ffeeee', border:'1px solid red'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Number of Members</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{numberOfMembers()}</Typography>
@@ -447,7 +489,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#77ff77'}}>
+                                <Card style={{backgroundColor:'#ffffee', border:'1px solid #ff7700'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Number of Activities</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{numberOfActivities()}</Typography>
@@ -460,7 +502,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#77ff77'}}>
+                                <Card style={{backgroundColor:'#eeffee', border:'1px solid green'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Activity Time</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{totalActivityTime() + " mins"}</Typography>
@@ -476,11 +518,11 @@ const OrganizationDashboard = () => {
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {organization != null ?
-                                <Card style={{backgroundColor:'red'}}>
+                            {achievingStepsTarget != null ?
+                                <Card style={{backgroundColor:'#eeeeff', border:'1px solid blue'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{achieving60MinsPerDay() + " %"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{achievingStepsTarget.toFixed(2) + " %"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -489,11 +531,11 @@ const OrganizationDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {organization != null ?
-                                <Card style={{backgroundColor:'red'}}>
+                            {averageDailySleep != null ?
+                                <Card style={{backgroundColor:'#eeffff', border:'1px solid #009999'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Daily Sleep</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{averageDailySleep() + " hrs"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{averageDailySleep.toFixed(2) + " hrs"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -502,11 +544,11 @@ const OrganizationDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {organization != null ?
-                                <Card style={{backgroundColor:'red'}}>
+                            {averageSedentaryTime != null ?
+                                <Card style={{backgroundColor:'#ffeeff', border:'1px solid violet'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Sedentary Time</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{averageSedentaryTime() + " hrs"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{averageSedentaryTime.toFixed(2) + " hrs"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
