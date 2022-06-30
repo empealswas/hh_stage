@@ -20,7 +20,7 @@ import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
 import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
-import { getAverageDailySleep, getAverageDailyActivity, getAverageDailySteps } from "../../../apiFunctions/apiFunctions";
+import { getAverageDailySleepSeconds, getAverageDailyActivitySeconds, getAverageDailySteps } from "../../../apiFunctions/apiFunctions";
 
 const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -373,16 +373,21 @@ const OrganizationDashboard = () => {
             }
         }
         let terraIds = terraIdsForClassrooms(result.data.getOrganization);
-        let theAverageDailySleep = await getAverageDailySleep(terraIds, startDate, endDate);
-        let theAverageDailyActivity = await getAverageDailyActivity(terraIds, startDate, endDate);
+        let theAverageDailySleepSeconds = await getAverageDailySleepSeconds(terraIds, startDate, endDate);
+        let theAverageDailyActivitySeconds = await getAverageDailyActivitySeconds(terraIds, startDate, endDate);
         let theAverageDailySteps = await getAverageDailySteps(terraIds, startDate, endDate);
-        setAverageDailySleep(theAverageDailySleep / 3600);
-        setAverageSedentaryTime((86400 - theAverageDailySleep - theAverageDailyActivity) / 3600);
-        let achievedCount = 0;
-        theAverageDailySteps.forEach((item: any) => {
-            if (item.value >= 9000) achievedCount++;
-        });
-        setAchievingStepsTarget((achievedCount / theAverageDailySteps.length) * 100);
+        setAverageDailySleep(theAverageDailySleepSeconds / 3600);
+        setAverageSedentaryTime((86400 - theAverageDailySleepSeconds - theAverageDailyActivitySeconds) / 3600);
+        if (theAverageDailySteps.length == 0) {
+            setAchievingStepsTarget(0);
+        }
+        else {
+            let achievedCount = 0;
+            theAverageDailySteps.forEach((item: any) => {
+                if (item.value >= 10000) achievedCount++;
+            });
+            setAchievingStepsTarget((achievedCount / theAverageDailySteps.length) * 100);
+        }
         setOrganization(result.data.getOrganization);
         setLoading(false);
     };
@@ -476,7 +481,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#ffeeee', border:'1px solid red'}}>
+                                <Card style={{backgroundColor:'#ffeeee', border:'4px solid red'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Number of Members</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{numberOfMembers()}</Typography>
@@ -489,7 +494,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#ffffee', border:'1px solid #ff7700'}}>
+                                <Card style={{backgroundColor:'#ffffee', border:'4px solid #ff7700'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Number of Activities</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{numberOfActivities()}</Typography>
@@ -502,7 +507,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#eeffee', border:'1px solid green'}}>
+                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Activity Time</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{totalActivityTime() + " mins"}</Typography>
@@ -519,7 +524,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {achievingStepsTarget != null ?
-                                <Card style={{backgroundColor:'#eeeeff', border:'1px solid blue'}}>
+                                <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{achievingStepsTarget.toFixed(2) + " %"}</Typography>
@@ -532,7 +537,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {averageDailySleep != null ?
-                                <Card style={{backgroundColor:'#eeffff', border:'1px solid #009999'}}>
+                                <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Daily Sleep</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{averageDailySleep.toFixed(2) + " hrs"}</Typography>
@@ -545,7 +550,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {averageSedentaryTime != null ?
-                                <Card style={{backgroundColor:'#ffeeff', border:'1px solid violet'}}>
+                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Sedentary Time</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{averageSedentaryTime.toFixed(2) + " hrs"}</Typography>

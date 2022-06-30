@@ -211,7 +211,7 @@ export async function getWeeklyAvgSteps(id: any, date1: any, date2: any, name: a
     return result;
 }
 
-export async function getAverageDailySleep(terraIds: any, startDate: any, endDate: any) {
+export async function getAverageDailySleepSeconds(terraIds: any, startDate: any, endDate: any) {
     let theStartDate = startDate;
     let theEndDate = endDate;
     if (!theStartDate || !theEndDate) {
@@ -234,7 +234,7 @@ export async function getAverageDailySleep(terraIds: any, startDate: any, endDat
     return result?.data[0]?.value ?? 0;
 }
 
-export async function getAverageDailyActivity(terraIds: any, startDate: any, endDate: any) {
+export async function getAverageDailyActivitySeconds(terraIds: any, startDate: any, endDate: any) {
     let theStartDate = startDate;
     let theEndDate = endDate;
     if (!theStartDate || !theEndDate) {
@@ -278,4 +278,21 @@ export async function getAverageDailySteps(terraIds: any, startDate: any, endDat
         body: {...requestBody}
     });
     return result?.data ?? [];
+}
+
+export async function getDailyActivitySeconds(terraId: any, startDate: any, endDate: any) {
+    let requestBody = {
+        "idList": [terraId],
+        "grouping": "user",
+        "category": "daily",
+        "subtype": "activity",
+        "period": "day",
+        "startDate": format(startDate, "yyyy-MM-dd"),
+        "endDate": format(endDate, "yyyy-MM-dd"),
+        "returnType": "total"
+    };
+    const result = await API.post(apiName, '/api/wearables', {
+        body: {...requestBody}
+    });
+    return result;
 }

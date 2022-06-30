@@ -10,73 +10,36 @@ import {format, subDays} from "date-fns";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import useAuth from "../../../../../../hooks/useAuth";
-import {getWearablesData, TerraWearables} from "../../../../../../apiFunctions/apiFunctions";
+import {getDailyActivitySeconds} from "../../../../../../apiFunctions/apiFunctions";
 
-const pupilQuery = `query MyQuery($id: ID = "") {
+const userQuery = `query MyQuery($id: ID = "") {
   getUser(id: $id) {
-    organizations {
-      items {
-        classrooms {
-          items {
-            classroom {
-              members {
-                items {
-                  userInOrganization {
-                    user {
-                      id
-                      terraId
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    terraId
   }
-}
-`
+}`
+
 const ActivityWidgets = () => {
     const sleepData = useContext(SleepDataContext);
     const stepsData = useContext(TerraDataContext);
     const {user} = useAuth();
     const theme = useTheme();
-    const [averageData, setAverageData] = useState<any>(null);
+
+    const [activityData, setActivityData] = useState<any | null>(null);
 
     useEffect(() => {
-        const getAverage = async () => {
-            setAverageData(null);
-            const result: any = await API.graphql(graphqlOperation(pupilQuery, {id: user?.email}));
-            console.log('DATA', result);
-
-            const terraIds = result.data.getUser?.organizations.items
-                ?.flatMap((item: any) => item.classrooms.items)
-                .filter((item: any) => !!item.classroom)
-                .map((item: any) => item.classroom)
-                .flatMap((item: any) => item.members.items)
-                .map((item: any) => item.userInOrganization.user)
-                .filter((item: User) => !!item.terraId)
-                .map((item: Pupil) => item.terraId);
-
-            var data: TerraWearables = {
-                "idList": terraIds,
-                "grouping": "group",
-                "category": "daily",
-                "subtype": "steps",
-                "period": "day",
-                "startDate": format(subDays(new Date(), 7), 'yyyy-MM-dd'),
-                "endDate": format(new Date(), 'yyyy-MM-dd'),
-                "returnType": "average"
-            };
-            const wearableData: any = await getWearablesData(data);
-            setAverageData(wearableData?.data ?? []);
+        const getActivityData = async () => {
+            setActivityData(null);
+            let result: any = await API.graphql(graphqlOperation(userQuery, {id: user?.email}));
+            let terraId = result.data.getUser.terraId;
+            let startDate = subDays(new Date(), 28);
+            let endDate = new Date();
+            let theActivityData = await getDailyActivitySeconds(terraId, startDate, endDate);
+            setActivityData(theActivityData);
         }
-        getAverage();
-        return () => {
-
-        };
+        getActivityData();
+        return () => {};
     }, []);
+
     return (
         <>
             <Grid item xs={12} md={4}>
@@ -101,21 +64,17 @@ const ActivityWidgets = () => {
                     <CardSkeleton/>
                 }
             </Grid>
-
-            {/*
             <Grid item xs={12} md={4}>
-                {averageData ?
-                    <ActivityWidgetSummary title={"Average Steps of your team"}
-                                           total={averageData[averageData?.length - 1]?.value ?? 0}
-                                           percent={(((averageData[averageData?.length - 1]?.value ?? 0) - (averageData[averageData?.length - 2]?.value ?? 0))) / (averageData[averageData?.length - 2]?.value ?? 1) * 100}
-                                           chartColor={theme.palette.chart.red[0]}
-                                           chartData={averageData?.map((item: any) => item.value)}/>
+                {activityData ?
+                    <ActivityWidgetSummary title={'Today\'s Activity (mins)'}
+                                           total={activityData?.data[activityData?.data?.length - 1]?.value / 60 ?? 0}
+                                           percent={(((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) - (activityData?.data[activityData?.data?.length - 2]?.value ?? 0))) / (activityData?.data[activityData?.data?.length - 2]?.value ?? 1) * 100}
+                                           chartColor={theme.palette.chart.green[0]}
+                                           chartData={activityData.data.map((item: any) => item.value / 60)}/>
                     :
                     <CardSkeleton/>
                 }
             </Grid>
-            */}
-
         </>
     );
 };
