@@ -244,8 +244,8 @@ export async function getAverageDailyActivitySeconds(terraIds: any, startDate: a
     let requestBody = {
         "idList": terraIds,
         "grouping": "group",
-        "category": "daily",
-        "subtype": "activity",
+        "category": "activity",
+        "subtype": "duration",
         "period": "millennium",
         "startDate": format(theStartDate, "yyyy-MM-dd"),
         "endDate": format(theEndDate, "yyyy-MM-dd"),
@@ -284,8 +284,8 @@ export async function getDailyActivitySeconds(terraId: any, startDate: any, endD
     let requestBody = {
         "idList": [terraId],
         "grouping": "user",
-        "category": "daily",
-        "subtype": "activity",
+        "category": "activity",
+        "subtype": "duration",
         "period": "day",
         "startDate": format(startDate, "yyyy-MM-dd"),
         "endDate": format(endDate, "yyyy-MM-dd"),

@@ -31,7 +31,7 @@ const ActivityWidgets = () => {
             setActivityData(null);
             let result: any = await API.graphql(graphqlOperation(userQuery, {id: user?.email}));
             let terraId = result.data.getUser.terraId;
-            let startDate = subDays(new Date(), 28);
+            let startDate = subDays(new Date(), 7);
             let endDate = new Date();
             let theActivityData = await getDailyActivitySeconds(terraId, startDate, endDate);
             setActivityData(theActivityData);
