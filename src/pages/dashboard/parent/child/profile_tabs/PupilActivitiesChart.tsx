@@ -110,7 +110,7 @@ export default function PupilActivitiesChart() {
     if (!data) {
         return (<ActivtityChartSkeleton/>);
     }
-    const extraHeight = data.series.length * 20;
+    const extraHeight = data.series.length * 2;
     const ChartWrapperStyle = styled('div')(({theme}) => ({
         height: CHART_HEIGHT + extraHeight,
         marginTop: theme.spacing(0),
@@ -127,12 +127,11 @@ export default function PupilActivitiesChart() {
         }
     }));
     console.log("Series", data.series);
-    const chartOptions: any = merge(BaseOptionChart(), {
 
+    const chartOptions: any = merge(BaseOptionChart(), {
         labels: data.names,
         legend: {floating: true, horizontalAlign: 'center'},
-        // dataLabels: {enabled: true, dropShadow: {enabled: false}},
-
+        dataLabels: {enabled: true, dropShadow: {enabled: false}},
         tooltip: {
             fillSeriesColor: false,
             y: {
@@ -142,43 +141,22 @@ export default function PupilActivitiesChart() {
                         if (seriesName === 'null') {
                             return 'Undefined';
                         }
-                        return `Minutes of activity`;
+                        return `Minutes of activity:`;
                     }
                 }
             }
         },
-        dataLabels: {
-            enabled: true,
-            textAnchor: 'start',
-            style: {
-                colors: ['#fff']
-            },
-            formatter: function (val : any, opt: any) {
-                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
-            },
-            offsetX: 0,
-            dropShadow: {
-                enabled: true
-            }
-        },
         plotOptions: {
-            bar: {
-                barHeight: '100%',
-                distributed: true,
-                horizontal: true,
-                dataLabels: {
-                    position: 'bottom'
-                },
-            }
-        },
+            pie: {donut: {labels: {show: false}}}
+        }
     });
 
     return (
         <Card>
             <CardHeader title="Activities" subheader={"All time activity"}/>
             <ChartWrapperStyle dir="ltr">
-                <ReactApexChart type="bar"
-                                series={[{data: data.series}]}
+                <ReactApexChart type="pie"
+                                series={data.series}
                                 options={chartOptions} height={500 + extraHeight}/>
             </ChartWrapperStyle>
         </Card>
