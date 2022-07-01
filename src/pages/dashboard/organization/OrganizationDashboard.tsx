@@ -510,7 +510,7 @@ const OrganizationDashboard = () => {
                                 <Card style={{backgroundColor:'#eeffee', border:'4px solid green'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Activity Time</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{totalActivityTime() + " mins"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{totalActivityTime().toLocaleString() + " mins"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :

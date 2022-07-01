@@ -47,6 +47,7 @@ const activityQuery = `query MyQuery($id: ID = "") {
   }
 }
 `
+
 export default function PupilActivitiesChart() {
     const {user} = useAuth();
     // const [activities, setActivities] = useState<{name: string, durationInMinutes: number}[] | null>(null);
@@ -56,20 +57,20 @@ export default function PupilActivitiesChart() {
     useEffect(() => {
         const fetchData = async () => {
             setData(null);
-
+            let startDateIso = format(subDays(new Date(), 7), "yyyy-MM-dd");
+            let endDateIso = format(new Date(), "yyyy-MM-dd");
             const result: any = await API.graphql(graphqlOperation(activityQuery, {id: user?.email}))
-
             const lessonRecords: PELessonRecord[] = result.data.getUser?.organizations.items.flatMap((item: UserInOrganization) => item.Attendances?.items).map((item: Attendance) => item.lessonRecord).filter((item: PELessonRecord) => !!item);
             const activities = lessonRecords.reduce((acc: any, value: any) => {
                 if (!value) {
                     return acc;
                 }
+                let dateIso = value.date.toString();
+                if (!(dateIso >= startDateIso && dateIso <= endDateIso)) return acc;
                 if (!acc[value.activity]) {
                     acc[value.activity] = 0;
                 }
-
                 acc[value.activity] += value.duration;
-
                 return acc;
             }, {});
             let all: number = 0;
@@ -153,7 +154,7 @@ export default function PupilActivitiesChart() {
 
     return (
         <Card>
-            <CardHeader title="Activities" subheader={"All time activity"}/>
+            <CardHeader title="Activities" subheader={"Last 7 days"}/>
             <ChartWrapperStyle dir="ltr">
                 <ReactApexChart type="pie"
                                 series={data.series}
