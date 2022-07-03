@@ -23,7 +23,7 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         setData(null);
         const input: PupilActivityRequest = {
             terraId: String(props.user.terraId),
-            start_date: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+            start_date: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
             end_date: format(new Date(), 'yyyy-MM-dd')
         }
         const result = await getPupilActivity(input);
@@ -34,7 +34,7 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         setSleepData(null);
         const input: PupilActivityRequest = {
             terraId: String(props.user.terraId),
-            start_date: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+            start_date: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
             end_date: format(new Date(), 'yyyy-MM-dd')
         }
         const result = await getSleepDataAsync(input);

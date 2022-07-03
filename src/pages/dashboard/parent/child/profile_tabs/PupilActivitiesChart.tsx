@@ -57,7 +57,7 @@ export default function PupilActivitiesChart() {
     useEffect(() => {
         const fetchData = async () => {
             setData(null);
-            let startDateIso = format(subDays(new Date(), 7), "yyyy-MM-dd");
+            let startDateIso = format(subDays(new Date(), 6), "yyyy-MM-dd");
             let endDateIso = format(new Date(), "yyyy-MM-dd");
             const result: any = await API.graphql(graphqlOperation(activityQuery, {id: user?.email}))
             const lessonRecords: PELessonRecord[] = result.data.getUser?.organizations.items.flatMap((item: UserInOrganization) => item.Attendances?.items).map((item: Attendance) => item.lessonRecord).filter((item: PELessonRecord) => !!item);
@@ -65,7 +65,7 @@ export default function PupilActivitiesChart() {
                 if (!value) {
                     return acc;
                 }
-                let dateIso = value.date.toString();
+                let dateIso = value.date;
                 if (!(dateIso >= startDateIso && dateIso <= endDateIso)) return acc;
                 if (!acc[value.activity]) {
                     acc[value.activity] = 0;

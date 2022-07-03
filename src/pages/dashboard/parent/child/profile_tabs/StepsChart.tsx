@@ -51,7 +51,7 @@ export default function StepsChart(props: { userId: string }) {
                 category: "daily",
                 subtype: "steps",
                 period: "day",
-                startDate: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                startDate: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
                 endDate: format(new Date(), 'yyyy-MM-dd'),
                 returnType: "average"
             };
@@ -105,9 +105,9 @@ export default function StepsChart(props: { userId: string }) {
             <CardHeader title="Steps" subheader={format(new Date(), 'MMMM')}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart type="line" series={[{
-                    data: terraData?.data?.map(value => value.distance_data.steps) ?? [], name: 'Number of Steps',
+                    data: terraData?.data?.map(value => value.distance_data.steps) ?? [], name: 'Number Of Steps',
                     type: 'line'
-                }, {data: averageData?.map((item: any) => item.value) ?? [], name: 'Average', type: 'line'}]}
+                }, {data: averageData?.map((item: any) => item.value) ?? [], name: 'Average For Users', type: 'line'}]}
                                 options={chartOptions} height={364}/>
             </Box>
         </Card>

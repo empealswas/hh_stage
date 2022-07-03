@@ -26,7 +26,7 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 type Props = {
   title: string;
-  total: number;
+  total: number | string;
   percent: number;
   chartColor: string;
   chartData: number[];
@@ -80,7 +80,7 @@ export default function ActivityWidgetSummary({ title, percent, total, chartColo
           </Typography>
         </Stack>
 
-        <Typography variant="h3">{fNumber(total)}</Typography>
+        <Typography variant="h3">{total}</Typography>
       </Box>
 
       <ReactApexChart

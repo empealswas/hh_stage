@@ -69,11 +69,12 @@ const ActivityDashboard = () => {
     const [startDate, setStartDate] = React.useState<Date | null>(null);
     const [endDate, setEndDate] = React.useState<Date | null>(null);
     const [selectedPeriod, setSelectedPeriod] = useState('none');
+
     const handleSelectedPeriodChange = (event: SelectChangeEvent) => {
         setSelectedPeriod(event.target.value as string);
         switch (event.target.value) {
             case 'week':
-                setStartDate(subDays(new Date(), 7));
+                setStartDate(subDays(new Date(), 6));
                 setEndDate(new Date());
                 break;
             case 'month':
@@ -93,6 +94,7 @@ const ActivityDashboard = () => {
                 setEndDate(null);
         }
     };
+
     const handleChange = (event: SelectChangeEvent) => {
         if (!event.target.value) {
             setSelectedClassroom(null);
@@ -100,12 +102,14 @@ const ActivityDashboard = () => {
         }
         setSelectedClassroom(classrooms?.find(item => item.id === event.target.value as string) ?? null)
     };
+
     const reset = async () => {
         setSelectedClassroom(null);
         setStartDate(null);
         setEndDate(null);
         getOrganizationAsync();
     }
+
     const getOrganizationAsync = async () => {
         setOrganization(null);
         const result: any = await API.graphql(graphqlOperation(query, {id: organizationId}))
@@ -114,6 +118,7 @@ const ActivityDashboard = () => {
         console.log(result.data.getOrganization?.Classrooms?.items);
         setClassrooms(result.data.getOrganization?.Classrooms?.items);
     }
+
     const getAverage = async () => {
         if (!classrooms) {
             return;
@@ -141,7 +146,7 @@ const ActivityDashboard = () => {
                 category: "daily",
                 subtype: "steps",
                 period: "day",
-                startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
                 endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
                 returnType: "average"
             };
@@ -156,7 +161,7 @@ const ActivityDashboard = () => {
                 category: "sleep",
                 subtype: "durationTotal",
                 period: "day",
-                startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 7), 'yyyy-MM-dd'),
+                startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
                 endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
                 returnType: "average"
             };
@@ -167,6 +172,7 @@ const ActivityDashboard = () => {
         getAverageSteps();
         getAverageSleep()
     }
+
     useEffect(() => {
         getAverage();
         return () => {
@@ -181,6 +187,7 @@ const ActivityDashboard = () => {
 
         };
     }, [organizationId]);
+
     return (
         <Page title="General: Analytics">
             <Container maxWidth={themeStretch ? false : 'xl'}>

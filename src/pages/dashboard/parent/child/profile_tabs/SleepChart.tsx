@@ -28,49 +28,20 @@ const CHART_DATA = [
         data: [6000, 5400, 11000, 8000, 5000, 10000, 1500]
     },
 ];
-const childQuery = `query MyQuery {
-  listPupils(limit: 100000) {
-    items {
-      terraId
-    }
-  }
-}`;
 
 export default function SleepChart() {
     const sleepData = useContext(SleepDataContext);
     const baseOptions = BaseOptionChart();
     const theme = useTheme();
-    const [averageData, setAverageData] = useState<any>(null);
-    console.log(sleepData)
+
     useEffect(() => {
-        const getAverage = async () => {
-            const result: any = await API.graphql(graphqlOperation(childQuery));
-            const terraIds = result.data.listPupils?.items.filter((item: Pupil) => !!item.terraId).map((item: Pupil) => item.terraId);
-            var data: TerraWearables= {
-                "idList": terraIds,
-                "grouping": "group",
-                "category": "sleep",
-                "subtype": "durationTotal",
-                "period": "day",
-                "startDate": format(subDays(new Date(), 7), 'yyyy-MM-dd'),
-                "endDate": format(subDays(new Date(), 0), 'yyyy-MM-dd'),
-                "returnType": "average"
-            }
-            const terraData: any = await getWearablesData(data);
-            if (terraData?.data) {
-            setAverageData(terraData.data);
-            }
-
-        }
-        getAverage();
-        return () => {
-
-        };
+        return () => {};
     }, []);
+
     if (!sleepData ) {
         return (<ActivtityChartSkeleton />);
     }
-    console.log(sleepData)
+
     const chartOptions: any = merge(baseOptions, {
             chart: {
                 id: 'bar-chart',
@@ -116,7 +87,7 @@ export default function SleepChart() {
                 type: 'category',
                 categories: sleepData.data.map(value => {
                         if (!value.metadata?.start_time) {
-                            return 'Null'
+                            return 'N/A'
                         }
                         return `${format(parseISO(value.metadata.start_time), "eee do")}`;
                     }
@@ -162,6 +133,7 @@ export default function SleepChart() {
             }
         }
     );
+
     return (
         <Card>
             <CardHeader title="Sleep" subheader={format(new Date(), 'MMMM')}/>
@@ -172,12 +144,6 @@ export default function SleepChart() {
                         type: 'column',
                         data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_asleep_state / 60.0 / 60.0)),
                     },
-/*                    {
-                        name: 'Average Sleep',
-                        data: averageData?.map((item: any) => item.value / 60 / 60),
-                        type: 'line'
-                    }*/
-
                 ]} type="line" options={chartOptions} height={364}/>
             </Box>
         </Card>

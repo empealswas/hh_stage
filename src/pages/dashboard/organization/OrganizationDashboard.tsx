@@ -314,7 +314,7 @@ const OrganizationDashboard = () => {
         setSelectedPeriod(event.target.value as string);
         switch (event.target.value) {
             case 'week':
-                setStartDate(subDays(new Date(), 7));
+                setStartDate(subDays(new Date(), 6));
                 setEndDate(new Date());
                 break;
             case 'month':
@@ -527,7 +527,7 @@ const OrganizationDashboard = () => {
                                 <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{achievingStepsTarget.toFixed(2) + " %"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achievingStepsTarget) + " %"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -540,7 +540,7 @@ const OrganizationDashboard = () => {
                                 <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Daily Sleep</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{averageDailySleep.toFixed(2) + " hrs"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{averageDailySleep.toFixed(1) + " hrs"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -553,7 +553,7 @@ const OrganizationDashboard = () => {
                                 <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Sedentary Time</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{averageSedentaryTime.toFixed(2) + " hrs"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{averageSedentaryTime.toFixed(1) + " hrs"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
