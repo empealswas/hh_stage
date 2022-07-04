@@ -37,7 +37,7 @@ const ChildActivitiesSummary = (props: {user: User}) => {
             end_date: format(new Date(), 'yyyy-MM-dd')
         }
         const result = await getSleepDataAsync(input);
-        result.data.data.sort((a: any, b: any) => {
+        result?.data?.data?.sort((a: any, b: any) => {
             let aMillis = new Date(a.metadata.start_time).getTime();
             let bMillis = new Date(b.metadata.start_time).getTime();
             return aMillis - bMillis;
