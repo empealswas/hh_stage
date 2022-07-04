@@ -102,7 +102,7 @@ export default function StepsChart(props: { userId: string }) {
 
     return (
         <Card>
-            <CardHeader title="Steps" subheader={format(new Date(), 'MMMM')}/>
+            <CardHeader title="Steps" subheader={'Last 7 days'}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart type="line" series={[{
                     data: stepsData?.data?.map((item: any) => item.value) ?? [], name: 'Number Of Steps',
