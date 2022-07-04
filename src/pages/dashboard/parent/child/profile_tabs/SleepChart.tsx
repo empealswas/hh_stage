@@ -85,7 +85,7 @@ export default function SleepChart() {
             },
             xaxis: {
                 type: 'category',
-                categories: sleepData.data.map(value => {
+                categories: sleepData.data.map((value: any) => {
                         if (!value.metadata?.start_time) {
                             return 'N/A'
                         }
@@ -142,7 +142,7 @@ export default function SleepChart() {
                     {
                         name: "Duration Asleep",
                         type: 'column',
-                        data: sleepData.data.map(value => Number(value.sleep_durations_data.asleep.duration_asleep_state / 60.0 / 60.0)),
+                        data: sleepData.data.map((value: any) => Number(value.sleep_durations_data.asleep.duration_asleep_state / 60.0 / 60.0)),
                     },
                 ]} type="line" options={chartOptions} height={364}/>
             </Box>

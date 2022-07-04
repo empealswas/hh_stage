@@ -3,7 +3,7 @@ import ReactApexChart from 'react-apexcharts';
 // material
 import {useContext, useEffect, useState} from "react";
 import {format, formatISO, parseISO, subDays} from "date-fns";
-import {TerraDataContext} from "./ChildActivitiesSummary";
+import {StepsDataContext} from "./ChildActivitiesSummary";
 import {BaseOptionChart} from "../../../../../components/chart";
 import {Card, CardHeader, Skeleton} from "@mui/material";
 import {styled} from "@mui/material/styles";

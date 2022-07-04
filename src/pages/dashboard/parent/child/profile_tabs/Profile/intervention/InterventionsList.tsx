@@ -10,7 +10,7 @@ import InterventionMenu from "./InterventionMenu";
 import {ShopProductSort} from "../../../../../../../sections/@dashboard/e-commerce/shop";
 import ProductSort from "./ProductSort";
 import CardSkeleton from "../../../../../../../components/skeleton/CardSkeleton";
-import { getActivityMinutes, getDailySteps, getSleepDuration, getWeeklyAvgSteps } from "../../../../../../../apiFunctions/apiFunctions";
+import { getInterventionActivityMinutes, getInterventionDailySteps, getInterventionSleepDuration, getInterventionWeeklyAvgSteps } from "../../../../../../../apiFunctions/apiFunctions";
 
 const InterventionsList = (props: { user: User }) => {
 
@@ -59,25 +59,25 @@ const InterventionsList = (props: { user: User }) => {
     const loadInterventions = async () => {
 
         setActivityMinutes(null);
-        let result = await getActivityMinutes(props.user.terraId, new Date(), props.user.firstName);
+        let result = await getInterventionActivityMinutes(props.user.terraId, new Date(), props.user.firstName);
         if (result.status == "success") {
             setActivityMinutes(result.data);
         }
 
         setDailySteps(null);
-        result = await getDailySteps(props.user.terraId, new Date(), props.user.firstName);
+        result = await getInterventionDailySteps(props.user.terraId, new Date(), props.user.firstName);
         if (result.status == "success") {
             setDailySteps(result.data);
         }
 
         setSleepDuration(null);
-        result = await getSleepDuration(props.user.terraId, new Date(), props.user.firstName);
+        result = await getInterventionSleepDuration(props.user.terraId, new Date(), props.user.firstName);
         if (result.status == "success") {
             setSleepDuration(result.data);
         }
 
         setWeeklyAvgSteps(null);
-        result = await getWeeklyAvgSteps(props.user.terraId, subDays(new Date(), 7), new Date(), props.user.firstName);
+        result = await getInterventionWeeklyAvgSteps(props.user.terraId, subDays(new Date(), 7), new Date(), props.user.firstName);
         if (result.status == "success") {
             setWeeklyAvgSteps(result.data);
         }

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Grid} from "@mui/material";
-import {SleepDataContext, TerraDataContext} from "../ChildActivitiesSummary";
+import {StepsDataContext, SleepDataContext} from "../ChildActivitiesSummary";
 import ActivityWidgetSummary from "./ActivityWidgetSummary";
 import CardSkeleton from "../../../../../../components/skeleton/CardSkeleton";
 import {useTheme} from "@mui/material/styles";
@@ -20,8 +20,9 @@ const userQuery = `query MyQuery($id: ID = "") {
 }`
 
 const ActivityWidgets = () => {
+
+    const stepsData = useContext(StepsDataContext);
     const sleepData = useContext(SleepDataContext);
-    const stepsData = useContext(TerraDataContext);
     const {user} = useAuth();
     const theme = useTheme();
 
@@ -46,10 +47,10 @@ const ActivityWidgets = () => {
             <Grid item xs={12} md={4}>
                 {stepsData ?
                     <ActivityWidgetSummary title={'Todays\' Steps'}
-                                           total={stepsData?.data[stepsData?.data?.length - 1]?.distance_data.steps ?? 0}
-                                           percent={(((stepsData?.data[stepsData?.data?.length - 1]?.distance_data?.steps ?? 0) - (stepsData?.data[stepsData?.data?.length - 2]?.distance_data?.steps ?? 0))) / (stepsData?.data[stepsData?.data?.length - 2]?.distance_data?.steps ?? 1) * 100}
+                                           total={stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0}
+                                           percent={(((stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0) - (stepsData?.data[stepsData?.data?.length - 2]?.value ?? 0))) / (stepsData?.data[stepsData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
-                                           chartData={stepsData.data.map(value => value.distance_data.steps)}/>
+                                           chartData={stepsData.data.map((item: any) => item.value)}/>
                     :
                     <CardSkeleton/>
                 }
@@ -60,7 +61,7 @@ const ActivityWidgets = () => {
                                            total={(sleepData?.data[sleepData?.data?.length - 1]?.sleep_durations_data.asleep.duration_asleep_state / 60 / 60 ?? 0).toFixed(1) + " hrs"}
                                            percent={(((sleepData?.data[sleepData?.data?.length - 1]?.sleep_durations_data.asleep.duration_asleep_state ?? 0) - (sleepData?.data[sleepData?.data?.length - 2]?.sleep_durations_data.asleep.duration_asleep_state ?? 0))) / (sleepData?.data[sleepData?.data?.length - 2]?.sleep_durations_data.asleep.duration_asleep_state ?? 1) * 100}
                                            chartColor={theme.palette.chart.blue[0]}
-                                           chartData={sleepData.data.map(value => value.sleep_durations_data.asleep.duration_asleep_state / 60 / 60)}/>
+                                           chartData={sleepData.data.map((value: any) => value.sleep_durations_data.asleep.duration_asleep_state / 60 / 60)}/>
                     :
                     <CardSkeleton/>
                 }

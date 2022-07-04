@@ -5,7 +5,7 @@ import { Box, Card, Typography, Stack } from '@mui/material';
 // utils
 // components
 import {useContext} from "react";
-import {SleepDataContext, TerraDataContext} from "../ChildActivitiesSummary";
+import {StepsDataContext, SleepDataContext} from "../ChildActivitiesSummary";
 import Iconify from "../../../../../../components/Iconify";
 import {fNumber, fPercent} from "../../../../../../utils/formatNumber";
 

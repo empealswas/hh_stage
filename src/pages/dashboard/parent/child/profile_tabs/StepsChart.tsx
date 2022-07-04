@@ -7,7 +7,7 @@ import {format, parseISO, subDays} from "date-fns";
 import {API, graphqlOperation} from "aws-amplify";
 import axios from "axios";
 import {useTheme} from "@mui/material/styles";
-import {TerraDataContext} from "./ChildActivitiesSummary";
+import {StepsDataContext} from "./ChildActivitiesSummary";
 import {BaseOptionChart} from "../../../../../components/chart";
 import {Pupil, User} from "../../../../../API";
 import {fShortenNumber} from "../../../../../utils/formatNumber";
@@ -36,11 +36,13 @@ const childQuery = `query MyQuery {
   }
 }`;
 export default function StepsChart(props: { userId: string }) {
-    const terraData = useContext(TerraDataContext);
+
+    const stepsData = useContext(StepsDataContext);
     let basedOptions = BaseOptionChart();
     const theme = useTheme();
 
     const [averageData, setAverageData] = useState<any>(null);
+
     useEffect(() => {
         const getAverage = async () => {
             const result: any = await API.graphql(graphqlOperation(childQuery));
@@ -61,22 +63,19 @@ export default function StepsChart(props: { userId: string }) {
                 setAverageData(wearablesResult?.data ?? []);
         }
         getAverage();
-        return () => {
-
-        };
+        return () => {};
     }, []);
 
-
-    if (!terraData) {
+    if (!stepsData) {
         return (<ActivtityChartSkeleton/>);
-
     }
+
     const chartOptions: any = merge(basedOptions, {
         stroke: {width: [5, 3]},
         colors: [theme.palette.success.light, theme.palette.warning.light],
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
-        labels: terraData?.data?.map(value =>
-            `${format(parseISO(value.metadata.start_time), "eee do")}`
+        labels: stepsData?.data?.map((value: any) =>
+            `${format(parseISO(value.date), "eee do")}`
         ) ?? averageData?.data?.map((value: any) =>
             `${format(parseISO(value.date), "eee do")} `),
         yaxis: {
@@ -100,12 +99,13 @@ export default function StepsChart(props: { userId: string }) {
             }
         }
     });
+
     return (
         <Card>
             <CardHeader title="Steps" subheader={format(new Date(), 'MMMM')}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart type="line" series={[{
-                    data: terraData?.data?.map(value => value.distance_data.steps) ?? [], name: 'Number Of Steps',
+                    data: stepsData?.data?.map((item: any) => item.value) ?? [], name: 'Number Of Steps',
                     type: 'line'
                 }, {data: averageData?.map((item: any) => item.value) ?? [], name: 'Average For Users', type: 'line'}]}
                                 options={chartOptions} height={364}/>

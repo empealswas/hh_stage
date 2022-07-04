@@ -166,7 +166,7 @@ export async function deleteFileById(id: string) {
     return result;
 }
 
-export async function getActivityMinutes(id: any, date: any, name: any) {
+export async function getInterventionActivityMinutes(id: any, date: any, name: any) {
     const result = await API.get(apiName, '/api/activityminutes', {
          queryStringParameters: {
              id: id,
@@ -177,7 +177,7 @@ export async function getActivityMinutes(id: any, date: any, name: any) {
     return result;
 }
 
-export async function getDailySteps(id: any, date: any, name: any) {
+export async function getInterventionDailySteps(id: any, date: any, name: any) {
     const result = await API.get(apiName, '/api/dailysteps', {
          queryStringParameters: {
              id: id,
@@ -188,7 +188,7 @@ export async function getDailySteps(id: any, date: any, name: any) {
     return result;
 }
 
-export async function getSleepDuration(id: any, date: any, name: any) {
+export async function getInterventionSleepDuration(id: any, date: any, name: any) {
     const result = await API.get(apiName, '/api/sleepduration', {
          queryStringParameters: {
              id: id,
@@ -199,7 +199,7 @@ export async function getSleepDuration(id: any, date: any, name: any) {
     return result;
 }
 
-export async function getWeeklyAvgSteps(id: any, date1: any, date2: any, name: any) {
+export async function getInterventionWeeklyAvgSteps(id: any, date1: any, date2: any, name: any) {
     const result = await API.get(apiName, '/api/weeklyavgsteps', {
          queryStringParameters: {
              id: id,
@@ -209,6 +209,29 @@ export async function getWeeklyAvgSteps(id: any, date1: any, date2: any, name: a
          }
     });
     return result;
+}
+
+export async function getAverageDailySteps(terraIds: any, startDate: any, endDate: any) {
+    let theStartDate = startDate;
+    let theEndDate = endDate;
+    if (!theStartDate || !theEndDate) {
+        theStartDate = new Date("1970-01-01");
+        theEndDate = new Date();
+    }
+    let requestBody = {
+        "idList": terraIds,
+        "grouping": "user",
+        "category": "daily",
+        "subtype": "steps",
+        "period": "millennium",
+        "startDate": format(theStartDate, "yyyy-MM-dd"),
+        "endDate": format(theEndDate, "yyyy-MM-dd"),
+        "returnType": "average"
+    };
+    const result = await API.post(apiName, '/api/wearables', {
+        body: {...requestBody}
+    });
+    return result?.data ?? [];
 }
 
 export async function getAverageDailySleepSeconds(terraIds: any, startDate: any, endDate: any) {
@@ -257,27 +280,38 @@ export async function getAverageDailyActivitySeconds(terraIds: any, startDate: a
     return result?.data[0]?.value ?? 0;
 }
 
-export async function getAverageDailySteps(terraIds: any, startDate: any, endDate: any) {
-    let theStartDate = startDate;
-    let theEndDate = endDate;
-    if (!theStartDate || !theEndDate) {
-        theStartDate = new Date("1970-01-01");
-        theEndDate = new Date();
-    }
+export async function getDailySteps(terraId: any, startDate: any, endDate: any) {
     let requestBody = {
-        "idList": terraIds,
+        "idList": [terraId],
         "grouping": "user",
         "category": "daily",
         "subtype": "steps",
-        "period": "millennium",
-        "startDate": format(theStartDate, "yyyy-MM-dd"),
-        "endDate": format(theEndDate, "yyyy-MM-dd"),
-        "returnType": "average"
+        "period": "day",
+        "startDate": format(startDate, "yyyy-MM-dd"),
+        "endDate": format(endDate, "yyyy-MM-dd"),
+        "returnType": "total"
     };
     const result = await API.post(apiName, '/api/wearables', {
         body: {...requestBody}
     });
-    return result?.data ?? [];
+    return result;
+}
+
+export async function getDailySleepSeconds(terraId: any, startDate: any, endDate: any) {
+    let requestBody = {
+        "idList": [terraId],
+        "grouping": "user",
+        "category": "sleep",
+        "subtype": "durationTotal",
+        "period": "day",
+        "startDate": format(startDate, "yyyy-MM-dd"),
+        "endDate": format(endDate, "yyyy-MM-dd"),
+        "returnType": "total"
+    };
+    const result = await API.post(apiName, '/api/wearables', {
+        body: {...requestBody}
+    });
+    return result;
 }
 
 export async function getDailyActivitySeconds(terraId: any, startDate: any, endDate: any) {
