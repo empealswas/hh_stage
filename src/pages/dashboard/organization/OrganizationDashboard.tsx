@@ -386,9 +386,9 @@ const OrganizationDashboard = () => {
                 setStartDate(subYears(new Date(), 1));
                 setEndDate(new Date());
                 break;
-            case 'none':
-                setStartDate(null);
-                setEndDate(null);
+            //case 'none':
+            //    setStartDate(null);
+            //    setEndDate(null);
         }
     };
 
@@ -442,9 +442,11 @@ const OrganizationDashboard = () => {
                                         label="Period"
                                         onChange={handleSelectedPeriodChange}
                                     >
+                                        {/*
                                         <MenuItem value="none">
                                             <em>None</em>
                                         </MenuItem>
+                                        */}
                                         <MenuItem value={'week'}>7 Days</MenuItem>
                                         <MenuItem value={'month'}>30 Days</MenuItem>
                                         <MenuItem value={'term'}>3 Months</MenuItem>
