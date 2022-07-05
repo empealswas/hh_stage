@@ -213,9 +213,9 @@ const OrganizationDashboard = () => {
     const [selectableClassrooms, setSelectableClassrooms] = useState<Classroom[] | null>(null);
 
     const [selectedClassroom, setSelectedClassroom] = React.useState<Classroom | null>(null);
-    const [selectedPeriod, setSelectedPeriod] = useState('none');
-    const [startDate, setStartDate] = React.useState<Date | null>(null);
-    const [endDate, setEndDate] = React.useState<Date | null>(null);
+    const [selectedPeriod, setSelectedPeriod] = useState('week');
+    const [startDate, setStartDate] = React.useState<Date | null>(subDays(new Date(), 6));
+    const [endDate, setEndDate] = React.useState<Date | null>(new Date());
     const [loading, setLoading] = useState(false);
 
     const [organization, setOrganization] = useState<Organization | null>(null);
@@ -230,12 +230,69 @@ const OrganizationDashboard = () => {
         setSelectableClassrooms(classrooms.sort((a, b) => a.name.localeCompare(b.name)));
     };
 
+    const getResults = async () => {
+        setLoading(true);
+        let result: any = null;
+        if (selectedClassroom == null) {
+            // all classrooms
+            if (!startDate || !endDate) {
+                // all time
+                result = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
+            }
+            else {
+                // time period
+                result = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
+                    id: organizationId,
+                    gt: format(startDate, 'yyyy-MM-dd'),
+                    lt: format(endDate, 'yyyy-MM-dd')
+                }));
+            }
+        }
+        else {
+            // specific classroom
+            if (!startDate || !endDate) {
+                // all time
+                result = await API.graphql(graphqlOperation(queryClassroomWithAllLessons, {
+                    id: organizationId,
+                    cid: selectedClassroom.id
+                }));
+            }
+            else {
+                // time period
+                result = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
+                    id: organizationId,
+                    cid: selectedClassroom.id,
+                    gt: format(startDate, 'yyyy-MM-dd'),
+                    lt: format(endDate, 'yyyy-MM-dd')
+                }));
+            }
+        }
+        let terraIds = terraIdsForClassrooms(result.data.getOrganization);
+        let theAverageDailySleepSeconds = await getAverageDailySleepSeconds(terraIds, startDate, endDate);
+        let theAverageDailyActivitySeconds = await getAverageDailyActivitySeconds(terraIds, startDate, endDate);
+        let theAverageDailySteps = await getAverageDailySteps(terraIds, startDate, endDate);
+        setAverageDailySleep(theAverageDailySleepSeconds / 3600);
+        setAverageSedentaryTime((86400 - theAverageDailySleepSeconds - theAverageDailyActivitySeconds) / 3600);
+        if (theAverageDailySteps.length == 0) {
+            setAchievingStepsTarget(0);
+        }
+        else {
+            let achievedCount = 0;
+            theAverageDailySteps.forEach((item: any) => {
+                if (item.value >= 10000) achievedCount++;
+            });
+            setAchievingStepsTarget((achievedCount / theAverageDailySteps.length) * 100);
+        }
+        setOrganization(result.data.getOrganization);
+        setLoading(false);
+    };
+
     const reset = () => {
         setSelectableClassrooms(null);
         setSelectedClassroom(null);
-        setSelectedPeriod('none');
-        setStartDate(null);
-        setEndDate(null);
+        setSelectedPeriod('week');
+        setStartDate(subDays(new Date(), 6));
+        setEndDate(new Date());
         setLoading(false);
         setOrganization(null);
         setAverageDailySleep(null);
@@ -335,61 +392,8 @@ const OrganizationDashboard = () => {
         }
     };
 
-    const applyButtonClick = async () => {
-        setLoading(true);
-        let result: any = null;
-        if (selectedClassroom == null) {
-            // all classrooms
-            if (!startDate || !endDate) {
-                // all time
-                result = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
-            }
-            else {
-                // time period
-                result = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
-                    id: organizationId,
-                    gt: format(startDate, 'yyyy-MM-dd'),
-                    lt: format(endDate, 'yyyy-MM-dd')
-                }));
-            }
-        }
-        else {
-            // specific classroom
-            if (!startDate || !endDate) {
-                // all time
-                result = await API.graphql(graphqlOperation(queryClassroomWithAllLessons, {
-                    id: organizationId,
-                    cid: selectedClassroom.id
-                }));
-            }
-            else {
-                // time period
-                result = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
-                    id: organizationId,
-                    cid: selectedClassroom.id,
-                    gt: format(startDate, 'yyyy-MM-dd'),
-                    lt: format(endDate, 'yyyy-MM-dd')
-                }));
-            }
-        }
-        let terraIds = terraIdsForClassrooms(result.data.getOrganization);
-        let theAverageDailySleepSeconds = await getAverageDailySleepSeconds(terraIds, startDate, endDate);
-        let theAverageDailyActivitySeconds = await getAverageDailyActivitySeconds(terraIds, startDate, endDate);
-        let theAverageDailySteps = await getAverageDailySteps(terraIds, startDate, endDate);
-        setAverageDailySleep(theAverageDailySleepSeconds / 3600);
-        setAverageSedentaryTime((86400 - theAverageDailySleepSeconds - theAverageDailyActivitySeconds) / 3600);
-        if (theAverageDailySteps.length == 0) {
-            setAchievingStepsTarget(0);
-        }
-        else {
-            let achievedCount = 0;
-            theAverageDailySteps.forEach((item: any) => {
-                if (item.value >= 10000) achievedCount++;
-            });
-            setAchievingStepsTarget((achievedCount / theAverageDailySteps.length) * 100);
-        }
-        setOrganization(result.data.getOrganization);
-        setLoading(false);
+    const applyButtonClick = () => {
+        getResults();
     };
 
     const resetButtonClick = () => {
@@ -400,6 +404,7 @@ const OrganizationDashboard = () => {
     useEffect(() => {
         reset();
         loadSelectableClassrooms();
+        getResults();
         return () => {};
     }, [organizationId]);
 
