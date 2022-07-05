@@ -119,7 +119,7 @@ const queryClassroomWithAllLessons = `query MyQuery($id: ID = "", $cid: ID = "")
   }
 }`;
 
-const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $gt: String = "", $lt: String = "") {
+const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $ge: String = "", $le: String = "") {
   getOrganization(id: $id) {
     Classrooms(sortDirection: ASC) {
       items {
@@ -135,7 +135,7 @@ const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $
             }
           }
         }
-        LessonRecords(limit: 10000000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
+        LessonRecords(limit: 10000000, filter: {date: {ge: $ge, le: $le}, isCompleted: {eq: true}}) {
           items {
             date
             id
@@ -162,7 +162,7 @@ const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $
   }
 }`;
 
-const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid: ID = "", $gt: String = "", $lt: String = "") {
+const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid: ID = "", $ge: String = "", $le: String = "") {
   getOrganization(id: $id) {
     Classrooms(sortDirection: ASC, limit: 1000000, filter: {id: {eq: $cid}}) {
       items {
@@ -178,7 +178,7 @@ const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid:
             }
           }
         }
-        LessonRecords(limit: 10000000, filter: {date: {gt: $gt, lt: $lt}, isCompleted: {eq: true}}) {
+        LessonRecords(limit: 10000000, filter: {date: {ge: $ge, le: $le}, isCompleted: {eq: true}}) {
           items {
             date
             id
@@ -243,8 +243,8 @@ const OrganizationDashboard = () => {
                 // time period
                 result = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
                     id: organizationId,
-                    gt: format(startDate, 'yyyy-MM-dd'),
-                    lt: format(endDate, 'yyyy-MM-dd')
+                    ge: format(startDate, 'yyyy-MM-dd'),
+                    le: format(endDate, 'yyyy-MM-dd')
                 }));
             }
         }
@@ -262,8 +262,8 @@ const OrganizationDashboard = () => {
                 result = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
                     id: organizationId,
                     cid: selectedClassroom.id,
-                    gt: format(startDate, 'yyyy-MM-dd'),
-                    lt: format(endDate, 'yyyy-MM-dd')
+                    ge: format(startDate, 'yyyy-MM-dd'),
+                    le: format(endDate, 'yyyy-MM-dd')
                 }));
             }
         }
@@ -451,29 +451,26 @@ const OrganizationDashboard = () => {
                                         <MenuItem value={'year'}>1 Year</MenuItem>
                                     </Select>
                                 </FormControl>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        label="Start Date"
-                                        // @ts-ignore
-                                        renderInput={(params) => <TextField style={{minWidth: 200}} {...params} />}
-                                        value={startDate}
-                                        onChange={(newValue) => {
-                                            setStartDate(newValue);
-                                        }}
-                                    />
-                                </LocalizationProvider>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        label="End Date"
-                                        // @ts-ignore
-                                        renderInput={(params) => <TextField style={{minWidth: 200}} {...params} />}
-                                        value={endDate}
-                                        onChange={(newValue) => {
-                                            setEndDate(newValue);
-                                        }}
-                                    />
-
-                                </LocalizationProvider>
+                                <DatePicker
+                                    label="Start Date"
+                                    // @ts-ignore
+                                    renderInput={(params) => <TextField style={{minWidth: 200}} {...params} />}
+                                    value={startDate}
+                                    onChange={(newValue) => {
+                                        setStartDate(newValue);
+                                    }}
+                                    inputFormat={'dd-MMM-yyyy'}
+                                />
+                                <DatePicker
+                                    label="End Date"
+                                    // @ts-ignore
+                                    renderInput={(params) => <TextField style={{minWidth: 200}} {...params} />}
+                                    value={endDate}
+                                    onChange={(newValue) => {
+                                        setEndDate(newValue);
+                                    }}
+                                    inputFormat={'dd-MMM-yyyy'}
+                                />
                                 <LoadingButton loading={loading} variant={'contained'}
                                                onClick={applyButtonClick}>Apply</LoadingButton>
                                 <LoadingButton loading={false} variant={'contained'} color={'secondary'}
