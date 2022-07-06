@@ -136,13 +136,13 @@ export default function PupilActivitiesChart() {
         tooltip: {
             fillSeriesColor: false,
             y: {
-                formatter: (seriesName: any) => seriesName,
+                formatter: (seriesName: any) => "",
                 title: {
                     formatter: (seriesName: any) => {
                         if (seriesName === 'null') {
                             return 'Undefined';
                         }
-                        return `Minutes of activity:`;
+                        return `${seriesName}`;
                     }
                 }
             }
