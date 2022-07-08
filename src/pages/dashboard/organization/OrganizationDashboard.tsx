@@ -461,7 +461,7 @@ const OrganizationDashboard = () => {
                                     onChange={(newValue) => {
                                         setStartDate(newValue);
                                     }}
-                                    inputFormat={'dd-MMM-yyyy'}
+                                    inputFormat={"dd MMM yyyy"}
                                 />
                                 <DatePicker
                                     label="End Date"
@@ -471,7 +471,7 @@ const OrganizationDashboard = () => {
                                     onChange={(newValue) => {
                                         setEndDate(newValue);
                                     }}
-                                    inputFormat={'dd-MMM-yyyy'}
+                                    inputFormat={"dd MMM yyyy"}
                                 />
                                 <LoadingButton loading={loading} variant={'contained'}
                                                onClick={applyButtonClick}>Apply</LoadingButton>
