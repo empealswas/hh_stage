@@ -23,9 +23,13 @@ const ChildActivitiesSummary = (props: {user: User}) => {
 
     const getStepsData = async () => {
         setStepsData(null);
+        let terraId = props.user.terraId;
+        if (terraId == null) {
+            return;
+        }
         let startDate = subDays(new Date(), 6);
         let endDate = new Date();
-        const result = await getDailySteps(props.user.terraId, startDate, endDate);
+        const result = await getDailySteps(terraId, startDate, endDate);
         setStepsData(result);
     }
 

@@ -33,6 +33,9 @@ const ActivityWidgets = () => {
             setActivityData(null);
             let result: any = await API.graphql(graphqlOperation(userQuery, {id: user?.email}));
             let terraId = result.data.getUser.terraId;
+            if (terraId == null) {
+                return;
+            }
             let startDate = subDays(new Date(), 6);
             let endDate = new Date();
             let theActivityData = await getDailyActivitySeconds(terraId, startDate, endDate);
@@ -69,7 +72,7 @@ const ActivityWidgets = () => {
             <Grid item xs={12} md={4}>
                 {activityData ?
                     <ActivityWidgetSummary title={'Todays\' Activity'}
-                                           total={Math.floor(activityData?.data[activityData?.data?.length - 1]?.value / 60 ?? 0) + " mins"}
+                                           total={Math.floor((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
                                            percent={(((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) - (activityData?.data[activityData?.data?.length - 2]?.value ?? 0))) / (activityData?.data[activityData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
                                            chartData={activityData.data.map((item: any) => item.value / 60)}/>
