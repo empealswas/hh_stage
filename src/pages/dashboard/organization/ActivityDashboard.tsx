@@ -317,7 +317,9 @@ const ActivityDashboard = () => {
         }
         */
 
-        getUserStepsData();
+        if (terraId) {
+            getUserStepsData();
+        }
         getAverageStepsData();
         //getAverageSleep()
     }
