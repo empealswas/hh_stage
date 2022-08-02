@@ -4,7 +4,7 @@ import {Box, Grid} from "@mui/material";
 import {User} from "../../../../../API";
 //import {SleepData, TerraData} from "../../../../../models/terraDataModels/TerraData";
 import {PupilActivityRequest} from "../../../../../apiFunctions/DTO/PupilActivityRequest";
-import {getDailySteps, getSleepDataAsync} from "../../../../../apiFunctions/apiFunctions";
+import {getDailySteps, getDailySleepSeconds} from "../../../../../apiFunctions/apiFunctions";
 import StepsChart from "./StepsChart";
 import PupilActivitiesChart from "./PupilActivitiesChart";
 import SleepChart from "./SleepChart";
@@ -35,18 +35,19 @@ const ChildActivitiesSummary = (props: {user: User}) => {
 
     const getSleepData = async () => {
         setSleepData(null);
-        const input: PupilActivityRequest = {
-            terraId: String(props.user.terraId),
-            start_date: format(subDays(new Date(), 6), 'yyyy-MM-dd'),
-            end_date: format(new Date(), 'yyyy-MM-dd')
+        let terraId = props.user.terraId;
+        if (terraId == null) {
+            return;
         }
-        const result = await getSleepDataAsync(input);
-        result?.data?.data?.sort((a: any, b: any) => {
-            let aMillis = new Date(a.metadata.start_time).getTime();
-            let bMillis = new Date(b.metadata.start_time).getTime();
+        let startDate = subDays(new Date(), 6);
+        let endDate = new Date();
+        const result = await getDailySleepSeconds(terraId, startDate, endDate);
+        result?.data?.sort((a: any, b: any) => {
+            let aMillis = new Date(a.date).getTime();
+            let bMillis = new Date(b.date).getTime();
             return aMillis - bMillis;
         });
-        setSleepData(result?.data);
+        setSleepData(result);
     }
 
     useEffect(() => {
