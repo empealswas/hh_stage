@@ -60,8 +60,8 @@ const ActivityWidgets = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 {sleepData ?
-                    <ActivityWidgetSummary title={'Todays\' Sleep'}
-                                           total={(sleepData?.data[sleepData?.data?.length - 1]?.value / 60 / 60 ?? 0).toFixed(1) + " hrs"}
+                    <ActivityWidgetSummary title={'Last Sleep'}
+                                           total={((sleepData?.data[sleepData?.data?.length - 1]?.value ?? 0) / 60 / 60).toFixed(1) + " hrs"}
                                            percent={(((sleepData?.data[sleepData?.data?.length - 1]?.value ?? 0) - (sleepData?.data[sleepData?.data?.length - 2]?.value ?? 0))) / (sleepData?.data[sleepData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.blue[0]}
                                            chartData={sleepData.data.map((item: any) => item.value / 60 / 60)}/>
