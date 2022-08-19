@@ -167,6 +167,9 @@ const SectionOverview = () => {
                         </Can>
                         <Can I={'read'} this={'dashboard'}>
                             <>
+                                <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
+                                        to={'steps'}
+                                        variant={'contained'}>Steps Dashboard</Button>
                                 <Button component={RouterLink} startIcon={<Iconify icon={'ion:fitness-outline'}/>}
                                         to={'activity'}
                                         variant={'contained'}>Wearables Dashboard</Button>
