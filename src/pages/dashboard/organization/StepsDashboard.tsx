@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Page from "../../../components/Page";
-import {Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, Card, CardContent, Skeleton} from "@mui/material";
+import {Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, Card, CardContent, Skeleton, Accordion, AccordionDetails} from "@mui/material";
 import CardSkeleton from "../../../components/skeleton/CardSkeleton";
 import useSettings from 'src/hooks/useSettings';
 import useAuth from "../../../hooks/useAuth";
 import AnalyticsWidgetSummary from 'src/sections/@dashboard/general/analytics/AnalyticsWidgetSummary';
-import {Attendance, Classroom, Lesson, Organization, PELessonRecord, UserInOrganization} from "../../../API";
+import {Attendance, Classroom, Lesson, Organization, PELessonRecord, UserInOrganization, User} from "../../../API";
 import {useParams} from "react-router-dom";
 import {API, graphqlOperation} from "aws-amplify";
 import ActivityOrganizationBarchart from "./dashboard/ActivityOrganizationBarchart";
@@ -22,6 +22,9 @@ import {values} from "lodash";
 import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
 import { TerraWearables, getWearablesData } from "../../../apiFunctions/apiFunctions";
 import StepsDailyBarChart from "./chart/StepsDailyBarChart";
+import {DataGrid, GridColDef} from "@mui/x-data-grid";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Iconify from "../../../components/Iconify";
 
 const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -66,6 +69,7 @@ const queryAllClassroomsWithAllLessons = `query MyQuery($id: ID = "") {
             id
             userInOrganization {
               user {
+                id
                 firstName
                 lastName
                 terraId
@@ -111,6 +115,7 @@ const queryClassroomWithAllLessons = `query MyQuery($id: ID = "", $cid: ID = "")
             id
             userInOrganization {
               user {
+                id
                 firstName
                 lastName
                 terraId
@@ -156,6 +161,7 @@ const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $
             id
             userInOrganization {
               user {
+                id
                 firstName
                 lastName
                 terraId
@@ -201,6 +207,7 @@ const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid:
             id
             userInOrganization {
               user {
+                id
                 firstName
                 lastName
                 terraId
@@ -257,6 +264,25 @@ const StepsDashboard = () => {
     const [averageDailySteps, setAverageDailySteps] = useState<number | null>(null);
     const [schoolAverage, setSchoolAverage] = useState<number | null>(null);
     const [last7DaysAverageDailySteps, setLast7DaysAverageDailySteps] = useState<any[] | null>(null);
+
+    const columns: GridColDef[] = [
+        {field: 'id', flex: 0.2, headerName: 'Id', hide: true},
+        {field: 'terraId', flex: 0.2, headerName: 'TerraId', hide: true},
+        {
+            field: 'firstName',
+            headerName: 'First Name',
+            sortable: true,
+            flex: 1,
+            editable: false
+        },
+        {
+            field: 'lastName',
+            headerName: 'Last Name',
+            sortable: true,
+            flex: 1,
+            editable: false
+        }
+    ];
 
     const loadSelectableClassrooms = async () => {
         const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
@@ -431,6 +457,21 @@ const StepsDashboard = () => {
             });
         });
         return terraIds;
+    };
+
+    const connectedUsersForClassrooms = (organization: Organization) => {
+        let users: User[] = [];
+        let classrooms: any[] = organization?.Classrooms?.items ?? [];
+        classrooms.forEach((classroom: any) => {
+            let members = classroom.members.items;
+            members.forEach((member: any) => {
+                let theUser = member.userInOrganization.user as User;
+                if (theUser.terraId != null) {
+                    users.push(theUser);
+                }
+            });
+        });
+        return users;
     };
 
     const namesForClassrooms = (organization: Organization) => {
@@ -648,6 +689,30 @@ const StepsDashboard = () => {
                         </Grid>
 
                     </Grid>
+
+                    {organization &&
+                        <Grid item xs={12} style={{marginTop:10}}>
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<Iconify icon={'ic:baseline-expand-more'} sx={{width: 40, height: 40}}/>}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                >
+                                    <Typography>Connected Members</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <div style={{width: '100%', display: 'flex'}}>
+                                        <DataGrid
+                                            rows={connectedUsersForClassrooms(organization)}
+                                            disableSelectionOnClick
+                                            columns={columns}
+                                            autoHeight={true}
+                                        />
+                                    </div>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+                    }
 
                     <Grid item xs={12}>
                         {last7DaysAverageDailySteps != null ?
