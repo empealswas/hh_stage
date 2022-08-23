@@ -20,7 +20,6 @@ import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
 import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
-import { getAverageDailySleepSeconds, getAverageDailyActivitySeconds, getAverageDailySteps } from "../../../apiFunctions/apiFunctions";
 
 const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -218,11 +217,8 @@ const OrganizationDashboard = () => {
     const [endDate, setEndDate] = React.useState<Date | null>(new Date());
     const [loading, setLoading] = useState(false);
 
+    const [allClassrooms, setAllClassrooms] = useState<Classroom[] | null>(null);
     const [organization, setOrganization] = useState<Organization | null>(null);
-
-    const [averageDailySleep, setAverageDailySleep] = useState<number | null>(null);
-    const [averageSedentaryTime, setAverageSedentaryTime] = useState<number | null>(null);
-    const [achievingStepsTarget, setAchievingStepsTarget] = useState<number | null>(null);
 
     const loadSelectableClassrooms = async () => {
         const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
@@ -247,6 +243,7 @@ const OrganizationDashboard = () => {
                     le: format(endDate, 'yyyy-MM-dd')
                 }));
             }
+            setAllClassrooms(result?.data?.getOrganization?.Classrooms?.items ?? []);
         }
         else {
             // specific classroom
@@ -267,22 +264,6 @@ const OrganizationDashboard = () => {
                 }));
             }
         }
-        let terraIds = terraIdsForClassrooms(result.data.getOrganization);
-        let theAverageDailySleepSeconds = await getAverageDailySleepSeconds(terraIds, startDate, endDate);
-        let theAverageDailyActivitySeconds = await getAverageDailyActivitySeconds(terraIds, startDate, endDate);
-        let theAverageDailySteps = await getAverageDailySteps(terraIds, startDate, endDate);
-        setAverageDailySleep(theAverageDailySleepSeconds / 3600);
-        setAverageSedentaryTime((86400 - theAverageDailySleepSeconds - theAverageDailyActivitySeconds) / 3600);
-        if (theAverageDailySteps.length == 0) {
-            setAchievingStepsTarget(0);
-        }
-        else {
-            let achievedCount = 0;
-            theAverageDailySteps.forEach((item: any) => {
-                if (item.value >= 10000) achievedCount++;
-            });
-            setAchievingStepsTarget((achievedCount / theAverageDailySteps.length) * 100);
-        }
         setOrganization(result.data.getOrganization);
         setLoading(false);
     };
@@ -295,22 +276,6 @@ const OrganizationDashboard = () => {
         setEndDate(new Date());
         setLoading(false);
         setOrganization(null);
-        setAverageDailySleep(null);
-        setAverageSedentaryTime(null);
-        setAchievingStepsTarget(null);
-    };
-
-    const terraIdsForClassrooms = (organization: Organization) => {
-        let terraIds: any[] = [];
-        let classrooms: any[] = organization?.Classrooms?.items ?? [];
-        classrooms.forEach((classroom: any) => {
-            let members = classroom.members.items;
-            members.forEach((member: any) => {
-                let terraId = member.userInOrganization.user.terraId;
-                if (terraId != null) terraIds.push(terraId);
-            });
-        });
-        return terraIds;
     };
 
     const numberOfMembers = () => {
@@ -340,6 +305,53 @@ const OrganizationDashboard = () => {
             });
         });
         return totalActivityTimeSum;
+    };
+
+    const averageMembership = () => {
+        // sum the number of members in each class, then divide by the number of classes
+        if (allClassrooms == null) {
+            return 0;
+        }
+        else {
+            let memberSum = 0;
+            allClassrooms.forEach((classroom: any) => memberSum += classroom.members.items.length);
+            let length = allClassrooms.length;
+            if (length == 0) length = 1;
+            return memberSum / length;
+        }
+    };
+
+    const averageActivities = () => {
+        // sum the number of PELessonRecords in each class, then divide by the number of classes
+        if (allClassrooms == null) {
+            return 0;
+        }
+        else {
+            let activitiesSum = 0;
+            allClassrooms.forEach((classroom: any) => activitiesSum += classroom.LessonRecords.items.length);
+            let length = allClassrooms.length;
+            if (length == 0) length = 1;
+            return activitiesSum / length;
+        }
+    };
+
+    const averageActivityTime = () => {
+        // sum the duration * attendances in each PELessonRecord in each class, then divide by the number of classes
+        if (allClassrooms == null) {
+            return 0;
+        }
+        else {
+            let totalActivityTimeSum = 0;
+            allClassrooms.forEach((classroom: any) => {
+                let lessonRecords = classroom.LessonRecords.items;
+                lessonRecords.forEach((lessonRecord: any) => {
+                    totalActivityTimeSum += lessonRecord.duration * lessonRecord.Attendances.items.length;
+                });
+            });
+            let length = allClassrooms.length;
+            if (length == 0) length = 1;
+            return totalActivityTimeSum / length;
+        }
     };
 
     const usersByRewards = () => {
@@ -402,11 +414,10 @@ const OrganizationDashboard = () => {
     };
 
     useEffect(() => {
-        reset();
         loadSelectableClassrooms();
         getResults();
         return () => {};
-    }, [organizationId]);
+    }, []);
 
     return (
         <Page title="General: Analytics">
@@ -474,9 +485,9 @@ const OrganizationDashboard = () => {
                                     inputFormat={"dd MMM yyyy"}
                                 />
                                 <LoadingButton loading={loading} variant={'contained'}
-                                               onClick={applyButtonClick}>Apply</LoadingButton>
+                                               onClick={() => applyButtonClick()}>Apply</LoadingButton>
                                 <LoadingButton loading={false} variant={'contained'} color={'secondary'}
-                                               onClick={resetButtonClick}>Reset</LoadingButton>
+                                               onClick={() => resetButtonClick()}>Reset</LoadingButton>
                             </Stack>
                         </Grid>
                     }
@@ -492,7 +503,7 @@ const OrganizationDashboard = () => {
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'300px'}/>
+                                <CardSkeleton height={'135px'}/>
                             }
                         </Grid>
 
@@ -505,7 +516,7 @@ const OrganizationDashboard = () => {
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'300px'}/>
+                                <CardSkeleton height={'135px'}/>
                             }
                         </Grid>
 
@@ -518,7 +529,7 @@ const OrganizationDashboard = () => {
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'300px'}/>
+                                <CardSkeleton height={'135px'}/>
                             }
                         </Grid>
 
@@ -527,47 +538,47 @@ const OrganizationDashboard = () => {
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {achievingStepsTarget != null ?
+                            {allClassrooms != null ?
                                 <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achievingStepsTarget) + " %"}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average Membership</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.round(averageMembership())}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'300px'}/>
+                                <CardSkeleton height={'135px'}/>
                             }
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {averageDailySleep != null ?
+                            {allClassrooms != null ?
                                 <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Average Daily Sleep</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{averageDailySleep.toFixed(1) + " hrs"}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average No. of Activities</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{averageActivities().toFixed(1)}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'300px'}/>
+                                <CardSkeleton height={'135px'}/>
                             }
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {averageSedentaryTime != null ?
+                            {allClassrooms != null ?
                                 <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Average Sedentary Time</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{averageSedentaryTime.toFixed(1) + " hrs"}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average Activity Time</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageActivityTime()) + " mins"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'300px'}/>
+                                <CardSkeleton height={'135px'}/>
                             }
                         </Grid>
 
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{marginTop:30}}>
                         {organization != null ?
                             <ActivityOrganizationBarchart organization={organization}/>
                             :
