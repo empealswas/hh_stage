@@ -255,7 +255,7 @@ type Attendance @model @auth(rules: [{allow: private}]) {
     pupilID: ID @index(name: "byPupil")
     lessonID: ID @index(name: "byLesson")
     Pupil: Pupil @belongsTo(fields: ["pupilID"])
-    UserInOrganization: UserInOrganization! @belongsTo
+    UserInOrganization: UserInOrganization @belongsTo
     Lesson: Lesson @belongsTo(fields: ["lessonID"])
     lessonRecord: PELessonRecord @belongsTo(fields: ["lessonRecordID"])
     lessonRecordID: ID @index(name: "byPELessonRecord")

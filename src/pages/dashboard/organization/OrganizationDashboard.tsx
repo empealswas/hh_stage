@@ -366,11 +366,13 @@ const OrganizationDashboard = () => {
             .all();
         const usersByTrophies = [];
         for (const name in groupByUser) {
-            let userCredentials = groupByUser[name].items[0].UserInOrganization.user;
-            usersByTrophies.push({
-                user: userCredentials?.firstName + " " + userCredentials?.lastName,
-                attendances: groupByUser[name].items.filter((item: any) => item?.wasRewarded ?? false)
-            });
+            let userCredentials = groupByUser[name].items[0].UserInOrganization?.user ?? null;
+            if (userCredentials != null) {
+                usersByTrophies.push({
+                    user: userCredentials?.firstName + " " + userCredentials?.lastName,
+                    attendances: groupByUser[name].items.filter((item: any) => item?.wasRewarded ?? false)
+                });
+            }
         }
         return usersByTrophies.sort((a, b) =>  b.attendances.length - a.attendances.length).slice(0, 5);
     };
@@ -398,9 +400,6 @@ const OrganizationDashboard = () => {
                 setStartDate(subYears(new Date(), 1));
                 setEndDate(new Date());
                 break;
-            //case 'none':
-            //    setStartDate(null);
-            //    setEndDate(null);
         }
     };
 
