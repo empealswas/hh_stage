@@ -14,9 +14,13 @@ import {Box, Card, CardHeader, Skeleton} from "@mui/material";
 import ActivtityChartSkeleton from "../../../../components/skeleton/ActivtityChartSkeleton";
 import {getWearablesData, TerraWearables} from "../../../../apiFunctions/apiFunctions";
 
-export default function StepsLeagueBarChart({names}: { names: any }, {values}: { values: any }) {
+export default function StepsLeagueBarChart() {
 
-    const [stepsData, setStepsData] = useState<any>(values);
+    const [stepsData, setStepsData] = useState<any>([
+        {name:'Mark', value: 1},
+        {name:'Brendan', value: 2},
+        {name:'Jim', value: 3},
+    ]);
 
     const baseOptions = BaseOptionChart();
     const theme = useTheme();
@@ -25,9 +29,9 @@ export default function StepsLeagueBarChart({names}: { names: any }, {values}: {
         return () => {};
     }, []);
 
-    useEffect(() => {
-        return () => {};
-    }, [values]);
+    //useEffect(() => {
+    //    return () => {};
+    //}, [values]);
 
     const chartOptions: any = merge(baseOptions, {
             chart: {
@@ -73,10 +77,10 @@ export default function StepsLeagueBarChart({names}: { names: any }, {values}: {
             xaxis: {
                 type: 'category',
                 categories: stepsData.map((item: any) => {
-                        if (!item.date) {
+                        if (!item.name) {
                             return 'N/A'
                         }
-                        return `${format(parseISO(item.date), "eee do")}`;
+                        return item.name;
                     }
                 )
             },
@@ -123,7 +127,7 @@ export default function StepsLeagueBarChart({names}: { names: any }, {values}: {
 
     return (
         <Card>
-            <CardHeader title="Daily Steps" subheader={'Last 7 days'}/>
+            <CardHeader title="League Table" subheader={''}/>
             <Box sx={{p: 3, pb: 1}} dir="ltr">
                 <ReactApexChart series={[
                     {

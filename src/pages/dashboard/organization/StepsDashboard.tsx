@@ -22,6 +22,7 @@ import {values} from "lodash";
 import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
 import { TerraWearables, getWearablesData } from "../../../apiFunctions/apiFunctions";
 import StepsDailyBarChart from "./chart/StepsDailyBarChart";
+import StepsLeagueBarChart from "./chart/StepsLeagueBarChart";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Iconify from "../../../components/Iconify";
@@ -48,6 +49,9 @@ const queryAllClassrooms = `query MyQuery($id: ID = "") {
             id
             userInOrganization {
               user {
+                id
+                firstName
+                lastName
                 terraId
               }
             }
@@ -58,9 +62,9 @@ const queryAllClassrooms = `query MyQuery($id: ID = "") {
   }
 }`;
 
-const queryAllClassroomsWithAllLessons = `query MyQuery($id: ID = "") {
+const queryClassroom = `query MyQuery($id: ID = "", $cid: ID = "") {
   getOrganization(id: $id) {
-    Classrooms {
+    Classrooms(limit: 10000000, filter: {id: {eq: $cid}}) {
       items {
         id
         name
@@ -77,170 +81,10 @@ const queryAllClassroomsWithAllLessons = `query MyQuery($id: ID = "") {
             }
           }
         }
-        LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
-          items {
-            date
-            id
-            duration
-            activity
-            rating
-            Attendances(limit: 10000000, filter: {present: {eq: true}}) {
-              items {
-                id
-                wasRewarded
-                userInOrganizationAttendancesId
-                UserInOrganization {
-                  user {
-                    lastName
-                    firstName
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
 }`;
-
-const queryClassroomWithAllLessons = `query MyQuery($id: ID = "", $cid: ID = "") {
-  getOrganization(id: $id) {
-    Classrooms(limit: 1000000, filter: {id: {eq: $cid}}) {
-      items {
-        id
-        name
-        members {
-          items {
-            id
-            userInOrganization {
-              user {
-                id
-                firstName
-                lastName
-                terraId
-              }
-            }
-          }
-        }
-        LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
-          items {
-            date
-            id
-            duration
-            activity
-            rating
-            Attendances(limit: 10000000, filter: {present: {eq: true}}) {
-              items {
-                id
-                wasRewarded
-                userInOrganizationAttendancesId
-                UserInOrganization {
-                  user {
-                    lastName
-                    firstName
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
-
-const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $ge: String = "", $le: String = "") {
-  getOrganization(id: $id) {
-    Classrooms(sortDirection: ASC) {
-      items {
-        id
-        name
-        members {
-          items {
-            id
-            userInOrganization {
-              user {
-                id
-                firstName
-                lastName
-                terraId
-              }
-            }
-          }
-        }
-        LessonRecords(limit: 10000000, filter: {date: {ge: $ge, le: $le}, isCompleted: {eq: true}}) {
-          items {
-            date
-            id
-            duration
-            activity
-            rating
-            Attendances(filter: {present: {eq: true}}, limit: 10000000) {
-              items {
-                id
-                wasRewarded
-                userInOrganizationAttendancesId
-                UserInOrganization {
-                  user {
-                    lastName
-                    firstName
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
-
-const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid: ID = "", $ge: String = "", $le: String = "") {
-  getOrganization(id: $id) {
-    Classrooms(sortDirection: ASC, limit: 1000000, filter: {id: {eq: $cid}}) {
-      items {
-        id
-        name
-        members {
-          items {
-            id
-            userInOrganization {
-              user {
-                id
-                firstName
-                lastName
-                terraId
-              }
-            }
-          }
-        }
-        LessonRecords(limit: 10000000, filter: {date: {ge: $ge, le: $le}, isCompleted: {eq: true}}) {
-          items {
-            date
-            id
-            duration
-            activity
-            rating
-            Attendances(filter: {present: {eq: true}}, limit: 10000000) {
-              items {
-                id
-                wasRewarded
-                userInOrganizationAttendancesId
-                UserInOrganization {
-                  user {
-                    lastName
-                    firstName
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}`
 
 const StepsDashboard = () => {
 
@@ -295,37 +139,14 @@ const StepsDashboard = () => {
         let result: any = null;
         if (selectedClassroom == null) {
             // all classrooms
-            if (!startDate || !endDate) {
-                // all time
-                result = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
-            }
-            else {
-                // time period
-                result = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
-                    id: organizationId,
-                    ge: format(startDate, 'yyyy-MM-dd'),
-                    le: format(endDate, 'yyyy-MM-dd')
-                }));
-            }
+            result = await API.graphql(graphqlOperation(queryAllClassrooms, {id: organizationId}));
         }
         else {
             // specific classroom
-            if (!startDate || !endDate) {
-                // all time
-                result = await API.graphql(graphqlOperation(queryClassroomWithAllLessons, {
-                    id: organizationId,
-                    cid: selectedClassroom.id
-                }));
-            }
-            else {
-                // time period
-                result = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
-                    id: organizationId,
-                    cid: selectedClassroom.id,
-                    ge: format(startDate, 'yyyy-MM-dd'),
-                    le: format(endDate, 'yyyy-MM-dd')
-                }));
-            }
+            result = await API.graphql(graphqlOperation(queryClassroom, {
+                id: organizationId,
+                cid: selectedClassroom.id
+            }));
         }
         let terraIds = terraIdsForClassrooms(result.data.getOrganization);
         // set number of members (sum the number of members in each class)
@@ -510,9 +331,6 @@ const StepsDashboard = () => {
                 setStartDate(subYears(new Date(), 1));
                 setEndDate(new Date());
                 break;
-            //case 'none':
-            //    setStartDate(null);
-            //    setEndDate(null);
         }
     };
 
@@ -717,6 +535,14 @@ const StepsDashboard = () => {
                     <Grid item xs={12}>
                         {last7DaysAverageDailySteps != null ?
                             <StepsDailyBarChart data={last7DaysAverageDailySteps}/>
+                            :
+                            <Skeleton height={'760px'}/>
+                        }
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        {last7DaysAverageDailySteps != null ?
+                            <StepsLeagueBarChart/>
                             :
                             <Skeleton height={'760px'}/>
                         }
