@@ -108,6 +108,7 @@ const StepsDashboard = () => {
     const [averageDailySteps, setAverageDailySteps] = useState<number | null>(null);
     const [schoolAverage, setSchoolAverage] = useState<number | null>(null);
     const [last7DaysAverageDailySteps, setLast7DaysAverageDailySteps] = useState<any[] | null>(null);
+    const [leagueTableSteps, setLeagueTableSteps] = useState<any[] | null>(null);
 
     const columns: GridColDef[] = [
         {field: 'id', flex: 0.2, headerName: 'Id', hide: true},
@@ -244,6 +245,20 @@ const StepsDashboard = () => {
         };
         wearablesData = await getWearablesData(requestBody);
         setLast7DaysAverageDailySteps(wearablesData?.data ?? []);
+        // set league table steps
+        requestBody = {
+            "idList": terraIds,
+            "grouping": "user",
+            "category": "daily",
+            "subtype": "steps",
+            "period": "millennium",
+            "startDate": format(startDate, "yyyy-MM-dd"),
+            "endDate": format(endDate, "yyyy-MM-dd"),
+            "returnType": "average"
+        };
+        wearablesData = await getWearablesData(requestBody);
+        wearablesData?.data?.sort((a: any, b: any) => a.value - b.value);
+        setLeagueTableSteps(wearablesData?.data?.slice(-10).map((item: any) => ({name: nameForTerraId(item.terraId, result.data.getOrganization), value: item.value})) ?? []);
 
         setOrganization(result.data.getOrganization);
         setLoading(false);
@@ -265,6 +280,7 @@ const StepsDashboard = () => {
         setAverageDailySteps(null);
         setSchoolAverage(null);
         setLast7DaysAverageDailySteps(null);
+        setLeagueTableSteps(null);
     };
 
     const terraIdsForClassrooms = (organization: Organization) => {
@@ -295,17 +311,18 @@ const StepsDashboard = () => {
         return users;
     };
 
-    const namesForClassrooms = (organization: Organization) => {
-        let names: string[] = [];
+    const nameForTerraId = (terraId: any, organization: Organization) => {
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
-        classrooms.forEach((classroom: any) => {
+        for (let classroom of classrooms) {
             let members = classroom.members.items;
-            members.forEach((member: any) => {
-                let name: string = member.userInOrganization.user.firstName + " " + member.userInOrganization.user.lastName;
-                names.push(name);
-            });
-        });
-        return names;
+            for (let member of members) {
+                let theUser = member.userInOrganization.user;
+                if (theUser.terraId == terraId) {
+                    return theUser.firstName + " " + theUser.lastName;
+                }
+            }
+        }
+        return "";
     };
 
     const handleClassroomChange = (event: SelectChangeEvent) => {
@@ -541,10 +558,10 @@ const StepsDashboard = () => {
                     </Grid>
 
                     <Grid item xs={12}>
-                        {last7DaysAverageDailySteps != null ?
-                            <StepsLeagueBarChart/>
+                        {leagueTableSteps != null ?
+                            <StepsLeagueBarChart data={leagueTableSteps} />
                             :
-                            <Skeleton height={'760px'}/>
+                            <Skeleton height={'350px'}/>
                         }
                     </Grid>
 
