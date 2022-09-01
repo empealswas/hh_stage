@@ -170,12 +170,12 @@ const SectionOverview = () => {
                                 <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
                                         to={'steps'}
                                         variant={'contained'}>Steps Dashboard</Button>
-                                <Button component={RouterLink} startIcon={<Iconify icon={'ion:fitness-outline'}/>}
-                                        to={'activity'}
-                                        variant={'contained'}>Wearables Dashboard</Button>
                                 <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
                                         to={'dashboard'}
                                         variant={'contained'}>Activity Dashboard</Button>
+                                <Button component={RouterLink} startIcon={<Iconify icon={'ion:fitness-outline'}/>}
+                                        to={'activity'}
+                                        variant={'contained'}>Comparison Dashboard</Button>
                             </>
                         </Can>
                     </>

@@ -83,24 +83,54 @@ const ActivityDashboard = () => {
     const [selectedPeriod, setSelectedPeriod] = useState('week');
     const [startDate, setStartDate] = React.useState<Date | null>(subDays(new Date(), 6));
     const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+    const [selectedSeriesData, setSelectedSeriesData] = useState('Steps');
+    const [loading, setLoading] = useState(false);
 
     const [userSelectionModels, setUserSelectionModels] = useState<any>(null);
     
-    const [userStepsData, setUserStepsData] = useState<any>(null);
-    const [averageStepsData, setAverageStepsData] = useState<any>(null);
-    //const [averageSleepData, setAverageSleepData] = useState<any>(null);
+    const [seriesData, setSeriesData] = useState<any>(null);
 
     const theme = useTheme();
     let basedOptions = BaseOptionChart();
 
+    const getChartDates = () => {
+        if (seriesData == null || seriesData.length == 0) return [];
+        let dateCount = seriesData[1].data.length;
+        if (dateCount == 0) {
+            return [];
+        }
+        else {
+            let currentDate = new Date();
+            let dates = [];
+            for (let i = 0; i < dateCount; i++) {
+                dates.push(subDays(currentDate, dateCount - 1 - i));
+            }
+            return dates;
+        }
+    };
+
+    const getTooltipPrecision = () => {
+        switch (selectedSeriesData) {
+            case 'Steps' : return 0;
+            case 'Sleep' : return 1;
+            case 'Active' : return 0;
+        }
+    };
+
+    const getTooltipUnit = () => {
+        switch (selectedSeriesData) {
+            case 'Steps' : return 'steps';
+            case 'Sleep' : return 'hours';
+            case 'Active' : return 'minutes';
+        }
+    };
+
     const chartOptions: any = merge(basedOptions, {
         stroke: {width: [5, 3]},
-        colors: [theme.palette.success.light, theme.palette.warning.light],
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
-        labels: userStepsData?.map((value: any) =>
-            `${format(parseISO(value.date), "eee do")}`
-        ) ?? averageStepsData?.map((value: any) =>
-            `${format(parseISO(value.date), "eee do")} `),
+        labels: getChartDates().map((date: any) =>
+            `${format(date, "eee do")}`
+        ),
         yaxis: {
             labels: {
                 formatter: function (value: any) {
@@ -115,7 +145,7 @@ const ActivityDashboard = () => {
             y: {
                 formatter: (y: any) => {
                     if (typeof y !== 'undefined') {
-                        return `${y?.toFixed(0) ?? 'none'} steps`;
+                        return `${y?.toFixed(getTooltipPrecision()) ?? 'none'} ${getTooltipUnit()}`;
                     }
                     return y;
                 }
@@ -128,7 +158,7 @@ const ActivityDashboard = () => {
         if (terraId) {
             let selected = false;
             for (let i = 0; i < userSelectionModels.length; i++) {
-                if (terraId == userSelectionModels[i].terraId) {
+                if (terraId == userSelectionModels[i].user.terraId) {
                     selected = userSelectionModels[i].selected;
                     break;
                 }
@@ -171,11 +201,12 @@ const ActivityDashboard = () => {
 
     const setAllUsersSelected = (selected: any) => {
         let models = [];
-        let users = selectedClassroom?.members?.items ?? [];
-        for (let i = 0; i < users.length; i++) {
-            let terraId = users[i]?.userInOrganization?.user?.terraId ?? null;
+        let members = selectedClassroom?.members?.items ?? [];
+        for (let i = 0; i < members.length; i++) {
+            let theUser = members[i]?.userInOrganization.user;
+            let terraId = theUser?.terraId ?? null;
             if (terraId) {
-                models.push({terraId, selected});
+                models.push({user: theUser, selected});
             }
         }
         setUserSelectionModels(models);
@@ -184,19 +215,11 @@ const ActivityDashboard = () => {
     const checkboxChange = (event: any) => {
         let terraId = event.target.id;
         for (let i = 0; i < userSelectionModels.length; i++) {
-            if (terraId == userSelectionModels[i].terraId) {
+            if (terraId == userSelectionModels[i].user.terraId) {
                 userSelectionModels[i].selected = event.target.checked;
                 break;
             }
         }
-    };
-
-    const deselectButtonClick = () => {
-        setAllUsersSelected(false);
-    };
-
-    const selectButtonClick = () => {
-        setAllUsersSelected(true);
     };
 
     const handleSelectedTeamChange = (event: SelectChangeEvent) => {
@@ -204,7 +227,7 @@ const ActivityDashboard = () => {
             setSelectedClassroom(null);
             return;
         }
-        setSelectedClassroom(classrooms?.find(item => item.id === event.target.value as string) ?? null)
+        setSelectedClassroom(classrooms?.find((item: any) => item.id === event.target.value as string) ?? null)
     };
 
     const handleSelectedPeriodChange = (event: SelectChangeEvent) => {
@@ -221,6 +244,10 @@ const ActivityDashboard = () => {
         }
     };
 
+    const handleSelectedSeriesDataChange = (event: SelectChangeEvent) => {
+        setSelectedSeriesData(event.target.value as string);
+    };
+
     const reset = async () => {
         setOrganization(null);
         setClassrooms(null);
@@ -228,9 +255,10 @@ const ActivityDashboard = () => {
         setSelectedPeriod('week');
         setStartDate(subDays(new Date(), 6));
         setEndDate(new Date());
-        setUserStepsData(null);
-        setAverageStepsData(null);
-        //setAverageSleepData(null);
+        setSelectedSeriesData('Steps');
+        setLoading(false);
+        setUserSelectionModels(null);
+        setSeriesData(null);
         getOrganizationAsync();
     }
 
@@ -245,13 +273,177 @@ const ActivityDashboard = () => {
         setClassrooms(theClassrooms);
     }
 
+    const getUserStepsData = async (terraId: any) => {
+        const data: TerraWearables = {
+            idList: [terraId],
+            grouping: "user",
+            category: "daily",
+            subtype: "steps",
+            period: "day",
+            startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
+            endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
+            returnType: "total"
+        };
+        const wearablesResult: any = await getWearablesData(data);
+        return wearablesResult?.data ?? [];
+    }
+
+    const getAverageStepsData = async (classroomTerraIds: any) => {
+        const data: TerraWearables = {
+            idList: classroomTerraIds,
+            grouping: "group",
+            category: "daily",
+            subtype: "steps",
+            period: "day",
+            startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
+            endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
+            returnType: "average"
+        };
+        const wearablesResult: any = await getWearablesData(data);
+        return wearablesResult?.data ?? [];
+    }
+
+    const getStepsSeriesData = async (terraId: any, classroomTerraIds: any) => {
+        let theSeriesData = [];
+        // push current-users' steps data to series
+        if (terraId) {
+            let userStepsData = await getUserStepsData(terraId);
+            theSeriesData.push({data: userStepsData?.map((item: any) => item.value) ?? [], name: 'For User', type: 'line'});
+        }
+        // push average steps data to series
+        if (classroomTerraIds.length > 0) {
+            let averageStepsData = await getAverageStepsData(classroomTerraIds);
+            theSeriesData.push({data: averageStepsData?.map((item: any) => item.value) ?? [], name: 'Average For Team', type: 'line'});
+        }
+        // push selected-users' steps data to series
+        for (let i = 0; i < userSelectionModels.length; i++) {
+            if (userSelectionModels[i].selected) {
+                let theUser = userSelectionModels[i].user;
+                let name = theUser.firstName + " " + theUser.lastName;
+                let userStepsData = await getUserStepsData(theUser.terraId);
+                theSeriesData.push({data: userStepsData?.map((item: any) => item.value) ?? [], name, type: 'line'});
+            }
+        }
+        return theSeriesData;
+    };
+
+    const getUserSleepData = async (terraId: any) => {
+        const data: TerraWearables = {
+            idList: [terraId],
+            grouping: "user",
+            category: "sleep",
+            subtype: "durationTotal",
+            period: "day",
+            startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
+            endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
+            returnType: "total"
+        };
+        const wearablesResult: any = await getWearablesData(data);
+        return wearablesResult?.data ?? [];
+    }
+
+    const getAverageSleepData = async (classroomTerraIds: any) => {
+        const data: TerraWearables = {
+            idList: classroomTerraIds,
+            grouping: "group",
+            category: "sleep",
+            subtype: "durationTotal",
+            period: "day",
+            startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
+            endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
+            returnType: "average"
+        };
+        const wearablesResult: any = await getWearablesData(data);
+        return wearablesResult?.data ?? [];
+    }
+
+    const getSleepSeriesData = async (terraId: any, classroomTerraIds: any) => {
+        let theSeriesData = [];
+        // push current-users' sleep data to series
+        if (terraId) {
+            let userSleepData = await getUserSleepData(terraId);
+            theSeriesData.push({data: userSleepData?.map((item: any) => item.value / 60 / 60) ?? [], name: 'For User', type: 'line'});
+        }
+        // push average sleep data to series
+        if (classroomTerraIds.length > 0) {
+            let averageSleepData = await getAverageSleepData(classroomTerraIds);
+            theSeriesData.push({data: averageSleepData?.map((item: any) => item.value / 60 / 60) ?? [], name: 'Average For Team', type: 'line'});
+        }
+        // push selected-users' sleep data to series
+        for (let i = 0; i < userSelectionModels.length; i++) {
+            if (userSelectionModels[i].selected) {
+                let theUser = userSelectionModels[i].user;
+                let name = theUser.firstName + " " + theUser.lastName;
+                let userSleepData = await getUserSleepData(theUser.terraId);
+                theSeriesData.push({data: userSleepData?.map((item: any) => item.value / 60 / 60) ?? [], name, type: 'line'});
+            }
+        }
+        return theSeriesData;
+    };
+
+    const getUserActiveData = async (terraId: any) => {
+        const data: TerraWearables = {
+            idList: [terraId],
+            grouping: "user",
+            category: "activity",
+            subtype: "duration",
+            period: "day",
+            startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
+            endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
+            returnType: "total"
+        };
+        const wearablesResult: any = await getWearablesData(data);
+        return wearablesResult?.data ?? [];
+    }
+
+    const getAverageActiveData = async (classroomTerraIds: any) => {
+        const data: TerraWearables = {
+            idList: classroomTerraIds,
+            grouping: "group",
+            category: "activity",
+            subtype: "duration",
+            period: "day",
+            startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
+            endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
+            returnType: "average"
+        };
+        const wearablesResult: any = await getWearablesData(data);
+        return wearablesResult?.data ?? [];
+    }
+
+    const getActiveSeriesData = async (terraId: any, classroomTerraIds: any) => {
+        let theSeriesData = [];
+        // push current-users' active data to series
+        if (terraId) {
+            let userActiveData = await getUserActiveData(terraId);
+            theSeriesData.push({data: userActiveData?.map((item: any) => item.value / 60) ?? [], name: 'For User', type: 'line'});
+        }
+        // push average active data to series
+        if (classroomTerraIds.length > 0) {
+            let averageActiveData = await getAverageActiveData(classroomTerraIds);
+            theSeriesData.push({data: averageActiveData?.map((item: any) => item.value / 60) ?? [], name: 'Average For Team', type: 'line'});
+        }
+        // push selected-users' active data to series
+        for (let i = 0; i < userSelectionModels.length; i++) {
+            if (userSelectionModels[i].selected) {
+                let theUser = userSelectionModels[i].user;
+                let name = theUser.firstName + " " + theUser.lastName;
+                let userActiveData = await getUserActiveData(theUser.terraId);
+                theSeriesData.push({data: userActiveData?.map((item: any) => item.value / 60) ?? [], name, type: 'line'});
+            }
+        }
+        return theSeriesData;
+    };
+
     const getResults = async () => {
+        setLoading(true);
         if (!classrooms || !selectedClassroom) {
+            setLoading(false);
             return;
         }
-        // get current-user terra id
-        let terraId: any = "";
         let users = selectedClassroom?.members?.items ?? [];
+        // get current-user terra id
+        let terraId: any = null;
         for (let i = 0; i < users.length; i++) {
             let aUser = users[i]?.userInOrganization?.user;
             if (user?.email == aUser?.id) {
@@ -259,86 +451,39 @@ const ActivityDashboard = () => {
                 break;
             }
         }
-        // get terra ids
-        let terraIds: any = [];
-        for (let i = 0; i < userSelectionModels.length; i++) {
-            if (userSelectionModels[i].selected) {
-                terraIds.push(userSelectionModels[i].terraId);
+        // get classroom terraIds
+        let classroomTerraIds: any = [];
+        for (let i = 0; i < users.length; i++) {
+            let terraId = users[i]?.userInOrganization?.user?.terraId ?? null;
+            if (terraId != null) {
+                classroomTerraIds.push(terraId);
             }
         }
-        setUserStepsData(null);
-        setAverageStepsData(null);
-        //setAverageSleepData(null);
-
-        async function getUserStepsData() {
-            const data: TerraWearables = {
-                idList: [terraId],
-                grouping: "user",
-                category: "daily",
-                subtype: "steps",
-                period: "day",
-                startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
-                endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
-                returnType: "total"
-            };
-            const wearablesResult: any = await getWearablesData(data);
-            setUserStepsData(wearablesResult?.data ?? []);
+        // set series data
+        let theSeriesData = null;
+        switch (selectedSeriesData) {
+            case 'Steps' : theSeriesData = await getStepsSeriesData(terraId, classroomTerraIds); break;
+            case 'Sleep' : theSeriesData = await getSleepSeriesData(terraId, classroomTerraIds); break;
+            case 'Active' : theSeriesData = await getActiveSeriesData(terraId, classroomTerraIds); break;
         }
-
-        async function getAverageStepsData() {
-            const data: TerraWearables = {
-                idList: terraIds,
-                grouping: "group",
-                category: "daily",
-                subtype: "steps",
-                period: "day",
-                startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
-                endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
-                returnType: "average"
-            };
-            const wearablesResult: any = await getWearablesData(data);
-            setAverageStepsData(wearablesResult?.data ?? []);
-        }
-
-        /*
-        async function getAverageSleep() {
-            const data: TerraWearables = {
-                idList: terraIds,
-                grouping: "group",
-                category: "sleep",
-                subtype: "durationTotal",
-                period: "day",
-                startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
-                endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
-                returnType: "average"
-            };
-            const wearablesResult: any = await getWearablesData(data);
-            setAverageSleepData(wearablesResult?.data ?? []);
-        }
-        */
-
-        if (terraId) {
-            getUserStepsData();
-        }
-        getAverageStepsData();
-        //getAverageSleep()
+        setSeriesData(theSeriesData);
+        setLoading(false);
     }
+
+    useEffect(() => {
+        getOrganizationAsync();
+        return () => {};
+    }, []);
+
+    useEffect(() => {
+        getResults();
+        return () => {};
+    }, [classrooms, selectedSeriesData]);
 
     useEffect(() => {
         setAllUsersSelected(false);
         return () => {};
     }, [selectedClassroom]);
-
-    useEffect(() => {
-        getResults();
-        return () => {};
-    }, [classrooms]);
-
-    useEffect(() => {
-        reset();
-        getOrganizationAsync();
-        return () => {};
-    }, [organizationId]);
 
     return (
         <Page title="General: Analytics">
@@ -359,7 +504,7 @@ const ActivityDashboard = () => {
                                         label="Team"
                                         onChange={handleSelectedTeamChange}
                                     >
-                                        {classrooms.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
+                                        {classrooms?.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
                                     </Select>
                                 </FormControl>
                                 <FormControl sx={{minWidth: 150}}>
@@ -399,10 +544,10 @@ const ActivityDashboard = () => {
                                         inputFormat={'dd MMM yyyy'}
                                     />
                                 </LocalizationProvider>
-                                <LoadingButton loading={!organization} variant={'contained'}
-                                               onClick={getResults}>Apply</LoadingButton>
+                                <LoadingButton loading={loading} variant={'contained'}
+                                               onClick={() => getResults()}>Apply</LoadingButton>
                                 <LoadingButton loading={!organization} variant={'contained'} color={'secondary'}
-                                               onClick={reset}>Reset</LoadingButton>
+                                               onClick={() => reset()}>Reset</LoadingButton>
                             </Stack>
                         </Grid>
                     }
@@ -425,27 +570,33 @@ const ActivityDashboard = () => {
                                             autoHeight={true}
                                         />
                                     </div>
-                                    {/*
-                                    <div style={{display:'flex', justifyContent:'flex-end'}}>
-                                        <Button variant='contained' onClick={() => deselectButtonClick()}>Deselect all</Button>
-                                        <Button variant='contained' style={{marginLeft:8}} onClick={() => selectButtonClick()}>Select all</Button>
-                                    </div>
-                                    */}
                                 </AccordionDetails>
                             </Accordion>
                         </Grid>
                     }
+                    <Grid item xs={12} style={{marginTop:70}}>
+                        <FormControl sx={{minWidth: 150}}>
+                            <InputLabel id="demo-simple-series-data-label">Type</InputLabel>
+                            <Select
+                                labelId="demo-simple-series-data-label"
+                                id="demo-simple-series-data-select"
+                                value={selectedSeriesData}
+                                label="Type"
+                                onChange={(event) => handleSelectedSeriesDataChange(event)}
+                            >
+                                <MenuItem value={'Steps'}>Steps</MenuItem>
+                                <MenuItem value={'Sleep'}>Sleep</MenuItem>
+                                <MenuItem value={'Active'}>Active</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
                     <Grid item xs={12}>
-                        {userStepsData && averageStepsData ?
+                        {seriesData ?
                             <Card>
-                                <CardHeader title="Steps" subheader={''}/>
                                 <Box sx={{p: 3, pb: 1}} dir="ltr">
                                     <ReactApexChart
                                         type="line"
-                                        series={[
-                                            {data: userStepsData?.map((item: any) => item.value) ?? [], name: 'For User', type: 'line'},
-                                            {data: averageStepsData?.map((item: any) => item.value) ?? [], name: 'Average For Selected Users', type: 'line'}
-                                        ]}
+                                        series={seriesData}
                                         options={chartOptions}
                                         height={364}
                                     />
@@ -455,18 +606,6 @@ const ActivityDashboard = () => {
                             <ActivtityChartSkeleton/>
                         }
                     </Grid>
-                    {/*
-                    <Grid item xs={12}>
-                        {averageSleepData ?
-                            <SleepActivityChart
-                                labels={averageSleepData.map((item: any) => format(parseISO(item.date), 'yyyy-MM-dd'))}
-                                values={averageSleepData.map((item: any) => item.value / 60.0 / 60.0)}
-                            />
-                            :
-                            <ActivtityChartSkeleton/>
-                        }
-                    </Grid>
-                    */}
                 </Grid>
             </Container>
         </Page>
