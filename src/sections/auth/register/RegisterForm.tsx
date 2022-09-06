@@ -20,6 +20,8 @@ type FormValuesProps = {
   password: string;
   firstName: string;
   lastName: string;
+  recoveryEmailAddress: string;
+  dob: string;
   afterSubmit?: string;
 };
 
@@ -36,6 +38,8 @@ export default function RegisterForm() {
     lastName: Yup.string().required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
+    recoveryEmailAddress: Yup.string().email('Recovery email address must be a valid email address').required('Recovery email address is required'),
+    dob: Yup.string().required('Date of birth is required')
   });
 
   const defaultValues = {
@@ -43,6 +47,8 @@ export default function RegisterForm() {
     lastName: '',
     email: '',
     password: '',
+    recoveryEmailAddress: '',
+    dob: ''
   };
 
   const methods = useForm<FormValuesProps>({
@@ -61,7 +67,7 @@ export default function RegisterForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       setErrorText('');
-      await register(data.email, data.password, data.firstName, data.lastName);
+      await register(data.email, data.password, data.firstName, data.lastName, data.recoveryEmailAddress, data.dob);
     } catch (error) {
       console.error(error);
       reset();
@@ -82,7 +88,12 @@ export default function RegisterForm() {
           <RHFTextField name="lastName" label="Last name" />
         </Stack>
 
-        <RHFTextField name="email" label="Email address" />
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <RHFTextField name="recoveryEmailAddress" label="Recovery email address" />
+          <RHFTextField name="dob" label="Date of Birth" placeholder="YYYY-MM-DD" />
+        </Stack>
+
+        <RHFTextField name="email" label="Username" placeholder="username@h.h" />
 
         <RHFTextField
           name="password"

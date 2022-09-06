@@ -83,7 +83,7 @@ export default function LoginForm() {
             <Stack spacing={3}>
                 {!!errorText && <Alert severity="error">{errorText}</Alert>}
 
-                <RHFTextField name="email" label="Email address"/>
+                <RHFTextField name="email" label="Username"/>
 
                 <RHFTextField
                     name="password"

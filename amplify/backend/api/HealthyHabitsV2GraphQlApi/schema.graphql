@@ -15,7 +15,8 @@ type User @model @auth(rules: [{allow: public, provider: iam}, {allow: public, p
     address: String,
     city: String,
     zipCode: String,
-
+    recoveryEmailAddress: String
+    dob: AWSDate
 }
 
 type UserIntervention
