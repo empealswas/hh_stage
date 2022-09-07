@@ -96,7 +96,7 @@ export default function RegisterForm() {
           <RHFTextField name="dob" label="Date of birth" placeholder="YYYY-MM-DD" />
         </Stack>
 
-        <RHFTextField name="email" label="Username" placeholder="username@h.h" />
+        <RHFTextField name="email" label="Username" placeholder="firstname.lastname@healthy.habits" />
 
         <RHFTextField
           name="password"
