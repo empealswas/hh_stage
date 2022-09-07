@@ -36,9 +36,9 @@ export default function RegisterForm() {
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('First name required'),
     lastName: Yup.string().required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    email: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
-    recoveryEmailAddress: Yup.string().email('Recovery email address must be a valid email address').required('Recovery email address is required'),
+    recoveryEmailAddress: Yup.string().required('Recovery email address is required'),
     dob: Yup.string().required('Date of birth is required')
   });
 
@@ -70,10 +70,13 @@ export default function RegisterForm() {
       await register(data.email, data.password, data.firstName, data.lastName, data.recoveryEmailAddress, data.dob);
     } catch (error) {
       console.error(error);
-      reset();
+      //reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);
-        setErrorText(error.message)
+        let message = error.message;
+        message = message.replace(/email address/g, "username");
+        message = message.replace(/email/g, "username");
+        setErrorText(message);
       }
     }
   };
@@ -90,7 +93,7 @@ export default function RegisterForm() {
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <RHFTextField name="recoveryEmailAddress" label="Recovery email address" />
-          <RHFTextField name="dob" label="Date of Birth" placeholder="YYYY-MM-DD" />
+          <RHFTextField name="dob" label="Date of birth" placeholder="YYYY-MM-DD" />
         </Stack>
 
         <RHFTextField name="email" label="Username" placeholder="username@h.h" />
