@@ -33,7 +33,7 @@ const ActivityWidgets = () => {
             <Grid item xs={12} md={4}>
                 {stepsData ?
                     <ActivityWidgetSummary title={'Todays\' Steps'}
-                                           total={stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0}
+                                           total={(stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0).toLocaleString()}
                                            percent={(((stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0) - (stepsData?.data[stepsData?.data?.length - 2]?.value ?? 0))) / (stepsData?.data[stepsData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
                                            chartData={stepsData.data.map((item: any) => item.value)}/>

@@ -54,7 +54,8 @@ export type AWSCognitoContextType = {
     firstName: string,
     lastName: string,
     recoveryEmailAddress: string,
-    dob: string
+    dob: string,
+    postcode: string
   ) => Promise<unknown>;
   logout: VoidFunction;
 };

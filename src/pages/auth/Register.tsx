@@ -122,7 +122,7 @@ export default function Register() {
               <Link underline="always" color="text.primary" href="#">
                 Terms of Service
               </Link>
-              {''}and{''}
+              {' '}and{' '}
               <Link underline="always" color="text.primary" href="#">
                 Privacy Policy
               </Link>
