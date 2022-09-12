@@ -177,7 +177,7 @@ const ChildActivitiesSummary = (props: {user: User}) => {
                                 <Grid container spacing={3}>
                                     <ActivityWidgets/>
                                     <Grid item xs={12} md={12} lg={12}>
-                                        <StepsChart userId={props.user.id}/>
+                                        <StepsChart user={props.user}/>
                                     </Grid>
                                     <Grid item xs={12} md={12} lg={12}>
                                         <SleepChart/>

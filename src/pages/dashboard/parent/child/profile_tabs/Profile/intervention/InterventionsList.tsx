@@ -77,7 +77,7 @@ const InterventionsList = (props: { user: User }) => {
         }
 
         setWeeklyAvgSteps(null);
-        result = await getInterventionWeeklyAvgSteps(props.user.terraId, subDays(new Date(), 7), new Date(), props.user.firstName);
+        result = await getInterventionWeeklyAvgSteps(props.user.terraId, subDays(new Date(), 6), new Date(), props.user.firstName);
         if (result.status == "success") {
             setWeeklyAvgSteps(result.data);
         }
