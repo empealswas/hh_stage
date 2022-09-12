@@ -307,20 +307,7 @@ const OrganizationDashboard = () => {
         return totalActivityTimeSum;
     };
 
-    const averageMembership = () => {
-        // sum the number of members in each class, then divide by the number of classes
-        if (allClassrooms == null) {
-            return 0;
-        }
-        else {
-            let memberSum = 0;
-            allClassrooms.forEach((classroom: any) => memberSum += classroom.members.items.length);
-            let length = allClassrooms.length;
-            if (length == 0) length = 1;
-            return memberSum / length;
-        }
-    };
-
+    /*
     const averageActivities = () => {
         // sum the number of PELessonRecords in each class, then divide by the number of classes
         if (allClassrooms == null) {
@@ -353,6 +340,7 @@ const OrganizationDashboard = () => {
             return totalActivityTimeSum / length;
         }
     };
+    */
 
     const usersByRewards = () => {
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
@@ -519,6 +507,10 @@ const OrganizationDashboard = () => {
                             }
                         </Grid>
 
+                    </Grid>
+
+                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organization != null ?
                                 <Card style={{backgroundColor:'#eeffee', border:'4px solid green'}}>
@@ -532,42 +524,12 @@ const OrganizationDashboard = () => {
                             }
                         </Grid>
 
-                    </Grid>
-
-                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
-
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {allClassrooms != null ?
-                                <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue'}}>
-                                    <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Average Membership</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.round(averageMembership())}</Typography>
-                                    </CardContent>
-                                </Card>
-                                :
-                                <CardSkeleton height={'135px'}/>
-                            }
-                        </Grid>
-
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {allClassrooms != null ?
-                                <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999'}}>
-                                    <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Average No. of Activities</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{averageActivities().toFixed(1)}</Typography>
-                                    </CardContent>
-                                </Card>
-                                :
-                                <CardSkeleton height={'135px'}/>
-                            }
-                        </Grid>
-
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {allClassrooms != null ?
+                            {organization != null ?
                                 <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Average Activity Time</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageActivityTime()) + " mins"}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}></Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}></Typography>
                                     </CardContent>
                                 </Card>
                                 :

@@ -72,12 +72,12 @@ export default function StepsChart(props: { user: User }) {
 
     const getResults = async () => {
         let theSeriesData = [];
-        // get user data
-        let terraId = props.user.terraId;
-        let userData = null;
-        if (terraId) userData = await getUserData(terraId);
         // push user data to series
-        theSeriesData.push({data: userData?.map((item: any) => item.value) ?? [], name: 'User', type: 'line'});
+        let terraId = props.user.terraId;
+        if (terraId) {
+            let userData = await getUserData(terraId);
+            theSeriesData.push({data: userData?.map((item: any) => item.value) ?? [], name: 'User', type: 'line'});
+        }
         // get average data for each organization
         let result: any = await API.graphql(graphqlOperation(userQuery, {id: props.user.id}));
         let organizations = result?.data?.getUser?.organizations?.items ?? [];
@@ -108,7 +108,7 @@ export default function StepsChart(props: { user: User }) {
 
     const getChartDates = () => {
         if (seriesData == null || seriesData.length == 0) return [];
-        let dateCount = seriesData[1].data.length;
+        let dateCount = seriesData[0].data?.length ?? 0;
         if (dateCount == 0) {
             return [];
         }

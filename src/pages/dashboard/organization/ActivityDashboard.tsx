@@ -95,7 +95,7 @@ const ActivityDashboard = () => {
 
     const getChartDates = () => {
         if (seriesData == null || seriesData.length == 0) return [];
-        let dateCount = seriesData[1].data.length;
+        let dateCount = seriesData[0].data?.length ?? 0;
         if (dateCount == 0) {
             return [];
         }
