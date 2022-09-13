@@ -15,7 +15,7 @@ import ActivityOrganizationLineChart from "./dashboard/ActivityOrganizationLineC
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
-import {compareAsc, format, parseISO, subDays, subMonths, subYears} from "date-fns";
+import {compareAsc, format, parseISO, subDays, subMonths, subYears, differenceInCalendarDays} from "date-fns";
 import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
@@ -216,9 +216,11 @@ const OrganizationDashboard = () => {
     const [startDate, setStartDate] = React.useState<Date | null>(subDays(new Date(), 6));
     const [endDate, setEndDate] = React.useState<Date | null>(new Date());
     const [loading, setLoading] = useState(false);
+    const [numberOfWeeks, setNumberOfWeeks] = useState(0);
 
     const [allClassrooms, setAllClassrooms] = useState<Classroom[] | null>(null);
     const [organization, setOrganization] = useState<Organization | null>(null);
+
 
     const loadSelectableClassrooms = async () => {
         const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
@@ -228,6 +230,8 @@ const OrganizationDashboard = () => {
 
     const getResults = async () => {
         setLoading(true);
+        let numberOfDays = differenceInCalendarDays(endDate as Date, startDate as Date) + 1;
+        setNumberOfWeeks(numberOfDays / 7);
         let result: any = null;
         if (selectedClassroom == null) {
             // all classrooms
@@ -307,40 +311,15 @@ const OrganizationDashboard = () => {
         return totalActivityTimeSum;
     };
 
-    /*
-    const averageActivities = () => {
-        // sum the number of PELessonRecords in each class, then divide by the number of classes
-        if (allClassrooms == null) {
-            return 0;
+    const averageWeeklyParticipation = () => {
+        // get average member time
+        let memberCount = numberOfMembers();
+        let averageMemberTime = 0;
+        if (memberCount > 0) {
+            averageMemberTime = totalActivityTime() / memberCount;
         }
-        else {
-            let activitiesSum = 0;
-            allClassrooms.forEach((classroom: any) => activitiesSum += classroom.LessonRecords.items.length);
-            let length = allClassrooms.length;
-            if (length == 0) length = 1;
-            return activitiesSum / length;
-        }
+        return averageMemberTime / numberOfWeeks;
     };
-
-    const averageActivityTime = () => {
-        // sum the duration * attendances in each PELessonRecord in each class, then divide by the number of classes
-        if (allClassrooms == null) {
-            return 0;
-        }
-        else {
-            let totalActivityTimeSum = 0;
-            allClassrooms.forEach((classroom: any) => {
-                let lessonRecords = classroom.LessonRecords.items;
-                lessonRecords.forEach((lessonRecord: any) => {
-                    totalActivityTimeSum += lessonRecord.duration * lessonRecord.Attendances.items.length;
-                });
-            });
-            let length = allClassrooms.length;
-            if (length == 0) length = 1;
-            return totalActivityTimeSum / length;
-        }
-    };
-    */
 
     const usersByRewards = () => {
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
@@ -481,7 +460,7 @@ const OrganizationDashboard = () => {
 
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                        <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                             {organization != null ?
                                 <Card style={{backgroundColor:'#ffeeee', border:'4px solid red'}}>
                                     <CardContent>
@@ -494,7 +473,7 @@ const OrganizationDashboard = () => {
                             }
                         </Grid>
 
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                        <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                             {organization != null ?
                                 <Card style={{backgroundColor:'#ffffee', border:'4px solid #ff7700'}}>
                                     <CardContent>
@@ -511,9 +490,9 @@ const OrganizationDashboard = () => {
 
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                        <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green'}}>
+                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green', height:'200px', display:'flex', justifyContent:'center', alignItems:'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Activity Time</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{totalActivityTime().toLocaleString() + " mins"}</Typography>
@@ -524,12 +503,13 @@ const OrganizationDashboard = () => {
                             }
                         </Grid>
 
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                        <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet'}}>
+                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid #bb00bb', height:'200px', display:'flex', justifyContent:'center', alignItems:'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}></Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}></Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average Weekly Participation</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageWeeklyParticipation()) + ' mins'}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor((averageWeeklyParticipation() / 120) * 100) + '% of Target'}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
