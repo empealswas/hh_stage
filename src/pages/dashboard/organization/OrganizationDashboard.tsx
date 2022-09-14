@@ -19,7 +19,7 @@ import {compareAsc, format, parseISO, subDays, subMonths, subYears, differenceIn
 import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
-import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
+import TotalActivitiesBarchart from "./dashboard/TotalActivitiesBarchart";
 
 const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
@@ -291,7 +291,7 @@ const OrganizationDashboard = () => {
     };
 
     const numberOfActivities = () => {
-        // sum the number of PELessonRecords in each class
+        // sum the number of LessonRecords in each class
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
         let activitiesSum = 0;
         classrooms.forEach((classroom: any) => activitiesSum += classroom.LessonRecords.items.length);
@@ -299,7 +299,7 @@ const OrganizationDashboard = () => {
     };
 
     const totalActivityTime = () => {
-        // sum the duration * attendances in each PELessonRecord in each class
+        // sum the duration * attendances in each LessonRecord in each class
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
         let totalActivityTimeSum = 0;
         classrooms.forEach((classroom: any) => {
@@ -321,6 +321,7 @@ const OrganizationDashboard = () => {
         return averageMemberTime / numberOfWeeks;
     };
 
+    /*
     const usersByRewards = () => {
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
         const lessonRecords = classrooms.flatMap(value => value?.LessonRecords?.items).sort((a, b) => {
@@ -342,6 +343,31 @@ const OrganizationDashboard = () => {
             }
         }
         return usersByTrophies.sort((a, b) =>  b.attendances.length - a.attendances.length).slice(0, 5);
+    };
+    */
+
+    const totalActivities = () => {
+        // increment the total for each LessonRecord in each classroom
+        let activities: any[] = [];
+        let classrooms: any[] = organization?.Classrooms?.items ?? [];
+        classrooms.forEach((classroom: any) => {
+            let lessonRecords = classroom.LessonRecords.items;
+            lessonRecords.forEach((lessonRecord: any) => {
+                // if lesson title exists in activities, then increment the activity total for this title
+                let title = lessonRecord.activity;
+                let exists = false;
+                for (let activity of activities) {
+                    if (activity.title == title) {
+                        activity.total += 1;
+                        exists = true;
+                        break;
+                    }
+                }
+                // if lesson title does not exist, then push a new activity
+                if (!exists) activities.push({title, total: 1});
+            });
+        });
+        return activities;
     };
 
     const handleClassroomChange = (event: SelectChangeEvent) => {
@@ -492,7 +518,7 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green', height:'200px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Activity Time</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{totalActivityTime().toLocaleString() + " mins"}</Typography>
@@ -505,11 +531,10 @@ const OrganizationDashboard = () => {
 
                         <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                             {organization != null ?
-                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid #bb00bb', height:'200px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid #bb00bb'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Weekly Participation</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageWeeklyParticipation()) + ' mins'}</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor((averageWeeklyParticipation() / 120) * 100) + '% of Target'}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageWeeklyParticipation()) + " mins, (" + Math.floor((averageWeeklyParticipation() / 120) * 100) + "%)"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -529,7 +554,7 @@ const OrganizationDashboard = () => {
 
                     <Grid item xs={12}>
                         {organization != null ?
-                            <TopUsersByRewardsBarchart data={usersByRewards()}/>
+                            <TotalActivitiesBarchart data={totalActivities()}/>
                             :
                             <ActivtityChartSkeleton/>
                         }
