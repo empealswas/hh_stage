@@ -58,9 +58,8 @@ const BoxStyle = styled(CardActionArea)(({theme}) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: theme.palette.text.disabled,
-    border: `solid 1px ${theme.palette.grey[500_12]}`,
-    borderRadius: Number(theme.shape.borderRadius) * 1.25,
+    border: 'solid 2px black',
+    borderRadius: Number(theme.shape.borderRadius),
 }));
 const AttendanceSheetModal = (props: { lessonId: string }) => {
     const [open, setOpen] = React.useState(false);
@@ -76,23 +75,25 @@ const AttendanceSheetModal = (props: { lessonId: string }) => {
 
     return (
         <>
-            <BoxStyle
-                sx={{
-                    padding: 5,
-                    width: 100
-                }}
-                onClick={handleOpen}
-            >
-                <Stack direction={'column'} alignItems={'center'} justifyContent={'center'}>
-                    <Iconify
-                        icon={'lucide:sheet'}
-                        width={28}
-                        height={28}
-                    />
-                    <Typography variant={'subtitle1'}>Attendance sheet</Typography>
-                </Stack>
-                <BoxMask value={'ltr'}/>
-            </BoxStyle>
+            <Container style={{display: 'flex', justifyContent: 'center'}}>
+                <BoxStyle
+                    sx={{
+                        padding: 5,
+                        width: 100
+                    }}
+                    onClick={handleOpen}
+                >
+                    <Stack direction={'column'} alignItems={'center'} justifyContent={'center'}>
+                        <Iconify
+                            icon={'lucide:sheet'}
+                            width={28}
+                            height={28}
+                        />
+                        <Typography variant={'subtitle1'}>Attendance sheet</Typography>
+                    </Stack>
+                    <BoxMask value={'ltr'}/>
+                </BoxStyle>
+            </Container>
             <Dialog fullScreen open={open} onClose={handleClose}>
                 <Container maxWidth={settings.themeStretch ? false: 'lg'}>
 
