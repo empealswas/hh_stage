@@ -12,7 +12,7 @@ import {
 } from "../../../../API";
 import {createAttendance, createClassroomLesson, updateAttendance, updateClassroomLesson} from 'src/graphql/mutations';
 import {Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select, Stack} from "@mui/material";
-import {DataGrid, GridColDef, GridToolbar, GridValueGetterParams} from "@mui/x-data-grid";
+import {DataGrid, GridColDef, GridToolbar, GridValueGetterParams, GridSelectionModel, GRID_CHECKBOX_SELECTION_COL_DEF} from "@mui/x-data-grid";
 import Iconify from "../../../Iconify";
 import useAuth from "../../../../hooks/useAuth";
 import {renderRatingEditInputCell, renderReward} from "./Reward";
@@ -202,6 +202,7 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
     const [completeLessonLoading, setCompleteLessonLoading] = useState(false);
 
     const [pupils, setPupils] = useState<null | AttendanceOfUser[]>(null);
+    const [selectionModel, setSelectionModel] = React.useState<GridSelectionModel>([]);
     const setSelectedClassroomData = (settings: GridConfigOptions, lessonRecord: PELessonRecord) => {
         setSelectedClassroom(settings.selectedClassroom);
         setSelectedRole(settings.selectedUserRole);
@@ -241,6 +242,15 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
         console.log('classroomDetails', classroomDetails);
     }
 
+    const getSelectionModel = (pupils: AttendanceOfUser[]) => {
+        let theSelectionModel: GridSelectionModel = [];
+        for (let pupil of pupils) {
+            if (pupil.present) {
+                theSelectionModel.push(pupil.id);
+            }
+        }
+        setSelectionModel(theSelectionModel);
+    };
 
     const getAttendance = async (members: UserInOrganization[], lessonRecordId: string) => {
         return Promise.resolve(await Promise.all(members.map(async (member) => {
@@ -288,9 +298,48 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
             });
         console.log(members);
         const pupilsAttendance = await getAttendance(members, lessonRecordId) as AttendanceOfUser[];
-
         setPupils(pupilsAttendance);
+        getSelectionModel(pupilsAttendance);
     }
+
+    const updateAttendances = (theSelectionModel: any) => {
+        if (pupils == null) return;
+        for (let pupil of pupils) {
+            // if pupil is selected, then update pupils' present field if necessary
+            let id = pupil.id;
+            let selected = false;
+            for (let selectedId of theSelectionModel) {
+                if (selectedId == id) {
+                    // if pupil is not present, then set as present
+                    if (!pupil.present) {
+                        pupil.present = true;
+                        API.graphql(graphqlOperation(updateAttendance, {
+                            input: {
+                                id: pupil.attendanceId,
+                                present: true
+                            }
+                        }))
+                    }
+                    selected = true;
+                    break;
+                }
+            }
+            // if pupil is not selected, then update pupils' present field if necessary
+            if (!selected) {
+                // if pupil is present, then set as not present
+                if (pupil.present) {
+                    pupil.present = false;
+                    API.graphql(graphqlOperation(updateAttendance, {
+                        input: {
+                            id: pupil.attendanceId,
+                            present: false
+                        }
+                    }))
+                }
+            }
+        }
+    };
+
     const columns: GridColDef[] = [
         {field: 'id', headerName: 'ID', flex: 0.5},
         {
@@ -319,6 +368,11 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                 }`,
         },
         {
+            ...GRID_CHECKBOX_SELECTION_COL_DEF,
+            width: 100,
+        },
+        /*
+        {
             field: 'present',
             headerName: 'Present',
             headerAlign: 'center',
@@ -337,6 +391,7 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
             renderEditCell: renderRatingEditInputCell,
             renderCell: renderReward
         }
+        */
     ];
 
     const handleApplyClick = (settings: GridConfigOptions) => {
@@ -386,6 +441,11 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                 autoHeight
                 rowsPerPageOptions={[5]}
                 loading={classrooms === null || pupils === null}
+                onSelectionModelChange={(newSelectionModel) => {
+                    setSelectionModel(newSelectionModel);
+                    updateAttendances(newSelectionModel);
+                }}
+                selectionModel={selectionModel}
                 components={{
                     Toolbar: GridToolbar,
                     LoadingOverlay: CustomLoadingOverlay,
@@ -394,7 +454,7 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                 onCellEditCommit={(params, event, details) => {
                     const attendanceOfPupil = pupils?.find(pupil => pupil.id === params.id) as AttendanceOfUser;
                     console.log(attendanceOfPupil);
-                    console.log(params)
+                    console.log(params);
                     const res = API.graphql(graphqlOperation(updateAttendance, {
                         input: {
                             id: attendanceOfPupil.attendanceId,
@@ -411,6 +471,7 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                     // setData(prevState => [...data]);
                 }}
                 disableSelectionOnClick
+                checkboxSelection
             />
         </>
     );
