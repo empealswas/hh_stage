@@ -490,7 +490,7 @@ const OrganizationDashboard = () => {
                             {organization != null ?
                                 <Card style={{backgroundColor:'#ffeeee', border:'4px solid red'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Number of Members</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Participants</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{numberOfMembers()}</Typography>
                                     </CardContent>
                                 </Card>
@@ -503,7 +503,7 @@ const OrganizationDashboard = () => {
                             {organization != null ?
                                 <Card style={{backgroundColor:'#ffffee', border:'4px solid #ff7700'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Number of Activities</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Activities</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{numberOfActivities()}</Typography>
                                     </CardContent>
                                 </Card>
