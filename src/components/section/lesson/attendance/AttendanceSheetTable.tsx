@@ -11,7 +11,7 @@ import {
     UserInOrganization, UserRole
 } from "../../../../API";
 import {createAttendance, createClassroomLesson, updateAttendance, updateClassroomLesson} from 'src/graphql/mutations';
-import {Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select, Stack} from "@mui/material";
+import {Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
 import {DataGrid, GridColDef, GridToolbar, GridValueGetterParams, GridSelectionModel, GRID_CHECKBOX_SELECTION_COL_DEF} from "@mui/x-data-grid";
 import Iconify from "../../../Iconify";
 import useAuth from "../../../../hooks/useAuth";
@@ -422,11 +422,8 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                         }
                                variant={'contained'}>{classroomData.completed ? 'Mark as Incomplete' : 'Complete Lesson'}</LoadingButton>
             }*/}
-            {(selectedClassroom && lessonId) &&
-                <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}
-                               setLessonRecord={setLessonRecord}/>
-            }
             <Box height={50}/>
+            <Typography textAlign={'center'} variant={'h2'} sx={{mb: 15}}>Attendance Sheet</Typography>
             {classrooms && selectedClassroom &&
                 <Box mb={1}>
                     <SettingsPanel onApply={handleApplyClick} classrooms={classrooms}
@@ -473,6 +470,12 @@ const AttendanceSheetTable = ({userInOrganization, roles}: Props) => {
                 disableSelectionOnClick
                 checkboxSelection
             />
+            <Box height={80}/>
+            {(selectedClassroom && lessonId) &&
+                <LessonDetails lessonId={lessonId} selectedClassroom={selectedClassroom}
+                               setLessonRecord={setLessonRecord}/>
+            }
+            <Box height={30}/>
         </>
     );
 };

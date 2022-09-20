@@ -98,7 +98,8 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                 activity: sectionOption ? getFieldProps('activity').value : 'Daily Mile',
                 rating: getFieldProps('rating').value,
                 notes: getFieldProps('notes').value,
-                isCompleted: getFieldProps('isCompleted').value,
+                //isCompleted: getFieldProps('isCompleted').value,
+                isCompleted: true,
             }
         }));
         console.log('Update Lesson Record', result)
@@ -122,10 +123,12 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
             console.log(sectionOption.DeliveredBy)
             return (<>
                 <Stack direction={{xs: 'column', sm: 'column'}} spacing={2}>
+                    {/*
                     <FormGroup>
                         <FormControlLabel control={<Checkbox sx={{ '& .MuiSvgIcon-root': { fontSize: 40 } }} checked={getFieldProps('isCompleted').value} {...getFieldProps('isCompleted')}/>} label="Completed"/>
 
                     </FormGroup>
+                    */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                             label="Date"
@@ -237,7 +240,6 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
     }
     return (
         <FormikProvider value={formik}>
-            <Typography textAlign={'center'} variant={'h2'} sx={{mb: 15}}>Attendance Sheet</Typography>
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Settings/>
                 <LoadingButton
