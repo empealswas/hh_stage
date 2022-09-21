@@ -105,9 +105,9 @@ const StepsDashboard = () => {
     const [todaysSteps, setTodaysSteps] = useState<number | null>(null);
     const [totalSteps, setTotalSteps] = useState<number | null>(null);
     const [achievingStepsTarget, setAchievingStepsTarget] = useState<number | null>(null);
-    const [averageDailySteps, setAverageDailySteps] = useState<number | null>(null);
-    const [schoolAverage, setSchoolAverage] = useState<number | null>(null);
-    const [last7DaysAverageDailySteps, setLast7DaysAverageDailySteps] = useState<any[] | null>(null);
+    const [averageTeamDailySteps, setAverageTeamDailySteps] = useState<number | null>(null);
+    const [organisationAverageDailySteps, setOrganisationAverageDailySteps] = useState<number | null>(null);
+    const [last7DaysTotalDailySteps, setLast7DaysTotalDailySteps] = useState<any[] | null>(null);
     const [leagueTableSteps, setLeagueTableSteps] = useState<any[] | null>(null);
 
     const columns: GridColDef[] = [
@@ -204,7 +204,7 @@ const StepsDashboard = () => {
             });
             setAchievingStepsTarget((achievedCount / userAverageDailySteps.length) * 100);
         }
-        // set average daily steps
+        // set average team daily steps
         requestBody = {
             "idList": terraIds,
             "grouping": "group",
@@ -216,8 +216,8 @@ const StepsDashboard = () => {
             "returnType": "average"
         };
         wearablesData = await getWearablesData(requestBody);
-        setAverageDailySteps(wearablesData?.data[0]?.value ?? 0);
-        // set school average (get terra ids for all classrooms, then get the average)
+        setAverageTeamDailySteps(wearablesData?.data[0]?.value ?? 0);
+        // set organisation average daily steps (get terra ids for all classrooms, then get the average)
         let allResult: any = await API.graphql(graphqlOperation(queryAllClassrooms, {id: organizationId}));
         let allTerraIds = terraIdsForClassrooms(allResult.data.getOrganization);
         requestBody = {
@@ -231,8 +231,8 @@ const StepsDashboard = () => {
             "returnType": "average"
         };
         wearablesData = await getWearablesData(requestBody);
-        setSchoolAverage(wearablesData?.data[0]?.value ?? 0);
-        // set last seven days average daily steps
+        setOrganisationAverageDailySteps(wearablesData?.data[0]?.value ?? 0);
+        // set last seven days total daily steps
         requestBody = {
             "idList": terraIds,
             "grouping": "group",
@@ -241,10 +241,10 @@ const StepsDashboard = () => {
             "period": "day",
             "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
             "endDate": format(new Date(), "yyyy-MM-dd"),
-            "returnType": "average"
+            "returnType": "total"
         };
         wearablesData = await getWearablesData(requestBody);
-        setLast7DaysAverageDailySteps(wearablesData?.data ?? []);
+        setLast7DaysTotalDailySteps(wearablesData?.data ?? []);
         // set league table steps
         requestBody = {
             "idList": terraIds,
@@ -254,11 +254,11 @@ const StepsDashboard = () => {
             "period": "millennium",
             "startDate": format(startDate, "yyyy-MM-dd"),
             "endDate": format(endDate, "yyyy-MM-dd"),
-            "returnType": "average"
+            "returnType": "total"
         };
         wearablesData = await getWearablesData(requestBody);
-        wearablesData?.data?.sort((a: any, b: any) => a.value - b.value);
-        setLeagueTableSteps(wearablesData?.data?.slice(-10).map((item: any) => ({name: nameForTerraId(item.terraId, result.data.getOrganization), value: item.value})) ?? []);
+        wearablesData?.data?.sort((a: any, b: any) => b.value - a.value);
+        setLeagueTableSteps(wearablesData?.data?.slice(0, 20).map((item: any) => ({name: nameForTerraId(item.terraId, result.data.getOrganization), value: item.value})) ?? []);
 
         setOrganization(result.data.getOrganization);
         setLoading(false);
@@ -277,9 +277,9 @@ const StepsDashboard = () => {
         setTodaysSteps(null);
         setTotalSteps(null);
         setAchievingStepsTarget(null);
-        setAverageDailySteps(null);
-        setSchoolAverage(null);
-        setLast7DaysAverageDailySteps(null);
+        setAverageTeamDailySteps(null);
+        setOrganisationAverageDailySteps(null);
+        setLast7DaysTotalDailySteps(null);
         setLeagueTableSteps(null);
     };
 
@@ -498,11 +498,11 @@ const StepsDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {averageDailySteps != null ?
+                            {averageTeamDailySteps != null ?
                                 <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Average Daily Steps</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageDailySteps).toLocaleString()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average Team Daily Steps</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageTeamDailySteps).toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -511,11 +511,11 @@ const StepsDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {schoolAverage != null ?
+                            {organisationAverageDailySteps != null ?
                                 <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>School Average</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(schoolAverage).toLocaleString()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Organisation Average Daily Steps</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(organisationAverageDailySteps).toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -550,8 +550,8 @@ const StepsDashboard = () => {
                     }
 
                     <Grid item xs={12}>
-                        {last7DaysAverageDailySteps != null ?
-                            <StepsDailyBarChart data={last7DaysAverageDailySteps}/>
+                        {last7DaysTotalDailySteps != null ?
+                            <StepsDailyBarChart data={last7DaysTotalDailySteps}/>
                             :
                             <Skeleton height={'760px'}/>
                         }
