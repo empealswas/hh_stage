@@ -443,40 +443,40 @@ const StepsDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {numberOfMembers != null ?
-                                <Card style={{backgroundColor:'#ffeeee', border:'4px solid red'}}>
+                                <Card style={{backgroundColor:'#ffeeee', border:'4px solid red', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Number of Members</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{numberOfMembers.toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'135px'}/>
+                                <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {todaysSteps != null ?
-                                <Card style={{backgroundColor:'#ffffee', border:'4px solid #ff7700'}}>
+                                <Card style={{backgroundColor:'#ffffee', border:'4px solid #ff7700', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Todays' Steps</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{todaysSteps.toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'135px'}/>
+                                <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {totalSteps != null ?
-                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green'}}>
+                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Steps</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{totalSteps.toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'135px'}/>
+                                <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
 
@@ -486,40 +486,40 @@ const StepsDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {achievingStepsTarget != null ?
-                                <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue'}}>
+                                <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achievingStepsTarget) + " %"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'135px'}/>
+                                <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {averageTeamDailySteps != null ?
-                                <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999'}}>
+                                <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Average Team Daily Steps</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageTeamDailySteps).toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'135px'}/>
+                                <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {organisationAverageDailySteps != null ?
-                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet'}}>
+                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Organisation Average Daily Steps</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{Math.floor(organisationAverageDailySteps).toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
-                                <CardSkeleton height={'135px'}/>
+                                <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
 

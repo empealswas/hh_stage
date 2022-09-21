@@ -33,7 +33,7 @@ export default function StepsLeagueBarChart({data}: { data: any }) {
 
     return (
         <Card style={{marginTop: 70}}>
-            <CardHeader title="League Table" subheader="Top Ten" />
+            <CardHeader title="League Table" subheader="Top 20" />
             <ReactApexChart type="bar" height={350} options={options} series={series} />
         </Card>
     );
