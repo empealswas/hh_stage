@@ -26,7 +26,7 @@ import {useTheme} from "@mui/material/styles";
 import ReactApexChart from 'react-apexcharts';
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Iconify from "../../../components/Iconify";
-import {DataGrid, GridColDef, GridRenderCellParams} from "@mui/x-data-grid";
+import {DataGrid, GridColDef, GridRenderCellParams, GridSelectionModel, GRID_CHECKBOX_SELECTION_COL_DEF} from "@mui/x-data-grid";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
@@ -85,9 +85,7 @@ const ActivityDashboard = () => {
     const [endDate, setEndDate] = React.useState<Date | null>(new Date());
     const [selectedSeriesData, setSelectedSeriesData] = useState('Steps');
     const [loading, setLoading] = useState(false);
-
-    const [userSelectionModels, setUserSelectionModels] = useState<any>(null);
-    
+    const [selectionModel, setSelectionModel] = React.useState<GridSelectionModel>([]);
     const [seriesData, setSeriesData] = useState<any>(null);
 
     const theme = useTheme();
@@ -125,6 +123,21 @@ const ActivityDashboard = () => {
         }
     };
 
+    const getSelectedUsers = () => {
+        let members = selectedClassroom?.members?.items ?? [];
+        let selectedUsers = [];
+        for (let selectedId of selectionModel) {
+            for (let member of members) {
+                let theUser = member?.userInOrganization.user;
+                if (theUser?.id == selectedId) {
+                    selectedUsers.push(theUser);
+                    break;
+                }
+            }
+        }
+        return selectedUsers;
+    };
+
     const chartOptions: any = merge(basedOptions, {
         stroke: {width: [5, 3]},
         plotOptions: {bar: {columnWidth: '11%', borderRadius: 4}},
@@ -153,23 +166,6 @@ const ActivityDashboard = () => {
         }
     });
 
-    const MemberTableItem = (params: GridRenderCellParams) => {
-        const terraId = params.getValue(params.id, 'terraId');
-        if (terraId) {
-            let selected = false;
-            for (let i = 0; i < userSelectionModels.length; i++) {
-                if (terraId == userSelectionModels[i].user.terraId) {
-                    selected = userSelectionModels[i].selected;
-                    break;
-                }
-            }
-            return <Checkbox id={terraId as string} defaultChecked={selected} onChange={checkboxChange} />
-        }
-        else {
-            return <Button variant={'contained'} disabled={true}>Not Connected</Button>
-        }
-    }
-
     const columns: GridColDef[] = [
         {field: 'id', flex: 0.2, headerName: 'Id', hide: true},
         {field: 'terraId', flex: 0.2, headerName: 'TerraId', hide: true},
@@ -188,39 +184,10 @@ const ActivityDashboard = () => {
             editable: false
         },
         {
-            field: 'roles',
-            headerName: 'Select User(s)',
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            flex: 0.6,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: MemberTableItem,
-        },
+            ...GRID_CHECKBOX_SELECTION_COL_DEF,
+            width: 100,
+        }
     ];
-
-    const setAllUsersSelected = (selected: any) => {
-        let models = [];
-        let members = selectedClassroom?.members?.items ?? [];
-        for (let i = 0; i < members.length; i++) {
-            let theUser = members[i]?.userInOrganization.user;
-            let terraId = theUser?.terraId ?? null;
-            if (terraId) {
-                models.push({user: theUser, selected});
-            }
-        }
-        setUserSelectionModels(models);
-    }
-
-    const checkboxChange = (event: any) => {
-        let terraId = event.target.id;
-        for (let i = 0; i < userSelectionModels.length; i++) {
-            if (terraId == userSelectionModels[i].user.terraId) {
-                userSelectionModels[i].selected = event.target.checked;
-                break;
-            }
-        }
-    };
 
     const handleSelectedTeamChange = (event: SelectChangeEvent) => {
         if (!event.target.value) {
@@ -257,7 +224,7 @@ const ActivityDashboard = () => {
         setEndDate(new Date());
         setSelectedSeriesData('Steps');
         setLoading(false);
-        setUserSelectionModels(null);
+        setSelectionModel([]);
         setSeriesData(null);
         getOrganizationAsync();
     }
@@ -316,13 +283,12 @@ const ActivityDashboard = () => {
             theSeriesData.push({data: averageStepsData?.map((item: any) => item.value) ?? [], name: 'Average For Team', type: 'line'});
         }
         // push selected-users' steps data to series
-        for (let i = 0; i < userSelectionModels.length; i++) {
-            if (userSelectionModels[i].selected) {
-                let theUser = userSelectionModels[i].user;
-                let name = theUser.firstName + " " + theUser.lastName;
-                let userStepsData = await getUserStepsData(theUser.terraId);
-                theSeriesData.push({data: userStepsData?.map((item: any) => item.value) ?? [], name, type: 'line'});
-            }
+        let selectedUsers = getSelectedUsers();
+        for (let i = 0; i < selectedUsers.length; i++) {
+            let theUser = selectedUsers[i];
+            let name = theUser.firstName + " " + theUser.lastName;
+            let userStepsData = await getUserStepsData(theUser.terraId);
+            theSeriesData.push({data: userStepsData?.map((item: any) => item.value) ?? [], name, type: 'line'});
         }
         return theSeriesData;
     };
@@ -370,13 +336,12 @@ const ActivityDashboard = () => {
             theSeriesData.push({data: averageSleepData?.map((item: any) => item.value / 60 / 60) ?? [], name: 'Average For Team', type: 'line'});
         }
         // push selected-users' sleep data to series
-        for (let i = 0; i < userSelectionModels.length; i++) {
-            if (userSelectionModels[i].selected) {
-                let theUser = userSelectionModels[i].user;
-                let name = theUser.firstName + " " + theUser.lastName;
-                let userSleepData = await getUserSleepData(theUser.terraId);
-                theSeriesData.push({data: userSleepData?.map((item: any) => item.value / 60 / 60) ?? [], name, type: 'line'});
-            }
+        let selectedUsers = getSelectedUsers();
+        for (let i = 0; i < selectedUsers.length; i++) {
+            let theUser = selectedUsers[i];
+            let name = theUser.firstName + " " + theUser.lastName;
+            let userSleepData = await getUserSleepData(theUser.terraId);
+            theSeriesData.push({data: userSleepData?.map((item: any) => item.value / 60 / 60) ?? [], name, type: 'line'});
         }
         return theSeriesData;
     };
@@ -424,13 +389,12 @@ const ActivityDashboard = () => {
             theSeriesData.push({data: averageActiveData?.map((item: any) => item.value / 60) ?? [], name: 'Average For Team', type: 'line'});
         }
         // push selected-users' active data to series
-        for (let i = 0; i < userSelectionModels.length; i++) {
-            if (userSelectionModels[i].selected) {
-                let theUser = userSelectionModels[i].user;
-                let name = theUser.firstName + " " + theUser.lastName;
-                let userActiveData = await getUserActiveData(theUser.terraId);
-                theSeriesData.push({data: userActiveData?.map((item: any) => item.value / 60) ?? [], name, type: 'line'});
-            }
+        let selectedUsers = getSelectedUsers();
+        for (let i = 0; i < selectedUsers.length; i++) {
+            let theUser = selectedUsers[i];
+            let name = theUser.firstName + " " + theUser.lastName;
+            let userActiveData = await getUserActiveData(theUser.terraId);
+            theSeriesData.push({data: userActiveData?.map((item: any) => item.value / 60) ?? [], name, type: 'line'});
         }
         return theSeriesData;
     };
@@ -478,12 +442,7 @@ const ActivityDashboard = () => {
     useEffect(() => {
         getResults();
         return () => {};
-    }, [classrooms, selectedSeriesData]);
-
-    useEffect(() => {
-        setAllUsersSelected(false);
-        return () => {};
-    }, [selectedClassroom]);
+    }, [classrooms, selectedClassroom, selectedSeriesData]);
 
     return (
         <Page title="General: Analytics">
@@ -559,15 +518,19 @@ const ActivityDashboard = () => {
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                 >
-                                    <Typography>Show Users</Typography>
+                                    <Typography>Show Connected Users</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <div style={{width: '100%', display: 'flex'}}>
                                         <DataGrid
-                                            rows={selectedClassroom?.members?.items.map(value => value?.userInOrganization.user as User) ?? []}
+                                            rows={selectedClassroom?.members?.items.map(value => value?.userInOrganization.user as User).filter((user: any) => !!user.terraId) ?? []}
                                             disableSelectionOnClick
                                             columns={columns}
                                             autoHeight={true}
+                                            checkboxSelection
+                                            onSelectionModelChange={(newSelectionModel) => {
+                                                setSelectionModel(newSelectionModel);
+                                            }}
                                         />
                                     </div>
                                 </AccordionDetails>
