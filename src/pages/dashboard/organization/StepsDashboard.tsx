@@ -106,7 +106,7 @@ const StepsDashboard = () => {
     const [totalSteps, setTotalSteps] = useState<number | null>(null);
     const [achievingStepsTarget, setAchievingStepsTarget] = useState<number | null>(null);
     const [averageTeamDailySteps, setAverageTeamDailySteps] = useState<number | null>(null);
-    const [organisationAverageDailySteps, setOrganisationAverageDailySteps] = useState<number | null>(null);
+    const [achievingAllTargets, setAchievingAllTargets] = useState<number | null>(null);
     const [last7DaysTotalDailySteps, setLast7DaysTotalDailySteps] = useState<any[] | null>(null);
     const [leagueTableSteps, setLeagueTableSteps] = useState<any[] | null>(null);
 
@@ -133,6 +133,50 @@ const StepsDashboard = () => {
         const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
         let classrooms: any[] = result.data.getOrganization?.Classrooms?.items;
         setSelectableClassrooms(classrooms.sort((a, b) => a.name.localeCompare(b.name)));
+    };
+
+    const getAchievingAllTargets = async (terraIds: any, stepsData: any) => {
+        // get daily thresholds
+        let stepsThreshold = 10000;
+        let sleepThreshold = 9 * 60 * 60;
+        let activityThreshold = 1 * 60 * 60;
+        // get sleep data
+        let requestBody: TerraWearables = {
+            "idList": terraIds,
+            "grouping": "user",
+            "category": "sleep",
+            "subtype": "durationTotal",
+            "period": "millennium",
+            "startDate": format(startDate, "yyyy-MM-dd"),
+            "endDate": format(endDate, "yyyy-MM-dd"),
+            "returnType": "average"
+        };
+        let sleepData = await getWearablesData(requestBody);
+        // get activity data
+        requestBody = {
+            "idList": terraIds,
+            "grouping": "user",
+            "category": "activity",
+            "subtype": "duration",
+            "period": "millennium",
+            "startDate": format(startDate, "yyyy-MM-dd"),
+            "endDate": format(endDate, "yyyy-MM-dd"),
+            "returnType": "average"
+        };
+        let activityData = await getWearablesData(requestBody);
+        // determine the number of members that have reached all three thresholds
+        let memberCount = 0;
+        for (let terraId of terraIds) {
+            let stepsValue = stepsData?.data?.find((item: any) => item.terraId == terraId)?.value ?? 0;
+            let sleepValue = sleepData?.data?.find((item: any) => item.terraId == terraId)?.value ?? 0;
+            let activityValue = activityData?.data?.find((item: any) => item.terraId == terraId)?.value ?? 0;
+            if (stepsValue >= stepsThreshold && sleepValue >= sleepThreshold && activityValue >= activityThreshold) {
+                memberCount ++;
+            }
+        }
+        // return the percentage of members that have achieved all targets
+        if (terraIds.length == 0) return 0;
+        else return (memberCount / terraIds.length) * 100;
     };
 
     const getResults = async () => {
@@ -192,8 +236,8 @@ const StepsDashboard = () => {
             "endDate": format(endDate, "yyyy-MM-dd"),
             "returnType": "average"
         };
-        wearablesData = await getWearablesData(requestBody);
-        let userAverageDailySteps = wearablesData?.data ?? [];
+        let wearablesStepsData = await getWearablesData(requestBody);
+        let userAverageDailySteps = wearablesStepsData?.data ?? [];
         if (userAverageDailySteps.length == 0) {
             setAchievingStepsTarget(0);
         }
@@ -217,21 +261,8 @@ const StepsDashboard = () => {
         };
         wearablesData = await getWearablesData(requestBody);
         setAverageTeamDailySteps(wearablesData?.data[0]?.value ?? 0);
-        // set organisation average daily steps (get terra ids for all classrooms, then get the average)
-        let allResult: any = await API.graphql(graphqlOperation(queryAllClassrooms, {id: organizationId}));
-        let allTerraIds = terraIdsForClassrooms(allResult.data.getOrganization);
-        requestBody = {
-            "idList": allTerraIds,
-            "grouping": "group",
-            "category": "daily",
-            "subtype": "steps",
-            "period": "millennium",
-            "startDate": format(startDate, "yyyy-MM-dd"),
-            "endDate": format(endDate, "yyyy-MM-dd"),
-            "returnType": "average"
-        };
-        wearablesData = await getWearablesData(requestBody);
-        setOrganisationAverageDailySteps(wearablesData?.data[0]?.value ?? 0);
+        // set achieving all targets
+        setAchievingAllTargets(await getAchievingAllTargets(terraIds, wearablesStepsData));
         // set last seven days total daily steps
         requestBody = {
             "idList": terraIds,
@@ -278,7 +309,7 @@ const StepsDashboard = () => {
         setTotalSteps(null);
         setAchievingStepsTarget(null);
         setAverageTeamDailySteps(null);
-        setOrganisationAverageDailySteps(null);
+        setAchievingAllTargets(null);
         setLast7DaysTotalDailySteps(null);
         setLeagueTableSteps(null);
     };
@@ -511,11 +542,11 @@ const StepsDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {organisationAverageDailySteps != null ?
+                            {achievingAllTargets != null ?
                                 <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Organisation Average Daily Steps</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(organisationAverageDailySteps).toLocaleString()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Achieving All Targets</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achievingAllTargets) + "%"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
