@@ -32,94 +32,13 @@ const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   }
 }`;
 
-const queryAllClassroomsWithAllLessons = `query MyQuery($id: ID = "") {
+const queryAllClassrooms = `query MyQuery($id: ID = "", $ge: String = "", $le: String = "") {
   getOrganization(id: $id) {
-    Classrooms {
+    members {
       items {
-        id
-        name
-        members {
-          items {
-            id
-            userInOrganization {
-              user {
-                terraId
-              }
-            }
-          }
-        }
-        LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
-          items {
-            date
-            id
-            duration
-            activity
-            rating
-            Attendances(limit: 10000000, filter: {present: {eq: true}}) {
-              items {
-                id
-                wasRewarded
-                userInOrganizationAttendancesId
-                UserInOrganization {
-                  user {
-                    lastName
-                    firstName
-                  }
-                }
-              }
-            }
-          }
-        }
+        userID
       }
     }
-  }
-}`;
-
-const queryClassroomWithAllLessons = `query MyQuery($id: ID = "", $cid: ID = "") {
-  getOrganization(id: $id) {
-    Classrooms(limit: 1000000, filter: {id: {eq: $cid}}) {
-      items {
-        id
-        name
-        members {
-          items {
-            id
-            userInOrganization {
-              user {
-                terraId
-              }
-            }
-          }
-        }
-        LessonRecords(limit: 1000000, filter: {isCompleted: {eq: true}}) {
-          items {
-            date
-            id
-            duration
-            activity
-            rating
-            Attendances(limit: 10000000, filter: {present: {eq: true}}) {
-              items {
-                id
-                wasRewarded
-                userInOrganizationAttendancesId
-                UserInOrganization {
-                  user {
-                    lastName
-                    firstName
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}`;
-
-const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $ge: String = "", $le: String = "") {
-  getOrganization(id: $id) {
     Classrooms(sortDirection: ASC) {
       items {
         id
@@ -161,7 +80,7 @@ const queryAllClassroomsWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $
   }
 }`;
 
-const queryClassroomWithLessonsInTimePeriod = `query MyQuery($id: ID = "", $cid: ID = "", $ge: String = "", $le: String = "") {
+const queryClassroom = `query MyQuery($id: ID = "", $cid: ID = "", $ge: String = "", $le: String = "") {
   getOrganization(id: $id) {
     Classrooms(sortDirection: ASC, limit: 1000000, filter: {id: {eq: $cid}}) {
       items {
@@ -235,38 +154,21 @@ const OrganizationDashboard = () => {
         let result: any = null;
         if (selectedClassroom == null) {
             // all classrooms
-            if (!startDate || !endDate) {
-                // all time
-                result = await API.graphql(graphqlOperation(queryAllClassroomsWithAllLessons, {id: organizationId}));
-            }
-            else {
-                // time period
-                result = await API.graphql(graphqlOperation(queryAllClassroomsWithLessonsInTimePeriod, {
-                    id: organizationId,
-                    ge: format(startDate, 'yyyy-MM-dd'),
-                    le: format(endDate, 'yyyy-MM-dd')
-                }));
-            }
+            result = await API.graphql(graphqlOperation(queryAllClassrooms, {
+                id: organizationId,
+                ge: format(startDate as Date, 'yyyy-MM-dd'),
+                le: format(endDate as Date, 'yyyy-MM-dd')
+            }));
             setAllClassrooms(result?.data?.getOrganization?.Classrooms?.items ?? []);
         }
         else {
             // specific classroom
-            if (!startDate || !endDate) {
-                // all time
-                result = await API.graphql(graphqlOperation(queryClassroomWithAllLessons, {
-                    id: organizationId,
-                    cid: selectedClassroom.id
-                }));
-            }
-            else {
-                // time period
-                result = await API.graphql(graphqlOperation(queryClassroomWithLessonsInTimePeriod, {
-                    id: organizationId,
-                    cid: selectedClassroom.id,
-                    ge: format(startDate, 'yyyy-MM-dd'),
-                    le: format(endDate, 'yyyy-MM-dd')
-                }));
-            }
+            result = await API.graphql(graphqlOperation(queryClassroom, {
+                id: organizationId,
+                cid: selectedClassroom.id,
+                ge: format(startDate as Date, 'yyyy-MM-dd'),
+                le: format(endDate as Date, 'yyyy-MM-dd')
+            }));
         }
         setOrganization(result.data.getOrganization);
         setLoading(false);
@@ -283,11 +185,12 @@ const OrganizationDashboard = () => {
     };
 
     const numberOfMembers = () => {
-        //sum the number of members in each class
-        let classrooms: any[] = organization?.Classrooms?.items ?? [];
-        let memberSum = 0;
-        classrooms.forEach((classroom: any) => memberSum += classroom.members.items.length);
-        return memberSum;
+        if (selectedClassroom == null) {
+            return organization?.members?.items?.length ?? 0;
+        }
+        else {
+            return organization?.Classrooms?.items[0]?.members?.items?.length ?? 0;
+        }
     };
 
     const numberOfActivities = () => {

@@ -40,6 +40,11 @@ const querySelectableClassrooms = `query MyQuery($id: ID = "") {
 
 const queryAllClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
+    members {
+      items {
+        userID
+      }
+    }
     Classrooms {
       items {
         id
@@ -194,11 +199,13 @@ const StepsDashboard = () => {
             }));
         }
         let terraIds = terraIdsForClassrooms(result.data.getOrganization);
-        // set number of members (sum the number of members in each class)
-        let classrooms: any[] = result?.data?.getOrganization?.Classrooms?.items ?? [];
-        let memberSum = 0;
-        classrooms.forEach((classroom: any) => memberSum += classroom.members.items.length);
-        setNumberOfMembers(memberSum);
+        // set number of members
+        if (selectedClassroom == null) {
+            setNumberOfMembers(result?.data?.getOrganization?.members?.items?.length ?? 0);
+        }
+        else {
+            setNumberOfMembers(result?.data?.getOrganization?.Classrooms?.items[0]?.members?.items?.length ?? 0);
+        }
         // set todays' steps
         let requestBody: TerraWearables = {
             "idList": terraIds,
