@@ -71,7 +71,7 @@ const InterventionsList = (props: { user: User }) => {
         }
 
         setSleepDuration(null);
-        result = await getInterventionSleepDuration(props.user.terraId, new Date(), props.user.firstName);
+        result = await getInterventionSleepDuration(props.user.terraId, subDays(new Date(), 1), props.user.firstName);
         if (result.status == "success") {
             setSleepDuration(result.data);
         }
