@@ -40,7 +40,7 @@ const querySelectableClassrooms = `query MyQuery($id: ID = "") {
 
 const queryAllClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    members {
+    members(limit: 10000000) {
       items {
         userID
       }
