@@ -111,7 +111,7 @@ const StepsDashboard = () => {
     const [totalSteps, setTotalSteps] = useState<number | null>(null);
     const [achievingStepsTarget, setAchievingStepsTarget] = useState<number | null>(null);
     const [averageTeamDailySteps, setAverageTeamDailySteps] = useState<number | null>(null);
-    const [achievingAllTargets, setAchievingAllTargets] = useState<number | null>(null);
+    const [achieving24HourMovementTarget, setAchieving24HourMovementTarget] = useState<number | null>(null);
     const [last7DaysTotalDailySteps, setLast7DaysTotalDailySteps] = useState<any[] | null>(null);
     const [leagueTableSteps, setLeagueTableSteps] = useState<any[] | null>(null);
 
@@ -140,7 +140,7 @@ const StepsDashboard = () => {
         setSelectableClassrooms(classrooms.sort((a, b) => a.name.localeCompare(b.name)));
     };
 
-    const getAchievingAllTargets = async (terraIds: any, stepsData: any) => {
+    const getAchieving24HourMovementTarget = async (terraIds: any, stepsData: any) => {
         // get daily thresholds
         let stepsThreshold = 10000;
         let sleepThreshold = 9 * 60 * 60;
@@ -179,7 +179,7 @@ const StepsDashboard = () => {
                 memberCount ++;
             }
         }
-        // return the percentage of members that have achieved all targets
+        // return the percentage of members that have achieved 24-Hour movement target
         if (terraIds.length == 0) return 0;
         else return (memberCount / terraIds.length) * 100;
     };
@@ -268,8 +268,8 @@ const StepsDashboard = () => {
         };
         wearablesData = await getWearablesData(requestBody);
         setAverageTeamDailySteps(wearablesData?.data[0]?.value ?? 0);
-        // set achieving all targets
-        setAchievingAllTargets(await getAchievingAllTargets(terraIds, wearablesStepsData));
+        // set achieving 24-Hour movement target
+        setAchieving24HourMovementTarget(await getAchieving24HourMovementTarget(terraIds, wearablesStepsData));
         // set last seven days total daily steps
         requestBody = {
             "idList": terraIds,
@@ -316,7 +316,7 @@ const StepsDashboard = () => {
         setTotalSteps(null);
         setAchievingStepsTarget(null);
         setAverageTeamDailySteps(null);
-        setAchievingAllTargets(null);
+        setAchieving24HourMovementTarget(null);
         setLast7DaysTotalDailySteps(null);
         setLeagueTableSteps(null);
     };
@@ -549,11 +549,11 @@ const StepsDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {achievingAllTargets != null ?
+                            {achieving24HourMovementTarget != null ?
                                 <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Achieving All Targets</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achievingAllTargets) + "%"}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Achieving 24-Hour Movement Target</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achieving24HourMovementTarget) + "%"}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
