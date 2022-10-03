@@ -30,6 +30,7 @@ const activities = ['Walking', 'Running', 'Swimming', 'Gym', 'Dance', 'Soccer', 
 const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption: SectionOptions | null }) => {
     const {lessonRecord, sectionOption} = {...props};
     const [date, setDate] = React.useState<Date | null>(null);
+    const [completed, setCompleted] = useState(false);
     const RegisterSchema = Yup.object().shape({
         deliveredBy: Yup.mixed()
             .oneOf(sectionOption ? sectionOption.DeliveredBy as string [] : ['Teacher', 'Sport Coach', 'Other'])
@@ -53,6 +54,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
         } else {
             setDate(new Date());
         }
+        setCompleted(lessonRecord.isCompleted ?? false);
     }, [])
     useEffect(() => {
         console.log('---------------', lessonRecord)
@@ -68,6 +70,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
         if (lessonRecord.date) {
             setDate(parseISO(lessonRecord.date));
         }
+        setCompleted(lessonRecord.isCompleted ?? false);
     }, [props.lessonRecord])
     const formik = useFormik({
         initialValues: {
@@ -83,6 +86,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
         onSubmit: async () => {
             setLoading(true);
             await updateRecord(sectionOption);
+            setCompleted(true);
             snackbar.enqueueSnackbar('Lesson record updated', {variant: 'success'})
             setLoading(false);
         }
@@ -98,7 +102,8 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                 activity: sectionOption ? getFieldProps('activity').value : 'Daily Mile',
                 rating: getFieldProps('rating').value,
                 notes: getFieldProps('notes').value,
-                isCompleted: getFieldProps('isCompleted').value,
+                //isCompleted: getFieldProps('isCompleted').value,
+                isCompleted: true
             }
         }));
         console.log('Update Lesson Record', result)
@@ -179,10 +184,13 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                                     value={value} key={value}>{value}</MenuItem>)}
                         </Select>
                     </FormControl>
+                    {/*
                     <FormGroup>
                         <FormControlLabel control={<Checkbox sx={{ '& .MuiSvgIcon-root': { fontSize: 40 } }} checked={getFieldProps('isCompleted').value} {...getFieldProps('isCompleted')}/>} label="Completed"/>
                     </FormGroup>
-                    <div>
+                    */}
+                    <Typography>{completed ? 'Completed' : 'Not completed'}</Typography>
+                    <div style={{marginTop:70}}>
                         <Typography component="legend">Rating</Typography>
                         <Rating size={'large'}
                                 {...getFieldProps('rating')}

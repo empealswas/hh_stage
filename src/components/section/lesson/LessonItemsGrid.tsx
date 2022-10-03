@@ -13,6 +13,7 @@ type LessonItemsGridProps = {
     lessons: Lesson[]
     path?: string
 }
+
 const classroomCompleteQuery = `query MyQuery($classroom: ID = "", $lesson: ID = "") {
   listClassroomLessons(filter: {classroomID: {eq: $classroom}, lessonID: {eq: $lesson}}) {
     items {
@@ -22,6 +23,7 @@ const classroomCompleteQuery = `query MyQuery($classroom: ID = "", $lesson: ID =
   }
 }
 `
+
 const getClassroomQuery = `query MyQuery($id: ID = "") {
   getUserInOrganization(id: $id) {
     classrooms {
@@ -34,6 +36,7 @@ const getClassroomQuery = `query MyQuery($id: ID = "") {
   }
 }
 `
+
 const complete = `query MyQuery($classroomId: ID = "", $lessonId: ID = "") {
   listPELessonRecords(limit: 1000000000, filter: {classroomID: {eq: $classroomId}, lessonID: {eq: $lessonId}}) {
     items {
@@ -43,10 +46,12 @@ const complete = `query MyQuery($classroomId: ID = "", $lessonId: ID = "") {
   }
 }
 `
+
 type LessonComplete = {
     lesson: Lesson,
     completed: boolean
 }
+
 const LessonItemsGrid = (props: LessonItemsGridProps) => {
         const {lessons, path} = {...props}
         const {user} = useAuth();
@@ -80,7 +85,7 @@ const LessonItemsGrid = (props: LessonItemsGridProps) => {
                             completedArray.push(result.data.listPELessonRecords.items[0].isCompleted ?? false);
                             }
                         }
-                            lessonsComplete.push({lesson: lesson, completed: completedArray.every(value => value)});
+                            lessonsComplete.push({lesson: lesson, completed: completedArray.some(value => value)});
                         }
                     ))
                     setLessonsComplete(lessonsComplete);
