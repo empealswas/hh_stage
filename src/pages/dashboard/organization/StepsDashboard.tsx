@@ -40,11 +40,6 @@ const querySelectableClassrooms = `query MyQuery($id: ID = "") {
 
 const queryAllClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    members(limit: 10000000) {
-      items {
-        userID
-      }
-    }
     Classrooms {
       items {
         id
@@ -100,14 +95,14 @@ const StepsDashboard = () => {
 
     const [selectedClassroom, setSelectedClassroom] = React.useState<Classroom | null>(null);
     const [selectedPeriod, setSelectedPeriod] = useState('week');
-    const [startDate, setStartDate] = React.useState<Date>(subDays(new Date(), 6));
-    const [endDate, setEndDate] = React.useState<Date>(new Date());
+    const [startDate, setStartDate] = React.useState<Date>(subDays(new Date(), 7));
+    const [endDate, setEndDate] = React.useState<Date>(subDays(new Date(), 1));
     const [loading, setLoading] = useState(false);
 
     const [organization, setOrganization] = useState<Organization | null>(null);
 
     const [numberOfMembers, setNumberOfMembers] = useState<number | null>(null);
-    const [todaysSteps, setTodaysSteps] = useState<number | null>(null);
+    const [yesterdaysSteps, setYesterdaysSteps] = useState<number | null>(null);
     const [totalSteps, setTotalSteps] = useState<number | null>(null);
     const [achievingStepsTarget, setAchievingStepsTarget] = useState<number | null>(null);
     const [averageTeamDailySteps, setAverageTeamDailySteps] = useState<number | null>(null);
@@ -179,9 +174,7 @@ const StepsDashboard = () => {
                 memberCount ++;
             }
         }
-        // return the percentage of members that have achieved 24-Hour movement target
-        if (terraIds.length == 0) return 0;
-        else return (memberCount / terraIds.length) * 100;
+        return memberCount;
     };
 
     const getResults = async () => {
@@ -200,25 +193,20 @@ const StepsDashboard = () => {
         }
         let terraIds = terraIdsForClassrooms(result.data.getOrganization);
         // set number of members
-        if (selectedClassroom == null) {
-            setNumberOfMembers(result?.data?.getOrganization?.members?.items?.length ?? 0);
-        }
-        else {
-            setNumberOfMembers(result?.data?.getOrganization?.Classrooms?.items[0]?.members?.items?.length ?? 0);
-        }
-        // set todays' steps
+        setNumberOfMembers(terraIds.length);
+        // set yesterdays' steps
         let requestBody: TerraWearables = {
             "idList": terraIds,
             "grouping": "group",
             "category": "daily",
             "subtype": "steps",
             "period": "millennium",
-            "startDate": format(new Date(), "yyyy-MM-dd"),
-            "endDate": format(new Date(), "yyyy-MM-dd"),
+            "startDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
             "returnType": "total"
         };
         let wearablesData = await getWearablesData(requestBody);
-        setTodaysSteps(wearablesData?.data[0]?.value ?? 0);
+        setYesterdaysSteps(wearablesData?.data[0]?.value ?? 0);
         // set total steps
         requestBody = {
             "idList": terraIds,
@@ -232,7 +220,7 @@ const StepsDashboard = () => {
         };
         wearablesData = await getWearablesData(requestBody);
         setTotalSteps(wearablesData?.data[0]?.value ?? 0);
-        // set achieving steps target (get average daily steps for each user, then determine the percentage that are achieving their steps target)
+        // set achieving steps target (get average daily steps for each user, then determine the number of users that are achieving their steps target)
         requestBody = {
             "idList": terraIds,
             "grouping": "user",
@@ -245,16 +233,11 @@ const StepsDashboard = () => {
         };
         let wearablesStepsData = await getWearablesData(requestBody);
         let userAverageDailySteps = wearablesStepsData?.data ?? [];
-        if (userAverageDailySteps.length == 0) {
-            setAchievingStepsTarget(0);
-        }
-        else {
-            let achievedCount = 0;
-            userAverageDailySteps.forEach((item: any) => {
-                if (item.value >= 10000) achievedCount++;
-            });
-            setAchievingStepsTarget((achievedCount / userAverageDailySteps.length) * 100);
-        }
+        let achievedCount = 0;
+        userAverageDailySteps.forEach((item: any) => {
+            if (item.value >= 10000) achievedCount++;
+        });
+        setAchievingStepsTarget(achievedCount);
         // set average team daily steps
         requestBody = {
             "idList": terraIds,
@@ -277,8 +260,8 @@ const StepsDashboard = () => {
             "category": "daily",
             "subtype": "steps",
             "period": "day",
-            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
-            "endDate": format(new Date(), "yyyy-MM-dd"),
+            "startDate": format(subDays(new Date(), 7), "yyyy-MM-dd"),
+            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
             "returnType": "total"
         };
         wearablesData = await getWearablesData(requestBody);
@@ -306,13 +289,13 @@ const StepsDashboard = () => {
         setSelectableClassrooms(null);
         setSelectedClassroom(null);
         setSelectedPeriod('week');
-        setStartDate(subDays(new Date(), 6));
-        setEndDate(new Date());
+        setStartDate(subDays(new Date(), 7));
+        setEndDate(subDays(new Date(), 1));
         setLoading(false);
         setOrganization(null);
 
         setNumberOfMembers(null);
-        setTodaysSteps(null);
+        setYesterdaysSteps(null);
         setTotalSteps(null);
         setAchievingStepsTarget(null);
         setAverageTeamDailySteps(null);
@@ -322,6 +305,7 @@ const StepsDashboard = () => {
     };
 
     const terraIdsForClassrooms = (organization: Organization) => {
+        // get terra ids (there may be duplicates)
         let terraIds: string[] = [];
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
         classrooms.forEach((classroom: any) => {
@@ -331,7 +315,8 @@ const StepsDashboard = () => {
                 if (terraId != null) terraIds.push(terraId);
             });
         });
-        return terraIds;
+        // remove duplicates
+        return Array.from(new Set(terraIds));
     };
 
     const connectedUsersForClassrooms = (organization: Organization) => {
@@ -363,6 +348,28 @@ const StepsDashboard = () => {
         return "";
     };
 
+    const getAchievingStepsTargetText = () => {
+        if ((achievingStepsTarget != null) && (numberOfMembers != null)) {
+            let percentage = 0;
+            if (numberOfMembers > 0) {
+                percentage = (achievingStepsTarget / numberOfMembers) * 100;
+            }
+            return achievingStepsTarget.toLocaleString() + " (" + Math.floor(percentage) + "%)";
+        }
+        else return "";
+    };
+
+    const getAchieving24HourMovementTargetText = () => {
+        if ((achieving24HourMovementTarget != null) && (numberOfMembers != null)) {
+            let percentage = 0;
+            if (numberOfMembers > 0) {
+                percentage = (achieving24HourMovementTarget / numberOfMembers) * 100;
+            }
+            return achieving24HourMovementTarget.toLocaleString() + " (" + Math.floor(percentage) + "%)";
+        }
+        else return "";
+    };
+
     const handleClassroomChange = (event: SelectChangeEvent) => {
         setSelectedClassroom(selectableClassrooms?.find(item => item.id === event.target.value as string) ?? null);
     };
@@ -371,20 +378,20 @@ const StepsDashboard = () => {
         setSelectedPeriod(event.target.value as string);
         switch (event.target.value) {
             case 'week':
-                setStartDate(subDays(new Date(), 6));
-                setEndDate(new Date());
+                setStartDate(subDays(new Date(), 7));
+                setEndDate(subDays(new Date(), 1));
                 break;
             case 'month':
-                setStartDate(subDays(new Date(), 30));
-                setEndDate(new Date());
+                setStartDate(subDays(new Date(), 31));
+                setEndDate(subDays(new Date(), 1));
                 break;
             case 'term':
                 setStartDate(subMonths(new Date(), 3));
-                setEndDate(new Date());
+                setEndDate(subDays(new Date(), 1));
                 break;
             case 'year':
                 setStartDate(subYears(new Date(), 1));
-                setEndDate(new Date());
+                setEndDate(subDays(new Date(), 1));
                 break;
         }
     };
@@ -493,11 +500,11 @@ const StepsDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {todaysSteps != null ?
+                            {yesterdaysSteps != null ?
                                 <Card style={{backgroundColor:'#ffffee', border:'4px solid #ff7700', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Todays' Steps</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{todaysSteps.toLocaleString()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Yesterdays' Steps</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{yesterdaysSteps.toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -523,11 +530,11 @@ const StepsDashboard = () => {
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {achievingStepsTarget != null ?
+                            {achievingStepsTarget != null && numberOfMembers != null ?
                                 <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achievingStepsTarget) + " %"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{getAchievingStepsTargetText()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -553,7 +560,7 @@ const StepsDashboard = () => {
                                 <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Achieving 24-Hour Movement Target</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(achieving24HourMovementTarget) + "%"}</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{getAchieving24HourMovementTargetText()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
