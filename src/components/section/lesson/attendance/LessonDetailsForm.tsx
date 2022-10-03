@@ -98,8 +98,7 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                 activity: sectionOption ? getFieldProps('activity').value : 'Daily Mile',
                 rating: getFieldProps('rating').value,
                 notes: getFieldProps('notes').value,
-                //isCompleted: getFieldProps('isCompleted').value,
-                isCompleted: true,
+                isCompleted: getFieldProps('isCompleted').value,
             }
         }));
         console.log('Update Lesson Record', result)
@@ -123,12 +122,6 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
             console.log(sectionOption.DeliveredBy)
             return (<>
                 <Stack direction={{xs: 'column', sm: 'column'}} spacing={2}>
-                    {/*
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox sx={{ '& .MuiSvgIcon-root': { fontSize: 40 } }} checked={getFieldProps('isCompleted').value} {...getFieldProps('isCompleted')}/>} label="Completed"/>
-
-                    </FormGroup>
-                    */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                             label="Date"
@@ -186,6 +179,9 @@ const LessonDetailsForm = (props: { lessonRecord: PELessonRecord, sectionOption:
                                     value={value} key={value}>{value}</MenuItem>)}
                         </Select>
                     </FormControl>
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox sx={{ '& .MuiSvgIcon-root': { fontSize: 40 } }} checked={getFieldProps('isCompleted').value} {...getFieldProps('isCompleted')}/>} label="Completed"/>
+                    </FormGroup>
                     <div>
                         <Typography component="legend">Rating</Typography>
                         <Rating size={'large'}
