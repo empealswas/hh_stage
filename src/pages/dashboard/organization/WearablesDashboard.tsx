@@ -86,7 +86,7 @@ const queryClassroom = `query MyQuery($id: ID = "", $cid: ID = "") {
   }
 }`;
 
-const StepsDashboard = () => {
+const WearablesDashboard = () => {
 
     const {themeStretch} = useSettings();
     const {user} = useAuth();
@@ -342,7 +342,10 @@ const StepsDashboard = () => {
             members.forEach((member: any) => {
                 let theUser = member.userInOrganization.user as User;
                 if (theUser.terraId != null) {
-                    users.push(theUser);
+                    let userExists = users.some((user: any) => user.terraId == theUser.terraId);
+                    if (!userExists) {
+                        users.push(theUser);
+                    }
                 }
             });
         });
@@ -627,10 +630,23 @@ const StepsDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {achieving24hrMovementTarget != null && participants != null ?
-                                <Card style={{backgroundColor: '#ffffee', border: '4px solid #ff7700', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#eeffee', border: '4px solid green', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>24 hr Movement Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{getAchieving24hrMovementTargetText()}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'160px'}/>
+                            }
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {participants != null ?
+                                <Card style={{backgroundColor: '#ffffee', border: '4px solid #ff7700', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}></Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}></Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -686,4 +702,4 @@ const StepsDashboard = () => {
     );
 };
 
-export default StepsDashboard;
+export default WearablesDashboard;

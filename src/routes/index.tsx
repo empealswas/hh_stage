@@ -130,7 +130,7 @@ export default function Router() {
 
 
 
-                        {path: ':organizationId/steps', element: <StepsDashboard/>,},
+                        {path: ':organizationId/wearables', element: <WearablesDashboard/>,},
 
 
 
@@ -257,7 +257,7 @@ const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const OrganizationDashboard = Loadable(lazy(() => import('../pages/dashboard/organization/OrganizationDashboard')));
 const MemberActivityOverview = Loadable(lazy(() => import('../pages/dashboard/organization/member/MemberActivityOverview')));
-const StepsDashboard = Loadable(lazy(() => import('../pages/dashboard/organization/StepsDashboard')));
+const WearablesDashboard = Loadable(lazy(() => import('../pages/dashboard/organization/WearablesDashboard')));
 const ActivityDashboard = Loadable(lazy(() => import('../pages/dashboard/organization/ActivityDashboard')));
 const SectionOverview = Loadable(lazy(() => import( "../components/section/SectionOverview")));
 const LessonOerview = Loadable(lazy(() => import( "../components/section/lesson/LessonOerview")));
