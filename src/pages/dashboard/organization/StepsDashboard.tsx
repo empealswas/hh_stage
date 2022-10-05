@@ -101,14 +101,21 @@ const StepsDashboard = () => {
 
     const [organization, setOrganization] = useState<Organization | null>(null);
 
-    const [numberOfMembers, setNumberOfMembers] = useState<number | null>(null);
+    const [participants, setParticipants] = useState<number | null>(null);
     const [yesterdaysSteps, setYesterdaysSteps] = useState<number | null>(null);
     const [totalSteps, setTotalSteps] = useState<number | null>(null);
-    const [achievingStepsTarget, setAchievingStepsTarget] = useState<number | null>(null);
-    const [averageTeamDailySteps, setAverageTeamDailySteps] = useState<number | null>(null);
-    const [achieving24HourMovementTarget, setAchieving24HourMovementTarget] = useState<number | null>(null);
+    const [averageDailySteps, setAverageDailySteps] = useState<number | null>(null);
+    const [stepsTargetData, setStepsTargetData] = useState<any[] | null>(null);
+    const [sleepTargetData, setSleepTargetData] = useState<any[] | null>(null);
+    const [activityTargetData, setActivityTargetData] = useState<any[] | null>(null);
+    const [achieving24hrMovementTarget, setAchieving24hrMovementTarget] = useState<number | null>(null);
     const [last7DaysTotalDailySteps, setLast7DaysTotalDailySteps] = useState<any[] | null>(null);
     const [leagueTableSteps, setLeagueTableSteps] = useState<any[] | null>(null);
+
+    // set daily threshold targets
+    const stepsThreshold = 10000;
+    const sleepThreshold = 9 * 60 * 60;
+    const activityThreshold = 1 * 60 * 60;
 
     const columns: GridColDef[] = [
         {field: 'id', flex: 0.2, headerName: 'Id', hide: true},
@@ -135,13 +142,66 @@ const StepsDashboard = () => {
         setSelectableClassrooms(classrooms.sort((a, b) => a.name.localeCompare(b.name)));
     };
 
-    const getAchieving24HourMovementTarget = async (terraIds: any, stepsData: any) => {
-        // get daily thresholds
-        let stepsThreshold = 10000;
-        let sleepThreshold = 9 * 60 * 60;
-        let activityThreshold = 1 * 60 * 60;
-        // get sleep data
+    const getYesterdaysSteps = async (terraIds: any) => {
         let requestBody: TerraWearables = {
+            "idList": terraIds,
+            "grouping": "group",
+            "category": "daily",
+            "subtype": "steps",
+            "period": "millennium",
+            "startDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "returnType": "total"
+        };
+        let wearablesData = await getWearablesData(requestBody);
+        setYesterdaysSteps(wearablesData?.data[0]?.value ?? 0);
+    };
+
+    const getTotalSteps = async (terraIds: any) => {
+        let requestBody: TerraWearables = {
+            "idList": terraIds,
+            "grouping": "group",
+            "category": "daily",
+            "subtype": "steps",
+            "period": "millennium",
+            "startDate": format(startDate, "yyyy-MM-dd"),
+            "endDate": format(endDate, "yyyy-MM-dd"),
+            "returnType": "total"
+        };
+        let wearablesData = await getWearablesData(requestBody);
+        setTotalSteps(wearablesData?.data[0]?.value ?? 0);
+    };
+
+    const getAverageDailySteps = async (terraIds: any) => {
+        let requestBody: TerraWearables = {
+            "idList": terraIds,
+            "grouping": "group",
+            "category": "daily",
+            "subtype": "steps",
+            "period": "millennium",
+            "startDate": format(startDate, "yyyy-MM-dd"),
+            "endDate": format(endDate, "yyyy-MM-dd"),
+            "returnType": "average"
+        };
+        let wearablesData = await getWearablesData(requestBody);
+        setAverageDailySteps(wearablesData?.data[0]?.value ?? 0);
+    };
+
+    const getTargets = async (terraIds: any) => {
+        // get steps target data
+        let requestBody: TerraWearables = {
+            "idList": terraIds,
+            "grouping": "user",
+            "category": "daily",
+            "subtype": "steps",
+            "period": "millennium",
+            "startDate": format(startDate, "yyyy-MM-dd"),
+            "endDate": format(endDate, "yyyy-MM-dd"),
+            "returnType": "average"
+        };
+        let stepsData = await getWearablesData(requestBody);
+        // get sleep target data
+        requestBody = {
             "idList": terraIds,
             "grouping": "user",
             "category": "sleep",
@@ -152,7 +212,7 @@ const StepsDashboard = () => {
             "returnType": "average"
         };
         let sleepData = await getWearablesData(requestBody);
-        // get activity data
+        // get activity target data
         requestBody = {
             "idList": terraIds,
             "grouping": "user",
@@ -164,17 +224,52 @@ const StepsDashboard = () => {
             "returnType": "average"
         };
         let activityData = await getWearablesData(requestBody);
-        // determine the number of members that have reached all three thresholds
-        let memberCount = 0;
+        // determine the number of members that have achieved all three targets
+        let achievedCount = 0;
         for (let terraId of terraIds) {
             let stepsValue = stepsData?.data?.find((item: any) => item.terraId == terraId)?.value ?? 0;
             let sleepValue = sleepData?.data?.find((item: any) => item.terraId == terraId)?.value ?? 0;
             let activityValue = activityData?.data?.find((item: any) => item.terraId == terraId)?.value ?? 0;
             if (stepsValue >= stepsThreshold && sleepValue >= sleepThreshold && activityValue >= activityThreshold) {
-                memberCount ++;
+                achievedCount ++;
             }
         }
-        return memberCount;
+        // set values
+        setStepsTargetData(stepsData?.data ?? []);
+        setSleepTargetData(sleepData?.data ?? []);
+        setActivityTargetData(activityData?.data ?? []);
+        setAchieving24hrMovementTarget(achievedCount);
+    };
+
+    const getLast7DaysTotalDailySteps = async (terraIds: any) => {
+        let requestBody: TerraWearables = {
+            "idList": terraIds,
+            "grouping": "group",
+            "category": "daily",
+            "subtype": "steps",
+            "period": "day",
+            "startDate": format(subDays(new Date(), 7), "yyyy-MM-dd"),
+            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "returnType": "total"
+        };
+        let wearablesData = await getWearablesData(requestBody);
+        setLast7DaysTotalDailySteps(wearablesData?.data ?? []);
+    };
+
+    const getLeagueTableSteps = async (terraIds: any, organization: any) => {
+        let requestBody: TerraWearables = {
+            "idList": terraIds,
+            "grouping": "user",
+            "category": "daily",
+            "subtype": "steps",
+            "period": "millennium",
+            "startDate": format(startDate, "yyyy-MM-dd"),
+            "endDate": format(endDate, "yyyy-MM-dd"),
+            "returnType": "total"
+        };
+        let wearablesData = await getWearablesData(requestBody);
+        wearablesData?.data?.sort((a: any, b: any) => b.value - a.value);
+        setLeagueTableSteps(wearablesData?.data?.slice(0, 20).map((item: any) => ({name: nameForTerraId(item.terraId, organization), value: item.value})) ?? []);
     };
 
     const getResults = async () => {
@@ -192,95 +287,13 @@ const StepsDashboard = () => {
             }));
         }
         let terraIds = terraIdsForClassrooms(result.data.getOrganization);
-        // set number of members
-        setNumberOfMembers(terraIds.length);
-        // set yesterdays' steps
-        let requestBody: TerraWearables = {
-            "idList": terraIds,
-            "grouping": "group",
-            "category": "daily",
-            "subtype": "steps",
-            "period": "millennium",
-            "startDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
-            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
-            "returnType": "total"
-        };
-        let wearablesData = await getWearablesData(requestBody);
-        setYesterdaysSteps(wearablesData?.data[0]?.value ?? 0);
-        // set total steps
-        requestBody = {
-            "idList": terraIds,
-            "grouping": "group",
-            "category": "daily",
-            "subtype": "steps",
-            "period": "millennium",
-            "startDate": format(startDate, "yyyy-MM-dd"),
-            "endDate": format(endDate, "yyyy-MM-dd"),
-            "returnType": "total"
-        };
-        wearablesData = await getWearablesData(requestBody);
-        setTotalSteps(wearablesData?.data[0]?.value ?? 0);
-        // set achieving steps target (get average daily steps for each user, then determine the number of users that are achieving their steps target)
-        requestBody = {
-            "idList": terraIds,
-            "grouping": "user",
-            "category": "daily",
-            "subtype": "steps",
-            "period": "millennium",
-            "startDate": format(startDate, "yyyy-MM-dd"),
-            "endDate": format(endDate, "yyyy-MM-dd"),
-            "returnType": "average"
-        };
-        let wearablesStepsData = await getWearablesData(requestBody);
-        let userAverageDailySteps = wearablesStepsData?.data ?? [];
-        let achievedCount = 0;
-        userAverageDailySteps.forEach((item: any) => {
-            if (item.value >= 10000) achievedCount++;
-        });
-        setAchievingStepsTarget(achievedCount);
-        // set average team daily steps
-        requestBody = {
-            "idList": terraIds,
-            "grouping": "group",
-            "category": "daily",
-            "subtype": "steps",
-            "period": "millennium",
-            "startDate": format(startDate, "yyyy-MM-dd"),
-            "endDate": format(endDate, "yyyy-MM-dd"),
-            "returnType": "average"
-        };
-        wearablesData = await getWearablesData(requestBody);
-        setAverageTeamDailySteps(wearablesData?.data[0]?.value ?? 0);
-        // set achieving 24-Hour movement target
-        setAchieving24HourMovementTarget(await getAchieving24HourMovementTarget(terraIds, wearablesStepsData));
-        // set last seven days total daily steps
-        requestBody = {
-            "idList": terraIds,
-            "grouping": "group",
-            "category": "daily",
-            "subtype": "steps",
-            "period": "day",
-            "startDate": format(subDays(new Date(), 7), "yyyy-MM-dd"),
-            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
-            "returnType": "total"
-        };
-        wearablesData = await getWearablesData(requestBody);
-        setLast7DaysTotalDailySteps(wearablesData?.data ?? []);
-        // set league table steps
-        requestBody = {
-            "idList": terraIds,
-            "grouping": "user",
-            "category": "daily",
-            "subtype": "steps",
-            "period": "millennium",
-            "startDate": format(startDate, "yyyy-MM-dd"),
-            "endDate": format(endDate, "yyyy-MM-dd"),
-            "returnType": "total"
-        };
-        wearablesData = await getWearablesData(requestBody);
-        wearablesData?.data?.sort((a: any, b: any) => b.value - a.value);
-        setLeagueTableSteps(wearablesData?.data?.slice(0, 20).map((item: any) => ({name: nameForTerraId(item.terraId, result.data.getOrganization), value: item.value})) ?? []);
-
+        setParticipants(terraIds.length);
+        await getYesterdaysSteps(terraIds);
+        await getTotalSteps(terraIds);
+        await getAverageDailySteps(terraIds);
+        await getTargets(terraIds);
+        await getLast7DaysTotalDailySteps(terraIds);
+        await getLeagueTableSteps(terraIds, result.data.getOrganization);
         setOrganization(result.data.getOrganization);
         setLoading(false);
     };
@@ -294,12 +307,14 @@ const StepsDashboard = () => {
         setLoading(false);
         setOrganization(null);
 
-        setNumberOfMembers(null);
+        setParticipants(null);
         setYesterdaysSteps(null);
         setTotalSteps(null);
-        setAchievingStepsTarget(null);
-        setAverageTeamDailySteps(null);
-        setAchieving24HourMovementTarget(null);
+        setAverageDailySteps(null);
+        setStepsTargetData(null);
+        setSleepTargetData(null);
+        setActivityTargetData(null);
+        setAchieving24hrMovementTarget(null);
         setLast7DaysTotalDailySteps(null);
         setLeagueTableSteps(null);
     };
@@ -348,24 +363,49 @@ const StepsDashboard = () => {
         return "";
     };
 
-    const getAchievingStepsTargetText = () => {
-        if ((achievingStepsTarget != null) && (numberOfMembers != null)) {
-            let percentage = 0;
-            if (numberOfMembers > 0) {
-                percentage = (achievingStepsTarget / numberOfMembers) * 100;
-            }
-            return achievingStepsTarget.toLocaleString() + " (" + Math.floor(percentage) + "%)";
+    const getStepsTargetText = () => {
+        let achievedCount = 0;
+        stepsTargetData?.forEach((item: any) => {
+            if (item.value >= stepsThreshold) achievedCount ++;
+        });
+        let percentage = 0;
+        if (participants != null && participants > 0) {
+            percentage = (achievedCount / participants) * 100;
         }
-        else return "";
+        return achievedCount.toLocaleString() + " (" + Math.floor(percentage) + "%)";
     };
 
-    const getAchieving24HourMovementTargetText = () => {
-        if ((achieving24HourMovementTarget != null) && (numberOfMembers != null)) {
-            let percentage = 0;
-            if (numberOfMembers > 0) {
-                percentage = (achieving24HourMovementTarget / numberOfMembers) * 100;
+    const getSleepTargetText = () => {
+        let achievedCount = 0;
+        sleepTargetData?.forEach((item: any) => {
+            if (item.value >= sleepThreshold) achievedCount ++;
+        });
+        let percentage = 0;
+        if (participants != null && participants > 0) {
+            percentage = (achievedCount / participants) * 100;
+        }
+        return achievedCount.toLocaleString() + " (" + Math.floor(percentage) + "%)";
+    };
+
+    const getActivityTargetText = () => {
+        let achievedCount = 0;
+        activityTargetData?.forEach((item: any) => {
+            if (item.value >= activityThreshold) achievedCount ++;
+        });
+        let percentage = 0;
+        if (participants != null && participants > 0) {
+            percentage = (achievedCount / participants) * 100;
+        }
+        return achievedCount.toLocaleString() + " (" + Math.floor(percentage) + "%)";
+    };
+
+    const getAchieving24hrMovementTargetText = () => {
+        let percentage = 0;
+        if (achieving24hrMovementTarget != null && participants != null) {
+            if (participants > 0) {
+                percentage = (achieving24hrMovementTarget / participants) * 100;
             }
-            return achieving24HourMovementTarget.toLocaleString() + " (" + Math.floor(percentage) + "%)";
+            return achieving24hrMovementTarget.toLocaleString() + " (" + Math.floor(percentage) + "%)";
         }
         else return "";
     };
@@ -487,11 +527,11 @@ const StepsDashboard = () => {
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {numberOfMembers != null ?
-                                <Card style={{backgroundColor:'#ffeeee', border:'4px solid red', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            {participants != null ?
+                                <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Number of Members</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{numberOfMembers.toLocaleString()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Participants</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{participants.toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -501,7 +541,7 @@ const StepsDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {yesterdaysSteps != null ?
-                                <Card style={{backgroundColor:'#ffffee', border:'4px solid #ff7700', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#ffffee', border: '4px solid #ff7700', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Yesterdays' Steps</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{yesterdaysSteps.toLocaleString()}</Typography>
@@ -514,7 +554,7 @@ const StepsDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {totalSteps != null ?
-                                <Card style={{backgroundColor:'#eeffee', border:'4px solid green', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#eeffee', border: '4px solid green', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Steps</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{totalSteps.toLocaleString()}</Typography>
@@ -530,11 +570,11 @@ const StepsDashboard = () => {
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {achievingStepsTarget != null && numberOfMembers != null ?
-                                <Card style={{backgroundColor:'#eeeeff', border:'4px solid blue', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            {averageDailySteps != null ?
+                                <Card style={{backgroundColor: '#eeffff', border: '4px solid #009999', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Achieving Steps Target</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{getAchievingStepsTargetText()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Average Daily Steps</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageDailySteps).toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -543,11 +583,11 @@ const StepsDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {averageTeamDailySteps != null ?
-                                <Card style={{backgroundColor:'#eeffff', border:'4px solid #009999', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            {stepsTargetData != null && participants != null ?
+                                <Card style={{backgroundColor: '#eeeeff', border: '4px solid blue', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Average Team Daily Steps</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{Math.floor(averageTeamDailySteps).toLocaleString()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Steps Target</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{getStepsTargetText()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -556,11 +596,41 @@ const StepsDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {achieving24HourMovementTarget != null ?
-                                <Card style={{backgroundColor:'#ffeeff', border:'4px solid violet', height:160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            {sleepTargetData != null && participants != null ?
+                                <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}>Achieving 24-Hour Movement Target</Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}>{getAchieving24HourMovementTargetText()}</Typography>
+                                        <Typography variant={'h5'} textAlign={'center'}>Sleep Target</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{getSleepTargetText()}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'160px'}/>
+                            }
+                        </Grid>
+
+                    </Grid>
+
+                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {activityTargetData != null && participants != null ?
+                                <Card style={{backgroundColor: '#ffeeff', border: '4px solid violet', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Active Target</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{getActivityTargetText()}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'160px'}/>
+                            }
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {achieving24hrMovementTarget != null && participants != null ?
+                                <Card style={{backgroundColor: '#ffffee', border: '4px solid #ff7700', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>24 hr Movement Target</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{getAchieving24hrMovementTargetText()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
