@@ -701,18 +701,18 @@ const WearablesDashboard = () => {
                     }
 
                     <Grid item xs={12}>
-                        {last7DaysTotalDailySteps != null ?
-                            <StepsDailyBarChart data={last7DaysTotalDailySteps}/>
-                            :
-                            <Skeleton height={'760px'}/>
-                        }
-                    </Grid>
-
-                    <Grid item xs={12}>
                         {leagueTableSteps != null ?
                             <StepsLeagueBarChart data={leagueTableSteps} />
                             :
                             <Skeleton height={'350px'}/>
+                        }
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        {last7DaysTotalDailySteps != null ?
+                            <StepsDailyBarChart data={last7DaysTotalDailySteps}/>
+                            :
+                            <Skeleton height={'760px'}/>
                         }
                     </Grid>
 
