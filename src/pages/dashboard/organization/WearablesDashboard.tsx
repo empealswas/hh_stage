@@ -392,8 +392,8 @@ const WearablesDashboard = () => {
             if (item.value >= stepsThreshold) achievedCount ++;
         });
         let percentage = 0;
-        if (participants != null && participants > 0) {
-            percentage = (achievedCount / participants) * 100;
+        if (connectedMembers != null && connectedMembers > 0) {
+            percentage = (achievedCount / connectedMembers) * 100;
         }
         return achievedCount.toLocaleString() + " (" + Math.floor(percentage) + "%)";
     };
@@ -404,8 +404,8 @@ const WearablesDashboard = () => {
             if (item.value >= sleepThreshold) achievedCount ++;
         });
         let percentage = 0;
-        if (participants != null && participants > 0) {
-            percentage = (achievedCount / participants) * 100;
+        if (connectedMembers != null && connectedMembers > 0) {
+            percentage = (achievedCount / connectedMembers) * 100;
         }
         return achievedCount.toLocaleString() + " (" + Math.floor(percentage) + "%)";
     };
@@ -416,17 +416,17 @@ const WearablesDashboard = () => {
             if (item.value >= activityThreshold) achievedCount ++;
         });
         let percentage = 0;
-        if (participants != null && participants > 0) {
-            percentage = (achievedCount / participants) * 100;
+        if (connectedMembers != null && connectedMembers > 0) {
+            percentage = (achievedCount / connectedMembers) * 100;
         }
         return achievedCount.toLocaleString() + " (" + Math.floor(percentage) + "%)";
     };
 
     const getAchieving24hrMovementTargetText = () => {
         let percentage = 0;
-        if (achieving24hrMovementTarget != null && participants != null) {
-            if (participants > 0) {
-                percentage = (achieving24hrMovementTarget / participants) * 100;
+        if (achieving24hrMovementTarget != null && connectedMembers != null) {
+            if (connectedMembers > 0) {
+                percentage = (achieving24hrMovementTarget / connectedMembers) * 100;
             }
             return achieving24hrMovementTarget.toLocaleString() + " (" + Math.floor(percentage) + "%)";
         }
@@ -619,7 +619,7 @@ const WearablesDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {stepsTargetData != null && participants != null ?
+                            {stepsTargetData != null && connectedMembers != null ?
                                 <Card style={{backgroundColor: '#eeeeff', border: '4px solid blue', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Steps Target</Typography>
@@ -636,7 +636,7 @@ const WearablesDashboard = () => {
                     <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {sleepTargetData != null && participants != null ?
+                            {sleepTargetData != null && connectedMembers != null ?
                                 <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Sleep Target</Typography>
@@ -649,7 +649,7 @@ const WearablesDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {activityTargetData != null && participants != null ?
+                            {activityTargetData != null && connectedMembers != null ?
                                 <Card style={{backgroundColor: '#ffeeff', border: '4px solid violet', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Active Target</Typography>
@@ -662,7 +662,7 @@ const WearablesDashboard = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {achieving24hrMovementTarget != null && participants != null ?
+                            {achieving24hrMovementTarget != null && connectedMembers != null ?
                                 <Card style={{backgroundColor: '#eeffee', border: '4px solid green', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>24 hr Movement Target</Typography>
