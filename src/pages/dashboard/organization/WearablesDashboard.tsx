@@ -102,6 +102,7 @@ const WearablesDashboard = () => {
     const [organization, setOrganization] = useState<Organization | null>(null);
 
     const [participants, setParticipants] = useState<number | null>(null);
+    const [connectedMembers, setConnectedMembers] = useState<number | null>(null);
     const [yesterdaysSteps, setYesterdaysSteps] = useState<number | null>(null);
     const [totalSteps, setTotalSteps] = useState<number | null>(null);
     const [averageDailySteps, setAverageDailySteps] = useState<number | null>(null);
@@ -286,15 +287,17 @@ const WearablesDashboard = () => {
                 cid: selectedClassroom.id
             }));
         }
-        let terraIds = terraIdsForClassrooms(result.data.getOrganization);
-        setParticipants(terraIds.length);
+        let theOrganization = result.data.getOrganization;
+        let terraIds = terraIdsForClassrooms(theOrganization);
+        setParticipants(usersForClassrooms(theOrganization).length);
+        setConnectedMembers(terraIds.length);
         await getYesterdaysSteps(terraIds);
         await getTotalSteps(terraIds);
         await getAverageDailySteps(terraIds);
         await getTargets(terraIds);
         await getLast7DaysTotalDailySteps(terraIds);
-        await getLeagueTableSteps(terraIds, result.data.getOrganization);
-        setOrganization(result.data.getOrganization);
+        await getLeagueTableSteps(terraIds, theOrganization);
+        setOrganization(theOrganization);
         setLoading(false);
     };
 
@@ -308,6 +311,7 @@ const WearablesDashboard = () => {
         setOrganization(null);
 
         setParticipants(null);
+        setConnectedMembers(null);
         setYesterdaysSteps(null);
         setTotalSteps(null);
         setAverageDailySteps(null);
@@ -320,7 +324,7 @@ const WearablesDashboard = () => {
     };
 
     const terraIdsForClassrooms = (organization: Organization) => {
-        // get terra ids (there may be duplicates)
+        // get terra ids
         let terraIds: string[] = [];
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
         classrooms.forEach((classroom: any) => {
@@ -346,6 +350,22 @@ const WearablesDashboard = () => {
                     if (!userExists) {
                         users.push(theUser);
                     }
+                }
+            });
+        });
+        return users;
+    };
+
+    const usersForClassrooms = (organization: Organization) => {
+        let users: User[] = [];
+        let classrooms: any[] = organization?.Classrooms?.items ?? [];
+        classrooms.forEach((classroom: any) => {
+            let members = classroom.members.items;
+            members.forEach((member: any) => {
+                let theUser = member.userInOrganization.user as User;
+                let userExists = users.some((user: any) => user.id == theUser.id);
+                if (!userExists) {
+                    users.push(theUser);
                 }
             });
         });
@@ -531,10 +551,23 @@ const WearablesDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {participants != null ?
-                                <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#eeffee', border: '4px solid green', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Participants</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{participants.toLocaleString()}</Typography>
+                                    </CardContent>
+                                </Card>
+                                :
+                                <CardSkeleton height={'160px'}/>
+                            }
+                        </Grid>
+
+                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                            {connectedMembers != null ?
+                                <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <CardContent>
+                                        <Typography variant={'h5'} textAlign={'center'}>Connected</Typography>
+                                        <Typography variant={'h3'} textAlign={'center'}>{connectedMembers.toLocaleString()}</Typography>
                                     </CardContent>
                                 </Card>
                                 :
@@ -555,9 +588,13 @@ const WearablesDashboard = () => {
                             }
                         </Grid>
 
+                    </Grid>
+
+                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {totalSteps != null ?
-                                <Card style={{backgroundColor: '#eeffee', border: '4px solid green', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#ffffee', border: '4px solid #ff7700', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Total Steps</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{totalSteps.toLocaleString()}</Typography>
@@ -567,10 +604,6 @@ const WearablesDashboard = () => {
                                 <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
-
-                    </Grid>
-
-                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {averageDailySteps != null ?
@@ -598,6 +631,10 @@ const WearablesDashboard = () => {
                             }
                         </Grid>
 
+                    </Grid>
+
+                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
+
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {sleepTargetData != null && participants != null ?
                                 <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -610,10 +647,6 @@ const WearablesDashboard = () => {
                                 <CardSkeleton height={'160px'}/>
                             }
                         </Grid>
-
-                    </Grid>
-
-                    <Grid item xs={12} container justifyContent={'space-evenly'} alignItems={'flex-end'} spacing={3} style={{marginTop:10}}>
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {activityTargetData != null && participants != null ?
@@ -634,19 +667,6 @@ const WearablesDashboard = () => {
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>24 hr Movement Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{getAchieving24hrMovementTargetText()}</Typography>
-                                    </CardContent>
-                                </Card>
-                                :
-                                <CardSkeleton height={'160px'}/>
-                            }
-                        </Grid>
-
-                        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                            {participants != null ?
-                                <Card style={{backgroundColor: '#ffffee', border: '4px solid #ff7700', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                                    <CardContent>
-                                        <Typography variant={'h5'} textAlign={'center'}></Typography>
-                                        <Typography variant={'h3'} textAlign={'center'}></Typography>
                                     </CardContent>
                                 </Card>
                                 :
