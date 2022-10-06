@@ -25,7 +25,7 @@ export default function LanguagePopover() {
 
   return (
     <>
-      <IconButtonAnimate
+      <IconButtonAnimate style={{visibility: 'hidden'}}
         onClick={handleOpen}
         sx={{
           width: 40,
