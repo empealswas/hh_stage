@@ -12,6 +12,8 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
+// paths
+import {PATH_DASHBOARD} from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -71,6 +73,8 @@ export default function RegisterForm() {
     try {
       setErrorText('');
       await register(data.email, data.password, data.firstName, data.lastName, data.recoveryEmailAddress, data.dob, data.postcode);
+      // cognito trigger has auto-verified for us, so go straight to the sign-in page
+      window.location.href = `${PATH_DASHBOARD.root}`;
     } catch (error) {
       console.error(error);
       //reset();

@@ -226,8 +226,6 @@ function AuthProvider({ children }: AuthProviderProps) {
           }
           resolve(undefined);
           //window.location.href = `${PATH_AUTH.verify}/${email}`;
-          // cognito trigger has auto-verified for us, so go straight to the sign-in page
-          window.location.href = `${PATH_DASHBOARD.root}`;
         }
       );
     });
