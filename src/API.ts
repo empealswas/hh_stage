@@ -14,6 +14,8 @@ export type CreateUserInput = {
   address?: string | null,
   city?: string | null,
   zipCode?: string | null,
+  recoveryEmailAddress?: string | null,
+  dob?: string | null
 };
 
 export type ModelUserConditionInput = {
@@ -88,6 +90,8 @@ export type User = {
   address?: string | null,
   city?: string | null,
   zipCode?: string | null,
+  recoveryEmailAddress?: string | null,
+  dob?: string | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -783,6 +787,8 @@ export type UpdateUserInput = {
   address?: string | null,
   city?: string | null,
   zipCode?: string | null,
+  recoveryEmailAddress?: string | null,
+  dob?: string | null,
 };
 
 export type DeleteUserInput = {

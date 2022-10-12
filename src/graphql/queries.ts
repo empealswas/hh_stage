@@ -25,6 +25,8 @@ export const getUser = /* GraphQL */ `
       address
       city
       zipCode
+      recoveryEmailAddress
+      dob
       createdAt
       updatedAt
     }
@@ -49,6 +51,8 @@ export const listUsers = /* GraphQL */ `
         address
         city
         zipCode
+        recoveryEmailAddress
+        dob
         createdAt
         updatedAt
       }

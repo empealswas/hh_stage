@@ -18,11 +18,9 @@ type Props = {
 type FormValuesProps = {
     firstName: string;
     lastName: string;
-    phoneNumber: string | null;
-    country: string | null;
-    address: string | null;
-    city: string | null;
     zipCode: string | null;
+    dob: string | null;
+    recoveryEmailAddress: string;
 };
 const AccountGeneralForm = ({user}: Props) => {
     const {enqueueSnackbar} = useSnackbar();
@@ -30,18 +28,16 @@ const AccountGeneralForm = ({user}: Props) => {
 
     const UpdateUserSchema = Yup.object().shape({
         firstName: Yup.string().required('First name is required'),
-        lastName: Yup.string().required('Last name is required')
+        lastName: Yup.string().required('Last name is required'),
+        recoveryEmailAddress: Yup.string().required('Recovery email address is required')
     });
 
     const defaultValues = {
-        // displayName: user?.displayName || '',
         firstName: user?.firstName || '',
         lastName: user?.lastName || '',
-        phoneNumber: user?.phoneNumber || '',
-        country: user?.country || '',
-        address: user?.address || '',
-        city: user?.city || '',
         zipCode: user?.zipCode || '',
+        dob: user?.dob || '',
+        recoveryEmailAddress: user?.recoveryEmailAddress || ''
     };
 
     const methods = useForm<FormValuesProps>({
@@ -132,12 +128,13 @@ const AccountGeneralForm = ({user}: Props) => {
                                 gridTemplateColumns: {xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)'},
                             }}
                         >
-                            <RHFTextField name="firstName" label="First Name"/>
-                            <RHFTextField name="lastName" label="Last Name"/>
+                            <RHFTextField name="firstName" label="First name"/>
+                            <RHFTextField name="lastName" label="Last name"/>
+                            <RHFTextField name="zipCode" label="Postcode"/>
+                            <RHFTextField name="dob" label="Date of birth"/>
+                            <RHFTextField name="recoveryEmailAddress" label="Recovery email address"/>
 
-                            <RHFTextField name="phoneNumber" label="Phone Number"/>
-                            <RHFTextField name="address" label="Address"/>
-
+                            {/*
                             <RHFSelect name="country" label="Country" placeholder="Country">
                                 <option value=""/>
                                 {countries.map((option) => (
@@ -146,11 +143,10 @@ const AccountGeneralForm = ({user}: Props) => {
                                     </option>
                                 ))}
                             </RHFSelect>
-
-
-
                             <RHFTextField name="city" label="City"/>
                             <RHFTextField name="zipCode" label="Zip/Code"/>
+                            */}
+
                         </Box>
 
                         <Stack spacing={3} alignItems="flex-end" sx={{mt: 3}}>
