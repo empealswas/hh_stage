@@ -10,10 +10,13 @@ import AccountGeneralForm from "./AccountGeneralForm";
 import {User} from "../../../../API";
 import {API, graphqlOperation} from "aws-amplify";
 import {getUser} from "../../../../graphql/queries";
-import {Box, Card, Grid, Skeleton, Stack} from "@mui/material";
+import {Box, Card, Grid, Skeleton, Stack, Link} from "@mui/material";
 import {RHFSelect, RHFTextField} from "../../../../components/hook-form";
 import {countries} from "../../../../_mock";
 import {LoadingButton} from "@mui/lab";
+// routes
+import {Link as RouterLink} from 'react-router-dom';
+import {PATH_AUTH} from '../../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +42,13 @@ export default function AccountGeneral() {
     return (
         <>
             {userDetails ?
-                <AccountGeneralForm user={userDetails}/>
+                <>
+                    <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
+                        Reset password
+                    </Link>
+                    <Box height={50}></Box>
+                    <AccountGeneralForm user={userDetails}/>
+                </>
                 :
                 <Grid container spacing={3}>
 

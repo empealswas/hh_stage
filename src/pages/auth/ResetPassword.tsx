@@ -42,7 +42,7 @@ export default function ResetPassword() {
             {!sent ? (
               <>
                 <Typography variant="h3" paragraph>
-                  Forgot your password?
+                  Reset your password
                 </Typography>
 
                 <Typography sx={{ color: 'text.secondary', mb: 5 }}>
