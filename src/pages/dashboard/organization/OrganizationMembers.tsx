@@ -14,6 +14,7 @@ import useAuth from '../../../hooks/useAuth';
 import {useParams} from "react-router-dom";
 import {CreateUserInOrganizationInput, UserInOrganizationStatus} from "../../../API";
 import {createUserInOrganization} from "../../../graphql/mutations";
+import { useState } from 'react';
 
 const usersQuery = `query MyQuery {
   listUsers(limit: 100000000) {
@@ -26,23 +27,29 @@ const usersQuery = `query MyQuery {
 const OrganizationMembers = () => {
 
     const {themeStretch} = useSettings();
-    const { register } = useAuth();
+    const {user, register} = useAuth();
     const {organizationId} = useParams();
+
+    const [userNo, setUserNo] = useState(0);
+    const [userCount, setUserCount] = useState(0);
 
     const createUsers = async (event: any) => {
         // get existing users
         let result: any = await API.graphql(graphqlOperation(usersQuery));
         let users = result?.data?.listUsers?.items ?? [];
         // get username part for each user id
-        let existingUsernames = users.map((user: any) => user.id.split("@")[0]);
+        let existingUsernames = users.map((item: any) => item.id.split("@")[0]);
         // sort the existing usernames (to help us find the username with highest number appended)
         existingUsernames.sort();
         // get new-users data from CSV file
         let text = await event.target.files[0].text();
         let lines = text.replace(/\r\n/g, "\n").split("\n");
+        setUserCount(lines.length);
         let logText = "";
         // for each new user
-        for (let line of lines) {
+        for (let i = 0; i < lines.length; i ++) {
+            setUserNo(i + 1);
+            let line = lines[i];
             let fields = line.split(",");
             let firstName = fields[0];
             let lastName = fields[1];
@@ -91,6 +98,9 @@ const OrganizationMembers = () => {
                 logText += "Failed to add user '" + userId + "' to organization\n";
             }
         }
+        // finished
+        setUserNo(0);
+        setUserCount(0);
         if (logText == "") alert("Users created successfully");
         else alert(logText);
     };
@@ -102,12 +112,13 @@ const OrganizationMembers = () => {
                    direction={{sx: 'column', md: 'row'}}>
                 <Typography variant={'h4'}>Members of your organization</Typography>
                 <InviteMemberDialog/>
-
-                <div>
-                    <Typography>Add Members From CSV File:</Typography>
-                    <input type="file" accept="text/csv" onChange={(event) => createUsers(event)}></input>
-                </div>
-
+                {user?.email == "admin@hal.health" &&
+                    <div>
+                        <Typography>Add Members From CSV File:</Typography>
+                        <input type="file" accept="text/csv" onChange={(event) => createUsers(event)}></input>
+                        <input type="text" value={"User " + userNo + " of " + userCount}></input>
+                    </div>
+                }
             </Stack>
 
                     <MembersTabs/>
