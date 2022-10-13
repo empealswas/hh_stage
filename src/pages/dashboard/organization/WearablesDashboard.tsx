@@ -513,10 +513,10 @@ const WearablesDashboard = () => {
                                             <em>None</em>
                                         </MenuItem>
                                         */}
-                                        <MenuItem value={'week'}>7 Days</MenuItem>
-                                        <MenuItem value={'month'}>30 Days</MenuItem>
-                                        <MenuItem value={'term'}>3 Months</MenuItem>
-                                        <MenuItem value={'year'}>1 Year</MenuItem>
+                                        <MenuItem value={'week'}>Week</MenuItem>
+                                        <MenuItem value={'month'}>Month</MenuItem>
+                                        <MenuItem value={'term'}>Quarter</MenuItem>
+                                        <MenuItem value={'year'}>Year</MenuItem>
                                     </Select>
                                 </FormControl>
                                 <DatePicker

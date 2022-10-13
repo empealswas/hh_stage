@@ -475,8 +475,8 @@ const ActivityDashboard = () => {
                                         label="Period"
                                         onChange={handleSelectedPeriodChange}
                                     >
-                                        <MenuItem value={'week'}>7 Days</MenuItem>
-                                        <MenuItem value={'fortnight'}>14 Days</MenuItem>
+                                        <MenuItem value={'week'}>Week</MenuItem>
+                                        <MenuItem value={'fortnight'}>Fortnight</MenuItem>
                                     </Select>
                                 </FormControl>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
