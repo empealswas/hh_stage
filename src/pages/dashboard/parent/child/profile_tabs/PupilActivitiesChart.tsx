@@ -28,9 +28,9 @@ const CHART_DATA = [6, 4, 6, 8];
 
 const activityQuery = `query MyQuery($id: ID = "") {
   getUser(id: $id) {
-    organizations {
+    organizations(limit: 10000000) {
       items {
-        Attendances {
+        Attendances(limit: 10000000) {
           items {
             lessonRecord {
               activity

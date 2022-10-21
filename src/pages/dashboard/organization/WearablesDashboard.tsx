@@ -29,7 +29,7 @@ import Iconify from "../../../components/Iconify";
 
 const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    Classrooms {
+    Classrooms(limit: 10000000) {
       items {
         id
         name
@@ -40,11 +40,11 @@ const querySelectableClassrooms = `query MyQuery($id: ID = "") {
 
 const queryAllClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    Classrooms {
+    Classrooms(limit: 10000000) {
       items {
         id
         name
-        members {
+        members(limit: 10000000) {
           items {
             id
             userInOrganization {
@@ -68,7 +68,7 @@ const queryClassroom = `query MyQuery($id: ID = "", $cid: ID = "") {
       items {
         id
         name
-        members {
+        members(limit: 10000000) {
           items {
             id
             userInOrganization {

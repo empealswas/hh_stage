@@ -23,7 +23,7 @@ import TotalActivitiesBarchart from "./dashboard/TotalActivitiesBarchart";
 
 const querySelectableClassrooms = `query MyQuery($id: ID = "") {
   getOrganization(id: $id) {
-    Classrooms {
+    Classrooms(limit: 10000000) {
       items {
         id
         name
@@ -39,11 +39,11 @@ const queryAllClassrooms = `query MyQuery($id: ID = "", $ge: String = "", $le: S
         userID
       }
     }
-    Classrooms(sortDirection: ASC) {
+    Classrooms(limit: 10000000, sortDirection: ASC) {
       items {
         id
         name
-        members {
+        members(limit: 10000000) {
           items {
             id
             userInOrganization {
@@ -82,11 +82,11 @@ const queryAllClassrooms = `query MyQuery($id: ID = "", $ge: String = "", $le: S
 
 const queryClassroom = `query MyQuery($id: ID = "", $cid: ID = "", $ge: String = "", $le: String = "") {
   getOrganization(id: $id) {
-    Classrooms(sortDirection: ASC, limit: 1000000, filter: {id: {eq: $cid}}) {
+    Classrooms(sortDirection: ASC, limit: 10000000, filter: {id: {eq: $cid}}) {
       items {
         id
         name
-        members {
+        members(limit: 10000000) {
           items {
             id
             userInOrganization {

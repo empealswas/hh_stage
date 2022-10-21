@@ -50,11 +50,11 @@ import { flexbox } from '@mui/system';
 
 const query = `query MyQuery($id: ID = "") {
     getOrganization(id: $id) {
-        Classrooms {
+        Classrooms(limit: 10000000) {
             items {
                 id
                 name
-                members {
+                members(limit: 10000000) {
                     items {
                         userInOrganization {
                             user {
