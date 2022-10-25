@@ -57,7 +57,7 @@ const ActivityWidgets = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 {activityData ?
-                    <ActivityWidgetSummary title={'Todays\' Activity'}
+                    <ActivityWidgetSummary title={'Yesterdays\' Activity'}
                                            total={Math.floor((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
                                            percent={(((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) - (activityData?.data[activityData?.data?.length - 2]?.value ?? 0))) / (activityData?.data[activityData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
@@ -68,7 +68,7 @@ const ActivityWidgets = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 {lowIntensityData ?
-                    <ActivityWidgetSummary title={'Todays\' Low Intensity'}
+                    <ActivityWidgetSummary title={'Yesterdays\' Low Intensity'}
                                            total={Math.floor((lowIntensityData?.data[lowIntensityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
                                            percent={(((lowIntensityData?.data[lowIntensityData?.data?.length - 1]?.value ?? 0) - (lowIntensityData?.data[lowIntensityData?.data?.length - 2]?.value ?? 0))) / (lowIntensityData?.data[lowIntensityData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
@@ -79,7 +79,7 @@ const ActivityWidgets = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 {moderateIntensityData ?
-                    <ActivityWidgetSummary title={'Todays\' Moderate Intensity'}
+                    <ActivityWidgetSummary title={'Yesterdays\' Moderate Intensity'}
                                            total={Math.floor((moderateIntensityData?.data[moderateIntensityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
                                            percent={(((moderateIntensityData?.data[moderateIntensityData?.data?.length - 1]?.value ?? 0) - (moderateIntensityData?.data[moderateIntensityData?.data?.length - 2]?.value ?? 0))) / (moderateIntensityData?.data[moderateIntensityData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
@@ -90,7 +90,7 @@ const ActivityWidgets = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 {vigorousIntensityData ?
-                    <ActivityWidgetSummary title={'Todays\' Vigorous Intensity'}
+                    <ActivityWidgetSummary title={'Yesterdays\' Vigorous Intensity'}
                                            total={Math.floor((vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
                                            percent={(((vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 1]?.value ?? 0) - (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value ?? 0))) / (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
