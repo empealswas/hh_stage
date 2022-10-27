@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Page from "../../../components/Page";
-import {Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, Card, CardContent, Skeleton, Accordion, AccordionDetails} from "@mui/material";
+import {Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, Card, CardHeader, CardContent, Skeleton, Accordion, AccordionDetails} from "@mui/material";
 import CardSkeleton from "../../../components/skeleton/CardSkeleton";
 import useSettings from 'src/hooks/useSettings';
 import useAuth from "../../../hooks/useAuth";
@@ -98,6 +98,7 @@ const WearablesDashboard = () => {
     const [startDate, setStartDate] = React.useState<Date>(subDays(new Date(), 7));
     const [endDate, setEndDate] = React.useState<Date>(subDays(new Date(), 1));
     const [loading, setLoading] = useState(false);
+    const [leagueTableMaxItems, setLeagueTableMaxItems] = useState<number>(20);
 
     const [organization, setOrganization] = useState<Organization | null>(null);
 
@@ -112,6 +113,7 @@ const WearablesDashboard = () => {
     const [achieving24hrMovementTarget, setAchieving24hrMovementTarget] = useState<number | null>(null);
     const [last7DaysTotalDailySteps, setLast7DaysTotalDailySteps] = useState<any[] | null>(null);
     const [leagueTableSteps, setLeagueTableSteps] = useState<any[] | null>(null);
+    const [toppedLeagueTableSteps, setToppedLeagueTableSteps] = useState<any[] | null>(null);
 
     // set daily threshold targets
     const stepsThreshold = 10000;
@@ -270,7 +272,11 @@ const WearablesDashboard = () => {
         };
         let wearablesData = await getWearablesData(requestBody);
         wearablesData?.data?.sort((a: any, b: any) => b.value - a.value);
-        setLeagueTableSteps(wearablesData?.data?.slice(0, 20).map((item: any) => ({name: nameForTerraId(item.terraId, organization), value: item.value})) ?? []);
+        setLeagueTableSteps(wearablesData?.data ?? []);
+    };
+
+    const getToppedLeagueTableSteps = () => {
+        setToppedLeagueTableSteps(leagueTableSteps?.slice(0, leagueTableMaxItems).map((item: any) => ({name: nameForTerraId(item.terraId, organization), value: item.value})) ?? []);
     };
 
     const getResults = async () => {
@@ -296,8 +302,8 @@ const WearablesDashboard = () => {
         await getAverageDailySteps(terraIds);
         await getTargets(terraIds);
         await getLast7DaysTotalDailySteps(terraIds);
-        await getLeagueTableSteps(terraIds, theOrganization);
         setOrganization(theOrganization);
+        await getLeagueTableSteps(terraIds, theOrganization);
         setLoading(false);
     };
 
@@ -308,6 +314,7 @@ const WearablesDashboard = () => {
         setStartDate(subDays(new Date(), 7));
         setEndDate(subDays(new Date(), 1));
         setLoading(false);
+        setLeagueTableMaxItems(20);
         setOrganization(null);
 
         setParticipants(null);
@@ -321,6 +328,7 @@ const WearablesDashboard = () => {
         setAchieving24hrMovementTarget(null);
         setLast7DaysTotalDailySteps(null);
         setLeagueTableSteps(null);
+        setToppedLeagueTableSteps(null);
     };
 
     const terraIdsForClassrooms = (organization: Organization) => {
@@ -372,7 +380,7 @@ const WearablesDashboard = () => {
         return users;
     };
 
-    const nameForTerraId = (terraId: any, organization: Organization) => {
+    const nameForTerraId = (terraId: any, organization: any) => {
         let classrooms: any[] = organization?.Classrooms?.items ?? [];
         for (let classroom of classrooms) {
             let members = classroom.members.items;
@@ -473,6 +481,11 @@ const WearablesDashboard = () => {
         getResults();
         return () => {};
     }, []);
+
+    useEffect(() => {
+        getToppedLeagueTableSteps();
+        return () => {};
+    }, [leagueTableSteps, leagueTableMaxItems]);
 
     return (
         <Page title="General: Analytics">
@@ -701,8 +714,26 @@ const WearablesDashboard = () => {
                     }
 
                     <Grid item xs={12}>
-                        {leagueTableSteps != null ?
-                            <StepsLeagueBarChart data={leagueTableSteps} />
+                        {toppedLeagueTableSteps != null ?
+                            <Card style={{marginTop: 70}}>
+                                <CardHeader title="League Table" />
+                                <FormControl style={{marginLeft:25, marginTop:20}}>
+                                    <InputLabel id="topLabel">Top</InputLabel>
+                                    <Select
+                                        labelId="topLabel"
+                                        id="topSelect"
+                                        value={leagueTableMaxItems}
+                                        label="Top"
+                                        onChange={(event) => setLeagueTableMaxItems(event.target.value as number)}
+                                    >
+                                        <MenuItem value={20}>20</MenuItem>
+                                        <MenuItem value={40}>40</MenuItem>
+                                        <MenuItem value={80}>80</MenuItem>
+                                        <MenuItem value={120}>120</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <StepsLeagueBarChart data={toppedLeagueTableSteps} />
+                            </Card>
                             :
                             <Skeleton height={'350px'}/>
                         }
