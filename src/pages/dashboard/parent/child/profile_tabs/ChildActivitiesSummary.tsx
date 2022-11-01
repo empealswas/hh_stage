@@ -93,8 +93,8 @@ const ChildActivitiesSummary = (props: {user: User}) => {
             "category": "activity",
             "subtype": "duration",
             "period": "day",
-            "startDate": format(subDays(new Date(), 7), "yyyy-MM-dd"),
-            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
+            "endDate": format(new Date(), "yyyy-MM-dd"),
             "returnType": "total"
         };
         const result = await getWearablesData(requestBody);
@@ -113,8 +113,8 @@ const ChildActivitiesSummary = (props: {user: User}) => {
             "category": "daily",
             "subtype": "lowIntensity",
             "period": "day",
-            "startDate": format(subDays(new Date(), 7), "yyyy-MM-dd"),
-            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
+            "endDate": format(new Date(), "yyyy-MM-dd"),
             "returnType": "total"
         };
         const result = await getWearablesData(requestBody);
@@ -133,8 +133,8 @@ const ChildActivitiesSummary = (props: {user: User}) => {
             "category": "daily",
             "subtype": "moderateIntensity",
             "period": "day",
-            "startDate": format(subDays(new Date(), 7), "yyyy-MM-dd"),
-            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
+            "endDate": format(new Date(), "yyyy-MM-dd"),
             "returnType": "total"
         };
         const result = await getWearablesData(requestBody);
@@ -153,8 +153,8 @@ const ChildActivitiesSummary = (props: {user: User}) => {
             "category": "daily",
             "subtype": "vigorousIntensity",
             "period": "day",
-            "startDate": format(subDays(new Date(), 7), "yyyy-MM-dd"),
-            "endDate": format(subDays(new Date(), 1), "yyyy-MM-dd"),
+            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
+            "endDate": format(new Date(), "yyyy-MM-dd"),
             "returnType": "total"
         };
         const result = await getWearablesData(requestBody);
