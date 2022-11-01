@@ -90,7 +90,7 @@ const ActivityWidgets = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 {vigorousIntensityData ?
-                    <ActivityWidgetSummary title={'Yesterdays\' Test'}
+                    <ActivityWidgetSummary title={'Yesterdays\' Vigorous Intensity'}
                                            total={Math.floor((vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
                                            percent={(((vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 1]?.value ?? 0) - (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value ?? 0))) / (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value ?? 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
