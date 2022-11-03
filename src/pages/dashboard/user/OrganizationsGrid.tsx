@@ -90,6 +90,7 @@ const OrganizationsGrid = () => {
             const merged = [...owned, ...memberOf];
             const unique: Organization[] = [];
             merged.forEach(item => {
+                if (item == null) return;
                 const i = unique.findIndex(x => x.id === item.id);
                 if(i <= -1){
                     unique.push(item);
