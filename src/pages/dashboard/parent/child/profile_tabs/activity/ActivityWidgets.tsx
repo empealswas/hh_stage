@@ -37,7 +37,7 @@ const ActivityWidgets = () => {
                 {stepsData ?
                     <ActivityWidgetSummary title={'Todays\' Steps'}
                                            total={(stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0).toLocaleString()}
-                                           percent={(((stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0) - (stepsData?.data[stepsData?.data?.length - 2]?.value ?? 0))) / (stepsData?.data[stepsData?.data?.length - 2]?.value ?? 1) * 100}
+                                           percent={((stepsData?.data[stepsData?.data?.length - 1]?.value ?? 0) - (stepsData?.data[stepsData?.data?.length - 2]?.value ?? 0)) / (stepsData?.data[stepsData?.data?.length - 2]?.value || 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
                                            chartData={stepsData.data.map((item: any) => item.value)}/>
                     :
@@ -48,7 +48,7 @@ const ActivityWidgets = () => {
                 {sleepData ?
                     <ActivityWidgetSummary title={'Last Sleep'}
                                            total={((sleepData?.data[sleepData?.data?.length - 1]?.value ?? 0) / 60 / 60).toFixed(1) + " hrs"}
-                                           percent={(((sleepData?.data[sleepData?.data?.length - 1]?.value ?? 0) - (sleepData?.data[sleepData?.data?.length - 2]?.value ?? 0))) / (sleepData?.data[sleepData?.data?.length - 2]?.value ?? 1) * 100}
+                                           percent={((sleepData?.data[sleepData?.data?.length - 1]?.value ?? 0) - (sleepData?.data[sleepData?.data?.length - 2]?.value ?? 0)) / (sleepData?.data[sleepData?.data?.length - 2]?.value || 1) * 100}
                                            chartColor={theme.palette.chart.blue[0]}
                                            chartData={sleepData.data.map((item: any) => item.value / 60 / 60)}/>
                     :
@@ -59,7 +59,7 @@ const ActivityWidgets = () => {
                 {activityData ?
                     <ActivityWidgetSummary title={'Todays\' Activity'}
                                            total={Math.floor((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
-                                           percent={(((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) - (activityData?.data[activityData?.data?.length - 2]?.value ?? 0))) / (activityData?.data[activityData?.data?.length - 2]?.value ?? 1) * 100}
+                                           percent={((activityData?.data[activityData?.data?.length - 1]?.value ?? 0) - (activityData?.data[activityData?.data?.length - 2]?.value ?? 0)) / (activityData?.data[activityData?.data?.length - 2]?.value || 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
                                            chartData={activityData.data.map((item: any) => item.value / 60)}/>
                     :
@@ -70,7 +70,7 @@ const ActivityWidgets = () => {
                 {lowIntensityData ?
                     <ActivityWidgetSummary title={'Todays\' Low Intensity'}
                                            total={Math.floor((lowIntensityData?.data[lowIntensityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
-                                           percent={(((lowIntensityData?.data[lowIntensityData?.data?.length - 1]?.value ?? 0) - (lowIntensityData?.data[lowIntensityData?.data?.length - 2]?.value ?? 0))) / (lowIntensityData?.data[lowIntensityData?.data?.length - 2]?.value ?? 1) * 100}
+                                           percent={((lowIntensityData?.data[lowIntensityData?.data?.length - 1]?.value ?? 0) - (lowIntensityData?.data[lowIntensityData?.data?.length - 2]?.value ?? 0)) / (lowIntensityData?.data[lowIntensityData?.data?.length - 2]?.value || 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
                                            chartData={lowIntensityData.data.map((item: any) => item.value / 60)}/>
                     :
@@ -81,7 +81,7 @@ const ActivityWidgets = () => {
                 {moderateIntensityData ?
                     <ActivityWidgetSummary title={'Todays\' Moderate Intensity'}
                                            total={Math.floor((moderateIntensityData?.data[moderateIntensityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
-                                           percent={(((moderateIntensityData?.data[moderateIntensityData?.data?.length - 1]?.value ?? 0) - (moderateIntensityData?.data[moderateIntensityData?.data?.length - 2]?.value ?? 0))) / (moderateIntensityData?.data[moderateIntensityData?.data?.length - 2]?.value ?? 1) * 100}
+                                           percent={((moderateIntensityData?.data[moderateIntensityData?.data?.length - 1]?.value ?? 0) - (moderateIntensityData?.data[moderateIntensityData?.data?.length - 2]?.value ?? 0)) / (moderateIntensityData?.data[moderateIntensityData?.data?.length - 2]?.value || 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
                                            chartData={moderateIntensityData.data.map((item: any) => item.value / 60)}/>
                     :
@@ -92,7 +92,7 @@ const ActivityWidgets = () => {
                 {vigorousIntensityData ?
                     <ActivityWidgetSummary title={'Todays\' Vigorous Intensity'}
                                            total={Math.floor((vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 1]?.value ?? 0) / 60) + " mins"}
-                                           percent={(((vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 1]?.value ?? 0) - (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value ?? 0))) / (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value ?? 1) * 100}
+                                           percent={((vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 1]?.value ?? 0) - (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value ?? 0)) / (vigorousIntensityData?.data[vigorousIntensityData?.data?.length - 2]?.value || 1) * 100}
                                            chartColor={theme.palette.chart.green[0]}
                                            chartData={vigorousIntensityData.data.map((item: any) => item.value / 60)}/>
                     :

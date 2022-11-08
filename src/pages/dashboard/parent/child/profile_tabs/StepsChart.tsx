@@ -82,6 +82,7 @@ export default function StepsChart(props: { user: User }) {
         let result: any = await API.graphql(graphqlOperation(userQuery, {id: props.user.id}));
         let organizations = result?.data?.getUser?.organizations?.items ?? [];
         for (let item of organizations) {
+            if (item.organization == null) continue;
             // get terraIds
             let members = item?.organization?.members?.items ?? [];
             let terraIds: any = [];
