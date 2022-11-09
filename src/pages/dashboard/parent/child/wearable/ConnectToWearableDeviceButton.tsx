@@ -17,13 +17,16 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
 
 
     async function  followRegistrationLink() {
+        let connectedTerraIds = [];
+        if (user.terraId) connectedTerraIds.push(user.terraId);
         const data = {
             reference_id: props.user.id,
             providers: "FITBIT, GOOGLE, GARMIN, OURA, SUUNTO",
             auth_success_redirect_url: window.location.href,
             auth_failure_redirect_url: window.location.href,
             language: "EN",
-            applicationCode: "52e7cf966b724749a7c4efadc3727ed7"
+            applicationCode: "52e7cf966b724749a7c4efadc3727ed7",
+            connected_uids: connectedTerraIds
         };
         getWidgetLink(data).then(value => {
             setLinkToTerraWidget(value.url);
