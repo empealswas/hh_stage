@@ -15,9 +15,6 @@ import {getWearablesData, TerraWearables} from "../../../../../apiFunctions/apiF
 export const StepsDataContext = React.createContext<any | null>(null);
 export const SleepDataContext = React.createContext<any | null>(null);
 export const ActivityDataContext = React.createContext<any | null>(null);
-export const LowIntensityDataContext = React.createContext<any | null>(null);
-export const ModerateIntensityDataContext = React.createContext<any | null>(null);
-export const VigorousIntensityDataContext = React.createContext<any | null>(null);
 export const AverageStepsContext = React.createContext<any | null>(null);
 export const AverageSleepContext = React.createContext<any | null>(null);
 export const AverageActivityContext = React.createContext<any | null>(null);
@@ -27,9 +24,6 @@ const ChildActivitiesSummary = (props: {user: User}) => {
     const [stepsData, setStepsData] = useState<any | null>(null);
     const [sleepData, setSleepData] = useState<any | null>(null);
     const [activityData, setActivityData] = useState<any | null>(null);
-    const [lowIntensityData, setLowIntensityData] = useState<any | null>(null);
-    const [moderateIntensityData, setModerateIntensityData] = useState<any | null>(null);
-    const [vigorousIntensityData, setVigorousIntensityData] = useState<any | null>(null);
     const [averageSteps, setAverageSteps] = useState<any | null>(null);
     const [averageSleep, setAverageSleep] = useState<any | null>(null);
     const [averageActivity, setAverageActivity] = useState<any | null>(null);
@@ -101,66 +95,6 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         setActivityData(result);
     }
 
-    const getLowIntensityData = async () => {
-        setLowIntensityData(null);
-        let terraId = props.user.terraId;
-        if (terraId == null) {
-            return;
-        }
-        let requestBody: TerraWearables = {
-            "idList": [terraId],
-            "grouping": "user",
-            "category": "daily",
-            "subtype": "lowIntensity",
-            "period": "day",
-            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
-            "endDate": format(new Date(), "yyyy-MM-dd"),
-            "returnType": "total"
-        };
-        const result = await getWearablesData(requestBody);
-        setLowIntensityData(result);
-    }
-
-    const getModerateIntensityData = async () => {
-        setModerateIntensityData(null);
-        let terraId = props.user.terraId;
-        if (terraId == null) {
-            return;
-        }
-        let requestBody: TerraWearables = {
-            "idList": [terraId],
-            "grouping": "user",
-            "category": "daily",
-            "subtype": "moderateIntensity",
-            "period": "day",
-            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
-            "endDate": format(new Date(), "yyyy-MM-dd"),
-            "returnType": "total"
-        };
-        const result = await getWearablesData(requestBody);
-        setModerateIntensityData(result);
-    }
-
-    const getVigorousIntensityData = async () => {
-        setVigorousIntensityData(null);
-        let terraId = props.user.terraId;
-        if (terraId == null) {
-            return;
-        }
-        let requestBody: TerraWearables = {
-            "idList": [terraId],
-            "grouping": "user",
-            "category": "daily",
-            "subtype": "vigorousIntensity",
-            "period": "day",
-            "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
-            "endDate": format(new Date(), "yyyy-MM-dd"),
-            "returnType": "total"
-        };
-        const result = await getWearablesData(requestBody);
-        setVigorousIntensityData(result);
-    }
-
     const getAverageSteps = async () => {
         setAverageSteps(null);
         let terraId = props.user.terraId;
@@ -225,9 +159,6 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         getStepsData();
         getSleepData()
         getActivityData();
-        getLowIntensityData();
-        getModerateIntensityData();
-        getVigorousIntensityData();
         getAverageSteps();
         getAverageSleep();
         getAverageActivity();
@@ -238,32 +169,26 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         <StepsDataContext.Provider value={stepsData}>
             <SleepDataContext.Provider value={sleepData}>
                 <ActivityDataContext.Provider value={activityData}>
-                    <LowIntensityDataContext.Provider value={lowIntensityData}>
-                        <ModerateIntensityDataContext.Provider value={moderateIntensityData}>
-                            <VigorousIntensityDataContext.Provider value={vigorousIntensityData}>
-                                <AverageStepsContext.Provider value={averageSteps}>
-                                    <AverageSleepContext.Provider value={averageSleep}>
-                                        <AverageActivityContext.Provider value={averageActivity}>
-                                            <ConnectToWearableDeviceButton user={props.user}/>
-                                            <Box height={5}/>
-                                            <Grid container spacing={3}>
-                                                <ActivityWidgets/>
-                                                <Grid item xs={12} md={12} lg={12}>
-                                                    <StepsChart user={props.user}/>
-                                                </Grid>
-                                                <Grid item xs={12} md={12} lg={12}>
-                                                    <SleepChart/>
-                                                </Grid>
-                                                <Grid item xs={12} md={12} lg={12}>
-                                                    <PupilActivitiesChart/>
-                                                </Grid>
-                                            </Grid>
-                                        </AverageActivityContext.Provider>
-                                    </AverageSleepContext.Provider>
-                                </AverageStepsContext.Provider>
-                            </VigorousIntensityDataContext.Provider>
-                        </ModerateIntensityDataContext.Provider>
-                    </LowIntensityDataContext.Provider>
+                    <AverageStepsContext.Provider value={averageSteps}>
+                        <AverageSleepContext.Provider value={averageSleep}>
+                            <AverageActivityContext.Provider value={averageActivity}>
+                                <ConnectToWearableDeviceButton user={props.user}/>
+                                <Box height={5}/>
+                                <Grid container spacing={3}>
+                                    <ActivityWidgets/>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <StepsChart user={props.user}/>
+                                    </Grid>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <SleepChart/>
+                                    </Grid>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <PupilActivitiesChart/>
+                                    </Grid>
+                                </Grid>
+                            </AverageActivityContext.Provider>
+                        </AverageSleepContext.Provider>
+                    </AverageStepsContext.Provider>
                 </ActivityDataContext.Provider>
             </SleepDataContext.Provider>
         </StepsDataContext.Provider>
