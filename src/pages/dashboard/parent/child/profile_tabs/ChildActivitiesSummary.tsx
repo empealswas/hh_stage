@@ -84,8 +84,8 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         let requestBody: TerraWearables = {
             "idList": [terraId],
             "grouping": "user",
-            "category": "activity",
-            "subtype": "duration",
+            "category": "daily",
+            "subtype": "activity",
             "period": "day",
             "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
             "endDate": format(new Date(), "yyyy-MM-dd"),
@@ -144,8 +144,8 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         let requestBody: TerraWearables = {
             "idList": [terraId],
             "grouping": "user",
-            "category": "activity",
-            "subtype": "duration",
+            "category": "daily",
+            "subtype": "activity",
             "period": "millennium",
             "startDate": format(subDays(new Date(), 6), "yyyy-MM-dd"),
             "endDate": format(new Date(), "yyyy-MM-dd"),

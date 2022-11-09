@@ -11,7 +11,7 @@ export type TerraWearables = {
     idList: string[],
     grouping: 'user' | 'group',
     category: 'activity' | 'daily' | 'sleep',
-    subtype: 'steps' | 'distance' | 'duration' | 'calories' | 'lowIntensity' | 'moderateIntensity' | 'vigorousIntensity' | 'durationTotal' | 'durationRem' | 'durationDeep' | 'durationAwake' | 'durationOther' | 'efficiency';
+    subtype: 'steps' | 'distance' | 'duration' | 'calories' | 'activity' | 'durationTotal' | 'durationRem' | 'durationDeep' | 'durationAwake' | 'durationOther' | 'efficiency';
     period: 'day' | 'week' | 'month' | 'year' | 'millennium',
     startDate: string,
     endDate: string,
