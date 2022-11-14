@@ -350,8 +350,8 @@ const ActivityDashboard = () => {
         const data: TerraWearables = {
             idList: [terraId],
             grouping: "user",
-            category: "activity",
-            subtype: "duration",
+            category: "daily",
+            subtype: "activity",
             period: "day",
             startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
             endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),
@@ -365,8 +365,8 @@ const ActivityDashboard = () => {
         const data: TerraWearables = {
             idList: classroomTerraIds,
             grouping: "group",
-            category: "activity",
-            subtype: "duration",
+            category: "daily",
+            subtype: "activity",
             period: "day",
             startDate: startDate ? format(startDate, 'yyyy-MM-dd') : format(subDays(new Date(), 6), 'yyyy-MM-dd'),
             endDate: format(endDate ?? new Date(), 'yyyy-MM-dd'),

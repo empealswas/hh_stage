@@ -20,7 +20,7 @@ import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
 import TopUsersByRewardsBarchart from "./dashboard/TopUsersByRewardsBarchart";
-import { TerraWearables, getWearablesData } from "../../../apiFunctions/apiFunctions";
+import { TerraWearables, getWearablesData, getLastSyncDates } from "../../../apiFunctions/apiFunctions";
 import StepsDailyBarChart from "./chart/StepsDailyBarChart";
 import StepsLeagueBarChart from "./chart/StepsLeagueBarChart";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
@@ -104,6 +104,7 @@ const WearablesDashboard = () => {
 
     const [participants, setParticipants] = useState<number | null>(null);
     const [connectedMembers, setConnectedMembers] = useState<number | null>(null);
+    const [usersLastSyncDates, setUsersLastSyncDates] = useState<any[] | null>(null);
     const [yesterdaysSteps, setYesterdaysSteps] = useState<number | null>(null);
     const [totalSteps, setTotalSteps] = useState<number | null>(null);
     const [averageDailySteps, setAverageDailySteps] = useState<number | null>(null);
@@ -143,6 +144,11 @@ const WearablesDashboard = () => {
         const result: any = await API.graphql(graphqlOperation(querySelectableClassrooms, {id: organizationId}));
         let classrooms: any[] = result.data.getOrganization?.Classrooms?.items;
         setSelectableClassrooms(classrooms.sort((a, b) => a.name.localeCompare(b.name)));
+    };
+
+    const getUsersLastSyncDates = async (terraIds: any) => {
+        let syncDates = await getLastSyncDates(terraIds);
+        setUsersLastSyncDates(syncDates?.data ?? []);
     };
 
     const getYesterdaysSteps = async (terraIds: any) => {
@@ -219,8 +225,8 @@ const WearablesDashboard = () => {
         requestBody = {
             "idList": terraIds,
             "grouping": "user",
-            "category": "activity",
-            "subtype": "duration",
+            "category": "daily",
+            "subtype": "activity",
             "period": "millennium",
             "startDate": format(startDate, "yyyy-MM-dd"),
             "endDate": format(endDate, "yyyy-MM-dd"),
@@ -297,6 +303,7 @@ const WearablesDashboard = () => {
         let terraIds = terraIdsForClassrooms(theOrganization);
         setParticipants(usersForClassrooms(theOrganization).length);
         setConnectedMembers(terraIds.length);
+        await getUsersLastSyncDates(terraIds);
         await getYesterdaysSteps(terraIds);
         await getTotalSteps(terraIds);
         await getAverageDailySteps(terraIds);
@@ -319,6 +326,7 @@ const WearablesDashboard = () => {
 
         setParticipants(null);
         setConnectedMembers(null);
+        setUsersLastSyncDates(null);
         setYesterdaysSteps(null);
         setTotalSteps(null);
         setAverageDailySteps(null);
