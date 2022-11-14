@@ -15,7 +15,7 @@ import ActivityOrganizationLineChart from "./dashboard/ActivityOrganizationLineC
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
-import {compareAsc, format, parseISO, subDays, subMonths, subYears} from "date-fns";
+import {compareAsc, format, parseISO, subDays, subMonths, subYears, isAfter, differenceInCalendarDays} from "date-fns";
 import {LoadingButton} from "@mui/lab";
 import {BankingWidgetSummary} from "../../../sections/@dashboard/general/banking";
 import {values} from "lodash";
@@ -134,6 +134,13 @@ const WearablesDashboard = () => {
         {
             field: 'lastName',
             headerName: 'Last Name',
+            sortable: true,
+            flex: 1,
+            editable: false
+        },
+        {
+            field: 'lastSynced',
+            headerName: 'Last Synced',
             sortable: true,
             flex: 1,
             editable: false
@@ -339,6 +346,23 @@ const WearablesDashboard = () => {
         setToppedLeagueTableSteps(null);
     };
 
+    const syncedTextForTerraId = (terraId: any) => {
+        let syncedData = usersLastSyncDates?.find((item: any) => item.terraId == terraId);
+        if (syncedData) {
+            let date = parseISO(syncedData.date);
+            let currentDate = new Date();
+            if (isAfter(date, currentDate)) {
+                date = currentDate;
+            }
+            let days = differenceInCalendarDays(currentDate, date);
+            let text = "Today";
+            if (days == 1) text = "1 day ago";
+            if (days > 1) text = days + " days ago";
+            return text;
+        }
+        else return "Unknown";
+    }
+
     const terraIdsForClassrooms = (organization: Organization) => {
         // get terra ids
         let terraIds: string[] = [];
@@ -369,7 +393,7 @@ const WearablesDashboard = () => {
                 }
             });
         });
-        return users;
+        return users.map((user: any) => { return {...user, lastSynced: syncedTextForTerraId(user.terraId)} });
     };
 
     const usersForClassrooms = (organization: Organization) => {
