@@ -21,7 +21,7 @@ const ConnectToWearableDeviceButton = (props: { user: User }) => {
         if (user.terraId) connectedTerraIds.push(user.terraId);
         const data = {
             reference_id: props.user.id,
-            providers: "FITBIT, GOOGLE, GARMIN, OURA, SUUNTO",
+            providers: "FITBIT, GOOGLE, GARMIN, OURA, SUUNTO, WHOOP",
             auth_success_redirect_url: window.location.href,
             auth_failure_redirect_url: window.location.href,
             language: "EN",
