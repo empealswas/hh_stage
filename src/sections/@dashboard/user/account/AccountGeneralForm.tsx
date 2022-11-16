@@ -53,10 +53,12 @@ const AccountGeneralForm = ({user}: Props) => {
 
     const onSubmit = async (data: FormValuesProps) => {
         try {
+            let userData = {...data};
+            if (userData.dob == '') userData.dob = null;
             const result: any = await API.graphql(graphqlOperation(updateUser, {
                 input: {
                     id: user?.email,
-                    ...data
+                    ...userData
                 }
             }));
             console.log(result);
