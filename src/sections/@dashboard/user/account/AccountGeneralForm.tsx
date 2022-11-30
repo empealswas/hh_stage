@@ -20,7 +20,6 @@ type FormValuesProps = {
     lastName: string;
     zipCode: string | null;
     dob: string | null;
-    recoveryEmailAddress: string;
 };
 const AccountGeneralForm = ({user}: Props) => {
     const {enqueueSnackbar} = useSnackbar();
@@ -29,7 +28,6 @@ const AccountGeneralForm = ({user}: Props) => {
     const UpdateUserSchema = Yup.object().shape({
         firstName: Yup.string().required('First name is required'),
         lastName: Yup.string().required('Last name is required'),
-        recoveryEmailAddress: Yup.string().required('Recovery email address is required')
     });
 
     const defaultValues = {
@@ -37,7 +35,6 @@ const AccountGeneralForm = ({user}: Props) => {
         lastName: user?.lastName || '',
         zipCode: user?.zipCode || '',
         dob: user?.dob || '',
-        recoveryEmailAddress: user?.recoveryEmailAddress || ''
     };
 
     const methods = useForm<FormValuesProps>({
@@ -134,7 +131,6 @@ const AccountGeneralForm = ({user}: Props) => {
                             <RHFTextField name="lastName" label="Last name"/>
                             <RHFTextField name="zipCode" label="Postcode"/>
                             <RHFTextField name="dob" label="Date of birth"/>
-                            <RHFTextField name="recoveryEmailAddress" label="Recovery email address"/>
 
                             {/*
                             <RHFSelect name="country" label="Country" placeholder="Country">

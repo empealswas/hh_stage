@@ -205,7 +205,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const register = (email: string, password: string, firstName: string, lastName: string, recoveryEmailAddress: string, dob: string, postcode: string) =>
+  const register = (email: string, password: string, firstName: string, lastName: string, dob: string, postcode: string) =>
     new Promise((resolve, reject) => {
       UserPool.signUp(
         email,
@@ -214,7 +214,6 @@ function AuthProvider({ children }: AuthProviderProps) {
           new CognitoUserAttribute({ Name: 'email', Value: email }),
           new CognitoUserAttribute({ Name: 'custom:firstName', Value: firstName }),
           new CognitoUserAttribute({ Name: 'custom:lastName', Value: lastName }),
-          new CognitoUserAttribute({ Name: 'custom:recoveryEmailAddress', Value: recoveryEmailAddress }),
           new CognitoUserAttribute({ Name: 'custom:dob', Value: dob }),
           new CognitoUserAttribute({ Name: 'custom:postcode', Value: postcode })
         ],

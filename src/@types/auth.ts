@@ -53,7 +53,6 @@ export type AWSCognitoContextType = {
     password: string,
     firstName: string,
     lastName: string,
-    recoveryEmailAddress: string,
     dob: string,
     postcode: string
   ) => Promise<unknown>;

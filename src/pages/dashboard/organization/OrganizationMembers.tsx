@@ -55,7 +55,6 @@ const OrganizationMembers = () => {
             let lastName = fields[1];
             let postcode = fields[2];
             let dateOfBirth = fields[3];
-            let recoveryEmailAddress = fields[4];
             let username = firstName.toLowerCase() + "." + lastName.toLowerCase();
             // get existing usernames starting with username
             let usernames = existingUsernames.filter((item: any) => item.toLowerCase().startsWith(username));
@@ -76,7 +75,7 @@ const OrganizationMembers = () => {
             let password = userId;
             // create user
             try {
-                await register(userId, password, firstName, lastName, recoveryEmailAddress, dateOfBirth, postcode);
+                await register(userId, password, firstName, lastName, dateOfBirth, postcode);
                 // update the existing usernames and sort
                 existingUsernames.push(username);
                 existingUsernames.sort();

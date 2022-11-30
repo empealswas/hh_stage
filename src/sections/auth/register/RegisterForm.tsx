@@ -22,7 +22,6 @@ type FormValuesProps = {
   password: string;
   firstName: string;
   lastName: string;
-  recoveryEmailAddress: string;
   dob: string;
   postcode: string;
   afterSubmit?: string;
@@ -41,7 +40,6 @@ export default function RegisterForm() {
     lastName: Yup.string().required('Last name is required'),
     email: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
-    recoveryEmailAddress: Yup.string().required('Recovery email address is required'),
     dob: Yup.string(),
     postcode: Yup.string()
   });
@@ -51,7 +49,6 @@ export default function RegisterForm() {
     lastName: '',
     email: '',
     password: '',
-    recoveryEmailAddress: '',
     dob: '',
     postcode: ''
   };
@@ -72,7 +69,7 @@ export default function RegisterForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       setErrorText('');
-      await register(data.email, data.password, data.firstName, data.lastName, data.recoveryEmailAddress, data.dob, data.postcode);
+      await register(data.email, data.password, data.firstName, data.lastName, data.dob, data.postcode);
       // cognito trigger has auto-verified for us, so go straight to the sign-in page
       window.location.href = `${PATH_DASHBOARD.root}`;
     } catch (error) {
@@ -96,12 +93,11 @@ export default function RegisterForm() {
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <RHFTextField name="firstName" label="First name" />
           <RHFTextField name="lastName" label="Last name" />
-          <RHFTextField name="postcode" label="Postcode" />
         </Stack>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <RHFTextField name="postcode" label="Postcode" />
           <RHFTextField name="dob" label="Date of birth" placeholder="YYYY-MM-DD" />
-          <RHFTextField name="recoveryEmailAddress" label="Recovery email address" />
         </Stack>
 
         <RHFTextField name="email" label="Username" placeholder="firstname.lastname@healthy.habits" />
