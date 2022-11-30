@@ -72,7 +72,7 @@ const OrganizationMembers = () => {
             }
             let userId = username + "@healthy.habits";
             // set password
-            let password = userId;
+            let password = "H3althcare1!";
             // create user
             try {
                 await register(userId, password, firstName, lastName, dateOfBirth, postcode);
