@@ -508,6 +508,18 @@ const WearablesDashboard = () => {
         loadSelectableClassrooms();
     };
 
+    const showStepsTargetUsers = () => {
+    }
+
+    const showSleepTargetUsers = () => {
+    }
+
+    const showActivityTargetUsers = () => {
+    }
+
+    const show24HrMovementTargetUsers = () => {
+    }
+
     useEffect(() => {
         loadSelectableClassrooms();
         getResults();
@@ -665,7 +677,7 @@ const WearablesDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {stepsTargetData != null && connectedMembers != null ?
-                                <Card style={{backgroundColor: '#eeeeff', border: '4px solid blue', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#eeeeff', border: '4px solid blue', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={() => showStepsTargetUsers()}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Steps Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{getStepsTargetText()}</Typography>
@@ -682,7 +694,7 @@ const WearablesDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {sleepTargetData != null && connectedMembers != null ?
-                                <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#ffeeee', border: '4px solid red', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={() => showSleepTargetUsers()}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Sleep Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{getSleepTargetText()}</Typography>
@@ -695,7 +707,7 @@ const WearablesDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {activityTargetData != null && connectedMembers != null ?
-                                <Card style={{backgroundColor: '#ffeeff', border: '4px solid violet', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#ffeeff', border: '4px solid violet', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={() => showActivityTargetUsers()}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>Active Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{getActivityTargetText()}</Typography>
@@ -708,7 +720,7 @@ const WearablesDashboard = () => {
 
                         <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                             {achieving24hrMovementTarget != null && connectedMembers != null ?
-                                <Card style={{backgroundColor: '#eeffee', border: '4px solid green', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                <Card style={{backgroundColor: '#eeffee', border: '4px solid green', height: 160, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={() => show24HrMovementTargetUsers()}>
                                     <CardContent>
                                         <Typography variant={'h5'} textAlign={'center'}>24 hr Movement Target</Typography>
                                         <Typography variant={'h3'} textAlign={'center'}>{getAchieving24hrMovementTargetText()}</Typography>
