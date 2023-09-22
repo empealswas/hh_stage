@@ -164,9 +164,16 @@ const SectionOverview = () => {
                         <Can I={'manage'} an={'organization'}>
                             <Button component={RouterLink} startIcon={<Iconify icon={'bi:gear'}/>} to={'manage'}
                                     variant={'contained'}>Manage</Button>
+
+                            <Button component={RouterLink} startIcon={<Iconify icon={'mdi:report-box'}/>} to={'report'}
+                                variant={'contained'}>Class Reports</Button>
+
                         </Can>
                         <Can I={'read'} this={'dashboard'}>
                             <>
+                                <Button component={RouterLink} startIcon={<Iconify icon={'fluent-mdl2:assessment-group'}/>}
+                                        to={'assessment'}
+                                        variant={'contained'}>Assessments</Button>
                                 <Button component={RouterLink} startIcon={<Iconify icon={'carbon:dashboard'}/>}
                                         to={'wearables'}
                                         variant={'contained'}>Wearables Dashboard</Button>

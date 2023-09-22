@@ -14,6 +14,7 @@ import RolesMenu from "./RolesMenu";
 import OrganizationTeams from "./team/OrganizationTeams";
 import {useParams} from "react-router-dom";
 import OrganizationGeneral from "./OrganizationGeneral";
+import AssessmentForm from "../assessments/AssessmentForm";
 
 const OrganizationManage = () => {
     const { themeStretch } = useSettings();
@@ -39,6 +40,10 @@ const OrganizationManage = () => {
         {value: 'teams',
             icon: <Iconify icon={'mdi:google-classroom'} width={20} height={20} />,
             component: <OrganizationTeams />,
+        },
+        {value: 'assessments',
+            icon: <Iconify icon={'clarity:form-line'} sx={{width: 20, height: 20}}/>,
+            component: <AssessmentForm />,
         },
 
     ];
