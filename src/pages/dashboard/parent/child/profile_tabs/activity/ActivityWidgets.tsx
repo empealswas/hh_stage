@@ -23,7 +23,6 @@ const ActivityWidgets = () => {
 
     const {user} = useAuth();
     const theme = useTheme();
-
     useEffect(() => {
         return () => {};
     }, []);
@@ -44,10 +43,10 @@ const ActivityWidgets = () => {
             <Grid item xs={12} md={4}>
                 {sleepData ?
                     <ActivityWidgetSummary title={'Last Sleep'}
-                                           total={((sleepData?.data[sleepData?.data?.length - 1]?.value ?? 0) / 60 / 60).toFixed(1) + " hrs"}
-                                           percent={((sleepData?.data[sleepData?.data?.length - 1]?.value ?? 0) - (sleepData?.data[sleepData?.data?.length - 2]?.value ?? 0)) / (sleepData?.data[sleepData?.data?.length - 2]?.value || 1) * 100}
+                                           total={((sleepData?.data?.data[sleepData?.data?.data.length - 1]?.sleep_durations_data?.asleep?.duration_asleep_state_seconds?? 0) / 60 / 60).toFixed(1) + " hrs"}
+                                           percent={5}
                                            chartColor={theme.palette.chart.blue[0]}
-                                           chartData={sleepData.data.map((item: any) => item.value / 60 / 60)}/>
+                                           chartData={sleepData?.data?.data.map((item: any) => item.sleep_durations_data.asleep.duration_asleep_state_seconds / 60 / 60)}/>
                     :
                     <CardSkeleton height={'160px'}/>
                 }
@@ -80,7 +79,7 @@ const ActivityWidgets = () => {
                     <Card style={{backgroundColor:'#77dd77', border:'4px solid black'}}>
                         <CardContent>
                             <Typography variant={'h5'} textAlign={'center'}>Average Sleep</Typography>
-                            <Typography variant={'h3'} textAlign={'center'}>{((averageSleep.data[0]?.value ?? 0) / 60 / 60).toFixed(1) + " Hours"}</Typography>
+                            <Typography variant={'h3'} textAlign={'center'}>{((averageSleep ?? 0) / 60 / 60).toFixed(1) + " Hours"}</Typography>
                         </CardContent>
                     </Card>
                     :

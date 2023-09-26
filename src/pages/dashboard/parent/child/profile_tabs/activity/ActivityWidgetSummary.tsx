@@ -26,7 +26,7 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 type Props = {
   title: string;
-  total: number | string;
+  total: number | string | any;
   percent: number;
   chartColor: string;
   chartData: number[];
@@ -34,6 +34,7 @@ type Props = {
 
 export default function ActivityWidgetSummary({ title, percent, total, chartColor, chartData }: Props) {
   const theme = useTheme();
+  const minute = isNaN(parseFloat((total - Math.floor(total)).toFixed(2)))?0:parseFloat((total - Math.floor(total)).toFixed(2));
 
 
 
@@ -80,7 +81,11 @@ export default function ActivityWidgetSummary({ title, percent, total, chartColo
           </Typography>
         </Stack>
 
-        <Typography variant="h3">{total}</Typography>
+         <Typography variant="h3">
+            {title.indexOf("Sleep")>0?
+             fNumber(total)+"h "+ (Math.round(minute*60))+"m"
+            :fNumber(total)}
+          </Typography>
       </Box>
 
       <ReactApexChart

@@ -85,14 +85,16 @@ export default function SleepChart() {
             },
             xaxis: {
                 type: 'category',
-                categories: sleepData.data.map((item: any) => {
-                        if (!item.date) {
+                categories: sleepData.data.data.map((item: any) => {
+                        
+                        if (!item.metadata?.end_time) {
                             return 'N/A'
                         }
-                        return `${format(parseISO(item.date), "eee do")}`;
+                        return `${format(parseISO(item.metadata.end_time), "eee do")}`;
                     }
                 )
             },
+
             tooltip: {
                 theme: 'dark',
                 shared: true,
@@ -142,7 +144,7 @@ export default function SleepChart() {
                     {
                         name: "Duration Asleep",
                         type: 'column',
-                        data: sleepData.data.map((item: any) => Number(item.value / 60.0 / 60.0)),
+                        data: sleepData.data.data.map((item: any) => Number(item.sleep_durations_data.asleep.duration_asleep_state_seconds / 60.0 / 60.0)),
                     },
                 ]} type="line" options={chartOptions} height={364}/>
             </Box>
