@@ -1,0 +1,7 @@
+Release Changes 30-09-2023:
+    1. In the section where you create the assessments – can we reduce the space between the current assessments and the section to create new questions.
+    2. In the class reports, it is not showing all the teams in the organisation for example in the test school, the drop only gives the option for primary 1 but not for primary 2.
+    3. In the class report can you disable the Download Full Class Report button until a class has been selected otherwise, we need an error message.
+    4. In the assessment reports, when you are generating new reports for someone who has an assessment completed – can we remove the buttons for Previous Report and Next Report
+    5. The sleep data for the user dashboard seems to be taking a lot more time than the other data, is there a reason for this (Mark has asked if there is a lot of sleep data in the Postgres database)
+    6. Can you send Mark an explanation of why we needed the Cron job to move data from DynamoDB to PostgreSQL?

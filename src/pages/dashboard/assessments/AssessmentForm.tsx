@@ -141,7 +141,7 @@ export default function AssessmentForm() {
 
     const assessment_columns:GridColDef[] = [
         { field: 'question', headerName: 'Question', width: 100 },
-        { field: 'options', headerName: 'Options', width: 800 },
+        { field: 'options', headerName: 'Options', width: 500 },
         {
             field: 'action',
             headerName: 'Action',
@@ -329,7 +329,7 @@ export default function AssessmentForm() {
     return (
 
         <Box>
-            <Grid container spacing={8} style={{margin:'10px'}}>
+            <Grid container spacing={8} style={{margin:'10px 0px 10px 0px'}}>
                 <FormControl>
                     <InputLabel id="demo-simple-select-label">Assessment Duration</InputLabel>
                     <Select
@@ -338,7 +338,7 @@ export default function AssessmentForm() {
                         value={duration}
                         label="Assessment Duration"
                         onChange={(event)=>setDuration(event.target.value)}
-                        style={{width:'500px'}}
+                        style={{width:'300px'}}
                     >
                         <MenuItem value={0}> Select Duration </MenuItem>
                         <MenuItem value={1}> Monthly </MenuItem>
@@ -347,15 +347,13 @@ export default function AssessmentForm() {
                     </Select>
                 </FormControl>
                 
-                <Button variant="contained" onClick={storeOrganizationDuration} color="success" style={{ color: 'white', width: '10%', marginLeft: '5px',marginBottom:'10px' }}>
+                <Button variant="contained" onClick={storeOrganizationDuration} color="success" style={{ color: 'white', height:'55px', marginLeft: '5px',marginBottom:'10px' }}>
                     Save Duration
                 </Button>
-
             </Grid>
             <Grid container spacing={12}>
-
                  <Grid item xs={12} sx={{marginLeft:'0px'}}>
-                    <Box sx={{ height: 400, width: '100%' }}>
+                    <Box sx={{ width: '100%' }}>
                         <h5>{message_question_answer}</h5>
                         <DataGrid
                                 getRowId={(item) => item.organization_assessment_id}
@@ -365,6 +363,7 @@ export default function AssessmentForm() {
                                 pageSize={5}
                                 autoHeight
                                 rowsPerPageOptions={[5]}
+                                sx={{border:'2px solid #f1f3f4',borderRadius:'5px'}}
                             /> 
                     </Box>   
                 </Grid>

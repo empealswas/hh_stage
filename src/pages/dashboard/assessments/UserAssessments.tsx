@@ -546,12 +546,12 @@ export default function UserAssessments() {
                     Generate Report
             </Button>
 
-            <div style={{}} >
-                <Button  variant="contained" style={{marginRight:'20px'}} onClick={getPreviousReport}> Previous Report </Button>
-
+            <div style={{paddingLeft:'180px'}} >
+                {/* <Button  variant="contained" style={{marginRight:'20px'}} onClick={getPreviousReport}> Previous Report </Button> */}
+                    
                     <iframe src={report_file_path} style={{height:'500px'}} />
                 
-                <Button  variant="contained" style={{marginLeft:'20px'}} onClick={getNextReport}> Next Report </Button>
+                {/* <Button  variant="contained" style={{marginLeft:'20px'}} onClick={getNextReport}> Next Report </Button> */}
                 
             </div>
 

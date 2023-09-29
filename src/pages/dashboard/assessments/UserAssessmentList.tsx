@@ -13,31 +13,42 @@ export default function UserAssessmentRecords() {
   const [class_name, setClassName] = useState<string|null>(null);
   const [report_message,setReportMessage]=useState("");
   const [existing_class_names,setExistingClassNames]=useState<any[]>([]);
+  const [btnDisabled, setBtnDisabled] = useState(true)
   const prepareDownloadFile = (path:any) => {
       window.location.href =path;
   } 
 
   const download_class_report = () => {
-    setReportMessage('Report download in progress');
-    const json_data = {
-      'org_id': organizationId,
-      'class_name':class_name
-    };
+    if (class_name==null)
+    {
+        setReportMessage('Please Select a class');
+    }
+    else{
+        setReportMessage('Report download in progress');
+        const json_data = {
+          'org_id': organizationId,
+          'class_name':class_name
+        };
 
-    fetch('https://audq1praac.execute-api.eu-west-2.amazonaws.com/dev/lambda-rds-python-dev-generate-full-class-report', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            assessment: json_data, 
-          }),
-      })
-      .then((res) =>res.json().then((data)=>prepareDownloadFile(data.message)))
-      .then(()=>setReportMessage(''))
-      .catch((err) => setReportMessage('Something went wrong! Please try again.'));
+        fetch('https://audq1praac.execute-api.eu-west-2.amazonaws.com/dev/lambda-rds-python-dev-generate-full-class-report', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                assessment: json_data, 
+              }),
+          })
+          .then((res) =>res.json().then((data)=>prepareDownloadFile(data.message)))
+          .then(()=>setReportMessage(''))
+          .catch((err) => setReportMessage('Something went wrong! Please try again.'));
+    }
   }
   
+  const changeClassName =(value:string) =>{
+    setClassName(value);
+    value==null?setBtnDisabled(true):setBtnDisabled(false);
+  }
     useEffect(() => {
 
       const json_data = {
@@ -72,11 +83,11 @@ export default function UserAssessmentRecords() {
         id="combo-box-demo"
         options={existing_class_names}
         renderInput={(params) => <TextField {...params} label="Class names" />}
-        onChange={(event,value)=>setClassName(value)}
+        onChange={(event,value)=>changeClassName(value)}
         sx={{width:'300px'}}
       />
       <div style={{marginTop:'20px',width:'300px'}}>
-        <Button variant="contained" color="success" onClick={download_class_report}>Download Full Class Report </Button>
+        <Button disabled={btnDisabled} variant="contained" color="success" onClick={download_class_report}>Download Full Class Report </Button>
       </div>
     </>
   );

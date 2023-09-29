@@ -75,16 +75,12 @@ const ActivityWidgets = () => {
                 }
             </Grid>
             <Grid item xs={12} md={4}>
-                {averageSleep ?
                     <Card style={{backgroundColor:'#77dd77', border:'4px solid black'}}>
                         <CardContent>
                             <Typography variant={'h5'} textAlign={'center'}>Average Sleep</Typography>
                             <Typography variant={'h3'} textAlign={'center'}>{((averageSleep ?? 0) / 60 / 60).toFixed(1) + " Hours"}</Typography>
                         </CardContent>
                     </Card>
-                    :
-                    <CardSkeleton height={'135px'}/>
-                }
             </Grid>
             <Grid item xs={12} md={4}>
                 {averageActivity ?
