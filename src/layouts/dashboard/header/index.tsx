@@ -14,6 +14,7 @@ import Iconify from '../../../components/Iconify';
 import { IconButtonAnimate } from '../../../components/animate';
 //
 import Searchbar from './Searchbar';
+import BackButton from './BackButton';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import ContactsPopover from './ContactsPopover';
@@ -83,9 +84,12 @@ export default function DashboardHeader({
         {isDesktop && verticalLayout && <Logo sx={{ mr: 2.5 }} />}
 
         {!isDesktop && (
+          <>
+          <BackButton />
           <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
             <Iconify icon="eva:menu-2-fill" />
           </IconButtonAnimate>
+          </>
         )}
 
         <Searchbar />

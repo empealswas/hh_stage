@@ -10,7 +10,7 @@ import SleepChart from "./SleepChart";
 import ConnectToWearableDeviceButton from "../wearable/ConnectToWearableDeviceButton";
 import {useTheme} from "@mui/material/styles";
 import ActivityWidgets from "./activity/ActivityWidgets";
-import {getWearablesData, TerraWearables} from "../../../../../apiFunctions/apiFunctions";
+import {getWearablesData, TerraWearables,getWearablesSleepData} from "../../../../../apiFunctions/apiFunctions";
 
 export const StepsDataContext = React.createContext<any | null>(null);
 export const SleepDataContext = React.createContext<any | null>(null);
@@ -66,13 +66,17 @@ const ChildActivitiesSummary = (props: {user: User}) => {
             "endDate": format(new Date(), "yyyy-MM-dd"),
             "returnType": "total"
         };
-        const result = await getWearablesData(requestBody);
-        result?.data?.sort((a: any, b: any) => {
-            let aMillis = new Date(a.date).getTime();
-            let bMillis = new Date(b.date).getTime();
-            return aMillis - bMillis;
-        });
+        const result = await getWearablesSleepData(requestBody);
+        // result?.data?.sort((a: any, b: any) => {
+        //     let aMillis = new Date(a.date).getTime();
+        //     let bMillis = new Date(b.date).getTime();
+        //     return aMillis - bMillis;
+        // });        
         setSleepData(result);
+        let total_sleep = result?.data?.data?.map((item:any)=>item.sleep_durations_data.asleep.duration_asleep_state_seconds).reduce(function(x:any,y:any){
+            return x+y;
+        },0);
+        setAverageSleep(total_sleep/7);
     }
 
     const getActivityData = async () => {
@@ -160,7 +164,7 @@ const ChildActivitiesSummary = (props: {user: User}) => {
         getSleepData()
         getActivityData();
         getAverageSteps();
-        getAverageSleep();
+        // getAverageSleep();
         getAverageActivity();
         return () => {};
     }, [props.user]);

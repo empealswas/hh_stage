@@ -131,9 +131,8 @@ export default function Router() {
 
 
                         {path: ':organizationId/wearables', element: <WearablesDashboard/>,},
-
-
-
+                        {path : ':organizationId/assessment',element:<UserAssessments/>},
+                        {path : ':organizationId/report',element:<UserAssessmentRecords/>},
                         {path: ':organizationId/dashboard', element: <OrganizationDashboard/>},
                         {path: ':organizationId/activity', element: <ActivityDashboard/>,},
                         {path: ':organizationId/activity/:userId', element: <MemberActivityOverview/>},
@@ -266,3 +265,5 @@ const OrganizationsTable = Loadable(lazy(() => import( "../pages/dashboard/user/
 const OrganizationsGrid = Loadable(lazy(() => import( "../pages/dashboard/user/OrganizationsGrid")));
 const TeamManageOverview = Loadable(lazy(() => import( "../pages/dashboard/organization/team/TeamManageOverview")));
 const LessonNew = Loadable(lazy(() => import( "../pages/dashboard/user/LessonNew")));
+const UserAssessments = Loadable(lazy(() => import("../pages/dashboard/assessments/UserAssessments")));
+const UserAssessmentRecords = Loadable(lazy(() => import("../pages/dashboard/assessments/UserAssessmentList")));

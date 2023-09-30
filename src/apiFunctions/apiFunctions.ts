@@ -67,6 +67,13 @@ export async function getWearablesData(params: TerraWearables) {
     return result;
 }
 
+export async function getWearablesSleepData(params: TerraWearables) {
+    const result = await API.post(apiName, '/api/sleep-data', {
+        body: {...params}
+    });
+    return result;
+}
+
 export async function getLastSyncDates(terraIds: string[]) {
     const result = await API.post(apiName, '/api/lastSyncDates', {
         body: terraIds

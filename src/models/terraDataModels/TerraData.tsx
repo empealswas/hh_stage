@@ -29,9 +29,9 @@ type Sleep = {
     },
     sleep_durations_data: {
         asleep: {
-            duration_asleep_state: number,
-            duration_light_sleep_state: number,
-            duration_deep_sleep_state: number,
+            duration_asleep_state_seconds: number,
+            duration_light_sleep_state_seconds: number,
+            duration_deep_sleep_state_seconds: number,
         },
         other: {
             duration_in_bed: number,
