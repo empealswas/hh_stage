@@ -1,4 +1,4 @@
-Assessment v1.0 30-01-2023:
+Assessment v1.0 30-09-2023:
     1. Under the manage option of each organization add an option called Assessment, for assessment basic settings
     2. Add 2 more points besides of the manage option a) Class Reports, b) Assessments 
     3. In the Class report option beside the manage button add a dropn down which will listed all the class, to get the entire class report
@@ -7,3 +7,6 @@ Assessment v1.0 30-01-2023:
     5. In User dasboard implement try terra connection to get the steps, sleep and other activity report.
     6. Add a back button on every page to easily navigate from one page to other for the mobile users. 
     7. Running a cron to moving data from dynamodb to postgresql
+
+UI Issue fixed 30-09-2023:
+    report sizes on mobile screen ui fixed

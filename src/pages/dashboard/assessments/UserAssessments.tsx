@@ -393,12 +393,18 @@ export default function UserAssessments() {
         boxShadow: 24,
         p: 4,
         overflow:'scroll',
+
+        "@media (max-width: 800px)": {
+            top:'50%',
+            width:'70%',
+            height:'500px',
+        }
       };
     
       const modalCloseStyle={
         position: 'absolute' as 'absolute',
-        top: '10%',
-        left: '90%',
+        top: '5%',
+        left: '85%',
         width:30,
         height:30,
         cursor:'pointer'
@@ -414,14 +420,32 @@ export default function UserAssessments() {
         boxShadow: 24,
         p: 4,
         overflow:'scroll',   
+        "@media (max-width: 800px)": {
+            height:'500px',
+            width:'90%'
+
+        }
     }
+
+    const report_style_student_report={
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        overflow:'scroll',   
+    }
+
     const reportmodalCloseStyle={
         position: 'absolute' as 'absolute',
-        top: '2%',
+        top: '1%',
         left: '92%',
         width:30,
         height:30,
-        cursor:'pointer'
+        cursor:'pointer',
         }   
 
     const columns: GridColDef[] = [
@@ -546,11 +570,9 @@ export default function UserAssessments() {
                     Generate Report
             </Button>
 
-            <div style={{paddingLeft:'180px'}} >
-                {/* <Button  variant="contained" style={{marginRight:'20px'}} onClick={getPreviousReport}> Previous Report </Button> */}
-                    
-                    <iframe src={report_file_path} style={{height:'500px'}} />
-                
+            <div style={{paddingLeft:'25%'}} >
+                {/* <Button  variant="contained" style={{marginRight:'20px'}} onClick={getPreviousReport}> Previous Report </Button> */}    
+                    <iframe src={report_file_path} style={{height:'500px'}} />                
                 {/* <Button  variant="contained" style={{marginLeft:'20px'}} onClick={getNextReport}> Next Report </Button> */}
                 
             </div>
@@ -608,14 +630,12 @@ export default function UserAssessments() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={report_style}>
+                <Box sx={report_style_student_report}>
                     <Iconify icon="mdi:close-circle"  onClick={()=>setStudentReportOpen(false)} sx={reportmodalCloseStyle}/>
                     <Typography variant='subtitle1' align='center'>{report_message}</Typography>     
 
                      <div style={{}}>
-                        {/* <Button  variant="contained" style={{marginRight:'20px'}} onClick={getPreviousStudentReport}> Previous Report </Button> */}
                             <iframe src={report_file_path} style={{height:'500px'}} />               
-                        {/* <Button  variant="contained" style={{marginLeft:'20px'}} onClick={getNextStudentReport}> Next Report </Button> */}
                      </div>
                 </Box>              
                 
