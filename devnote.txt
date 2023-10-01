@@ -10,3 +10,6 @@ Assessment v1.0 30-09-2023:
 
 UI Issue fixed 30-09-2023:
     report sizes on mobile screen ui fixed
+
+Date format in report is fixed 01-10-2023:
+    Date format in report is fixed 
