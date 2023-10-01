@@ -93,22 +93,21 @@ export default function UserAssessments() {
         var month = ""+today.getMonth();
         var date = ""+today.getDate();
         let pyear = ""+today.getFullYear();
-
-        if (today.getMonth()<9)
-            pyear = ""+(today.getFullYear()-1);
-            
         let pmonth = "09";
         let pdate = "01";
 
-        if(today.getMonth()>=1 && today.getMonth()<=9)
-            month="0"+(today.getMonth()+1);
+        if (today.getMonth()<9)
+            pyear = ""+(today.getFullYear()-1);
+
+        month = (today.getMonth()>=1 && today.getMonth()<9)?"0"+(today.getMonth()+1):""+(today.getMonth()+1);
+
         if(today.getDate()>=1 && today.getDate() <=9)
             date = "0"+date        
 
         let date_string=`${year}-${month}-${date}`;
         let previous_date_string=`${pyear}-${pmonth}-${pdate}`;
 
-        console.log("date = ", date_string+" "+previous_date_string);
+        console.log("date = ", date_string+" prev = "+previous_date_string);
         setCurrentDate(date_string);
         setPreviousDate(previous_date_string);
             
@@ -284,7 +283,6 @@ export default function UserAssessments() {
             start = report_start_date;
         if(report_end_date)
             end = report_end_date
-        
         if(start>current_date)
             alert("Invalid start date");
         else if(end>current_date || end<start)
